@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Remove="Configuration\HotelConfig\LanguageEntityTypeConfiguration.cs~RF12e4bb.TMP" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Celestial.ParvazBolourin.Core\Celestial.ParvazBolourin.Core.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Configuration\ShirdalAtelier\" />
+	  <Folder Include="Context\Repositories\ShirdalAtelier\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="Celestia.SharedKernel.Dal.Ef" Version="2.1.7" />
+	</ItemGroup>
+
+</Project>

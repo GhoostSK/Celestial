@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35222.181
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ParvazBolourin", "ParvazBolourin", "{1A29483B-2D5F-4444-B012-FB546CF4103E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{9EC71E36-D5E8-4845-994D-559F2154101E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{FABDF8FE-A46B-48F1-B33B-0DDB38C01E09}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Celestial.ParvazBolourin.Core", "src\Celestial.ParvazBolourin.Core\Celestial.ParvazBolourin.Core.csproj", "{C150702E-F004-4327-B6B3-6DD755E68E11}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Celestial.ParvazBolourin.DAL.EF", "src\Celestial.ParvazBolourin.DAL.EF\Celestial.ParvazBolourin.DAL.EF.csproj", "{5E260444-D509-4232-B68D-3AF3359419FD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Celestial.ParvazBolourin.Service", "src\Celestial.ParvazBolourin.Service\Celestial.ParvazBolourin.Service.csproj", "{EFF343B3-3C52-4F48-8364-E6A92E56C808}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Celestial.ParvazBolourin.Api", "src\Celestial.ParvazBolourin\Celestial.ParvazBolourin.Api.csproj", "{52CF739E-5DEB-45AE-BBD2-29BC9DD36DDA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C150702E-F004-4327-B6B3-6DD755E68E11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C150702E-F004-4327-B6B3-6DD755E68E11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C150702E-F004-4327-B6B3-6DD755E68E11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C150702E-F004-4327-B6B3-6DD755E68E11}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E260444-D509-4232-B68D-3AF3359419FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E260444-D509-4232-B68D-3AF3359419FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E260444-D509-4232-B68D-3AF3359419FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E260444-D509-4232-B68D-3AF3359419FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFF343B3-3C52-4F48-8364-E6A92E56C808}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFF343B3-3C52-4F48-8364-E6A92E56C808}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFF343B3-3C52-4F48-8364-E6A92E56C808}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFF343B3-3C52-4F48-8364-E6A92E56C808}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52CF739E-5DEB-45AE-BBD2-29BC9DD36DDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52CF739E-5DEB-45AE-BBD2-29BC9DD36DDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52CF739E-5DEB-45AE-BBD2-29BC9DD36DDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52CF739E-5DEB-45AE-BBD2-29BC9DD36DDA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9EC71E36-D5E8-4845-994D-559F2154101E} = {1A29483B-2D5F-4444-B012-FB546CF4103E}
+		{FABDF8FE-A46B-48F1-B33B-0DDB38C01E09} = {1A29483B-2D5F-4444-B012-FB546CF4103E}
+		{C150702E-F004-4327-B6B3-6DD755E68E11} = {9EC71E36-D5E8-4845-994D-559F2154101E}
+		{5E260444-D509-4232-B68D-3AF3359419FD} = {9EC71E36-D5E8-4845-994D-559F2154101E}
+		{EFF343B3-3C52-4F48-8364-E6A92E56C808} = {9EC71E36-D5E8-4845-994D-559F2154101E}
+		{52CF739E-5DEB-45AE-BBD2-29BC9DD36DDA} = {9EC71E36-D5E8-4845-994D-559F2154101E}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {98ADA44C-FC17-4606-8D68-5B9BEFA0DF18}
+	EndGlobalSection
+EndGlobal

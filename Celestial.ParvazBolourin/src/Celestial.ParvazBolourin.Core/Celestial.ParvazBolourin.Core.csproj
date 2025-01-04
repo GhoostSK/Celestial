@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="DAL\Repositories\Main\**" />
+    <EmbeddedResource Remove="DAL\Repositories\Main\**" />
+    <None Remove="DAL\Repositories\Main\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="DAL\Model\ShirdalAtelier\" />
+    <Folder Include="DAL\Repositories\ShirdalAtelier\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Celestia.SharedKernel" Version="1.2.6" />
+    <PackageReference Include="Celestial.SharedKernel.DataMigration" Version="1.0.3" />
+  </ItemGroup>
+
+</Project>
