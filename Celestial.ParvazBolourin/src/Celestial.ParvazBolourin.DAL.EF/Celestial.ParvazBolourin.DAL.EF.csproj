@@ -7,6 +7,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Context\Repositories\ShirdalAtelier\**" />
+	  <EmbeddedResource Remove="Context\Repositories\ShirdalAtelier\**" />
+	  <None Remove="Context\Repositories\ShirdalAtelier\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <None Remove="Configuration\HotelConfig\LanguageEntityTypeConfiguration.cs~RF12e4bb.TMP" />
 	</ItemGroup>
 
@@ -16,7 +22,6 @@
 
 	<ItemGroup>
 	  <Folder Include="Configuration\ShirdalAtelier\" />
-	  <Folder Include="Context\Repositories\ShirdalAtelier\" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -7,13 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="DAL\Model\ShirdalAtelier\**" />
     <Compile Remove="DAL\Repositories\Main\**" />
+    <EmbeddedResource Remove="DAL\Model\ShirdalAtelier\**" />
     <EmbeddedResource Remove="DAL\Repositories\Main\**" />
+    <None Remove="DAL\Model\ShirdalAtelier\**" />
     <None Remove="DAL\Repositories\Main\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DAL\Model\ShirdalAtelier\" />
     <Folder Include="DAL\Repositories\ShirdalAtelier\" />
   </ItemGroup>
 

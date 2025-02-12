@@ -8,6 +8,13 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Controllers\ShirdalAtelier\**" />
+	  <Content Remove="Controllers\ShirdalAtelier\**" />
+	  <EmbeddedResource Remove="Controllers\ShirdalAtelier\**" />
+	  <None Remove="Controllers\ShirdalAtelier\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.10" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.10">
@@ -31,7 +38,6 @@
 
 	<ItemGroup>
 		<Folder Include="Areas\Admin\Controllers\ShirdalAtelier\" />
-		<Folder Include="Controllers\ShirdalAtelier\" />
 		<Folder Include="Data\Migrations\" />
 	</ItemGroup>
 
