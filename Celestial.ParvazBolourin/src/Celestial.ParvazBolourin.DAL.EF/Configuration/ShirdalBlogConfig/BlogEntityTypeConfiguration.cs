@@ -18,6 +18,5 @@ public sealed class HotelEntityTypeConfiguration : IEntityTypeConfiguration<Blog
             .IsRequired()
             .HasDefaultValue(0)
             .HasComment("Number of likes for the blog post.");
-
     }
 }

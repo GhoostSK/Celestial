@@ -41,10 +41,7 @@ public class TourController : BaseController
     {
         var response = await Mediator.Send(request.Adapt<UpdateTourCommandReq>(), cancellationToken);
 
-        if (response.HasError)
-        {
-            return BadRequest(response.Error);
-        }
+        if (response.HasError) return BadRequest(response.Error);
         return Ok("Tour updated successfully");
     }
 }

@@ -7,5 +7,5 @@ namespace Celestial.ParvazBolourin.Core.DAL.Repositories.Hotel;
 public interface IHotelService : IRepositoryEF<Hotels>, IScopeLifetime
 {
     Task<int> AddHotel(Hotels model, CancellationToken cancellationToken);
-    Task<List<Hotels>> GetHotelsList(GetHotelsListReq model,CancellationToken cancellationToken);
+    Task<List<Hotels>> GetHotelsList(GetHotelsListReq model, CancellationToken cancellationToken);
 }

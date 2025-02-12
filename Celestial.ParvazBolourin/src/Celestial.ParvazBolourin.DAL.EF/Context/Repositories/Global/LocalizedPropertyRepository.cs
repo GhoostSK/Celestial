@@ -25,6 +25,5 @@ public sealed class LocalizedPropertyRepository(MainDbContext dbContext)
                 LanguageId = p.LanguageId
             })
             .ToListAsync(cancellationToken);
-
     }
 }

@@ -7,5 +7,4 @@ namespace Celestial.ParvazBolourin.Core.DAL.Repositories.Geo;
 public interface IStateService : IRepositoryEF<State>, IScopeLifetime
 {
     public Task<List<State>> GetStateList(int countryId, CancellationToken cancellationToken);
-
 }

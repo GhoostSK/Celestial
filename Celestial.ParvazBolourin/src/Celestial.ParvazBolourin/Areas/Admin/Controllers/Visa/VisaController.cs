@@ -11,7 +11,11 @@ public class VisaController : BaseController
     [HttpPost]
     public async Task<IActionResult> AddVisa([FromBody] AddVisaReqDto request, CancellationToken cancellationToken)
     {
-        var response = await Mediator.Send(new AddVisaCommandReq() { Visa = request.Adapt<Visas>(), VisaLocalizedProperty = request.VisaLocalizedProperty }, cancellationToken);
+        var response =
+            await Mediator.Send(
+                new AddVisaCommandReq
+                    { Visa = request.Adapt<Visas>(), VisaLocalizedProperty = request.VisaLocalizedProperty },
+                cancellationToken);
 
         if (response.HasError)
             return BadRequest(response.Error);
@@ -20,9 +24,10 @@ public class VisaController : BaseController
     }
 
     [HttpDelete]
-    public async Task<IActionResult> RemoveVisa([FromQuery] RemoveVisaReqDto request, CancellationToken cancellationToken)
+    public async Task<IActionResult> RemoveVisa([FromQuery] RemoveVisaReqDto request,
+        CancellationToken cancellationToken)
     {
-        var response = await Mediator.Send(new RemoveVisaCommandReq() { Id = request.Id }, cancellationToken);
+        var response = await Mediator.Send(new RemoveVisaCommandReq { Id = request.Id }, cancellationToken);
 
         if (response.HasError)
             return BadRequest(response.Error);
@@ -31,20 +36,17 @@ public class VisaController : BaseController
     }
 
     [HttpPut]
-    public async Task<IActionResult> UpdateVisa([FromBody] UpdateVisaDtoReqDto request, CancellationToken cancellationToken)
+    public async Task<IActionResult> UpdateVisa([FromBody] UpdateVisaDtoReqDto request,
+        CancellationToken cancellationToken)
     {
-        var response = await Mediator.Send(new UpdateVisaCommandReq() 
-        { 
-            Id = request.Id, 
-            Visa = request.Visa, 
-            VisaLocalizedProperty = request.VisaLocalizedProperty 
+        var response = await Mediator.Send(new UpdateVisaCommandReq
+        {
+            Id = request.Id,
+            Visa = request.Visa,
+            VisaLocalizedProperty = request.VisaLocalizedProperty
         }, cancellationToken);
 
-        if (response.HasError)
-        {
-            return BadRequest(response.Error);
-        }
+        if (response.HasError) return BadRequest(response.Error);
         return Ok("Visa updated successfully");
     }
 }
-

@@ -15,7 +15,7 @@ public sealed class Hotels : DbBaseEntity<int>
     public string BookingUrl { get; set; } = string.Empty;
     public string HotelCode { get; set; } = string.Empty;
     public string HotelCoordinate { get; set; } = string.Empty;
-    public string HotelReception { get; set; } = String.Empty;
+    public string HotelReception { get; set; } = string.Empty;
     public List<HotelPicture> HotelPictures { get; set; } = new();
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;

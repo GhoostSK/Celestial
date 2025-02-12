@@ -9,7 +9,6 @@ public class UpdateTourDto
     public Tours Tours { get; set; } = new();
     public List<TourLocalizedPropertyItem> LocalizedProperty { get; set; } = new();
     public List<TourPlansUpdateDto> TourPlans { get; set; } = new();
-
 }
 
 public class TourPlansUpdateDto

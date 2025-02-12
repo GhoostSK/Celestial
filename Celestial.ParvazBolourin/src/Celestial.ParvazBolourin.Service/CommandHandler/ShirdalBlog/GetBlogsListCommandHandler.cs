@@ -1,6 +1,5 @@
 ﻿using Celestial.ParvazBolourin.Core.DAL.Repositories.Global;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global.Model;
-using Celestial.ParvazBolourin.Core.DAL.Repositories.Hotel;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.ShirdalBlog;
 using Celestial.ParvazBolourin.Service.Command.ShirdalBlog;
 using MofidApp.SharedKernel.Common.Model;
@@ -22,32 +21,31 @@ public sealed class GetBlogsListCommandHandler : BaseRequestHandler<GetBlogsList
         _blogService = blogService;
     }
 
-    protected override async Task<GetBlogsListCommandRes> HandleCore(GetBlogsListCommandReq request, CancellationToken cancellationToken)
+    protected override async Task<GetBlogsListCommandRes> HandleCore(GetBlogsListCommandReq request,
+        CancellationToken cancellationToken)
     {
         var languages = await _languageService.GetLanguages(cancellationToken);
         if (!languages.Any(p => p.Id == request.LanguageId))
-        {
-            return new GetBlogsListCommandRes()
+            return new GetBlogsListCommandRes
             {
                 Error = new ValidationError("LA400", "invalid Language")
             };
-        }
 
         var blogs = await _blogService.GetBlogsList(cancellationToken);
         var response = new GetBlogsListCommandRes();
         foreach (var blog in blogs)
         {
             var localize = await _localizedPropertyService.GetPropertyByLanguageAndEntityId(
-                new GetLocalizedPropertyReq()
+                new GetLocalizedPropertyReq
                 {
                     EntityId = blog.Id,
                     LanguageId = request.LanguageId,
-                    LocalKeyGroup = "Blog",
+                    LocalKeyGroup = "Blog"
                 }, cancellationToken);
             var tags = new List<string>();
 
 
-            response.Items.Add(new BlogItem()
+            response.Items.Add(new BlogItem
             {
                 HeaderText = localize.FirstOrDefault(p => p.LocalKey == nameof(BlogItem.HeaderText))?.LocalValue!,
                 Title = localize.FirstOrDefault(p => p.LocalKey == nameof(BlogItem.Title))?.LocalValue!,
@@ -55,8 +53,6 @@ public sealed class GetBlogsListCommandHandler : BaseRequestHandler<GetBlogsList
                 Likes = blog.Likes,
                 Id = blog.Id
             });
-
-
         }
 
         return response;

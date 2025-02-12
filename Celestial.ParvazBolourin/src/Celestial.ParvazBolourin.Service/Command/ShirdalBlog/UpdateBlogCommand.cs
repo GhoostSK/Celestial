@@ -13,5 +13,4 @@ public class UpdateBlogCommandReq : BaseEntity, IRequest<UpdateBlogCommandRes>
 
 public class UpdateBlogCommandRes : ServiceResContextBase
 {
-
 }

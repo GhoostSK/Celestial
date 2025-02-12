@@ -5,7 +5,6 @@ namespace Celestial.ParvazBolourin.Service.Command.Geo;
 
 public class GetCountryCommandReq : IRequest<GetCountryCommandRes>
 {
-
 }
 
 public class GetCountryCommandRes

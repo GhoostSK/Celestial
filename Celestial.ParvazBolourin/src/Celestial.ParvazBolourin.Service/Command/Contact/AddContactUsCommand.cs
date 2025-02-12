@@ -15,5 +15,3 @@ public sealed class AddContactUsCommandReq : BaseEntity, IRequest<AddContactUsCo
 public sealed class AddContactUsCommandRes : ServiceResContextBase
 {
 }
-
-

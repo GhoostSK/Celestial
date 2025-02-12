@@ -13,7 +13,8 @@ public sealed class RemoveBlogCommandHandler : BaseRequestHandler<RemoveBlogComm
         _blogService = blogService;
     }
 
-    protected override async Task<RemoveBlogCommandRes> HandleCore(RemoveBlogCommandReq request, CancellationToken cancellationToken)
+    protected override async Task<RemoveBlogCommandRes> HandleCore(RemoveBlogCommandReq request,
+        CancellationToken cancellationToken)
     {
         var blog = await _blogService.GetBlogById(request.Id, cancellationToken);
         blog!.IsDeleted = true;

@@ -1,7 +1,5 @@
 ﻿namespace Celestial.ParvazBolourin.Core.Enum.Hotel;
 
-
-
 public enum HotelLocation
 {
     None,

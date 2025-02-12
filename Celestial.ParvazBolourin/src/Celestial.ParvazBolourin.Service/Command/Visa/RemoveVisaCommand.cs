@@ -11,5 +11,4 @@ public sealed class RemoveVisaCommandReq : BaseEntity, IRequest<RemoveVisaComman
 
 public sealed class RemoveVisaCommandRs : ServiceResContextBase
 {
-
 }

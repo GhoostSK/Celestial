@@ -6,9 +6,9 @@ namespace Celestial.ParvazBolourin.Api.Areas.Admin.Models.Dto;
 
 public sealed class AddVisaReqDto
 {
-    public string Country { get; set; } = String.Empty;
+    public string Country { get; set; } = string.Empty;
     public bool Status { get; set; } = true;
-    public String PicturePath { get; set; } = null!;
+    public string PicturePath { get; set; } = null!;
     public VisaIssuer VisaIssuer { get; set; }
     public int IssueDate { get; set; }
     public List<AddVisaLocalizedProperty> VisaLocalizedProperty { get; set; } = new();
@@ -18,6 +18,7 @@ public sealed class RemoveVisaReqDto
 {
     public int Id { get; set; }
 }
+
 public class UpdateVisaDtoReqDto
 {
     public int Id { get; set; }

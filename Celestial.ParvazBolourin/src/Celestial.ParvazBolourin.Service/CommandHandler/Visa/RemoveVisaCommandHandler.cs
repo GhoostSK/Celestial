@@ -14,16 +14,15 @@ public sealed class RemoveVisaCommandHandler : BaseRequestHandler<RemoveVisaComm
         _visaRepository = visaRepository;
     }
 
-    protected override async Task<RemoveVisaCommandRs> HandleCore(RemoveVisaCommandReq request, CancellationToken cancellationToken)
+    protected override async Task<RemoveVisaCommandRs> HandleCore(RemoveVisaCommandReq request,
+        CancellationToken cancellationToken)
     {
         var visa = await _visaRepository.GetVisaById(request.Id, cancellationToken);
         if (visa == null)
-        {
             return new RemoveVisaCommandRs
             {
                 Error = new ValidationError("404", "Visa Not Found")
             };
-        }
 
         visa.IsDeleted = true;
 

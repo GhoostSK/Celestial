@@ -6,5 +6,4 @@ namespace Celestial.ParvazBolourin.Core.DAL.Repositories.Tour;
 
 public interface ITourPlanService : IRepositoryEF<TourPlans>, IScopeLifetime
 {
-
 }

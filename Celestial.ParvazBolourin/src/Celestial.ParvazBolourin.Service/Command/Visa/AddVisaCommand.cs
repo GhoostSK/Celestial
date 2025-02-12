@@ -13,14 +13,13 @@ public sealed class AddVisaCommandReq : BaseEntity, IRequest<AddVisaCommandRes>
 
 public sealed class AddVisaCommandRes : ServiceResContextBase
 {
-
 }
 
 public sealed class AddVisaLocalizedProperty
 {
     public int LanguageId { get; set; }
-    public string Text { get; set; } = String.Empty;
+    public string Text { get; set; } = string.Empty;
 
-    public string Name { get; set; } = String.Empty;
+    public string Name { get; set; } = string.Empty;
     public List<Dictionary<string, string>> Embassy { get; set; } = new();
 }

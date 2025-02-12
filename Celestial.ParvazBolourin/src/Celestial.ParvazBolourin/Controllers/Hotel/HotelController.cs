@@ -8,7 +8,8 @@ namespace Celestial.ParvazBolourin.Api.Controllers.Hotel;
 public class HotelController : BaseController
 {
     [HttpGet]
-    public async Task<IActionResult> GetHotelsList([FromQuery] GetHotelListReqDto request, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetHotelsList([FromQuery] GetHotelListReqDto request,
+        CancellationToken cancellationToken)
     {
         var model = request.Adapt<GetHotelsListCommandReq>();
         var response =

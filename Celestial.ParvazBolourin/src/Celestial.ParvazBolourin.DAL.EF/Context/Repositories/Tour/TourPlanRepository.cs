@@ -7,5 +7,4 @@ namespace Celestial.ParvazBolourin.DAL.EF.Context.Repositories.Tour;
 
 public class TourPlanRepository(MainDbContext dbContext) : RepositoryBase<TourPlans>(dbContext), ITourPlanService
 {
-
 }

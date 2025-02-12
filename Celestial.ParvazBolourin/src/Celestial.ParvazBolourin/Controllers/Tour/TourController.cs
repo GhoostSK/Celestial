@@ -11,7 +11,7 @@ public class TourController : BaseController
     public async Task<IActionResult> GetToursList([FromBody] GetToursListReqDto request,
         CancellationToken cancellationToken)
     {
-        var model = request.Adapt < GetToursListCommandReq>();
+        var model = request.Adapt<GetToursListCommandReq>();
         var response =
             await Mediator.Send(model, cancellationToken);
         if (response.HasError)

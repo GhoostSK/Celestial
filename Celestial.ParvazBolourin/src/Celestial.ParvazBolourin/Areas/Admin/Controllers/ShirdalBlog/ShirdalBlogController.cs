@@ -14,10 +14,7 @@ public class ShirdalBlogController : BaseController
         var model = request.Adapt<AddBlogCommandReq>();
         var response = await Mediator.Send(model, cancellationToken);
 
-        if (response.HasError)
-        {
-            return BadRequest(response.Error);
-        }
+        if (response.HasError) return BadRequest(response.Error);
         return Ok("Blog Added Successfully");
     }
 
@@ -25,30 +22,24 @@ public class ShirdalBlogController : BaseController
     public async Task<IActionResult> RemoveBlog([FromQuery] RemoveBlogsReqDto request,
         CancellationToken cancellationToken)
     {
-        var response = await Mediator.Send(new RemoveBlogCommandReq() { Id = request.BlogId }, cancellationToken);
+        var response = await Mediator.Send(new RemoveBlogCommandReq { Id = request.BlogId }, cancellationToken);
 
-        if (response.HasError)
-        {
-            return BadRequest(response.Error);
-        }
+        if (response.HasError) return BadRequest(response.Error);
         return Ok("Blog deleted successfully");
     }
 
     [HttpPut]
-    public async Task<IActionResult> UpdateBlog([FromBody] UpdateBlogReqDto request, CancellationToken cancellationToken)
+    public async Task<IActionResult> UpdateBlog([FromBody] UpdateBlogReqDto request,
+        CancellationToken cancellationToken)
     {
-        var response = await Mediator.Send(new UpdateBlogCommandReq { 
+        var response = await Mediator.Send(new UpdateBlogCommandReq
+        {
             Id = request.Id,
             BlogLocalizedProperties = request.BlogLocalizedProperties,
-            PicturePath = request.PicturePath 
+            PicturePath = request.PicturePath
         }, cancellationToken);
 
-        if (response.HasError)
-        {
-            return BadRequest(response.Error);
-        }
+        if (response.HasError) return BadRequest(response.Error);
         return Ok("Blog updated successfully");
     }
 }
-
-

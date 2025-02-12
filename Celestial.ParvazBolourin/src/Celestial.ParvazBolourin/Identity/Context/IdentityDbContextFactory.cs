@@ -1,15 +1,13 @@
-﻿
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.Extensions.Configuration;
-using System.IO;
+
 namespace Celestial.ParvazBolourin.Api.Identity.Context;
 
 public class IdentityDbContextFactory : IDesignTimeDbContextFactory<IdentityDbContext>
 {
     public IdentityDbContext CreateDbContext(string[] args)
     {
-        IConfigurationRoot configuration = new ConfigurationBuilder()
+        var configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json")
             .Build();
@@ -20,5 +18,3 @@ public class IdentityDbContextFactory : IDesignTimeDbContextFactory<IdentityDbCo
         return new IdentityDbContext(optionsBuilder.Options);
     }
 }
-
-

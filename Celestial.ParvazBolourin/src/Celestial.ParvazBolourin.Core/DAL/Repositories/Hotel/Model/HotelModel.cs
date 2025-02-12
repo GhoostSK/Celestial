@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using MofidApp.SharedKernel.Domain.Services;
 
 namespace Celestial.ParvazBolourin.Core.DAL.Repositories.Hotel.Model;
 

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Celestial.ParvazBolourin.Core.Enum.Tour;
+﻿namespace Celestial.ParvazBolourin.Core.Enum.Tour;
 
 public enum TransportVehicleType
 {
@@ -47,4 +45,3 @@ public enum TransportType
     Air,
     Sea
 }
-

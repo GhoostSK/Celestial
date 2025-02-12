@@ -12,12 +12,13 @@ namespace Celestial.ParvazBolourin.Service.CommandHandler.Tours;
 
 public class UpdateTourCommandHandler : IRequestHandler<UpdateTourCommandReq, UpdateTourCommandRes>
 {
-    private readonly ITourService _tourService;
+    private readonly ILanguageService _languageService;
     private readonly ILocalizedPropertyService _localizedPropertyService;
     private readonly ITourPlanService _tourPlanService;
-    private readonly ILanguageService _languageService;
+    private readonly ITourService _tourService;
 
-    public UpdateTourCommandHandler(ITourService tourService, ILocalizedPropertyService localizedPropertyService, ILanguageService languageService, ITourPlanService tourPlanService)
+    public UpdateTourCommandHandler(ITourService tourService, ILocalizedPropertyService localizedPropertyService,
+        ILanguageService languageService, ITourPlanService tourPlanService)
     {
         _tourService = tourService;
         _localizedPropertyService = localizedPropertyService;
@@ -37,69 +38,66 @@ public class UpdateTourCommandHandler : IRequestHandler<UpdateTourCommandReq, Up
 
         var tour = await _tourService.FindByIdAsync(cancellationToken, request.Id);
         if (tour == null)
-        {
             return new UpdateTourCommandRes
             {
                 Error = new ValidationError("E404", "Tour Not Found")
             };
-        }
 
         foreach (var tourPlansUpdate in request.TourPlans)
-        {
-            tour.TourPlans.Add(new TourPlans()
+            tour.TourPlans.Add(new TourPlans
             {
                 Id = tourPlansUpdate.Id,
                 PlanPicturePath = tourPlansUpdate.PlanPicturePath
             });
-        }
 
         request.Tours.Id = request.Id;
         request.Tours.Adapt(tour);
         await _tourService.UnitOfWork.SaveChangesAsync(cancellationToken);
 
         foreach (var tourPlan in request.TourPlans)
+        foreach (var tourPlanLocalize in tourPlan.TourPlanLocalizeData)
         {
-            foreach (var tourPlanLocalize in tourPlan.TourPlanLocalizeData)
+            var localizePlan = await _localizedPropertyService.GetPropertyByLanguageAndEntityId(
+                new GetLocalizedPropertyReq
+                {
+                    EntityId = tourPlan.Id,
+                    LanguageId = tourPlanLocalize.LanguageId,
+                    LocalKeyGroup = "TourPlan"
+                }, cancellationToken);
+            if (localizePlan.Count == 0)
             {
-                var localizePlan = await _localizedPropertyService.GetPropertyByLanguageAndEntityId(
-                    new GetLocalizedPropertyReq()
+                var plan = await _tourPlanService.FindByIdAsync(cancellationToken, tourPlan.Id);
+                if (plan != null)
+                {
+                    await _localizedPropertyService.AddAsync(new LocalizedProperty
                     {
-                        EntityId = tourPlan.Id,
                         LanguageId = tourPlanLocalize.LanguageId,
+                        LocalKey = nameof(tourPlanLocalize.PlanDayText),
+                        LocalValue = tourPlanLocalize.PlanDayText,
+                        EntityId = tourPlan.Id,
                         LocalKeyGroup = "TourPlan"
                     }, cancellationToken);
-                if (localizePlan.Count == 0)
-                {
-                    var plan = await _tourPlanService.FindByIdAsync(cancellationToken, tourPlan.Id);
-                    if (plan != null)
+                    await _localizedPropertyService.AddAsync(new LocalizedProperty
                     {
-                        await _localizedPropertyService.AddAsync(new LocalizedProperty()
-                        {
-                            LanguageId = tourPlanLocalize.LanguageId,
-                            LocalKey = nameof(tourPlanLocalize.PlanDayText),
-                            LocalValue = tourPlanLocalize.PlanDayText,
-                            EntityId = tourPlan.Id,
-                            LocalKeyGroup = "TourPlan"
-
-                        }, cancellationToken);
-                        await _localizedPropertyService.AddAsync(new LocalizedProperty()
-                        {
-                            LanguageId = tourPlanLocalize.LanguageId,
-                            LocalKey = nameof(tourPlanLocalize.PlanText),
-                            LocalValue = tourPlanLocalize.PlanText,
-                            EntityId = tourPlan.Id,
-                            LocalKeyGroup = "TourPlan"
-
-                        }, cancellationToken);
-                    }
-                    break;
+                        LanguageId = tourPlanLocalize.LanguageId,
+                        LocalKey = nameof(tourPlanLocalize.PlanText),
+                        LocalValue = tourPlanLocalize.PlanText,
+                        EntityId = tourPlan.Id,
+                        LocalKeyGroup = "TourPlan"
+                    }, cancellationToken);
                 }
-                var planDayText = await _localizedPropertyService.FindByIdAsync(cancellationToken, localizePlan.FirstOrDefault(p => p.LocalKey == nameof(tourPlanLocalize.PlanDayText))!.Id);
-                var planText = await _localizedPropertyService.FindByIdAsync(cancellationToken, localizePlan.FirstOrDefault(p => p.LocalKey == nameof(tourPlanLocalize.PlanText))!.Id);
-                planDayText.LocalValue = tourPlanLocalize.PlanDayText;
-                planText.LocalValue = tourPlanLocalize.PlanText;
+
+                break;
             }
+
+            var planDayText = await _localizedPropertyService.FindByIdAsync(cancellationToken,
+                localizePlan.FirstOrDefault(p => p.LocalKey == nameof(tourPlanLocalize.PlanDayText))!.Id);
+            var planText = await _localizedPropertyService.FindByIdAsync(cancellationToken,
+                localizePlan.FirstOrDefault(p => p.LocalKey == nameof(tourPlanLocalize.PlanText))!.Id);
+            planDayText.LocalValue = tourPlanLocalize.PlanDayText;
+            planText.LocalValue = tourPlanLocalize.PlanText;
         }
+
         foreach (var localize in request.LocalizedProperty)
         {
             var localizedData = await _localizedPropertyService.GetPropertyByLanguageAndEntityId(
@@ -134,6 +132,7 @@ public class UpdateTourCommandHandler : IRequestHandler<UpdateTourCommandReq, Up
                 }
             }
         }
+
         await _localizedPropertyService.UnitOfWork.SaveChangesAsync(cancellationToken);
         return new UpdateTourCommandRes();
     }

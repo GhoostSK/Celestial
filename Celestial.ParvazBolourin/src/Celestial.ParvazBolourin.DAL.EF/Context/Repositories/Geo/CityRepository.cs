@@ -10,6 +10,6 @@ public class CityRepository(MainDbContext dbContext) : RepositoryBase<City>(dbCo
 {
     public async Task<List<City>> GetCityList(int stateId, CancellationToken cancellationToken)
     {
-        return await TableNoTracking.Where(p => p.State_id == stateId).ToListAsync(cancellationToken: cancellationToken);
+        return await TableNoTracking.Where(p => p.State_id == stateId).ToListAsync(cancellationToken);
     }
 }

@@ -10,12 +10,13 @@ namespace Celestial.ParvazBolourin.Service.CommandHandler.Tours;
 
 public class GetTourByIdCommandHandler : IRequestHandler<GetTourByIdCommandReq, GetTourByIdCommandRes>
 {
+    private readonly ILanguageService _languageService;
     private readonly ILocalizedPropertyService _localizedPropertyService;
     private readonly ITourService _tourService;
-    private readonly ILanguageService _languageService;
 
 
-    public GetTourByIdCommandHandler(ITourService tourService, ILocalizedPropertyService localizedPropertyService, ILanguageService languageService)
+    public GetTourByIdCommandHandler(ITourService tourService, ILocalizedPropertyService localizedPropertyService,
+        ILanguageService languageService)
     {
         _tourService = tourService;
         _localizedPropertyService = localizedPropertyService;
@@ -68,7 +69,7 @@ public class GetTourByIdCommandHandler : IRequestHandler<GetTourByIdCommandReq, 
         for (var i = 0; i < tour.TourPlans.Count; i++)
         {
             var tourPlanLocalizeData = await _localizedPropertyService.GetPropertyByLanguageAndEntityId(
-                new GetLocalizedPropertyReq()
+                new GetLocalizedPropertyReq
                 {
                     EntityId = tour.TourPlans[i].Id,
                     LanguageId = request.LanguageId,
@@ -76,11 +77,14 @@ public class GetTourByIdCommandHandler : IRequestHandler<GetTourByIdCommandReq, 
                 }, cancellationToken);
             if (!tourPlanLocalizeData.Any())
                 break;
-            var data = new GetTourByIdTourPlan()
+            var data = new GetTourByIdTourPlan
             {
                 Id = tour.TourPlans[i].Id,
-                PlanDayText = tourPlanLocalizeData.FirstOrDefault(p => p.LocalKey == nameof(GetTourByIdTourPlan.PlanDayText))!.LocalValue,
-                PlanText = tourPlanLocalizeData.FirstOrDefault(p => p.LocalKey == nameof(GetTourByIdTourPlan.PlanText))!.LocalValue,
+                PlanDayText =
+                    tourPlanLocalizeData.FirstOrDefault(p => p.LocalKey == nameof(GetTourByIdTourPlan.PlanDayText))!
+                        .LocalValue,
+                PlanText = tourPlanLocalizeData.FirstOrDefault(p => p.LocalKey == nameof(GetTourByIdTourPlan.PlanText))!
+                    .LocalValue,
                 PlanPicturePath = tour.TourPlans[i].PlanPicturePath
             };
             itemResponse.TourPlans[i] = data;

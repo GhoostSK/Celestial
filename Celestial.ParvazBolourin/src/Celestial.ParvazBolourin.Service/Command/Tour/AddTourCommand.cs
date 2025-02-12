@@ -28,6 +28,6 @@ public sealed class TourLocalizedPropertyItem
 
 public sealed class PlanTourItem
 {
-    public string PlanDayText { get; set; }=string.Empty;
-    public string PlanText { get; set; }=string.Empty;
+    public string PlanDayText { get; set; } = string.Empty;
+    public string PlanText { get; set; } = string.Empty;
 }

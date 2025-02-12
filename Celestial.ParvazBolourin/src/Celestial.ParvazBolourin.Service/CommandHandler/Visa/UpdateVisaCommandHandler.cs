@@ -12,8 +12,8 @@ namespace Celestial.ParvazBolourin.Service.CommandHandler.Visa;
 
 public class UpdateVisaCommandHandler : BaseRequestHandler<UpdateVisaCommandReq, UpdateVisaCommandRes>
 {
-    private readonly IVisaService _visaService;
     private readonly ILocalizedPropertyService _localizedPropertyService;
+    private readonly IVisaService _visaService;
 
     public UpdateVisaCommandHandler(IVisaService visaService, ILocalizedPropertyService localizedPropertyService)
     {
@@ -21,16 +21,15 @@ public class UpdateVisaCommandHandler : BaseRequestHandler<UpdateVisaCommandReq,
         _localizedPropertyService = localizedPropertyService;
     }
 
-    protected override async Task<UpdateVisaCommandRes> HandleCore(UpdateVisaCommandReq request, CancellationToken cancellationToken)
+    protected override async Task<UpdateVisaCommandRes> HandleCore(UpdateVisaCommandReq request,
+        CancellationToken cancellationToken)
     {
         var visa = await _visaService.FindByIdAsync(cancellationToken, request.Id);
         if (visa == null)
-        {
             return new UpdateVisaCommandRes
             {
                 Error = new ValidationError("E404", "Visa Not Found")
             };
-        }
 
         request.Visa.Id = request.Id;
         request.Visa.Adapt(visa);
@@ -38,10 +37,10 @@ public class UpdateVisaCommandHandler : BaseRequestHandler<UpdateVisaCommandReq,
         await _visaService.UnitOfWork.SaveChangesAsync(cancellationToken);
 
         Expression<Func<LocalizedProperty, bool>> predicate = property =>
-            property.EntityId == request.Id &&
-            property.LocalKey == "Embassy_Address" &&
-            property.LocalKeyGroup == "Visa"||
-            property.LocalKey=="Embassy_PhoneNumber";
+            (property.EntityId == request.Id &&
+             property.LocalKey == "Embassy_Address" &&
+             property.LocalKeyGroup == "Visa") ||
+            property.LocalKey == "Embassy_PhoneNumber";
 
         await _localizedPropertyService.BulkRemove(predicate, cancellationToken);
         await _localizedPropertyService.UnitOfWork.SaveChangesAsync(cancellationToken);
@@ -56,19 +55,15 @@ public class UpdateVisaCommandHandler : BaseRequestHandler<UpdateVisaCommandReq,
                 }, cancellationToken);
 
             foreach (var embassy in item.Embassy)
-            {
-                foreach (var kvp in embassy)
+            foreach (var kvp in embassy)
+                await _localizedPropertyService.AddAsync(new LocalizedProperty
                 {
-                    await _localizedPropertyService.AddAsync(new LocalizedProperty
-                    {
-                        EntityId = request.Id,
-                        LanguageId = item.LanguageId,
-                        LocalKey = "Embassy_" + kvp.Key,
-                        LocalValue = kvp.Value,
-                        LocalKeyGroup = "Visa"
-                    }, cancellationToken);
-                }
-            }
+                    EntityId = request.Id,
+                    LanguageId = item.LanguageId,
+                    LocalKey = "Embassy_" + kvp.Key,
+                    LocalValue = kvp.Value,
+                    LocalKeyGroup = "Visa"
+                }, cancellationToken);
             foreach (var property in localizedData)
             {
                 var existingProperty = await _localizedPropertyService.FindByIdAsync(cancellationToken, property.Id);
@@ -84,6 +79,7 @@ public class UpdateVisaCommandHandler : BaseRequestHandler<UpdateVisaCommandReq,
                 }
             }
         }
+
         await _localizedPropertyService.UnitOfWork.SaveChangesAsync(cancellationToken);
 
         return new UpdateVisaCommandRes();

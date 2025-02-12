@@ -7,7 +7,7 @@ namespace Celestial.ParvazBolourin.Core.DAL.Model.Tour;
 public sealed class Tours : DbBaseEntity<int>
 {
     public List<string> Countries { get; set; } = new();
-    public List<string> Cities { get; set; }=new();
+    public List<string> Cities { get; set; } = new();
     public string HotelCode { get; set; } = string.Empty;
     public TourStatus TourStatus { get; set; }
     public DateTime StartDate { get; set; }

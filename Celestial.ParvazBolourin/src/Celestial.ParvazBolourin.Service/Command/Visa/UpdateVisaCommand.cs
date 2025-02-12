@@ -4,6 +4,7 @@ using MofidApp.SharedKernel.Common.Model;
 using MofidApp.SharedKernel.Domain.Services;
 
 namespace Celestial.ParvazBolourin.Service.Command.Visa;
+
 public sealed class UpdateVisaCommandReq : BaseEntity, IRequest<UpdateVisaCommandRes>
 {
     public int Id { get; set; }
@@ -13,5 +14,4 @@ public sealed class UpdateVisaCommandReq : BaseEntity, IRequest<UpdateVisaComman
 
 public sealed class UpdateVisaCommandRes : ServiceResContextBase
 {
-
 }

@@ -15,7 +15,6 @@ public sealed class UpdateTourCommandReq : BaseEntity, IRequest<UpdateTourComman
 
 public sealed class UpdateTourCommandRes : ServiceResContextBase
 {
-
 }
 
 public class TourPlansUpdateReq

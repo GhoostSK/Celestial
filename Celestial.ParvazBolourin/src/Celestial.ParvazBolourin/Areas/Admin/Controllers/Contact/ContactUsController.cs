@@ -5,16 +5,12 @@ namespace Celestial.ParvazBolourin.Api.Areas.Admin.Controllers.Contact;
 
 public class ContactUsController : BaseController
 {
-
     [HttpGet]
     public async Task<IActionResult> GetContactUsList(CancellationToken cancellationToken)
     {
         var result = await Mediator.Send(new GetContactUsListCommandReq(), cancellationToken);
 
-        if (result.HasError)
-        {
-            return BadRequest(result.Error);
-        }
+        if (result.HasError) return BadRequest(result.Error);
 
         return Ok(result.ContactUsList);
     }
@@ -27,10 +23,7 @@ public class ContactUsController : BaseController
             ContactUsId = contactUsId
         }, cancellationToken);
 
-        if (result.HasError)
-        {
-            return BadRequest(result.Error);
-        }
+        if (result.HasError) return BadRequest(result.Error);
 
         return Ok("Contact removed successfully.");
     }
@@ -43,15 +36,9 @@ public class ContactUsController : BaseController
             Id = id
         }, cancellationToken);
 
-        if (result.HasError)
-        {
-            return BadRequest(result.Error);
-        }
+        if (result.HasError) return BadRequest(result.Error);
 
-        if (result.Item == null)
-        {
-            return NotFound($"ContactUs with ID {id} not found.");
-        }
+        if (result.Item == null) return NotFound($"ContactUs with ID {id} not found.");
 
         return Ok(result.Item);
     }

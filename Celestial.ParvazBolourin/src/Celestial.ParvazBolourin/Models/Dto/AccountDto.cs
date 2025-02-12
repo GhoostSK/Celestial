@@ -19,6 +19,7 @@ public class RegisterDto
     [RegularExpression(@"^\d{10}$", ErrorMessage = "National code must be exactly 10 digits.")]
     public string NationalCode { get; set; }
 }
+
 public class LoginDto
 {
     [Required(ErrorMessage = "Email is required.")]
@@ -30,4 +31,3 @@ public class LoginDto
 
     public bool RememberMe { get; set; }
 }
-

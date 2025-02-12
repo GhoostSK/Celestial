@@ -2,22 +2,21 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Celestial.ParvazBolourin.DAL.EF.Configuration.TourConfig
+namespace Celestial.ParvazBolourin.DAL.EF.Configuration.TourConfig;
+
+public class TourTransportsEntityTypeConfiguration : IEntityTypeConfiguration<TourTransPorts>
 {
-    public class TourTransportsEntityTypeConfiguration : IEntityTypeConfiguration<TourTransPorts>
+    public void Configure(EntityTypeBuilder<TourTransPorts> builder)
     {
-        public void Configure(EntityTypeBuilder<TourTransPorts> builder)
-        {
-            ArgumentNullException.ThrowIfNull(nameof(builder));
+        ArgumentNullException.ThrowIfNull(nameof(builder));
 
-            builder.ToTable(nameof(TourTransPorts));
+        builder.ToTable(nameof(TourTransPorts));
 
-            builder.Property(p => p.StartTime).IsRequired();
-            builder.Property(p => p.EndTime).IsRequired();
+        builder.Property(p => p.StartTime).IsRequired();
+        builder.Property(p => p.EndTime).IsRequired();
 
-            builder.Property(p => p.TransPortType)
-                .IsRequired()
-                .HasConversion<string>();
-        }
+        builder.Property(p => p.TransPortType)
+            .IsRequired()
+            .HasConversion<string>();
     }
 }

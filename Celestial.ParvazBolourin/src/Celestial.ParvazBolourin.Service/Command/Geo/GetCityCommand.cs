@@ -6,11 +6,10 @@ namespace Celestial.ParvazBolourin.Service.Command.Geo;
 
 public class GetCityCommandReq : IRequest<GetCityCommandRes>
 {
-    [Required]
-    public int StateId { get; set; }
+    [Required] public int StateId { get; set; }
 }
 
 public class GetCityCommandRes
 {
-    public List<City> Items { get; set; }=new List<City>();
+    public List<City> Items { get; set; } = new();
 }

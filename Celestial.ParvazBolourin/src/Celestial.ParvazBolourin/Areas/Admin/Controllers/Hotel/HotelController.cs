@@ -29,7 +29,10 @@ public class HotelController : BaseController
     public async Task<IActionResult> UpdateHotelById(UpdateHotelReqDto request, CancellationToken cancellationToken)
     {
         var response =
-            await Mediator.Send(new UpdateHotelCommandReq { Id = request.Id, Hotel = request.Hotel, LocalizedProperty = request.LanguageData }, cancellationToken);
+            await Mediator.Send(
+                new UpdateHotelCommandReq
+                    { Id = request.Id, Hotel = request.Hotel, LocalizedProperty = request.LanguageData },
+                cancellationToken);
         if (response.HasError)
             return BadRequest(response.Error);
         return Ok(response);

@@ -16,7 +16,8 @@ public sealed class GetHotelsListCommandHandler : BaseRequestHandler<GetHotelsLi
     private readonly ILanguageService _languageService;
     private readonly ILocalizedPropertyService _localizedProperty;
 
-    public GetHotelsListCommandHandler(IHotelService hotel, ILocalizedPropertyService localizedProperty, ILanguageService languageService)
+    public GetHotelsListCommandHandler(IHotelService hotel, ILocalizedPropertyService localizedProperty,
+        ILanguageService languageService)
     {
         _hotelRepository = hotel;
         _localizedProperty = localizedProperty;

@@ -11,12 +11,13 @@ namespace Celestial.ParvazBolourin.Service.CommandHandler.Tours;
 
 public sealed class GetToursListCommandHandler : BaseRequestHandler<GetToursListCommandReq, GetToursListCommandRes>
 {
+    private readonly ILanguageService _languageService;
     private readonly ILocalizedPropertyService _localizedPropertyService;
     private readonly ITourService _tourService;
-    private readonly ILanguageService _languageService;
 
 
-    public GetToursListCommandHandler(ITourService tourService, ILocalizedPropertyService localizedPropertyService, ILanguageService languageService)
+    public GetToursListCommandHandler(ITourService tourService, ILocalizedPropertyService localizedPropertyService,
+        ILanguageService languageService)
     {
         _tourService = tourService;
         _localizedPropertyService = localizedPropertyService;

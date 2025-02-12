@@ -18,7 +18,7 @@ public sealed class HotelDto
     public string BookingUrl { get; set; } = string.Empty;
     public string HotelCode { get; set; } = string.Empty;
     public string HotelCoordinate { get; set; } = string.Empty;
-    public string HotelReception { get; set; } = String.Empty;
+    public string HotelReception { get; set; } = string.Empty;
 
     [Required] public List<AddPictureReq> Picture { get; set; }
 

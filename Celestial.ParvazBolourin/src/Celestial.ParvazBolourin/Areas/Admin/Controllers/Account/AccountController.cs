@@ -7,8 +7,8 @@ namespace Celestial.ParvazBolourin.Api.Areas.Admin.Controllers.Account;
 
 public class AccountController : BaseController
 {
-    private readonly UserManager<User> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly UserManager<User> _userManager;
 
     public AccountController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
     {
@@ -20,21 +20,12 @@ public class AccountController : BaseController
     public async Task<IActionResult> AddRoleToUser([FromBody] AddRoleToUserDto request)
     {
         var user = await _userManager.FindByIdAsync(request.UserId);
-        if (user == null)
-        {
-            return NotFound($"User with ID {request.UserId} not found.");
-        }
+        if (user == null) return NotFound($"User with ID {request.UserId} not found.");
 
-        if (!await _roleManager.RoleExistsAsync(request.RoleName))
-        {
-            return BadRequest("Role not found");
-        }
+        if (!await _roleManager.RoleExistsAsync(request.RoleName)) return BadRequest("Role not found");
 
         var result = await _userManager.AddToRoleAsync(user, request.RoleName);
-        if (result.Succeeded)
-        {
-            return Ok($"Role {request.RoleName} added to user {user.UserName}.");
-        }
+        if (result.Succeeded) return Ok($"Role {request.RoleName} added to user {user.UserName}.");
 
         return BadRequest(result.Errors);
     }
@@ -43,11 +34,7 @@ public class AccountController : BaseController
     public async Task<IActionResult> MakeRole([FromBody] MakeRoleDto request)
     {
         var response = await _roleManager.CreateAsync(new IdentityRole(request.RoleName));
-        if (response.Succeeded)
-        {
-            return Ok();
-        }
+        if (response.Succeeded) return Ok();
         return BadRequest(response.Errors);
     }
 }
-

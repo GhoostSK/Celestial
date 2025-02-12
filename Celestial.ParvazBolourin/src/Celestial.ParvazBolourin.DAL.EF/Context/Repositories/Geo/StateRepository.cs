@@ -10,6 +10,6 @@ public class StateRepository(MainDbContext dbContext) : RepositoryBase<State>(db
 {
     public async Task<List<State>> GetStateList(int countryId, CancellationToken cancellationToken)
     {
-        return await TableNoTracking.Where(p => p.Country_id == countryId).ToListAsync(cancellationToken: cancellationToken);
+        return await TableNoTracking.Where(p => p.Country_id == countryId).ToListAsync(cancellationToken);
     }
 }

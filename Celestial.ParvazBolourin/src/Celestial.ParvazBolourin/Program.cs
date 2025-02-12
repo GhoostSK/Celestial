@@ -1,12 +1,12 @@
+using System.Reflection;
 using Celestial.ParvazBolourin.Api.Identity.Context;
 using Celestial.ParvazBolourin.Api.Identity.Model;
 using Celestial.ParvazBolourin.DAL.EF.DependencyInjection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-//using Microsoft.FeatureManagement;
 using MofidApp.SharedKernel.DependencyInjection;
-using System.Reflection;
 using Unleash;
+//using Microsoft.FeatureManagement;
 
 var builder = WebApplication.CreateBuilder(args);
 var hostEnvironment = builder.Environment;
@@ -21,13 +21,13 @@ builder.Services.AddControllers();
 
 builder.Services.AddSingleton<IUnleash>(sp =>
 {
-    var unleashOptions = new UnleashSettings()
+    var unleashOptions = new UnleashSettings
     {
         AppName = "YourAppName",
         Environment = "production",
         UnleashApi = new Uri("https://prod-unleash-Celestial.Celestial.app/api"),
         InstanceTag = "instance-1",
-        FetchTogglesInterval = TimeSpan.FromSeconds(10),
+        FetchTogglesInterval = TimeSpan.FromSeconds(10)
     };
 
     return new DefaultUnleash(unleashOptions);
@@ -56,13 +56,7 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@";
 });
 
-builder.Services.AddAuthorization(option =>
-{
-    option.AddPolicy("Admin", policy =>
-    {
-        policy.RequireRole("Admin");
-    });
-});
+builder.Services.AddAuthorization(option => { option.AddPolicy("Admin", policy => { policy.RequireRole("Admin"); }); });
 
 builder.Services.ConfigureApplicationCookie(options =>
 {

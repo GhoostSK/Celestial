@@ -15,7 +15,8 @@ public sealed class AddContactUsCommandHandler : BaseRequestHandler<AddContactUs
         _contactUsRepository = contactUsRepository;
     }
 
-    protected override async Task<AddContactUsCommandRes> HandleCore(AddContactUsCommandReq request, CancellationToken cancellationToken)
+    protected override async Task<AddContactUsCommandRes> HandleCore(AddContactUsCommandReq request,
+        CancellationToken cancellationToken)
     {
         var contactUs = request.Adapt<ContactUs>();
 

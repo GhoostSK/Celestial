@@ -4,7 +4,6 @@ using MofidApp.SharedKernel.Domain.Services;
 
 namespace Celestial.ParvazBolourin.Service.Command.Contact;
 
-
 public sealed class GetContactUsListCommandReq : BaseEntity, IRequest<GetContactUsListCommandRes>
 {
 }

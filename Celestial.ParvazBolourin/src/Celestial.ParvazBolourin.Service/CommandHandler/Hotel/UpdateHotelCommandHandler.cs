@@ -12,38 +12,34 @@ namespace Celestial.ParvazBolourin.Service.CommandHandler.Hotel;
 public sealed class UpdateHotelCommandHandler : BaseRequestHandler<UpdateHotelCommandReq, UpdateHotelCommandRes>
 {
     private readonly IHotelService _hotelService;
-    private readonly ILocalizedPropertyService _localizedPropertyService;
     private readonly ILanguageService _languageService;
+    private readonly ILocalizedPropertyService _localizedPropertyService;
 
-    public UpdateHotelCommandHandler(IHotelService hotelRepository, ILocalizedPropertyService localizedProperty, ILanguageService languageService)
+    public UpdateHotelCommandHandler(IHotelService hotelRepository, ILocalizedPropertyService localizedProperty,
+        ILanguageService languageService)
     {
         _hotelService = hotelRepository;
         _localizedPropertyService = localizedProperty;
         _languageService = languageService;
     }
 
-    protected override async Task<UpdateHotelCommandRes> HandleCore(UpdateHotelCommandReq request, CancellationToken cancellationToken)
+    protected override async Task<UpdateHotelCommandRes> HandleCore(UpdateHotelCommandReq request,
+        CancellationToken cancellationToken)
     {
         var languages = await _languageService.GetLanguages(cancellationToken);
         foreach (var item in request.LocalizedProperty)
-        {
             if (!languages.Any(p => p.Id == item.LanguageId))
-            {
                 return new UpdateHotelCommandRes
                 {
                     Error = new ValidationError("LA400", "Invalid Language")
                 };
-            }
-        }
 
         var hotel = await _hotelService.FindByIdAsync(cancellationToken, request.Id);
         if (hotel == null)
-        {
             return new UpdateHotelCommandRes
             {
                 Error = new ValidationError("E404", "Hotel Not Found")
             };
-        }
 
         request.Hotel.Id = request.Id;
         request.Hotel.Adapt(hotel);
@@ -60,19 +56,17 @@ public sealed class UpdateHotelCommandHandler : BaseRequestHandler<UpdateHotelCo
                 }, cancellationToken);
 
             var propertiesToUpdate = new Dictionary<string, string>
-        {
-            { nameof(localizedItem.ShortText), localizedItem.ShortText },
-            { nameof(localizedItem.MainText), localizedItem.MainText },
-            { nameof(localizedItem.Address), localizedItem.Address }
-        };
+            {
+                { nameof(localizedItem.ShortText), localizedItem.ShortText },
+                { nameof(localizedItem.MainText), localizedItem.MainText },
+                { nameof(localizedItem.Address), localizedItem.Address }
+            };
 
             foreach (var (key, value) in propertiesToUpdate)
             {
                 var existingProperty = localizedData.FirstOrDefault(p => p.LocalKey == key);
 
                 if (existingProperty == null)
-                {
-
                     await _localizedPropertyService.AddAsync(new LocalizedProperty
                     {
                         LanguageId = localizedItem.LanguageId,
@@ -81,11 +75,8 @@ public sealed class UpdateHotelCommandHandler : BaseRequestHandler<UpdateHotelCo
                         LocalKey = key,
                         LocalValue = value
                     }, cancellationToken);
-                }
                 else
-                {
                     existingProperty.LocalValue = value;
-                }
             }
         }
 
@@ -93,6 +84,4 @@ public sealed class UpdateHotelCommandHandler : BaseRequestHandler<UpdateHotelCo
 
         return new UpdateHotelCommandRes();
     }
-
-
 }

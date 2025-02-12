@@ -6,7 +6,8 @@ using MofidApp.SharedKernel.Common.Model;
 
 namespace Celestial.ParvazBolourin.Service.CommandHandler.Contact;
 
-public sealed class GetContactUsByIdCommandHandler : BaseRequestHandler<GetContactUsByIdCommandReq, GetContactUsByIdCommandRes>
+public sealed class
+    GetContactUsByIdCommandHandler : BaseRequestHandler<GetContactUsByIdCommandReq, GetContactUsByIdCommandRes>
 {
     private readonly IContactUsService _contactUsRepository;
 
@@ -15,7 +16,8 @@ public sealed class GetContactUsByIdCommandHandler : BaseRequestHandler<GetConta
         _contactUsRepository = contactUsRepository;
     }
 
-    protected override async Task<GetContactUsByIdCommandRes> HandleCore(GetContactUsByIdCommandReq request, CancellationToken cancellationToken)
+    protected override async Task<GetContactUsByIdCommandRes> HandleCore(GetContactUsByIdCommandReq request,
+        CancellationToken cancellationToken)
     {
         var contactUs = request.Adapt<ContactUs>();
 

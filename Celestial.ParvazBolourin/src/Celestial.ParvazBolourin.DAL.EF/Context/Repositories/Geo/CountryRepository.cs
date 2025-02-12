@@ -10,7 +10,7 @@ public class CountryRepository(MainDbContext dbContext) : RepositoryBase<Country
 {
     public async Task<List<Country>> GetCountryList(CancellationToken cancellationToken)
     {
-        var data= await TableNoTracking.ToListAsync(cancellationToken: cancellationToken);
-        return await TableNoTracking.ToListAsync(cancellationToken: cancellationToken);
+        var data = await TableNoTracking.ToListAsync(cancellationToken);
+        return await TableNoTracking.ToListAsync(cancellationToken);
     }
 }

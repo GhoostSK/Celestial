@@ -8,8 +8,8 @@ namespace Celestial.ParvazBolourin.Api.Controllers.Account;
 
 public class AccountController : BaseController
 {
-    private readonly UserManager<User> _userManager;
     private readonly SignInManager<User> _signInManager;
+    private readonly UserManager<User> _userManager;
 
     public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
     {
@@ -27,17 +27,16 @@ public class AccountController : BaseController
             user.EmailConfirmed = true;
             return Ok();
         }
+
         return BadRequest(result.Errors);
     }
 
     [HttpPost]
     public async Task<IActionResult> Login([FromBody] LoginDto request)
     {
-        var result = await _signInManager.PasswordSignInAsync(request.Email, request.Password, request.RememberMe, false);
-        if (result.Succeeded)
-        {
-            return Ok();
-        }
+        var result =
+            await _signInManager.PasswordSignInAsync(request.Email, request.Password, request.RememberMe, false);
+        if (result.Succeeded) return Ok();
         return Unauthorized();
     }
 
@@ -55,4 +54,3 @@ public class AccountController : BaseController
         return Unauthorized("AccessDenied");
     }
 }
-

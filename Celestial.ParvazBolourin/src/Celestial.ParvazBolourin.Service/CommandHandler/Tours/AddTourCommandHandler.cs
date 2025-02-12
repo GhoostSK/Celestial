@@ -26,13 +26,11 @@ public sealed class AddTourCommandHandler : BaseRequestHandler<AddTourCommandReq
     {
         var languages = await _languageService.GetLanguages(cancellationToken);
         foreach (var item in request.LocalizedProperty)
-        {
             if (!languages.Any(p => p.Id == item.LanguageId))
                 return new AddTourCommandRes
                 {
                     Error = new ValidationError("LA400", "invalid Language")
                 };
-        }
 
         await _tourService.AddAsync(request.Tours, cancellationToken);
         await _tourService.UnitOfWork.SaveChangesAsync(cancellationToken);
@@ -88,7 +86,6 @@ public sealed class AddTourCommandHandler : BaseRequestHandler<AddTourCommandReq
 
             foreach (var (plan, index) in localizedItem.TourPlans.Select((plan, index) => (plan, index)))
             {
-
                 if (request.Tours.TourPlans.Count < index)
                     break;
 
@@ -112,7 +109,6 @@ public sealed class AddTourCommandHandler : BaseRequestHandler<AddTourCommandReq
                     }
                 });
             }
-
         }
 
         await _localizedPropertyService.BulkInsertAsync(localizedProperties, cancellationToken: cancellationToken);

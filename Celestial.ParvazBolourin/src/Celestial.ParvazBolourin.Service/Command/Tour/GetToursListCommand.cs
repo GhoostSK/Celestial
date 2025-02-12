@@ -19,7 +19,6 @@ public sealed class GetToursListCommandReq : BaseEntity, IRequest<GetToursListCo
     public List<TourType> TourType { get; set; } = new();
     public List<TourScope> TourScope { get; set; } = new();
     public bool IsActiveTour { get; set; }
-
 }
 
 public sealed class GetToursListCommandRes : ServiceResContextBase
