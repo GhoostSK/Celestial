@@ -6,7 +6,7 @@ using MofidApp.SharedKernel.DAL.EntityFramework;
 
 namespace Celestial.ParvazBolourin.DAL.EF.Context.Repositories.Contact;
 
-public class ContactUsRepository(MainDbContext dbContext) : RepositoryBase<ContactUs>(dbContext), IContactUsService
+public sealed class ContactUsRepository(MainDbContext dbContext) : RepositoryBase<ContactUs>(dbContext), IContactUsService
 {
     public async Task<List<ContactUs>> GetContactList(CancellationToken cancellationToken)
     {

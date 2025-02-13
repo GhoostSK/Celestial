@@ -8,9 +8,13 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Areas\Admin\Controllers\ShirdalAtelier\**" />
 	  <Compile Remove="Controllers\ShirdalAtelier\**" />
+	  <Content Remove="Areas\Admin\Controllers\ShirdalAtelier\**" />
 	  <Content Remove="Controllers\ShirdalAtelier\**" />
+	  <EmbeddedResource Remove="Areas\Admin\Controllers\ShirdalAtelier\**" />
 	  <EmbeddedResource Remove="Controllers\ShirdalAtelier\**" />
+	  <None Remove="Areas\Admin\Controllers\ShirdalAtelier\**" />
 	  <None Remove="Controllers\ShirdalAtelier\**" />
 	</ItemGroup>
 
@@ -37,7 +41,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Areas\Admin\Controllers\ShirdalAtelier\" />
 		<Folder Include="Data\Migrations\" />
 	</ItemGroup>
 

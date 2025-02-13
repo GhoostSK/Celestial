@@ -61,6 +61,28 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
                     b.ToTable("ContactUs");
                 });
 
+            modelBuilder.Entity("Celestial.ParvazBolourin.Core.DAL.Model.Exchange.Currency", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("ExchangeRate")
+                        .HasPrecision(22, 3)
+                        .HasColumnType("decimal(22,3)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Currency");
+                });
+
             modelBuilder.Entity("Celestial.ParvazBolourin.Core.DAL.Model.Geo.City", b =>
                 {
                     b.Property<long>("Id")

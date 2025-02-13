@@ -9,14 +9,13 @@
   <ItemGroup>
     <Compile Remove="DAL\Model\ShirdalAtelier\**" />
     <Compile Remove="DAL\Repositories\Main\**" />
+    <Compile Remove="DAL\Repositories\ShirdalAtelier\**" />
     <EmbeddedResource Remove="DAL\Model\ShirdalAtelier\**" />
     <EmbeddedResource Remove="DAL\Repositories\Main\**" />
+    <EmbeddedResource Remove="DAL\Repositories\ShirdalAtelier\**" />
     <None Remove="DAL\Model\ShirdalAtelier\**" />
     <None Remove="DAL\Repositories\Main\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="DAL\Repositories\ShirdalAtelier\" />
+    <None Remove="DAL\Repositories\ShirdalAtelier\**" />
   </ItemGroup>
 
   <ItemGroup>
