@@ -1,18 +1,26 @@
-﻿using Celestial.ParvazBolourin.Core.Services.FileManager;
+﻿using Celestial.ParvazBolourin.Core;
+using Celestial.ParvazBolourin.Core.Services.FileManager;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 
 namespace Celestial.ParvazBolourin.Service.Service.FileManager;
 
 public sealed class ImageManager : IImageManager
 {
+    private readonly string _directoryPath;
+
+    public ImageManager(IOptions<AppSettings> options)
+    {
+        _directoryPath = options.Value.FileManager.ImageDirectory;
+    }
+
     public async Task<string> SaveFileWithRandomNameAsync(IFormFile file)
     {
-        const string directoryPath = "C:\\Users\\S.K\\Desktop\\Picture";
         if (file.Length > 0)
         {
-            if (!Directory.Exists(directoryPath)) Directory.CreateDirectory(directoryPath);
+            if (!Directory.Exists(_directoryPath)) Directory.CreateDirectory(_directoryPath);
             var randomFileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
-            var fullPath = Path.Combine(directoryPath, randomFileName);
+            var fullPath = Path.Combine(_directoryPath, randomFileName);
             await using var stream = new FileStream(fullPath, FileMode.Create);
             await file.CopyToAsync(stream);
 
