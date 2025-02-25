@@ -1,5 +1,6 @@
 ﻿using Celestial.ParvazBolourin.Core.DAL.Model.Global;
 using Celestial.ParvazBolourin.Core.DAL.Model.Hotel;
+using Celestial.ParvazBolourin.Core.DAL.Repositories.Geo;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Hotel;
 using Celestial.ParvazBolourin.Service.Command.Hotel;
@@ -13,13 +14,17 @@ public sealed class AddHotelCommandHandler : BaseRequestHandler<AddHotelCommandR
     private readonly IHotelService _hotelRepository;
     private readonly ILanguageService _languageService;
     private readonly ILocalizedPropertyService _localizedProperty;
+    private readonly ICityService _cityService;
+    private readonly ICountryService _countryService;
 
     public AddHotelCommandHandler(IHotelService hotel, ILocalizedPropertyService localizedProperty,
-        ILanguageService languageService)
+        ILanguageService languageService, ICountryService countryService, ICityService cityService)
     {
         _hotelRepository = hotel;
         _localizedProperty = localizedProperty;
         _languageService = languageService;
+        _countryService = countryService;
+        _cityService = cityService;
     }
 
     protected override async Task<AddHotelCommandRes> HandleCore(AddHotelCommandReq request,

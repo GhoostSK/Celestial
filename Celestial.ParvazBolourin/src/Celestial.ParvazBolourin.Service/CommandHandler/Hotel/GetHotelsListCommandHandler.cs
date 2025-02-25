@@ -59,7 +59,7 @@ public sealed class GetHotelsListCommandHandler : BaseRequestHandler<GetHotelsLi
                 HotelId = item.Id,
                 ImagePath = picturePath,
                 BookingUrl = item.BookingUrl,
-                HotelCountry = item.HotelCountry,
+                HotelCountry = item.CountryId,
                 HotelReception = item.HotelReception,
                 HotelScore = item.HotelScore,
                 Name = item.Name,

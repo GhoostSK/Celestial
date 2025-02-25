@@ -33,7 +33,7 @@ public sealed class HotelRepository(MainDbContext dbContext) : RepositoryBase<Ho
         if (model.HotelLocation.Any())
             query = query.Where(p => model.HotelLocation.Contains(p.HotelLocation));
 
-        if (model.HotelCountry.Any()) query = query.Where(p => model.HotelCountry.Contains(p.HotelCountry));
+        if (model.HotelCountry.Any()) query = query.Where(p => model.HotelCountry.Contains(p.CountryId));
 
 
         if (model.HotelScore.Any())

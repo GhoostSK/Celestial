@@ -10,7 +10,9 @@ public sealed class Hotels : DbBaseEntity<int>
     public HotelLocation HotelLocation { get; set; }
     public Continent HotelContinent { get; set; }
     public long Price { get; set; }
-    public string HotelCountry { get; set; } = string.Empty;
+    public int CountryId { get; set; }
+    public long CityId { get; set; }
+    public int HotelState { get; set; }
     public int HotelScore { get; set; }
     public string BookingUrl { get; set; } = string.Empty;
     public string HotelCode { get; set; } = string.Empty;

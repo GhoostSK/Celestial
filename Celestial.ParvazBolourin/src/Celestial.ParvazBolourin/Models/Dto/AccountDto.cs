@@ -31,3 +31,13 @@ public class LoginDto
 
     public bool RememberMe { get; set; }
 }
+
+public class ConfirmEmailDto
+{
+    [Required]
+    public string UserId { get; set; }
+
+    [Required]
+    [RegularExpression(@"^\d{5}$", ErrorMessage = "Invalid verification code format.")]
+    public string Code { get; set; }
+}

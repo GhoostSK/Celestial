@@ -1,10 +1,13 @@
-using System.Reflection;
+using Castle.Core.Smtp;
 using Celestial.ParvazBolourin.Api.Identity.Context;
 using Celestial.ParvazBolourin.Api.Identity.Model;
+using Celestial.ParvazBolourin.Core;
 using Celestial.ParvazBolourin.DAL.EF.DependencyInjection;
+using Celestial.ParvazBolourin.Service.Service.EmailSender;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MofidApp.SharedKernel.DependencyInjection;
+using System.Reflection;
 using Unleash;
 //using Microsoft.FeatureManagement;
 
@@ -15,7 +18,6 @@ builder.Services.AddDalEf(builder.Configuration, hostEnvironment);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpContextAccessor();
-//builder.Services.AddFeatureManagement();
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
 builder.Services.AddControllers();
 
@@ -40,7 +42,7 @@ builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<IdentityDbContext>()
     .AddDefaultTokenProviders();
 
-
+builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.RegisterServices();
 
 builder.Services.Configure<IdentityOptions>(options =>
@@ -64,6 +66,8 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = "/api/Account/AccessDenied";
     options.SlidingExpiration = true;
 });
+
+builder.Services.Configure<AppSettings>(builder.Configuration);
 
 var app = builder.Build();
 

@@ -32,8 +32,13 @@ public sealed class HotelEntityTypeConfiguration : IEntityTypeConfiguration<Hote
                 .HasMaxLength(10)
                 .IsRequired();
 
-            builder.Property(p => p.HotelCountry)
-                .HasMaxLength(100)
+            builder.Property(p => p.CountryId)
+                .IsRequired();
+
+            builder.Property(p => p.CityId)
+                .IsRequired();
+
+            builder.Property(p => p.HotelState)
                 .IsRequired();
 
             builder.Property(p => p.BookingUrl)
