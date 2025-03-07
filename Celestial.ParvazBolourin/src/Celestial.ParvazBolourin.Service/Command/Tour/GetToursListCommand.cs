@@ -34,6 +34,6 @@ public sealed class GetToursListItemRes
     public DateTime StartDate { get; set; }
     public string TourText { get; set; } = string.Empty;
     public string PicturePath { get; set; } = string.Empty;
-    public List<string> Country { get; set; } = new();
+    public List<int> Country { get; set; } = new();
     public string TourStatus { get; set; } = string.Empty;
 }

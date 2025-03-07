@@ -10,6 +10,6 @@ public class GetHotelsListReq
     public List<Continent> HotelContinent { get; set; } = new();
     public long FromPrice { get; set; } = 0;
     public long ToPrice { get; set; } = 0;
-    public List<string> HotelCountry { get; set; } = new();
+    public List<int> HotelCountry { get; set; } = new();
     public List<int> HotelScore { get; set; } = new();
 }

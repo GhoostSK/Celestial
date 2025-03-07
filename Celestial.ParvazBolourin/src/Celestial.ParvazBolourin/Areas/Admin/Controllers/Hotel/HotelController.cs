@@ -1,5 +1,6 @@
 ﻿using Celestial.ParvazBolourin.Api.Models.Dto;
 using Celestial.ParvazBolourin.Core.DAL.Model.Hotel;
+using Celestial.ParvazBolourin.Service.Command.Geo;
 using Celestial.ParvazBolourin.Service.Command.Hotel;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +12,11 @@ public class HotelController : BaseController
     [HttpPost]
     public async Task<IActionResult> AddHotel(HotelDto request, CancellationToken cancellationToken)
     {
+        var geoValidate = await Mediator.Send(new ValidateGeoCommandReq()
+        { StateId = request.StateId, CountryId = request.CountryId, CityId = request.CityId }, cancellationToken);
+        if (!geoValidate)
+            return BadRequest("city or country or state not valid");
+
         var model = new AddHotelCommandReq
         {
             Hotel = request.Adapt<Hotels>(),
@@ -28,10 +34,15 @@ public class HotelController : BaseController
     [HttpPut]
     public async Task<IActionResult> UpdateHotelById(UpdateHotelReqDto request, CancellationToken cancellationToken)
     {
+        var geoValidate = await Mediator.Send(new ValidateGeoCommandReq()
+        { StateId = request.Hotel.StateId, CountryId = request.Hotel.CountryId, CityId = request.Hotel.CityId }, cancellationToken);
+        if (!geoValidate)
+            return BadRequest("city or country or state not valid");
+
         var response =
             await Mediator.Send(
                 new UpdateHotelCommandReq
-                    { Id = request.Id, Hotel = request.Hotel, LocalizedProperty = request.LanguageData },
+                { Id = request.Id, Hotel = request.Hotel, LocalizedProperty = request.LanguageData },
                 cancellationToken);
         if (response.HasError)
             return BadRequest(response.Error);

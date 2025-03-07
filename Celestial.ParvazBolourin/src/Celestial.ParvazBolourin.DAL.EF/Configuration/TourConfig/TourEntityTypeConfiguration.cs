@@ -10,7 +10,11 @@ public class TourEntityTypeConfiguration : IEntityTypeConfiguration<Tours>
     {
         builder.ToTable(nameof(Tours));
 
-        builder.Property(p => p.Countries)
+        builder.Property(p => p.CountriesId)
+            .IsRequired()
+            .HasMaxLength(1000);
+
+        builder.Property(p => p.CountriesId)
             .IsRequired()
             .HasMaxLength(1000);
 

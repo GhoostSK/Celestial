@@ -1,15 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Celestial.ParvazBolourin.Core.DAL.Model.Geo;
 using MediatR;
+using MofidApp.SharedKernel.Domain.Services;
 
 namespace Celestial.ParvazBolourin.Service.Command.Geo;
 
-public class GetStateCommandReq : IRequest<GetStateCommandRes>
+public class GetStateListCommandReq : IRequest<GetStateListCommandRes>
 {
     [Required] public int CountryId { get; set; }
 }
 
-public class GetStateCommandRes
+public class GetStateListCommandRes : ServiceResContextBase
 {
     public List<State> Items { get; set; } = new();
 }

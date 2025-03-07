@@ -4,13 +4,13 @@ using MediatR;
 
 namespace Celestial.ParvazBolourin.Service.CommandHandler.Geo;
 
-public class GetStateCommandHandler(IStateService stateService)
-    : IRequestHandler<GetStateCommandReq, GetStateCommandRes>
+public class GetStateListCommandHandler(IStateService stateService)
+    : IRequestHandler<GetStateListCommandReq, GetStateListCommandRes>
 {
-    public async Task<GetStateCommandRes> Handle(GetStateCommandReq request, CancellationToken cancellationToken)
+    public async Task<GetStateListCommandRes> Handle(GetStateListCommandReq request, CancellationToken cancellationToken)
     {
         var data = await stateService.GetStateList(request.CountryId, cancellationToken);
-        return new GetStateCommandRes
+        return new GetStateListCommandRes
         {
             Items = data
         };

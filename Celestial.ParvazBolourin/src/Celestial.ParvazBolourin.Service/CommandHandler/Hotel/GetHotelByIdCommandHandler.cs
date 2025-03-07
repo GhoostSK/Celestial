@@ -1,4 +1,5 @@
 ﻿using Celestial.ParvazBolourin.Core.DAL.Model.Hotel;
+using Celestial.ParvazBolourin.Core.DAL.Repositories.Geo;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global.Model;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Hotel;
@@ -15,18 +16,19 @@ public sealed class GetHotelByIdCommandHandler : BaseRequestHandler<GetHotelById
     private readonly IHotelService _hotelService;
     private readonly ILanguageService _languageService;
     private readonly ILocalizedPropertyService _localizedPropertyService;
+    private readonly ICountryService _countryService;
 
     public GetHotelByIdCommandHandler(IHotelService hotel, ICommentsService hotelComments,
-        ILocalizedPropertyService localizedProperty, ILanguageService languageService)
+        ILocalizedPropertyService localizedProperty, ILanguageService languageService, ICountryService countryService)
     {
         _hotelService = hotel;
         _localizedPropertyService = localizedProperty;
         _languageService = languageService;
+        _countryService = countryService;
         _hotelCommentsService = hotelComments;
     }
 
-    protected override async Task<GetHotelByIdCommandRes> HandleCore(GetHotelByIdCommandReq request,
-        CancellationToken cancellationToken)
+    protected override async Task<GetHotelByIdCommandRes> HandleCore(GetHotelByIdCommandReq request, CancellationToken cancellationToken)
     {
         var languages = await _languageService.GetLanguages(cancellationToken);
         if (!languages.Any(p => p.Id == request.LanguageId))
@@ -43,7 +45,7 @@ public sealed class GetHotelByIdCommandHandler : BaseRequestHandler<GetHotelById
             };
 
         var response = hotel.Adapt<GetHotelByIdCommandRes>();
-
+        response.HotelCountry = _countryService.FindByIdAsync(cancellationToken, hotel.CountryId).Result.Name;
         response.HotelPictures = hotel.HotelPictures
             .Select(p => new HotelPicture
             {

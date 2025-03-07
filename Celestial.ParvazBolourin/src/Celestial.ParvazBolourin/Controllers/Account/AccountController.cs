@@ -1,5 +1,6 @@
 ﻿using Castle.Core.Smtp;
 using Celestial.ParvazBolourin.Api.Identity.Model;
+using Celestial.ParvazBolourin.Api.Identity.Services.JwtToken;
 using Celestial.ParvazBolourin.Api.Models.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -18,63 +19,53 @@ public class AccountController : BaseController
         _signInManager = signInManager;
     }
 
-    //[HttpPost("register")]
-    //public async Task<IActionResult> Register([FromBody] RegisterDto request)
-    //{
-    //    if (!ModelState.IsValid)
-    //        return BadRequest(ModelState);
+    [HttpPost]
+    public async Task<IActionResult> Register([FromBody] RegisterDto request)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
 
-    //    var user = new User
-    //    {
-    //        UserName = request.Email,
-    //        Email = request.Email,
-    //        NationalCode = request.NationalCode
-    //    };
+        var user = new User
+        {
+            UserName = request.UserName,
+            NationalCode = request.NationalCode,
+            PhoneNumber = request.PhoneNumber,
+            Name = request.Name,
+            LastName = request.LastName,
+        };
 
-    //    var result = await _userManager.CreateAsync(user, request.Password);
-    //    if (!result.Succeeded)
-    //        return BadRequest(result.Errors);
+        var result = await _userManager.CreateAsync(user, request.Password);
+        if (!result.Succeeded)
+            return BadRequest(result.Errors);
 
-    //    // **ایجاد کد تأیید عددی ۵ رقمی**
-    //    var confirmationCode = new Random().Next(10000, 99999).ToString();
 
-    //    // **ذخیره کد در دیتابیس (SecurityStamp یا یک فیلد اختصاصی)**
-    //    user.SecurityStamp = confirmationCode;
-    //    await _userManager.UpdateAsync(user);
+        //var confirmationCode = new Random().Next(10000, 99999).ToString();
 
-    //    // **ارسال ایمیل**
-    //    await _emailSender.SendEmailAsync(user.Email, "Email Verification Code",
-    //        $"Your verification code is: <strong>{confirmationCode}</strong>");
+        //// **ذخیره کد در دیتابیس (SecurityStamp یا یک فیلد اختصاصی)**
+        //user.SecurityStamp = confirmationCode;
+        //await _userManager.UpdateAsync(user);
 
-    //    return Ok("User registered. Please check your email for the verification code.");
-    //}
+        //// **ارسال ایمیل**
+        //await _emailSender.SendEmailAsync(user.Email, "Email Verification Code",
+        //    $"Your verification code is: <strong>{confirmationCode}</strong>");
 
-    //[HttpPost("confirm-email")]
-    //public async Task<IActionResult> ConfirmEmail([FromBody] ConfirmEmailDto model)
-    //{
-    //    var user = await _userManager.FindByIdAsync(model.UserId);
-    //    if (user == null)
-    //        return NotFound("User not found.");
+        return Ok("User registered. Please check your email for the verification code.");
+    }
 
-    //    if (user.SecurityStamp != model.Code)
-    //        return BadRequest("Invalid verification code.");
-
-    //    // **تأیید ایمیل**
-    //    user.EmailConfirmed = true;
-    //    user.SecurityStamp = null; // حذف کد تأیید پس از استفاده
-    //    await _userManager.UpdateAsync(user);
-
-    //    return Ok("Email confirmed successfully.");
-    //}
 
     [HttpPost]
-    public async Task<IActionResult> Login([FromBody] LoginDto request)
+    public async Task<IActionResult> Login([FromBody] LoginDto request, [FromServices] JwtTokenService jwtTokenService)
     {
-        var result =
-            await _signInManager.PasswordSignInAsync(request.Email, request.Password, request.RememberMe, false);
-        if (result.Succeeded) return Ok();
+        var result = await _signInManager.PasswordSignInAsync(request.Email, request.Password, request.RememberMe, true);
+        if (result.Succeeded)
+        {
+            var user = await _userManager.FindByEmailAsync(request.Email);
+            var token = jwtTokenService.GenerateToken(user);
+            return Ok(new { Token = token });
+        }
         return Unauthorized();
     }
+
 
     [HttpPost]
     [Authorize]

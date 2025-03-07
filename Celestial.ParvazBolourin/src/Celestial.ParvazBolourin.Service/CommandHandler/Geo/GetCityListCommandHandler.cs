@@ -4,13 +4,13 @@ using MediatR;
 
 namespace Celestial.ParvazBolourin.Service.CommandHandler.Geo;
 
-public class GetCityCommandHandler(ICityService cityService)
-    : IRequestHandler<GetCityCommandReq, GetCityCommandRes>
+public class GetCityListCommandHandler(ICityService cityService)
+    : IRequestHandler<GetCityListCommandReq, GetCityListCommandRes>
 {
-    public async Task<GetCityCommandRes> Handle(GetCityCommandReq request, CancellationToken cancellationToken)
+    public async Task<GetCityListCommandRes> Handle(GetCityListCommandReq request, CancellationToken cancellationToken)
     {
         var data = await cityService.GetCityList(request.StateId, cancellationToken);
-        return new GetCityCommandRes
+        return new GetCityListCommandRes
         {
             Items = data
         };

@@ -23,5 +23,8 @@ public class IdentityDbContext : IdentityDbContext<User, IdentityRole, string>
         builder.Entity<IdentityUserLogin<string>>(entity => { entity.ToTable("IdentityUserLogins"); });
         builder.Entity<IdentityRoleClaim<string>>(entity => { entity.ToTable("IdentityRoleClaims"); });
         builder.Entity<IdentityUserToken<string>>(entity => { entity.ToTable("IdentityUserTokens"); });
+        builder.Entity<User>(e => e.Ignore("Email"));
+        builder.Entity<User>(e => e.Ignore("NormalizedEmail"));
+        builder.Entity<User>(e => e.Ignore("EmailConfirmed"));
     }
 }

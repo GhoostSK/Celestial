@@ -1,4 +1,6 @@
-﻿using Celestial.ParvazBolourin.Core.DAL.Model.Hotel;
+﻿using Celestial.ParvazBolourin.Core.DAL.Model.Geo;
+using Celestial.ParvazBolourin.Core.DAL.Model.Hotel;
+using Celestial.ParvazBolourin.Core.DAL.Repositories.Geo;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global.Model;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Hotel;
@@ -15,13 +17,15 @@ public sealed class GetHotelsListCommandHandler : BaseRequestHandler<GetHotelsLi
     private readonly IHotelService _hotelRepository;
     private readonly ILanguageService _languageService;
     private readonly ILocalizedPropertyService _localizedProperty;
+    private readonly ICountryService _countryService;
 
     public GetHotelsListCommandHandler(IHotelService hotel, ILocalizedPropertyService localizedProperty,
-        ILanguageService languageService)
+        ILanguageService languageService, ICountryService countryService)
     {
         _hotelRepository = hotel;
         _localizedProperty = localizedProperty;
         _languageService = languageService;
+        _countryService = countryService;
     }
 
     protected override async Task<GetHotelsListCommandRes> HandleCore(GetHotelsListCommandReq request,
@@ -53,13 +57,14 @@ public sealed class GetHotelsListCommandHandler : BaseRequestHandler<GetHotelsLi
             );
 
             var shortText = localize.SingleOrDefault(p => p.LocalKey == "ShortText")?.LocalValue;
-
+            var countryName = _countryService.FindByIdAsync(cancellationToken, item.CountryId).Result;
+            var ss = countryName?.Name ?? "";
             response.Items.Add(new GetAllHotelsServiceRes
             {
                 HotelId = item.Id,
                 ImagePath = picturePath,
                 BookingUrl = item.BookingUrl,
-                HotelCountry = item.CountryId,
+                HotelCountry = "countryName",
                 HotelReception = item.HotelReception,
                 HotelScore = item.HotelScore,
                 Name = item.Name,

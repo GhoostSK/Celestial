@@ -38,7 +38,7 @@ public sealed class HotelEntityTypeConfiguration : IEntityTypeConfiguration<Hote
             builder.Property(p => p.CityId)
                 .IsRequired();
 
-            builder.Property(p => p.HotelState)
+            builder.Property(p => p.StateId)
                 .IsRequired();
 
             builder.Property(p => p.BookingUrl)

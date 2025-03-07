@@ -14,9 +14,9 @@ public class TourRepository(MainDbContext dbContext) : RepositoryBase<Tours>(dbC
         var query = TableNoTracking
             .Where(p => !p.IsDeleted);
 
-        if (model.Countries.Any()) query = query.Where(p => p.Countries.Any(c => model.Countries.Contains(c)));
+        if (model.Countries.Any()) query = query.Where(p => p.CountriesId.Any(c => model.Countries.Contains(c)));
 
-        if (model.Cities.Any()) query = query.Where(p => p.Cities.Any(c => model.Cities.Contains(c)));
+        if (model.Cities.Any()) query = query.Where(p => p.CitiesId.Any(c => model.Cities.Contains(c)));
 
         if (model.FromPrice != 0 && model.ToPrice != 0)
             query = query.Where(p => p.Price >= model.FromPrice && p.Price <= model.ToPrice);

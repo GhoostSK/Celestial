@@ -1,15 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Celestial.ParvazBolourin.Core.DAL.Model.Geo;
 using MediatR;
+using MofidApp.SharedKernel.Domain.Services;
 
 namespace Celestial.ParvazBolourin.Service.Command.Geo;
 
-public class GetCityCommandReq : IRequest<GetCityCommandRes>
+public class GetCityListCommandReq : IRequest<GetCityListCommandRes>
 {
     [Required] public int StateId { get; set; }
 }
 
-public class GetCityCommandRes
+public class GetCityListCommandRes : ServiceResContextBase
 {
     public List<City> Items { get; set; } = new();
 }

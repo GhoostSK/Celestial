@@ -1,5 +1,6 @@
 ﻿using Celestial.ParvazBolourin.Api.Areas.Admin.Models.Dto;
 using Celestial.ParvazBolourin.Api.Models.Dto;
+using Celestial.ParvazBolourin.Core.DAL.Model.Tour;
 using Celestial.ParvazBolourin.Service.Command.Tour;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
@@ -15,7 +16,7 @@ public class TourController : BaseController
             await Mediator.Send(
                 new AddTourCommandReq
                 {
-                    Tours = request.Tours,
+                    Tours = request.Tours.Adapt<Tours>(),
                     LocalizedProperty = request.LocalizedProperty.Adapt<List<TourLocalizedPropertyItem>>()
                 }, cancellationToken);
         if (response.HasError)

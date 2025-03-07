@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using MofidApp.SharedKernel.Domain.Services;
 
 namespace Celestial.ParvazBolourin.Service.Command.Exchange;
 
@@ -9,6 +10,6 @@ public class EditCurrencyCommandReq : IRequest<EditCurrencyCommandRes>
     public decimal ExchangeRate { get; set; }
 }
 
-public class EditCurrencyCommandRes
+public class EditCurrencyCommandRes: ServiceResContextBase
 {
 }

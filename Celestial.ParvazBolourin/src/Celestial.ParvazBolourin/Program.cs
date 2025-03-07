@@ -1,6 +1,7 @@
 using Castle.Core.Smtp;
 using Celestial.ParvazBolourin.Api.Identity.Context;
 using Celestial.ParvazBolourin.Api.Identity.Model;
+using Celestial.ParvazBolourin.Api.Identity.Services.JwtToken;
 using Celestial.ParvazBolourin.Core;
 using Celestial.ParvazBolourin.DAL.EF.DependencyInjection;
 using Celestial.ParvazBolourin.Service.Service.EmailSender;
@@ -8,6 +9,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MofidApp.SharedKernel.DependencyInjection;
 using System.Reflection;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Unleash;
 //using Microsoft.FeatureManagement;
 
@@ -18,9 +22,11 @@ builder.Services.AddDalEf(builder.Configuration, hostEnvironment);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
 builder.Services.AddControllers();
 
+builder.Services.AddSingleton<JwtTokenService>();
 builder.Services.AddSingleton<IUnleash>(sp =>
 {
     var unleashOptions = new UnleashSettings
@@ -41,6 +47,23 @@ builder.Services.AddDbContext<IdentityDbContext>(options =>
 builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<IdentityDbContext>()
     .AddDefaultTokenProviders();
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+    };
+});
 
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.RegisterServices();

@@ -18,11 +18,11 @@ public sealed class HotelDto
     [Required]
     public string Price { get; set; } = string.Empty;
     [Required]
-    public int HotelCountry { get; set; }
+    public int CountryId { get; set; }
     [Required]
-    public long HotelCity { get; set; }
+    public long CityId { get; set; }
     [Required]
-    public int HotelState { get; set; }
+    public int StateId { get; set; }
     [Required]
     public int HotelScore { get; set; }
     [Required]
@@ -50,19 +50,12 @@ public sealed class GetHotelListReqDto
 {
     [Required]
     public int LanguageId { get; set; }
-    [Required]
     public string Name { get; set; } = string.Empty;
-    [Required]
     public List<HotelLocation> HotelLocation { get; set; } = new();
-    [Required]
     public List<Continent> HotelContinent { get; set; } = new();
-    [Required]
     public long FromPrice { get; set; } = 0;
-    [Required]
     public long ToPrice { get; set; } = 0;
-    [Required]
     public List<string> HotelCountry { get; set; } = new();
-    [Required]
     public List<int> HotelScore { get; set; } = new();
 }
 

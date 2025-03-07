@@ -286,6 +286,12 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<long>("CityId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("CountryId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -303,11 +309,6 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("HotelCountry")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("HotelLocation")
                         .IsRequired()
@@ -332,6 +333,9 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
 
                     b.Property<long>("Price")
                         .HasColumnType("bigint");
+
+                    b.Property<int>("StateId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -472,11 +476,11 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
                     b.Property<int>("Id")
                         .HasColumnType("int");
 
-                    b.Property<string>("Cities")
+                    b.Property<string>("CitiesId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Countries")
+                    b.Property<string>("CountriesId")
                         .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");

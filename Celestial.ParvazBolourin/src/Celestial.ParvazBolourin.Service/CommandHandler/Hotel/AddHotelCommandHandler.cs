@@ -14,17 +14,14 @@ public sealed class AddHotelCommandHandler : BaseRequestHandler<AddHotelCommandR
     private readonly IHotelService _hotelRepository;
     private readonly ILanguageService _languageService;
     private readonly ILocalizedPropertyService _localizedProperty;
-    private readonly ICityService _cityService;
-    private readonly ICountryService _countryService;
 
     public AddHotelCommandHandler(IHotelService hotel, ILocalizedPropertyService localizedProperty,
-        ILanguageService languageService, ICountryService countryService, ICityService cityService)
+        ILanguageService languageService)
     {
         _hotelRepository = hotel;
         _localizedProperty = localizedProperty;
         _languageService = languageService;
-        _countryService = countryService;
-        _cityService = cityService;
+
     }
 
     protected override async Task<AddHotelCommandRes> HandleCore(AddHotelCommandReq request,
