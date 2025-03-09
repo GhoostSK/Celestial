@@ -2,8 +2,8 @@
 
 namespace Celestial.ParvazBolourin.Core.DAL.Model.Tour;
 
-public sealed class TourPlans : DbBaseEntity<int>
+public sealed class TourPlans : DbBaseEntity<long>
 {
-    public int TourId { get; set; }
+    public long TourId { get; set; }
     public List<string> PlanPicturePath { get; set; } = new();
 }

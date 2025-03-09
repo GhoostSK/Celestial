@@ -2,7 +2,7 @@
 
 namespace Celestial.ParvazBolourin.Core.DAL.Repositories.Global.Model;
 
-public sealed class AddPictureReq
+public sealed class PictureItem
 {
     [Required] public string FilePath { get; set; } = string.Empty;
 

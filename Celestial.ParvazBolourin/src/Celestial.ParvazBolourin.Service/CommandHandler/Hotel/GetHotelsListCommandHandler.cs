@@ -18,14 +18,16 @@ public sealed class GetHotelsListCommandHandler : BaseRequestHandler<GetHotelsLi
     private readonly ILanguageService _languageService;
     private readonly ILocalizedPropertyService _localizedProperty;
     private readonly ICountryService _countryService;
+    private readonly IImageService _imageService;
 
     public GetHotelsListCommandHandler(IHotelService hotel, ILocalizedPropertyService localizedProperty,
-        ILanguageService languageService, ICountryService countryService)
+        ILanguageService languageService, ICountryService countryService, IImageService imageService)
     {
         _hotelRepository = hotel;
         _localizedProperty = localizedProperty;
         _languageService = languageService;
         _countryService = countryService;
+        _imageService = imageService;
     }
 
     protected override async Task<GetHotelsListCommandRes> HandleCore(GetHotelsListCommandReq request,
@@ -43,8 +45,7 @@ public sealed class GetHotelsListCommandHandler : BaseRequestHandler<GetHotelsLi
 
         foreach (var item in hotels)
         {
-            var picturePath = item.HotelPictures
-                .FirstOrDefault(p => p.DisplayOrder == 1)?.VirtualPath ?? "Not Found";
+            var picture = await _imageService.FirstOrDefaultAsync(p => p.KeyGroup == "Hotel" && p.EntityId == item.Id, cancellationToken: cancellationToken);
 
             var localize = await _localizedProperty.GetPropertyByLanguageAndEntityId(
                 new GetLocalizedPropertyReq
@@ -57,14 +58,14 @@ public sealed class GetHotelsListCommandHandler : BaseRequestHandler<GetHotelsLi
             );
 
             var shortText = localize.SingleOrDefault(p => p.LocalKey == "ShortText")?.LocalValue;
-            var countryName = _countryService.FindByIdAsync(cancellationToken, item.CountryId).Result;
-            var ss = countryName?.Name ?? "";
+            var country = _countryService.FindByIdAsync(cancellationToken, item.CountryId).Result;
+            var countryName = country?.Name ?? "";
             response.Items.Add(new GetAllHotelsServiceRes
             {
                 HotelId = item.Id,
-                ImagePath = picturePath,
+                ImagePath = picture.PicturePath,
                 BookingUrl = item.BookingUrl,
-                HotelCountry = "countryName",
+                HotelCountry = countryName,
                 HotelReception = item.HotelReception,
                 HotelScore = item.HotelScore,
                 Name = item.Name,

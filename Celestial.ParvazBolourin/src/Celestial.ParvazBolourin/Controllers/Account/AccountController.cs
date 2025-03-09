@@ -45,22 +45,19 @@ public class AccountController : BaseController
         //user.SecurityStamp = confirmationCode;
         //await _userManager.UpdateAsync(user);
 
-        //// **ارسال ایمیل**
-        //await _emailSender.SendEmailAsync(user.Email, "Email Verification Code",
-        //    $"Your verification code is: <strong>{confirmationCode}</strong>");
-
-        return Ok("User registered. Please check your email for the verification code.");
+        return Ok("User registered.");
     }
 
 
     [HttpPost]
-    public async Task<IActionResult> Login([FromBody] LoginDto request, [FromServices] JwtTokenService jwtTokenService)
+    public async Task<IActionResult> Login([FromBody] LoginDto request, [FromServices] JwtTokenService jwtTokenService,CancellationToken cancellationToken)
     {
-        var result = await _signInManager.PasswordSignInAsync(request.Email, request.Password, request.RememberMe, true);
+        var result = await _signInManager.PasswordSignInAsync(request.UserName, request.Password, request.RememberMe, true);
         if (result.Succeeded)
         {
-            var user = await _userManager.FindByEmailAsync(request.Email);
-            var token = jwtTokenService.GenerateToken(user);
+            var user = await _userManager.FindByNameAsync(request.UserName);
+            var roles = await _userManager.GetRolesAsync(user);
+            var token = jwtTokenService.GenerateToken(user,roles, cancellationToken);
             return Ok(new { Token = token });
         }
         return Unauthorized();
@@ -79,12 +76,5 @@ public class AccountController : BaseController
     public IActionResult AccessDenied()
     {
         return Unauthorized("AccessDenied");
-    }
-
-    [HttpPost]
-    public IActionResult SendEmail([FromServices] IEmailSender emailSender)
-    {
-        emailSender.Send("sadrakhoshnavaz709@gmail.com", "khoshnavazsadra@gmail.com", "Test Email", "Hello from API");
-        return Ok("Email sent.");
     }
 }

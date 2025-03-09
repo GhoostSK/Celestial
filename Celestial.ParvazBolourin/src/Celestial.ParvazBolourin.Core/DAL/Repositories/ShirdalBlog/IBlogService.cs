@@ -6,7 +6,7 @@ namespace Celestial.ParvazBolourin.Core.DAL.Repositories.ShirdalBlog;
 
 public interface IBlogService : IRepositoryEF<Blog>, IScopeLifetime
 {
-    public Task<int> AddBlog(Blog blog, CancellationToken cancellationToken);
+    public Task<long> AddBlog(Blog blog, CancellationToken cancellationToken);
     public Task<List<Blog>> GetBlogsList(CancellationToken cancellationToken);
     public Task<Blog?> GetBlogById(int id, CancellationToken cancellationToken);
 }

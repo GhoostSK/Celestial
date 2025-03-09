@@ -21,7 +21,7 @@ public class HotelController : BaseController
         {
             Hotel = request.Adapt<Hotels>(),
             HotelLocalizeProperty = request.LanguageData,
-            HotelPicture = request.Picture
+            HotelPictures = request.Picture
         };
         var response = await Mediator.Send(model, cancellationToken);
 

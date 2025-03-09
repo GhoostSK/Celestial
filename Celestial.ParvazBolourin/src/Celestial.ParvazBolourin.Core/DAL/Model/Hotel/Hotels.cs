@@ -4,7 +4,7 @@ using MofidApp.SharedKernel.DAL.Abstractions.EntityFramework;
 
 namespace Celestial.ParvazBolourin.Core.DAL.Model.Hotel;
 
-public sealed class Hotels : DbBaseEntity<int>
+public sealed class Hotels : DbBaseEntity<long>
 {
     public string Name { get; set; } = string.Empty;
     public HotelLocation HotelLocation { get; set; }
@@ -18,7 +18,6 @@ public sealed class Hotels : DbBaseEntity<int>
     public string HotelCode { get; set; } = string.Empty;
     public string HotelCoordinate { get; set; } = string.Empty;
     public string HotelReception { get; set; } = string.Empty;
-    public List<HotelPicture> HotelPictures { get; set; } = new();
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     public bool IsDeleted { get; set; } = false;

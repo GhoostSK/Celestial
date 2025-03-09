@@ -6,7 +6,7 @@ namespace Celestial.ParvazBolourin.Service.Command.FileManager;
 
 public sealed class DeleteFileCommandReq : BaseEntity, IRequest<DeleteFileCommandRes>
 {
-    public string FilePath { get; set; } = string.Empty;
+    public List<string?> FilePath { get; set; } = new();
 }
 
 public sealed class DeleteFileCommandRes : ServiceResContextBase

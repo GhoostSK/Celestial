@@ -4,7 +4,7 @@ using MofidApp.SharedKernel.DAL.Abstractions.EntityFramework;
 
 namespace Celestial.ParvazBolourin.Core.DAL.Model.Tour;
 
-public sealed class Tours : DbBaseEntity<int>
+public sealed class Tours : DbBaseEntity<long>
 {
     public List<int> CountriesId { get; set; } = new();
     public List<int> CitiesId { get; set; } = new();
@@ -15,7 +15,7 @@ public sealed class Tours : DbBaseEntity<int>
     public string ImportantTips { get; set; } = string.Empty;
     public List<TourPlans> TourPlans { get; set; } = new();
     public List<TourTransPorts> TransPorts { get; set; } = new();
-    public List<int> Hotels { get; set; } = new();
+    public List<long> Hotels { get; set; } = new();
     public TourPrimaryTransport PrimaryTransport { get; set; } = new();
     public int Price { get; set; }
     public string PicturePath { get; set; } = string.Empty;

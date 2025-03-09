@@ -8,11 +8,17 @@ namespace Celestial.ParvazBolourin.DAL.EF.Context.Repositories.Hotel;
 
 public sealed class HotelRepository(MainDbContext dbContext) : RepositoryBase<Hotels>(dbContext), IHotelService
 {
-    public async Task<int> AddHotel(Hotels model, CancellationToken cancellationToken)
+    public async Task<long> AddHotel(Hotels model, CancellationToken cancellationToken)
     {
         await AddAsync(model, cancellationToken);
         await dbContext.SaveChangesAsync(cancellationToken);
         return model.Id;
+    }
+
+    public async Task<Hotels?> GetHotelById(int id, CancellationToken cancellationToken)
+    {
+        return await Table.IgnoreQueryFilters()
+            .FirstOrDefaultAsync(p => p.Id == id, cancellationToken: cancellationToken);
     }
 
     public async Task<List<Hotels>> GetHotelsList(GetHotelsListReq model, CancellationToken cancellationToken)
@@ -40,7 +46,6 @@ public sealed class HotelRepository(MainDbContext dbContext) : RepositoryBase<Ho
             query = query.Where(p => model.HotelScore.Contains(p.HotelScore));
 
         return await query
-            .Include(p => p.HotelPictures)
             .ToListAsync(cancellationToken);
     }
 }

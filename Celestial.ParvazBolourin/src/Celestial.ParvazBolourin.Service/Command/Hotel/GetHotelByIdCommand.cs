@@ -22,9 +22,9 @@ public sealed class GetHotelByIdCommandRes : ServiceResContextBase
     public string HotelCode { get; set; } = string.Empty;
     public string MapCoordinate { get; set; } = string.Empty;
     public string HotelReception { get; set; } = string.Empty;
-    public List<HotelPicture> HotelPictures { get; set; } = new();
     public List<Comments> HotelComments { get; set; } = new();
     public string ShortText { get; set; } = string.Empty;
     public string MainText { get; set; } = string.Empty;
     public string Address { get; set; } = string.Empty;
+    public List<Images> HotelPictures { get; set; } = new();
 }

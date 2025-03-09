@@ -1,5 +1,3 @@
-#drop table countries;
-
 insert into Country ( Shortname, Name, Phonecode) values ('AF', 'Afghanistan', 93);
 insert into Country ( Shortname, Name, Phonecode) values ('AL', 'Albania', 355);
 insert into Country ( Shortname, Name, Phonecode) values ('DZ', 'Algeria', 213);

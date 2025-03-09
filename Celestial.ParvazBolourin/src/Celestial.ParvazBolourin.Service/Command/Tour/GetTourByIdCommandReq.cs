@@ -42,7 +42,7 @@ public sealed class GetTourByIdItemRes
 
 public sealed class GetTourByIdTourPlan
 {
-    public int Id { get; set; }
+    public long Id { get; set; }
     public string PlanDayText { get; set; } = string.Empty;
     public string PlanText { get; set; } = string.Empty;
     public List<string> PlanPicturePath { get; set; } = new();

@@ -1,6 +1,4 @@
 ﻿using Celestial.ParvazBolourin.Core.DAL.Model.Global;
-using Celestial.ParvazBolourin.Core.DAL.Model.Hotel;
-using Celestial.ParvazBolourin.Core.DAL.Repositories.Geo;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Hotel;
 using Celestial.ParvazBolourin.Service.Command.Hotel;
@@ -14,14 +12,15 @@ public sealed class AddHotelCommandHandler : BaseRequestHandler<AddHotelCommandR
     private readonly IHotelService _hotelRepository;
     private readonly ILanguageService _languageService;
     private readonly ILocalizedPropertyService _localizedProperty;
+    private readonly IImageService _imageService;
 
     public AddHotelCommandHandler(IHotelService hotel, ILocalizedPropertyService localizedProperty,
-        ILanguageService languageService)
+        ILanguageService languageService, IImageService imageService)
     {
         _hotelRepository = hotel;
         _localizedProperty = localizedProperty;
         _languageService = languageService;
-
+        _imageService = imageService;
     }
 
     protected override async Task<AddHotelCommandRes> HandleCore(AddHotelCommandReq request,
@@ -37,15 +36,18 @@ public sealed class AddHotelCommandHandler : BaseRequestHandler<AddHotelCommandR
 
         var data = request.Hotel;
 
-        foreach (var item in request.HotelPicture)
-            data.HotelPictures.Add(new HotelPicture
-            {
-                DisplayOrder = item.DisplayOrder,
-                VirtualPath = item.FilePath
-            });
 
         var hotelId = await _hotelRepository.AddHotel(data, cancellationToken);
         var localizedProperties = new List<LocalizedProperty>();
+
+        foreach (var item in request.HotelPictures)
+            await _imageService.AddAsync(new Images()
+            {
+                PicturePath = item.FilePath,
+                EntityId = hotelId,
+                DisplayOrder = item.DisplayOrder,
+                KeyGroup = "Hotel"
+            }, cancellationToken);
 
         foreach (var item in request.HotelLocalizeProperty)
         {
@@ -76,6 +78,7 @@ public sealed class AddHotelCommandHandler : BaseRequestHandler<AddHotelCommandR
         }
 
         await _localizedProperty.BulkInsertAsync(localizedProperties, cancellationToken: cancellationToken);
+        await _imageService.UnitOfWork.SaveChangesAsync(cancellationToken);
         return new AddHotelCommandRes();
     }
 }

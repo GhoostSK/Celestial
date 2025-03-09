@@ -21,20 +21,24 @@ public sealed class DeleteFileCommandHandler : BaseRequestHandler<DeleteFileComm
 
         try
         {
-            var isDeleteFile = _imageManager.DeleteFile(request.FilePath);
-            if (!isDeleteFile)
+            var deleteResults = _imageManager.DeleteFiles(request.FilePath);
+
+            if (deleteResults.Values.All(result => result))
+            {
+                response.IsDeleted = true;
+            }
+            else
             {
                 response.IsDeleted = false;
-                response.Error = ValidationError.UnhandledValidationError("500", "Error deleting file: file Not Found");
-                return Task.FromResult(response);
+                var failedFiles = deleteResults.Where(x => !x.Value).Select(x => x.Key).ToList();
+                response.Error = ValidationError.UnhandledValidationError("500",
+                    $"Error deleting files: {string.Join(", ", failedFiles)} not found or failed to delete");
             }
-
-            response.IsDeleted = true;
         }
         catch (Exception ex)
         {
             response.IsDeleted = false;
-            response.Error = ValidationError.UnhandledValidationError("500", $"Error deleting file: {ex.Message}");
+            response.Error = ValidationError.UnhandledValidationError("500", $"Error deleting files: {ex.Message}");
         }
 
         return Task.FromResult(response);

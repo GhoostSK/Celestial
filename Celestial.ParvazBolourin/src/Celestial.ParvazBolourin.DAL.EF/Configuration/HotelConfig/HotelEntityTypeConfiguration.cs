@@ -65,10 +65,6 @@ public sealed class HotelEntityTypeConfiguration : IEntityTypeConfiguration<Hote
             builder.Property(p => p.IsDeleted)
                 .IsRequired();
 
-            builder.HasMany(p => p.HotelPictures)
-                .WithOne()
-                .HasForeignKey(p => p.HotelId)
-                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

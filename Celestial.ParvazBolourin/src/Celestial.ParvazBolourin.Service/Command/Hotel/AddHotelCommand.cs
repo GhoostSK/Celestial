@@ -9,8 +9,8 @@ namespace Celestial.ParvazBolourin.Service.Command.Hotel;
 
 public sealed class AddHotelCommandReq : BaseEntity, IRequest<AddHotelCommandRes>
 {
+    public List<PictureItem> HotelPictures { get; set; } = new();
     public Hotels Hotel { get; set; } = new();
-    public List<AddPictureReq> HotelPicture { get; set; } = new();
     public List<HotelServiceLocalizedProperty> HotelLocalizeProperty { get; set; } = new();
 }
 

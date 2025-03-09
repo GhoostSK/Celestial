@@ -13,7 +13,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Unleash;
-//using Microsoft.FeatureManagement;
+
 
 var builder = WebApplication.CreateBuilder(args);
 var hostEnvironment = builder.Environment;
@@ -32,7 +32,7 @@ builder.Services.AddSingleton<IUnleash>(sp =>
     var unleashOptions = new UnleashSettings
     {
         AppName = "YourAppName",
-        Environment = "production",
+        //Environment = "production",
         UnleashApi = new Uri("https://prod-unleash-Celestial.Celestial.app/api"),
         InstanceTag = "instance-1",
         FetchTogglesInterval = TimeSpan.FromSeconds(10)
@@ -77,7 +77,7 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequiredLength = 8;
     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
     options.Lockout.MaxFailedAccessAttempts = 5;
-    options.User.RequireUniqueEmail = true;
+    options.User.RequireUniqueEmail = false;
     options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@";
 });
 

@@ -3,7 +3,7 @@
 public sealed class GetLocalizedPropertyReq
 {
     public int LanguageId { get; set; }
-    public int EntityId { get; set; }
+    public long EntityId { get; set; }
     public string LocalKeyGroup { get; set; } = string.Empty;
 }
 

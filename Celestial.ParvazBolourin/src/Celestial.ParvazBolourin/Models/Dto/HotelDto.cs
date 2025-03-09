@@ -33,7 +33,7 @@ public sealed class HotelDto
     public string HotelCoordinate { get; set; } = string.Empty;
     [Required]
     public string HotelReception { get; set; } = string.Empty;
-    public List<AddPictureReq> Picture { get; set; }
+    public List<PictureItem> Picture { get; set; }
 
     [Required]
     public List<HotelServiceLocalizedProperty> LanguageData { get; set; }

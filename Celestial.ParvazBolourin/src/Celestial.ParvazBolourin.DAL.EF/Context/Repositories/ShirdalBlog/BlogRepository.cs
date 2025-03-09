@@ -23,7 +23,7 @@ public sealed class BlogRepository(MainDbContext dbContext) : RepositoryBase<Blo
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<int> AddBlog(Blog blog, CancellationToken cancellationToken)
+    public async Task<long> AddBlog(Blog blog, CancellationToken cancellationToken)
     {
         await AddAsync(blog, cancellationToken);
         await UnitOfWork.SaveChangesAsync(cancellationToken);

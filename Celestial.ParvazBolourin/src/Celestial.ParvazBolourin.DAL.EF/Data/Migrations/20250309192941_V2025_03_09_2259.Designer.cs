@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    [Migration("20250227111649_V2025_02_27_1446")]
-    partial class V2025_02_27_1446
+    [Migration("20250309192941_V2025_03_09_2259")]
+    partial class V2025_03_09_2259
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -156,11 +156,11 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
 
             modelBuilder.Entity("Celestial.ParvazBolourin.Core.DAL.Model.Global.Comments", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<string>("CommentText")
                         .IsRequired()
@@ -181,6 +181,39 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Comments", (string)null);
+                });
+
+            modelBuilder.Entity("Celestial.ParvazBolourin.Core.DAL.Model.Global.Images", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("EntityId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("KeyGroup")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("PicturePath")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)")
+                        .HasComment("Path to the stored image.");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PicturePath")
+                        .HasDatabaseName("IX_Images_PicturePath");
+
+                    b.HasIndex("KeyGroup", "EntityId")
+                        .HasDatabaseName("IX_Images_KeyGroup_EntityId");
+
+                    b.ToTable("Images", (string)null);
                 });
 
             modelBuilder.Entity("Celestial.ParvazBolourin.Core.DAL.Model.Global.Language", b =>
@@ -223,8 +256,8 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<int>("EntityId")
-                        .HasColumnType("int");
+                    b.Property<long>("EntityId")
+                        .HasColumnType("bigint");
 
                     b.Property<int>("LanguageId")
                         .HasColumnType("int");
@@ -251,17 +284,17 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
 
             modelBuilder.Entity("Celestial.ParvazBolourin.Core.DAL.Model.Hotel.HotelPicture", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<int>("DisplayOrder")
                         .HasColumnType("int");
 
-                    b.Property<int>("HotelId")
-                        .HasColumnType("int");
+                    b.Property<long>("HotelId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("VirtualPath")
                         .IsRequired()
@@ -279,11 +312,11 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
 
             modelBuilder.Entity("Celestial.ParvazBolourin.Core.DAL.Model.Hotel.Hotels", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<string>("BookingUrl")
                         .HasMaxLength(500)
@@ -350,11 +383,11 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
 
             modelBuilder.Entity("Celestial.ParvazBolourin.Core.DAL.Model.ShirdalBlog.Blog", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -378,18 +411,18 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
 
             modelBuilder.Entity("Celestial.ParvazBolourin.Core.DAL.Model.Tour.TourPlans", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<string>("PlanPicturePath")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TourId")
-                        .HasColumnType("int");
+                    b.Property<long>("TourId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -400,11 +433,11 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
 
             modelBuilder.Entity("Celestial.ParvazBolourin.Core.DAL.Model.Tour.TourPrimaryTransport", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
@@ -448,11 +481,11 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
 
             modelBuilder.Entity("Celestial.ParvazBolourin.Core.DAL.Model.Tour.TourTransPorts", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime2");
@@ -460,8 +493,8 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("TourId")
-                        .HasColumnType("int");
+                    b.Property<long>("TourId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("TransPortType")
                         .IsRequired()
@@ -476,8 +509,8 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
 
             modelBuilder.Entity("Celestial.ParvazBolourin.Core.DAL.Model.Tour.Tours", b =>
                 {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("CitiesId")
                         .IsRequired()

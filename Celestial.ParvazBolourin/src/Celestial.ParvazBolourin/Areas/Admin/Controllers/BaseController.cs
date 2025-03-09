@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Celestial.ParvazBolourin.Api.Areas.Admin.Controllers;
 
 [Route("api/Admin/[controller]/[action]")]
-//[Authorize(Policy = "Admin")]
+[Authorize(Policy = "Admin")]
 [ApiController]
 public abstract class BaseController : ControllerBase
 {

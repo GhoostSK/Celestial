@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class V2024_12_13_0246 : Migration
+    public partial class V2025_03_09_2052 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,7 +15,7 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
                 name: "Blog",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Likes = table.Column<int>(type: "int", nullable: false, defaultValue: 0, comment: "Number of likes for the blog post."),
                     PicturePath = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false, comment: "Path to the picture associated with the blog."),
@@ -27,10 +27,24 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "City",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    State_id = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_City", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Comments",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     EntityId = table.Column<int>(type: "int", nullable: false),
                     CommentText = table.Column<string>(type: "nvarchar(max)", maxLength: 2147483647, nullable: false),
@@ -61,16 +75,47 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Hotels",
+                name: "Country",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Shortname = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    PhoneCode = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Country", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Currency",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    ExchangeRate = table.Column<decimal>(type: "decimal(22,3)", precision: 22, scale: 3, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Currency", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Hotels",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     HotelLocation = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     HotelContinent = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Price = table.Column<long>(type: "bigint", nullable: false),
-                    HotelCountry = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    CountryId = table.Column<int>(type: "int", nullable: false),
+                    CityId = table.Column<long>(type: "bigint", nullable: false),
+                    StateId = table.Column<int>(type: "int", nullable: false),
                     HotelScore = table.Column<int>(type: "int", nullable: false),
                     BookingUrl = table.Column<string>(type: "nvarchar(max)", maxLength: 500, nullable: true),
                     HotelCode = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
@@ -83,6 +128,20 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Hotels", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Images",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    KeyGroup = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    EntityId = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Images", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -112,7 +171,7 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
                     LocalKey = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     LocalValue = table.Column<string>(type: "nvarchar(max)", maxLength: 2147483647, nullable: false),
                     LanguageId = table.Column<int>(type: "int", nullable: false),
-                    EntityId = table.Column<int>(type: "int", nullable: false)
+                    EntityId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -120,10 +179,24 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TourPrimaryTransport",
+                name: "State",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    Country_id = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_State", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TourPrimaryTransport",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     LeadFlightCode = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     ReturnFlightCode = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
@@ -160,9 +233,9 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
                 name: "HotelPicture",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    HotelId = table.Column<int>(type: "int", nullable: false),
+                    HotelId = table.Column<long>(type: "bigint", nullable: false),
                     VirtualPath = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     DisplayOrder = table.Column<int>(type: "int", nullable: false)
                 },
@@ -181,9 +254,9 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
                 name: "Tours",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    Countries = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
-                    Cities = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    CountriesId = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    CitiesId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     HotelCode = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     TourStatus = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -215,9 +288,9 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
                 name: "TourPlans",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TourId = table.Column<int>(type: "int", nullable: false),
+                    TourId = table.Column<long>(type: "bigint", nullable: false),
                     PlanPicturePath = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -235,9 +308,9 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
                 name: "TourTransPorts",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TourId = table.Column<int>(type: "int", nullable: false),
+                    TourId = table.Column<long>(type: "bigint", nullable: false),
                     TransPortType = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndTime = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -296,19 +369,34 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
                 name: "Blog");
 
             migrationBuilder.DropTable(
+                name: "City");
+
+            migrationBuilder.DropTable(
                 name: "Comments");
 
             migrationBuilder.DropTable(
                 name: "ContactUs");
 
             migrationBuilder.DropTable(
+                name: "Country");
+
+            migrationBuilder.DropTable(
+                name: "Currency");
+
+            migrationBuilder.DropTable(
                 name: "HotelPicture");
+
+            migrationBuilder.DropTable(
+                name: "Images");
 
             migrationBuilder.DropTable(
                 name: "Language");
 
             migrationBuilder.DropTable(
                 name: "LocalizedProperty");
+
+            migrationBuilder.DropTable(
+                name: "State");
 
             migrationBuilder.DropTable(
                 name: "TourPlans");

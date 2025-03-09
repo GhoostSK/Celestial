@@ -2,7 +2,7 @@
 
 namespace Celestial.ParvazBolourin.Core.DAL.Model.ShirdalBlog;
 
-public sealed class Blog : DbBaseEntity<int>
+public sealed class Blog : DbBaseEntity<long>
 {
     public int Likes { get; set; }
     public string PicturePath { get; set; } = string.Empty;

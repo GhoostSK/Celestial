@@ -8,5 +8,5 @@ public sealed class LocalizedProperty : DbBaseEntity<long>
     public string LocalKey { get; set; } = string.Empty;
     public string LocalValue { get; set; } = string.Empty;
     public int LanguageId { get; set; }
-    public int EntityId { get; set; }
+    public long EntityId { get; set; }
 }

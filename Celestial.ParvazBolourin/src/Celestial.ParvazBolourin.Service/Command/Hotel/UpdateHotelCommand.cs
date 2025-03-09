@@ -1,4 +1,5 @@
-﻿using Celestial.ParvazBolourin.Core.DAL.Model.Hotel;
+﻿using Celestial.ParvazBolourin.Core.DAL.Model.Global;
+using Celestial.ParvazBolourin.Core.DAL.Model.Hotel;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Hotel.Model;
 using MediatR;
 using MofidApp.SharedKernel.Common.Model;
@@ -8,8 +9,9 @@ namespace Celestial.ParvazBolourin.Service.Command.Hotel;
 
 public sealed class UpdateHotelCommandReq : BaseEntity, IRequest<UpdateHotelCommandRes>
 {
-    public int Id { get; set; }
+    public long Id { get; set; }
     public Hotels Hotel { get; set; } = new();
+    public List<Images> Images { get; set; } = new();
     public List<HotelServiceLocalizedProperty> LocalizedProperty { get; set; } = new();
 }
 

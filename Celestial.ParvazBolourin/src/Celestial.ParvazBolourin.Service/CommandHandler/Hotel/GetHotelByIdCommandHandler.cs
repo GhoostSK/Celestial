@@ -1,5 +1,4 @@
-﻿using Celestial.ParvazBolourin.Core.DAL.Model.Hotel;
-using Celestial.ParvazBolourin.Core.DAL.Repositories.Geo;
+﻿using Celestial.ParvazBolourin.Core.DAL.Repositories.Geo;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global.Model;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Hotel;
@@ -17,14 +16,16 @@ public sealed class GetHotelByIdCommandHandler : BaseRequestHandler<GetHotelById
     private readonly ILanguageService _languageService;
     private readonly ILocalizedPropertyService _localizedPropertyService;
     private readonly ICountryService _countryService;
+    private readonly IImageService _imageService;
 
     public GetHotelByIdCommandHandler(IHotelService hotel, ICommentsService hotelComments,
-        ILocalizedPropertyService localizedProperty, ILanguageService languageService, ICountryService countryService)
+        ILocalizedPropertyService localizedProperty, ILanguageService languageService, ICountryService countryService, IImageService imageService)
     {
         _hotelService = hotel;
         _localizedPropertyService = localizedProperty;
         _languageService = languageService;
         _countryService = countryService;
+        _imageService = imageService;
         _hotelCommentsService = hotelComments;
     }
 
@@ -37,7 +38,7 @@ public sealed class GetHotelByIdCommandHandler : BaseRequestHandler<GetHotelById
                 Error = new ValidationError("LA400", "invalid Language")
             };
 
-        var hotel = await _hotelService.FindByIdAsync(cancellationToken, request.HotelId);
+        var hotel = await _hotelService.GetHotelById(request.HotelId, cancellationToken: cancellationToken);
         if (hotel == null)
             return new GetHotelByIdCommandRes
             {
@@ -46,13 +47,8 @@ public sealed class GetHotelByIdCommandHandler : BaseRequestHandler<GetHotelById
 
         var response = hotel.Adapt<GetHotelByIdCommandRes>();
         response.HotelCountry = _countryService.FindByIdAsync(cancellationToken, hotel.CountryId).Result.Name;
-        response.HotelPictures = hotel.HotelPictures
-            .Select(p => new HotelPicture
-            {
-                DisplayOrder = p.DisplayOrder,
-                VirtualPath = p.VirtualPath
-            })
-            .ToList();
+
+        response.HotelPictures = await _imageService.GetImagesByEntityId(hotel.Id, "Hotel", cancellationToken);
 
         response.HotelComments = await _hotelCommentsService.GetComments(request.HotelId, cancellationToken);
 

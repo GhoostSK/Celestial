@@ -12,6 +12,6 @@ public sealed class GetCurrenciesListCommandReq : BaseEntity, IRequest<GetCurren
 
 public sealed class GetCurrenciesListCommandRes : ServiceResContextBase
 {
-    public List<Currency> Items { get; set; }
+    public List<Currency> Items { get; set; } = new();
 }
 

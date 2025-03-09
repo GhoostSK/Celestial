@@ -30,16 +30,33 @@ public sealed class ImageManager : IImageManager
         return null!;
     }
 
-    public bool DeleteFile(string filePath)
+    public Dictionary<string, bool> DeleteFiles(List<string?> filePaths)
     {
-        if (File.Exists(filePath))
+        var result = new Dictionary<string, bool>();
+
+        foreach (var filePath in filePaths)
         {
-            File.Delete(filePath);
-            return true;
+            try
+            {
+                if (File.Exists(filePath))
+                {
+                    File.Delete(filePath);
+                    result[filePath] = true;  // موفقیت در حذف فایل
+                }
+                else
+                {
+                    result[filePath!] = false; // فایل وجود نداشت
+                }
+            }
+            catch
+            {
+                result[filePath!] = false;     // خطا در حذف فایل
+            }
         }
 
-        return false;
+        return result;
     }
+
 
     public async Task<byte[]> ReadFileAsBytesAsync(string filePath)
     {

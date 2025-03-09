@@ -17,7 +17,7 @@ public class GetCurrencyByIdCommandHandler : IRequestHandler<GetCurrencyByIdComm
     {
         var currency = await _currencyService.FindByIdAsync(cancellationToken, request.Id);
         if (currency == null)
-            return null;
+            return null!;
 
         return new GetCurrencyByIdCommandRes
         {

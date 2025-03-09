@@ -5,22 +5,6 @@ namespace Celestial.ParvazBolourin.Api.Areas.Admin.Controllers.Global;
 
 public class FileManagerController : BaseController
 {
-    [HttpGet]
-    public async Task<IActionResult> ReadFile([FromQuery] string filePath)
-    {
-        if (string.IsNullOrWhiteSpace(filePath)) return BadRequest(new { Message = "File path is required." });
-        var readFileRequest = new ReadFileCommandReq { FilePath = filePath };
-        var result = await Mediator.Send(readFileRequest);
-        if (result.HasError) return StatusCode(500, new { result.Error.Message });
-        var memoryStream = new MemoryStream(result.FileData);
-        memoryStream.Position = 0;
-
-        return new FileStreamResult(memoryStream, "application/octet-stream")
-        {
-            FileDownloadName = Path.GetFileName(filePath)
-        };
-    }
-
     [HttpPost]
     public async Task<IActionResult> SaveFile([FromForm] IFormFile file)
     {
@@ -37,18 +21,25 @@ public class FileManagerController : BaseController
     }
 
     [HttpDelete]
-    public async Task<IActionResult> DeleteFile([FromQuery] string filePath)
+    public async Task<IActionResult> DeleteFile([FromQuery] string filePath, CancellationToken cancellationToken)
     {
-        if (string.IsNullOrWhiteSpace(filePath)) return BadRequest(new { Message = "File path is required." });
+        if (string.IsNullOrWhiteSpace(filePath))
+            return BadRequest(new { Message = "File path is required." });
+
         var deleteFileRequest = new DeleteFileCommandReq
         {
-            FilePath = filePath
+            FilePath = new List<string> { filePath } // تبدیل به لیست
         };
 
-        var result = await Mediator.Send(deleteFileRequest);
+        var result = await Mediator.Send(deleteFileRequest, cancellationToken);
 
-        if (result.HasError) return StatusCode(500, new { result.Error.Message });
+        if (result.HasError)
+            return StatusCode(500, new { Message = result.Error.Message });
 
-        return Ok(new { Message = "File deleted successfully.", result.IsDeleted });
+        if (!result.IsDeleted)
+            return NotFound(new { Message = "File not found or could not be deleted." });
+
+        return Ok(new { Message = "File deleted successfully." });
     }
+
 }

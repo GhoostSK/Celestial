@@ -37,9 +37,10 @@ public class RegisterDto
 
 public class LoginDto
 {
-    [Required(ErrorMessage = "Email is required.")]
-    [EmailAddress(ErrorMessage = "Invalid email format.")]
-    public string Email { get; set; }
+    [Required(ErrorMessage = "Username is required.")]
+    [StringLength(30, ErrorMessage = "Username must be between {2} and {1} characters.", MinimumLength = 3)]
+    [RegularExpression(@"^[a-zA-Z0-9._]+$", ErrorMessage = "Username can only contain letters, numbers, dots, and underscores.")]
+    public string UserName { get; set; }
 
     [Required(ErrorMessage = "Password is required.")]
     public string Password { get; set; }

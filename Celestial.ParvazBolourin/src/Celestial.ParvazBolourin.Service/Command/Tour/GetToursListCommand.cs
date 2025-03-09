@@ -28,7 +28,7 @@ public sealed class GetToursListCommandRes : ServiceResContextBase
 
 public sealed class GetToursListItemRes
 {
-    public int Id { get; set; }
+    public long Id { get; set; }
     public int Score { get; set; }
     public string Name { get; set; } = string.Empty;
     public DateTime StartDate { get; set; }

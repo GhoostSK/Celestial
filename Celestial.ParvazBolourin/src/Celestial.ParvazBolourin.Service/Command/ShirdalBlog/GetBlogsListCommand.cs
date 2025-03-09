@@ -16,7 +16,7 @@ public sealed class GetBlogsListCommandRes : ServiceResContextBase
 
 public sealed class BlogItem
 {
-    public int Id { get; set; }
+    public long Id { get; set; }
     public string Title { get; set; } = string.Empty;
     public string HeaderText { get; set; } = string.Empty;
     public string PicturePath { get; set; } = string.Empty;

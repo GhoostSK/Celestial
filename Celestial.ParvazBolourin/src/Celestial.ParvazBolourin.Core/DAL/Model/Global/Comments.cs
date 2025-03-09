@@ -2,7 +2,7 @@
 
 namespace Celestial.ParvazBolourin.Core.DAL.Model.Global;
 
-public sealed class Comments : DbBaseEntity<int>
+public sealed class Comments : DbBaseEntity<long>
 {
     public int EntityId { get; set; }
     public string CommentText { get; set; } = string.Empty;

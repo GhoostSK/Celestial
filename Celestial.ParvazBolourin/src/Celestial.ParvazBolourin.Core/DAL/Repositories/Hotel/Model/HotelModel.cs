@@ -15,7 +15,7 @@ public sealed class HotelServiceLocalizedProperty
 
 public class GetAllHotelsServiceRes
 {
-    public int HotelId { get; set; }
+    public long HotelId { get; set; }
     public string Name { get; set; } = string.Empty;
     public string HotelCountry { get; set; } = string.Empty;
     public int HotelScore { get; set; }

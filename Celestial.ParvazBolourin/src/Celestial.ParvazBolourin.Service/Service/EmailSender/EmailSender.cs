@@ -29,7 +29,7 @@ public class EmailSender : IEmailSender
         {
             using var smtpClient = new SmtpClient(_config["EmailSettings:SmtpServer"])
             {
-                Port = int.Parse(_config["EmailSettings:Port"]),
+                Port = int.Parse(_config["EmailSettings:Port"]!),
                 Credentials = new NetworkCredential(
                     _config["EmailSettings:SenderEmail"],
                     _config["EmailSettings:SenderPassword"]
