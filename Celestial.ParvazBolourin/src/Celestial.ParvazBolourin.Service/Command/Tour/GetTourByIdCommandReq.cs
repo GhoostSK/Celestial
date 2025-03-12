@@ -26,7 +26,7 @@ public sealed class GetTourByIdItemRes
     public string TourTips { get; set; } = string.Empty;
     public string PlanShortText { get; set; } = string.Empty;
     public List<GetTourByIdTourPlan> TourPlans { get; set; } = new();
-    public string Countries { get; set; } = string.Empty;
+    public List<string> Countries { get; set; } = new();
     public string HotelCode { get; set; } = string.Empty;
     public TourStatus TourStatus { get; set; }
     public DateTime StartDate { get; set; }

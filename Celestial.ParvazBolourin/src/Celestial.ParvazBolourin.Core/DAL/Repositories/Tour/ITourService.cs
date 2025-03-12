@@ -7,5 +7,5 @@ namespace Celestial.ParvazBolourin.Core.DAL.Repositories.Tour;
 public interface ITourService : IRepositoryEF<Tours>, IScopeLifetime
 {
     public Task<List<Tours>> GetToursList(GetTourListReq model, CancellationToken cancellationToken);
-    public Task<Tours?> GetTourById(int tourId, CancellationToken cancellationToken);
+    public Task<Tours?> GetTourById(long tourId, CancellationToken cancellationToken);
 }

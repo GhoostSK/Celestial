@@ -18,7 +18,7 @@ public sealed class Tours : DbBaseEntity<long>
     public List<long> Hotels { get; set; } = new();
     public TourPrimaryTransport PrimaryTransport { get; set; } = new();
     public int Price { get; set; }
-    public string PicturePath { get; set; } = string.Empty;
+    public long PictureId { get; set; }
     public int Score { get; set; }
     public Continent TourContinent { get; set; }
     public TourType TourType { get; set; }

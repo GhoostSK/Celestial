@@ -188,6 +188,12 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
+                    b.Property<int>("DisplayOrder")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0)
+                        .HasComment("Order of the image for display purposes.");
+
                     b.Property<long>("EntityId")
                         .HasColumnType("bigint");
 
@@ -277,34 +283,6 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("LocalizedProperty", (string)null);
-                });
-
-            modelBuilder.Entity("Celestial.ParvazBolourin.Core.DAL.Model.Hotel.HotelPicture", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<int>("DisplayOrder")
-                        .HasColumnType("int");
-
-                    b.Property<long>("HotelId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("VirtualPath")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DisplayOrder");
-
-                    b.HasIndex("HotelId");
-
-                    b.ToTable("HotelPicture", (string)null);
                 });
 
             modelBuilder.Entity("Celestial.ParvazBolourin.Core.DAL.Model.Hotel.Hotels", b =>
@@ -414,7 +392,7 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<string>("PlanPicturePath")
+                    b.Property<string>("PlanPictureId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -544,10 +522,8 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
                         .HasColumnType("int")
                         .HasDefaultValue(0);
 
-                    b.Property<string>("PicturePath")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                    b.Property<long>("PictureId")
+                        .HasColumnType("bigint");
 
                     b.Property<int>("Price")
                         .HasMaxLength(20)
@@ -624,15 +600,6 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
                     b.ToTable("Visas", (string)null);
                 });
 
-            modelBuilder.Entity("Celestial.ParvazBolourin.Core.DAL.Model.Hotel.HotelPicture", b =>
-                {
-                    b.HasOne("Celestial.ParvazBolourin.Core.DAL.Model.Hotel.Hotels", null)
-                        .WithMany("HotelPictures")
-                        .HasForeignKey("HotelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Celestial.ParvazBolourin.Core.DAL.Model.Tour.TourPlans", b =>
                 {
                     b.HasOne("Celestial.ParvazBolourin.Core.DAL.Model.Tour.Tours", null)
@@ -660,11 +627,6 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("PrimaryTransport");
-                });
-
-            modelBuilder.Entity("Celestial.ParvazBolourin.Core.DAL.Model.Hotel.Hotels", b =>
-                {
-                    b.Navigation("HotelPictures");
                 });
 
             modelBuilder.Entity("Celestial.ParvazBolourin.Core.DAL.Model.Tour.Tours", b =>

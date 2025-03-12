@@ -3,7 +3,7 @@ using Celestial.ParvazBolourin.Service.Command.Tour;
 using MofidApp.SharedKernel.Common.Model;
 using MofidApp.SharedKernel.Domain.Services;
 
-namespace Celestial.ParvazBolourin.Service.CommandHandler.Tours;
+namespace Celestial.ParvazBolourin.Service.CommandHandler.Tour;
 
 public sealed class RemoveTourCommandHandler : BaseRequestHandler<RemoveTourCommandReq, RemoveTourCommandRes>
 {

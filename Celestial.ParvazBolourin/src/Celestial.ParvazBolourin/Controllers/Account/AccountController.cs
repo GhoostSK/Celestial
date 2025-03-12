@@ -1,5 +1,4 @@
-﻿using Castle.Core.Smtp;
-using Celestial.ParvazBolourin.Api.Identity.Model;
+﻿using Celestial.ParvazBolourin.Api.Identity.Model;
 using Celestial.ParvazBolourin.Api.Identity.Services.JwtToken;
 using Celestial.ParvazBolourin.Api.Models.Dto;
 using Microsoft.AspNetCore.Authorization;
@@ -48,19 +47,23 @@ public class AccountController : BaseController
         return Ok("User registered.");
     }
 
-
     [HttpPost]
-    public async Task<IActionResult> Login([FromBody] LoginDto request, [FromServices] JwtTokenService jwtTokenService,CancellationToken cancellationToken)
+    public async Task<IActionResult> Login([FromBody] LoginDto request, [FromServices] JwtTokenService jwtTokenService, CancellationToken cancellationToken)
     {
         var result = await _signInManager.PasswordSignInAsync(request.UserName, request.Password, request.RememberMe, true);
+
         if (result.Succeeded)
         {
             var user = await _userManager.FindByNameAsync(request.UserName);
+            if (user!.PhoneNumberConfirmed)
+            {
+                return StatusCode(403, "Your phone number is not confirmed. Please verify it first.");
+            }
             var roles = await _userManager.GetRolesAsync(user);
-            var token = jwtTokenService.GenerateToken(user,roles, cancellationToken);
+            var token = jwtTokenService.GenerateToken(user, roles, cancellationToken);
             return Ok(new { Token = token });
         }
-        return Unauthorized();
+        return Unauthorized("Username or password not valid");
     }
 
 

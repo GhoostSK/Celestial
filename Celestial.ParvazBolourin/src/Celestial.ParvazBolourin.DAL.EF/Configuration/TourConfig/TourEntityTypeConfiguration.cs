@@ -46,8 +46,7 @@ public class TourEntityTypeConfiguration : IEntityTypeConfiguration<Tours>
         builder.Property(p => p.StartDate)
             .IsRequired();
 
-        builder.Property(p => p.PicturePath)
-            .HasMaxLength(500)
+        builder.Property(p => p.PictureId)
             .IsRequired();
 
         builder.Property(p => p.Price)

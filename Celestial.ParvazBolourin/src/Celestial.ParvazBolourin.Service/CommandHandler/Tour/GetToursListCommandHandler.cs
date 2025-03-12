@@ -7,12 +7,12 @@ using Mapster;
 using MofidApp.SharedKernel.Common.Model;
 using MofidApp.SharedKernel.Domain.Services;
 
-namespace Celestial.ParvazBolourin.Service.CommandHandler.Tours;
+namespace Celestial.ParvazBolourin.Service.CommandHandler.Tour;
 
 public sealed class GetToursListCommandHandler(
     ITourService tourService,
     ILocalizedPropertyService localizedPropertyService,
-    ILanguageService languageService)
+    ILanguageService languageService, IImageService imageService)
     : BaseRequestHandler<GetToursListCommandReq, GetToursListCommandRes>
 {
     protected override async Task<GetToursListCommandRes> HandleCore(GetToursListCommandReq request,
@@ -51,6 +51,7 @@ public sealed class GetToursListCommandHandler(
             var tourText = localizeData
                 .FirstOrDefault(p => p.LocalKey == nameof(TourLocalizedPropertyItem.TourMainText))?.LocalValue;
 
+            var picture = await imageService.FirstOrDefaultAsync(p => p.EntityId == item.Id && p.KeyGroup == "Tour" && p.DisplayOrder == 0, cancellationToken: cancellationToken);
             data.Add(new GetToursListItemRes
             {
                 Id = item.Id,
@@ -58,7 +59,7 @@ public sealed class GetToursListCommandHandler(
                 Name = name!,
                 StartDate = item.StartDate,
                 TourText = tourText!,
-                PicturePath = item.PicturePath,
+                PicturePath = picture.PicturePath,
                 Country = item.CountriesId,
                 TourStatus = item.TourStatus.ToString()
             });

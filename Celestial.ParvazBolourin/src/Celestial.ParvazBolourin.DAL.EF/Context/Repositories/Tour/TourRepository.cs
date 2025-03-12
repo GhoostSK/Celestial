@@ -35,7 +35,7 @@ public class TourRepository(MainDbContext dbContext) : RepositoryBase<Tours>(dbC
         return await query.ToListAsync(cancellationToken);
     }
 
-    public async Task<Tours?> GetTourById(int tourId, CancellationToken cancellationToken)
+    public async Task<Tours?> GetTourById(long tourId, CancellationToken cancellationToken)
     {
         return await Table
             .IgnoreQueryFilters()

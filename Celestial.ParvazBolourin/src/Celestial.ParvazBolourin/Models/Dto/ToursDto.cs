@@ -1,38 +1,20 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Celestial.ParvazBolourin.Core.DAL.Model.Tour;
-using Celestial.ParvazBolourin.Core.Enum.Global;
+﻿using Celestial.ParvazBolourin.Core.Enum.Global;
 using Celestial.ParvazBolourin.Core.Enum.Tour;
+using Celestial.ParvazBolourin.Service.Command.Tour;
+using System.ComponentModel.DataAnnotations;
 
 namespace Celestial.ParvazBolourin.Api.Models.Dto;
 
 public sealed class AddTourReqDto
 {
-    public TourItemDto Tours { get; set; }
+    public ToursItemDto Tours { get; set; }
     public List<TourLocalizedPropertyItemDto> LocalizedProperty { get; set; }
 }
 
-public sealed class TourItemDto
+public sealed class TourPlansItem
 {
-    public List<int> CountriesId { get; set; } = new();
-    public List<int> StatesId { get; set; } = new();
-    public List<long> CitiesId { get; set; } = new();
-    public string HotelCode { get; set; } = string.Empty;
-    public TourStatus TourStatus { get; set; }
-    public DateTime StartDate { get; set; }
-    public int PassengerCapacity { get; set; }
-    public string ImportantTips { get; set; } = string.Empty;
-    public List<TourPlans> TourPlans { get; set; } = new();
-    public List<TourTransPorts> TransPorts { get; set; } = new();
-    public List<int> Hotels { get; set; } = new();
-    public TourPrimaryTransport PrimaryTransport { get; set; } = new();
-    public int Price { get; set; }
-    public string PicturePath { get; set; } = string.Empty;
-    public int Score { get; set; }
-    public Continent TourContinent { get; set; }
-    public TourType TourType { get; set; }
-    public TourScope TourScope { get; set; }
-    public int DayCount { get; set; }
-    public bool RequiresVisa { get; set; }
+    public long TourId { get; set; }
+    public List<string> PlanPictureId { get; set; } = new();
 }
 
 public sealed class TourLocalizedPropertyItemDto

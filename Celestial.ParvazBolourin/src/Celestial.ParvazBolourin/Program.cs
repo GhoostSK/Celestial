@@ -68,6 +68,8 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.RegisterServices();
 
+//builder.WebHost.UseKestrel();
+
 builder.Services.Configure<IdentityOptions>(options =>
 {
     options.Password.RequireDigit = true;
