@@ -23,6 +23,10 @@ public sealed class SaveFileCommandHandler : BaseRequestHandler<SaveFileCommandR
         {
             var filePath = await _imageManager.SaveFileWithRandomNameAsync(request.File);
             response.FilePath = filePath;
+            if (filePath == null)
+            {
+                response.Error = ValidationError.UnhandledValidationError("500", $"Error saving file: Invalid file format(jpg,pdf)");
+            }
         }
         catch (Exception ex)
         {

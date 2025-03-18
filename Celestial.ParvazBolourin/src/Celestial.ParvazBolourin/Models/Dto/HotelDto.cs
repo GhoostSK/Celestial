@@ -16,7 +16,7 @@ public sealed class HotelDto
     [Required]
     public Continent HotelContinent { get; set; }
     [Required]
-    public string Price { get; set; } = string.Empty;
+    public double Price { get; set; }
     [Required]
     public int CountryId { get; set; }
     [Required]
@@ -53,8 +53,8 @@ public sealed class GetHotelListReqDto
     public string Name { get; set; } = string.Empty;
     public List<HotelLocation> HotelLocation { get; set; } = new();
     public List<Continent> HotelContinent { get; set; } = new();
-    public long FromPrice { get; set; } = 0;
-    public long ToPrice { get; set; } = 0;
+    public double FromPrice { get; set; } = 0;
+    public double ToPrice { get; set; } = 0;
     public List<string> HotelCountry { get; set; } = new();
     public List<int> HotelScore { get; set; } = new();
 }

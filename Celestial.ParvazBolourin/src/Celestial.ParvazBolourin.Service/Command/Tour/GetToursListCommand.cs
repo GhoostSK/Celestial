@@ -13,8 +13,8 @@ public sealed class GetToursListCommandReq : BaseEntity, IRequest<GetToursListCo
     public List<string> Cities { get; set; } = new();
     public int FromDay { get; set; }
     public int ToDay { get; set; }
-    public long ToPrice { get; set; }
-    public long FromPrice { get; set; }
+    public double ToPrice { get; set; }
+    public double FromPrice { get; set; }
     public List<Continent> TourContinent { get; set; } = new();
     public List<TourType> TourType { get; set; } = new();
     public List<TourScope> TourScope { get; set; } = new();
@@ -36,4 +36,6 @@ public sealed class GetToursListItemRes
     public string PicturePath { get; set; } = string.Empty;
     public List<int> Country { get; set; } = new();
     public string TourStatus { get; set; } = string.Empty;
+    //seo
+    public string Slug { get; set; } = string.Empty;
 }

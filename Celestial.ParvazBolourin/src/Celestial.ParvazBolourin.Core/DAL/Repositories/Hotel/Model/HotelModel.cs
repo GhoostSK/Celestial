@@ -23,4 +23,7 @@ public class GetAllHotelsServiceRes
     public string HotelReception { get; set; } = string.Empty;
     public string? ShortText { get; set; }
     public string ImagePath { get; set; } = string.Empty;
+
+    //seo
+    public string Slug { get; set; } = string.Empty;
 }

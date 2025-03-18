@@ -24,6 +24,12 @@ public class AccountController : BaseController
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
+        var existingUser = await _userManager.FindByNameAsync(request.UserName);
+        if (existingUser != null)
+        {
+            return BadRequest("User already exists.");
+        }
+
         var user = new User
         {
             UserName = request.UserName,
@@ -37,14 +43,7 @@ public class AccountController : BaseController
         if (!result.Succeeded)
             return BadRequest(result.Errors);
 
-
-        //var confirmationCode = new Random().Next(10000, 99999).ToString();
-
-        //// **ذخیره کد در دیتابیس (SecurityStamp یا یک فیلد اختصاصی)**
-        //user.SecurityStamp = confirmationCode;
-        //await _userManager.UpdateAsync(user);
-
-        return Ok("User registered.");
+        return Ok("User registered successfully. Please verify your phone number.");
     }
 
     [HttpPost]
@@ -55,7 +54,7 @@ public class AccountController : BaseController
         if (result.Succeeded)
         {
             var user = await _userManager.FindByNameAsync(request.UserName);
-            if (user!.PhoneNumberConfirmed)
+            if (user!.PhoneNumberConfirmed == false)
             {
                 return StatusCode(403, "Your phone number is not confirmed. Please verify it first.");
             }
@@ -65,7 +64,6 @@ public class AccountController : BaseController
         }
         return Unauthorized("Username or password not valid");
     }
-
 
     [HttpPost]
     [Authorize]
@@ -80,4 +78,82 @@ public class AccountController : BaseController
     {
         return Unauthorized("AccessDenied");
     }
+
+    [HttpPost]
+    public async Task<IActionResult> SendConfirmationCode([FromBody] PhoneNumberDto request)
+    {
+        var user = await _userManager.FindByNameAsync(request.UserName);
+        if (user == null)
+            return NotFound("User not found");
+
+        if (user.PhoneNumberConfirmed)
+            return BadRequest("Your phone number is already confirmed. No need to verify again.");
+
+        // محدودیت زمانی برای جلوگیری از سوءاستفاده
+        if (user.ConfirmationCodeRequestedAt.HasValue &&
+            (DateTime.UtcNow - user.ConfirmationCodeRequestedAt.Value).TotalMinutes < 2)
+        {
+            return BadRequest("Please wait before requesting a new confirmation code.");
+        }
+
+        // تولید کد ۵ رقمی غیر از 00000
+        string confirmationCode;
+        do
+        {
+            confirmationCode = new Random().Next(10000, 99999).ToString();
+        } while (confirmationCode == "00000");
+
+        user.PhoneNumberConfirmationCode = confirmationCode;
+        user.ConfirmationCodeRequestedAt = DateTime.UtcNow;
+
+        await _userManager.UpdateAsync(user);
+
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine("--------------------------Code--------------------------");
+        Console.WriteLine(confirmationCode);
+        Console.WriteLine("--------------------------Code--------------------------");
+        Console.ForegroundColor = ConsoleColor.White;
+        return Ok("Confirmation code sent.");
+    }
+
+
+
+    [HttpPost]
+    public async Task<IActionResult> ConfirmPhoneNumber([FromBody] ConfirmPhoneDto request)
+    {
+        var user = await _userManager.FindByNameAsync(request.UserName);
+        if (user == null)
+            return NotFound("User not found");
+
+        if (user.PhoneNumberConfirmed)
+            return BadRequest("Your phone number is already confirmed.");
+
+        if (user.LockedUntil.HasValue && user.LockedUntil > DateTime.UtcNow)
+        {
+            return BadRequest($"Too many failed attempts. Try again after {(user.LockedUntil.Value - DateTime.UtcNow).Minutes} minutes.");
+        }
+
+        if (user.PhoneNumberConfirmationCode == null || user.PhoneNumberConfirmationCode != request.Code)
+        {
+            user.FailedConfirmationAttempts++;
+
+            if (user.FailedConfirmationAttempts >= 3)
+            {
+                user.LockedUntil = DateTime.UtcNow.AddMinutes(5);
+                user.FailedConfirmationAttempts = 0;
+            }
+
+            await _userManager.UpdateAsync(user);
+            return BadRequest("Invalid confirmation code.");
+        }
+
+        // تأیید شماره تلفن
+        user.PhoneNumberConfirmed = true;
+        user.PhoneNumberConfirmationCode = null;
+        user.FailedConfirmationAttempts = 0;
+
+        await _userManager.UpdateAsync(user);
+        return Ok("Phone number confirmed successfully.");
+    }
+
 }

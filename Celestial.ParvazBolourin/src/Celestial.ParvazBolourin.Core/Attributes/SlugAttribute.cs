@@ -1,0 +1,35 @@
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
+
+namespace Celestial.ParvazBolourin.Core.Attributes;
+
+[AttributeUsage(AttributeTargets.Property)]
+public class SlugAttribute : ValidationAttribute
+{
+    public override bool IsValid(object? value)
+    {
+        if (value is string strValue)
+        {
+            string slug = GenerateSlug(strValue);
+            return slug == strValue; // مقدار باید از قبل به‌صورت slug باشد
+        }
+        return false;
+    }
+
+    public override string FormatErrorMessage(string name)
+    {
+        return $"{name} باید یک مقدار معتبر برای Slug باشد.";
+    }
+
+    public static string GenerateSlug(string input)
+    {
+        if (string.IsNullOrWhiteSpace(input))
+            return string.Empty;
+
+        input = input.ToLowerInvariant();
+        input = Regex.Replace(input, @"\s+", "-"); // جایگزینی فاصله‌ها با "-"
+        input = Regex.Replace(input, @"[^\w\-]", ""); // حذف کاراکترهای غیرمجاز
+        input = Regex.Replace(input, @"-+", "-"); // حذف "-" های تکراری
+        return input.Trim('-');
+    }
+}

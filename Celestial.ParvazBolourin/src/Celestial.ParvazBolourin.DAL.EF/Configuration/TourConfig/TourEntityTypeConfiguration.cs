@@ -1,4 +1,5 @@
-﻿using Celestial.ParvazBolourin.Core.DAL.Model.Tour;
+﻿using System.Text.Json;
+using Celestial.ParvazBolourin.Core.DAL.Model.Tour;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -81,6 +82,33 @@ public class TourEntityTypeConfiguration : IEntityTypeConfiguration<Tours>
             .HasMaxLength(100)
             .IsRequired();
 
+        builder.Property(t => t.ExecDate)
+            .HasConversion(
+                v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null!),
+                v => JsonSerializer.Deserialize<List<DateOnly>>(v, (JsonSerializerOptions)null!) ?? new List<DateOnly>()
+            ).IsRequired().HasColumnType("NVARCHAR(MAX)");
+
         builder.Property(p => p.RequiresVisa);
+
+        //seo
+        builder.Property(s => s.MetaTitle)
+            .HasMaxLength(200)
+            .HasDefaultValue(string.Empty)
+            .IsRequired(false);
+
+        builder.Property(s => s.MetaDescription)
+            .HasMaxLength(500)
+            .HasDefaultValue(string.Empty)
+            .IsRequired(false);
+
+        builder.Property(s => s.MetaKeywords)
+            .HasMaxLength(500)
+            .HasDefaultValue(string.Empty)
+            .IsRequired(false);
+
+        builder.Property(s => s.Slug)
+            .HasMaxLength(100)
+            .IsRequired(false);
+
     }
 }

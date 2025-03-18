@@ -41,12 +41,13 @@ public sealed class GetToursListReqDto
     public List<string> Cities { get; set; } = new();
     public int FromDay { get; set; }
     public int ToDay { get; set; }
-    public long ToPrice { get; set; }
-    public long FromPrice { get; set; }
+    public double ToPrice { get; set; }
+    public double FromPrice { get; set; }
     public List<Continent> TourContinent { get; set; } = new();
     public List<TourType> TourType { get; set; } = new();
     public List<TourScope> TourScope { get; set; } = new();
     public bool IsActiveTour { get; set; }
+
 }
 
 public sealed class GetTourByIdReqDto

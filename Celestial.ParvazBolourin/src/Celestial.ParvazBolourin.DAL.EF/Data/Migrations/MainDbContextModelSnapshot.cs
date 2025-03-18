@@ -337,13 +337,35 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<string>("MetaDescription")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)")
+                        .HasDefaultValue("");
+
+                    b.Property<string>("MetaKeywords")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)")
+                        .HasDefaultValue("");
+
+                    b.Property<string>("MetaTitle")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)")
+                        .HasDefaultValue("");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<long>("Price")
-                        .HasColumnType("bigint");
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Slug")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("StateId")
                         .HasColumnType("int");
@@ -373,11 +395,33 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
                         .HasDefaultValue(0)
                         .HasComment("Number of likes for the blog post.");
 
+                    b.Property<string>("MetaDescription")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)")
+                        .HasDefaultValue("");
+
+                    b.Property<string>("MetaKeywords")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)")
+                        .HasDefaultValue("");
+
+                    b.Property<string>("MetaTitle")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)")
+                        .HasDefaultValue("");
+
                     b.Property<string>("PicturePath")
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)")
                         .HasComment("Path to the picture associated with the blog.");
+
+                    b.Property<string>("Slug")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -500,6 +544,10 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("int");
 
+                    b.Property<string>("ExecDate")
+                        .IsRequired()
+                        .HasColumnType("NVARCHAR(MAX)");
+
                     b.Property<string>("HotelCode")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -517,6 +565,24 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<string>("MetaDescription")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)")
+                        .HasDefaultValue("");
+
+                    b.Property<string>("MetaKeywords")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)")
+                        .HasDefaultValue("");
+
+                    b.Property<string>("MetaTitle")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)")
+                        .HasDefaultValue("");
+
                     b.Property<int>("PassengerCapacity")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
@@ -525,15 +591,19 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
                     b.Property<long>("PictureId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("Price")
+                    b.Property<double>("Price")
                         .HasMaxLength(20)
-                        .HasColumnType("int");
+                        .HasColumnType("float");
 
                     b.Property<bool>("RequiresVisa")
                         .HasColumnType("bit");
 
                     b.Property<int>("Score")
                         .HasColumnType("int");
+
+                    b.Property<string>("Slug")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
@@ -579,10 +649,32 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
                     b.Property<int>("IssueDate")
                         .HasColumnType("int");
 
+                    b.Property<string>("MetaDescription")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)")
+                        .HasDefaultValue("");
+
+                    b.Property<string>("MetaKeywords")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)")
+                        .HasDefaultValue("");
+
+                    b.Property<string>("MetaTitle")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)")
+                        .HasDefaultValue("");
+
                     b.Property<string>("PicturePath")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Slug")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<bool>("Status")
                         .HasColumnType("bit");

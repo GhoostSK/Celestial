@@ -21,4 +21,7 @@ public sealed class BlogItem
     public string HeaderText { get; set; } = string.Empty;
     public string PicturePath { get; set; } = string.Empty;
     public int Likes { get; set; }
+
+    //seo
+    public string Slug { get; set; } = string.Empty;
 }

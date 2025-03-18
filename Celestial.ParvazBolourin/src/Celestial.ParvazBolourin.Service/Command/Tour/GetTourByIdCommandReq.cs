@@ -35,9 +35,15 @@ public sealed class GetTourByIdItemRes
     public List<TourTransPorts> TransPorts { get; set; } = new();
     public List<int> Hotels { get; set; } = new();
     public TourPrimaryTransport PrimaryTransport { get; set; } = new();
-    public string Price { get; set; } = string.Empty;
+    public double Price { get; set; }
     public string PicturePath { get; set; } = string.Empty;
     public int Score { get; set; }
+
+    //seo
+    public string MetaTitle { get; set; } = string.Empty;
+    public string MetaDescription { get; set; } = string.Empty;
+    public string MetaKeywords { get; set; } = string.Empty;
+    public string Slug { get; set; } = string.Empty;
 }
 
 public sealed class GetTourByIdTourPlan

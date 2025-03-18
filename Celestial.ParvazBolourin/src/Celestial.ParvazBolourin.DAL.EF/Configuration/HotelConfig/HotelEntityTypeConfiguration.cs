@@ -65,6 +65,26 @@ public sealed class HotelEntityTypeConfiguration : IEntityTypeConfiguration<Hote
             builder.Property(p => p.IsDeleted)
                 .IsRequired();
 
+            //seo
+            builder.Property(s => s.MetaTitle)
+                .HasMaxLength(200)
+                .HasDefaultValue(string.Empty)
+                .IsRequired(false);
+
+            builder.Property(s => s.MetaDescription)
+                .HasMaxLength(500)
+                .HasDefaultValue(string.Empty)
+                .IsRequired(false);
+
+            builder.Property(s => s.MetaKeywords)
+                .HasMaxLength(500)
+                .HasDefaultValue(string.Empty)
+                .IsRequired(false);
+
+            builder.Property(s => s.Slug)
+                .HasMaxLength(100)
+                .IsRequired(false);
+
         }
     }
 }

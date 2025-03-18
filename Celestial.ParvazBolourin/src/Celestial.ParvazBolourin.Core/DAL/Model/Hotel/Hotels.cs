@@ -9,7 +9,7 @@ public sealed class Hotels : DbBaseEntity<long>
     public string Name { get; set; } = string.Empty;
     public HotelLocation HotelLocation { get; set; }
     public Continent HotelContinent { get; set; }
-    public long Price { get; set; }
+    public double Price { get; set; }
     public int CountryId { get; set; }
     public long CityId { get; set; }
     public int StateId { get; set; }
@@ -21,4 +21,10 @@ public sealed class Hotels : DbBaseEntity<long>
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     public bool IsDeleted { get; set; } = false;
+
+    //seo
+    public string MetaTitle { get; set; } = string.Empty;
+    public string MetaDescription { get; set; } = string.Empty;
+    public string MetaKeywords { get; set; } = string.Empty;
+    public string Slug { get; set; } = string.Empty;
 }

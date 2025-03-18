@@ -57,3 +57,14 @@ public class ConfirmEmailDto
     [RegularExpression(@"^\d{5}$", ErrorMessage = "Invalid verification code format.")]
     public string Code { get; set; }
 }
+
+public class PhoneNumberDto
+{
+    public string UserName { get; set; }
+}
+
+public class ConfirmPhoneDto
+{
+    public string UserName { get; set; }
+    public string Code { get; set; }
+}

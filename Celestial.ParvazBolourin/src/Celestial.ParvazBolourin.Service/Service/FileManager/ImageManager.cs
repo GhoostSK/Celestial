@@ -18,9 +18,24 @@ public sealed class ImageManager : IImageManager
     {
         if (file.Length > 0)
         {
-            if (!Directory.Exists(_directoryPath)) Directory.CreateDirectory(_directoryPath);
-            var randomFileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
-            var fullPath = Path.Combine(_directoryPath, randomFileName);
+            string subFolder;
+            string extension = Path.GetExtension(file.FileName).ToLower();
+
+            if (extension == ".pdf")
+                subFolder = "Document";
+            else if (extension == ".jpg")
+                subFolder = "Image";
+            else
+            {
+                return null!;
+            }
+
+            string directoryPath = Path.Combine(_directoryPath, subFolder);
+            if (!Directory.Exists(directoryPath)) Directory.CreateDirectory(directoryPath);
+
+            var randomFileName = $"{Guid.NewGuid()}{extension}";
+            var fullPath = Path.Combine(directoryPath, randomFileName);
+
             await using var stream = new FileStream(fullPath, FileMode.Create);
             await file.CopyToAsync(stream);
 

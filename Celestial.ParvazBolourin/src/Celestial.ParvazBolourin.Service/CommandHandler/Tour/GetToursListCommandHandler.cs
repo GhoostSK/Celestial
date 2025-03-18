@@ -61,7 +61,8 @@ public sealed class GetToursListCommandHandler(
                 TourText = tourText!,
                 PicturePath = picture.PicturePath,
                 Country = item.CountriesId,
-                TourStatus = item.TourStatus.ToString()
+                TourStatus = item.TourStatus.ToString(),
+                Slug = item.Slug
             });
         }
 

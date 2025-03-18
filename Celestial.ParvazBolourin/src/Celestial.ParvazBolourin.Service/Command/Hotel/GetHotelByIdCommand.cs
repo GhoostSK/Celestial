@@ -15,7 +15,7 @@ public sealed class GetHotelByIdCommandReq : BaseEntity, IRequest<GetHotelByIdCo
 public sealed class GetHotelByIdCommandRes : ServiceResContextBase
 {
     public string Name { get; set; } = string.Empty;
-    public string Price { get; set; } = string.Empty;
+    public double Price { get; set; }
     public string HotelCountry { get; set; } = string.Empty;
     public int HotelScore { get; set; }
     public string BookingUrl { get; set; } = string.Empty;
@@ -27,4 +27,10 @@ public sealed class GetHotelByIdCommandRes : ServiceResContextBase
     public string MainText { get; set; } = string.Empty;
     public string Address { get; set; } = string.Empty;
     public List<Images> HotelPictures { get; set; } = new();
+
+    //seo
+    public string MetaTitle { get; set; } = string.Empty;
+    public string MetaDescription { get; set; } = string.Empty;
+    public string MetaKeywords { get; set; } = string.Empty;
+    public string Slug { get; set; } = string.Empty;
 }
