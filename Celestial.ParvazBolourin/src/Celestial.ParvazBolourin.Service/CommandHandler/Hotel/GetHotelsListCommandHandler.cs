@@ -57,6 +57,7 @@ public sealed class GetHotelsListCommandHandler : BaseRequestHandler<GetHotelsLi
                 cancellationToken
             );
 
+            var slug = localize.SingleOrDefault(p => p.LocalKey == "Slug")?.LocalValue;
             var shortText = localize.SingleOrDefault(p => p.LocalKey == "ShortText")?.LocalValue;
             var country = _countryService.FindByIdAsync(cancellationToken, item.CountryId).Result;
             var countryName = country?.Name ?? "";
@@ -69,8 +70,8 @@ public sealed class GetHotelsListCommandHandler : BaseRequestHandler<GetHotelsLi
                 HotelReception = item.HotelReception,
                 HotelScore = item.HotelScore,
                 Name = item.Name,
-
-                ShortText = shortText
+                ShortText = shortText,
+                Slug = slug
             });
         }
 

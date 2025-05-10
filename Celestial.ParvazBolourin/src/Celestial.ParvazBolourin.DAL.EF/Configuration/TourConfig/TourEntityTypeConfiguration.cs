@@ -89,26 +89,5 @@ public class TourEntityTypeConfiguration : IEntityTypeConfiguration<Tours>
             ).IsRequired().HasColumnType("NVARCHAR(MAX)");
 
         builder.Property(p => p.RequiresVisa);
-
-        //seo
-        builder.Property(s => s.MetaTitle)
-            .HasMaxLength(200)
-            .HasDefaultValue(string.Empty)
-            .IsRequired(false);
-
-        builder.Property(s => s.MetaDescription)
-            .HasMaxLength(500)
-            .HasDefaultValue(string.Empty)
-            .IsRequired(false);
-
-        builder.Property(s => s.MetaKeywords)
-            .HasMaxLength(500)
-            .HasDefaultValue(string.Empty)
-            .IsRequired(false);
-
-        builder.Property(s => s.Slug)
-            .HasMaxLength(100)
-            .IsRequired(false);
-
     }
 }

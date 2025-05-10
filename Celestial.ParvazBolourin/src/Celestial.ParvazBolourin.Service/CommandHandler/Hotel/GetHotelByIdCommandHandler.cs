@@ -69,7 +69,10 @@ public sealed class GetHotelByIdCommandHandler : BaseRequestHandler<GetHotelById
         response.Address = localizedProperties.FirstOrDefault(p => p.LocalKey == "Address")!.LocalValue!;
         response.ShortText = localizedProperties.FirstOrDefault(p => p.LocalKey == "ShortText")!.LocalValue;
         response.MainText = localizedProperties.FirstOrDefault(p => p.LocalKey == "MainText")!.LocalValue;
-
+        response.Slug= localizedProperties.FirstOrDefault(p => p.LocalKey == "Slug")!.LocalValue;
+        response.MetaKeywords= localizedProperties.FirstOrDefault(p => p.LocalKey == "MetaKeywords")!.LocalValue;
+        response.MetaDescription= localizedProperties.FirstOrDefault(p => p.LocalKey == "MetaDescription")!.LocalValue;
+        response.MetaTitle= localizedProperties.FirstOrDefault(p => p.LocalKey == "MetaTitle")!.LocalValue;
         return response;
     }
 }

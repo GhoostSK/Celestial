@@ -22,9 +22,4 @@ public sealed class Hotels : DbBaseEntity<long>
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     public bool IsDeleted { get; set; } = false;
 
-    //seo
-    public string MetaTitle { get; set; } = string.Empty;
-    public string MetaDescription { get; set; } = string.Empty;
-    public string MetaKeywords { get; set; } = string.Empty;
-    public string Slug { get; set; } = string.Empty;
 }

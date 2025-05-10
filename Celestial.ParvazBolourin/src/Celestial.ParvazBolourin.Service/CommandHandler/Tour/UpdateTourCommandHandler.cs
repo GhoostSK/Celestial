@@ -55,48 +55,48 @@
 //        await _tourService.UnitOfWork.SaveChangesAsync(cancellationToken);
 
 //        foreach (var tourPlan in request.TourPlans)
-//        foreach (var tourPlanLocalize in tourPlan.TourPlanLocalizeData)
-//        {
-//            var localizePlan = await _localizedPropertyService.GetPropertyByLanguageAndEntityId(
-//                new GetLocalizedPropertyReq
-//                {
-//                    EntityId = tourPlan.Id,
-//                    LanguageId = tourPlanLocalize.LanguageId,
-//                    LocalKeyGroup = "TourPlan"
-//                }, cancellationToken);
-//            if (localizePlan.Count == 0)
+//            foreach (var tourPlanLocalize in tourPlan.TourPlanLocalizeData)
 //            {
-//                var plan = await _tourPlanService.FindByIdAsync(cancellationToken, tourPlan.Id);
-//                if (plan != null)
+//                var localizePlan = await _localizedPropertyService.GetPropertyByLanguageAndEntityId(
+//                    new GetLocalizedPropertyReq
+//                    {
+//                        EntityId = tourPlan.Id,
+//                        LanguageId = tourPlanLocalize.LanguageId,
+//                        LocalKeyGroup = "TourPlan"
+//                    }, cancellationToken);
+//                if (localizePlan.Count == 0)
 //                {
-//                    await _localizedPropertyService.AddAsync(new LocalizedProperty
+//                    var plan = await _tourPlanService.FindByIdAsync(cancellationToken, tourPlan.Id);
+//                    if (plan != null)
 //                    {
-//                        LanguageId = tourPlanLocalize.LanguageId,
-//                        LocalKey = nameof(tourPlanLocalize.PlanDayText),
-//                        LocalValue = tourPlanLocalize.PlanDayText,
-//                        EntityId = tourPlan.Id,
-//                        LocalKeyGroup = "TourPlan"
-//                    }, cancellationToken);
-//                    await _localizedPropertyService.AddAsync(new LocalizedProperty
-//                    {
-//                        LanguageId = tourPlanLocalize.LanguageId,
-//                        LocalKey = nameof(tourPlanLocalize.PlanText),
-//                        LocalValue = tourPlanLocalize.PlanText,
-//                        EntityId = tourPlan.Id,
-//                        LocalKeyGroup = "TourPlan"
-//                    }, cancellationToken);
+//                        await _localizedPropertyService.AddAsync(new LocalizedProperty
+//                        {
+//                            LanguageId = tourPlanLocalize.LanguageId,
+//                            LocalKey = nameof(tourPlanLocalize.PlanDayText),
+//                            LocalValue = tourPlanLocalize.PlanDayText,
+//                            EntityId = tourPlan.Id,
+//                            LocalKeyGroup = "TourPlan"
+//                        }, cancellationToken);
+//                        await _localizedPropertyService.AddAsync(new LocalizedProperty
+//                        {
+//                            LanguageId = tourPlanLocalize.LanguageId,
+//                            LocalKey = nameof(tourPlanLocalize.PlanText),
+//                            LocalValue = tourPlanLocalize.PlanText,
+//                            EntityId = tourPlan.Id,
+//                            LocalKeyGroup = "TourPlan"
+//                        }, cancellationToken);
+//                    }
+
+//                    break;
 //                }
 
-//                break;
+//                var planDayText = await _localizedPropertyService.FindByIdAsync(cancellationToken,
+//                    localizePlan.FirstOrDefault(p => p.LocalKey == nameof(tourPlanLocalize.PlanDayText))!.Id);
+//                var planText = await _localizedPropertyService.FindByIdAsync(cancellationToken,
+//                    localizePlan.FirstOrDefault(p => p.LocalKey == nameof(tourPlanLocalize.PlanText))!.Id);
+//                planDayText.LocalValue = tourPlanLocalize.PlanDayText;
+//                planText.LocalValue = tourPlanLocalize.PlanText;
 //            }
-
-//            var planDayText = await _localizedPropertyService.FindByIdAsync(cancellationToken,
-//                localizePlan.FirstOrDefault(p => p.LocalKey == nameof(tourPlanLocalize.PlanDayText))!.Id);
-//            var planText = await _localizedPropertyService.FindByIdAsync(cancellationToken,
-//                localizePlan.FirstOrDefault(p => p.LocalKey == nameof(tourPlanLocalize.PlanText))!.Id);
-//            planDayText.LocalValue = tourPlanLocalize.PlanDayText;
-//            planText.LocalValue = tourPlanLocalize.PlanText;
-//        }
 
 //        foreach (var localize in request.LocalizedProperty)
 //        {

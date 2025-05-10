@@ -61,6 +61,10 @@ public sealed class GetBlogByIdCommandHandler : BaseRequestHandler<GetBlogByIdCo
             .Where(p => p.LocalKey == "Tags")
             .Select(p => p.LocalValue)
             .ToList();
+        response.MetaDescription = localizedProperties.SingleOrDefault(p => p.LocalKey == "MetaDescription")?.LocalValue ?? string.Empty;
+        response.MetaKeywords = localizedProperties.SingleOrDefault(p => p.LocalKey == "MetaKeywords")?.LocalValue ?? string.Empty;
+        response.MetaTitle = localizedProperties.SingleOrDefault(p => p.LocalKey == "MetaTitle")?.LocalValue ?? string.Empty;
+        response.Slug = localizedProperties.SingleOrDefault(p => p.LocalKey == "Slug")?.LocalValue ?? string.Empty;
 
         return response;
     }

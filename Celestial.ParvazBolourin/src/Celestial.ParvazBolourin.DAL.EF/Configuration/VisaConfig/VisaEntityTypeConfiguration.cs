@@ -33,24 +33,5 @@ public sealed class VisaEntityTypeConfiguration : IEntityTypeConfiguration<Visas
         builder.HasIndex(p => p.Status);
 
         builder.HasIndex(p => p.Country);
-        //seo
-        builder.Property(s => s.MetaTitle)
-            .HasMaxLength(200)
-            .HasDefaultValue(string.Empty)
-            .IsRequired(false);
-
-        builder.Property(s => s.MetaDescription)
-            .HasMaxLength(500)
-            .HasDefaultValue(string.Empty)
-            .IsRequired(false);
-
-        builder.Property(s => s.MetaKeywords)
-            .HasMaxLength(500)
-            .HasDefaultValue(string.Empty)
-            .IsRequired(false);
-
-        builder.Property(s => s.Slug)
-            .HasMaxLength(100)
-            .IsRequired(false);
     }
 }

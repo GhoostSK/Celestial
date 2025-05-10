@@ -66,6 +66,11 @@ public class GetTourByIdCommandHandler : IRequestHandler<GetTourByIdCommandReq, 
         itemResponse.TourTips = localizedData.FirstOrDefault(p => p.LocalKey == nameof(GetTourByIdItemRes.TourTips))?.LocalValue ?? string.Empty;
         itemResponse.PlanShortText = localizedData.FirstOrDefault(p => p.LocalKey == nameof(GetTourByIdItemRes.PlanShortText))?.LocalValue ?? string.Empty;
         itemResponse.TourFacilities = localizedData.Where(p => p.LocalKey == nameof(GetTourByIdItemRes.TourFacilities)).Select(p => p.LocalValue).ToList();
+        itemResponse.Slug = localizedData.FirstOrDefault(p => p.LocalKey == nameof(GetTourByIdItemRes.Slug))?.LocalValue ?? string.Empty;
+        itemResponse.MetaDescription = localizedData.FirstOrDefault(p => p.LocalKey == nameof(GetTourByIdItemRes.MetaDescription))?.LocalValue ?? string.Empty;
+        itemResponse.MetaKeywords = localizedData.FirstOrDefault(p => p.LocalKey == nameof(GetTourByIdItemRes.MetaKeywords))?.LocalValue ?? string.Empty;
+        itemResponse.MetaTitle = localizedData.FirstOrDefault(p => p.LocalKey == nameof(GetTourByIdItemRes.MetaTitle))?.LocalValue ?? string.Empty;
+
 
         // دریافت تصاویر و محتوای Localized برای TourPlans
         for (var i = 0; i < tour.TourPlans.Count; i++)

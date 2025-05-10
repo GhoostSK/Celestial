@@ -29,10 +29,4 @@ public sealed class Tours : DbBaseEntity<long>
     public bool RequiresVisa { get; set; }
     public List<DateOnly> ExecDate { get; set; } = new();
     public bool IsDeleted { get; set; } = false;
-
-    //seo
-    public string MetaTitle { get; set; } = string.Empty;
-    public string MetaDescription { get; set; } = string.Empty;
-    public string MetaKeywords { get; set; } = string.Empty;
-    public string Slug { get; set; } = string.Empty;
 }

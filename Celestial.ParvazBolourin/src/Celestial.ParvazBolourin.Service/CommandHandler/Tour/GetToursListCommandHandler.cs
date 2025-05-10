@@ -50,7 +50,7 @@ public sealed class GetToursListCommandHandler(
                 ?.LocalValue;
             var tourText = localizeData
                 .FirstOrDefault(p => p.LocalKey == nameof(TourLocalizedPropertyItem.TourMainText))?.LocalValue;
-
+            var slug = localizeData.FirstOrDefault(p => p.LocalKey == nameof(TourLocalizedPropertyItem.Slug))?.LocalValue;
             var picture = await imageService.FirstOrDefaultAsync(p => p.EntityId == item.Id && p.KeyGroup == "Tour" && p.DisplayOrder == 0, cancellationToken: cancellationToken);
             data.Add(new GetToursListItemRes
             {
@@ -62,7 +62,7 @@ public sealed class GetToursListCommandHandler(
                 PicturePath = picture.PicturePath,
                 Country = item.CountriesId,
                 TourStatus = item.TourStatus.ToString(),
-                Slug = item.Slug
+                Slug = slug!
             });
         }
 

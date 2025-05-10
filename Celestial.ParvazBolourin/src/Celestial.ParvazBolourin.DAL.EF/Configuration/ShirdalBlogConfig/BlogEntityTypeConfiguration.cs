@@ -18,24 +18,5 @@ public sealed class HotelEntityTypeConfiguration : IEntityTypeConfiguration<Blog
             .IsRequired()
             .HasDefaultValue(0)
             .HasComment("Number of likes for the blog post.");
-        //seo
-        builder.Property(s => s.MetaTitle)
-            .HasMaxLength(200)
-            .HasDefaultValue(string.Empty)
-            .IsRequired(false);
-
-        builder.Property(s => s.MetaDescription)
-            .HasMaxLength(500)
-            .HasDefaultValue(string.Empty)
-            .IsRequired(false);
-
-        builder.Property(s => s.MetaKeywords)
-            .HasMaxLength(500)
-            .HasDefaultValue(string.Empty)
-            .IsRequired(false);
-
-        builder.Property(s => s.Slug)
-            .HasMaxLength(100)
-            .IsRequired(false);
     }
 }

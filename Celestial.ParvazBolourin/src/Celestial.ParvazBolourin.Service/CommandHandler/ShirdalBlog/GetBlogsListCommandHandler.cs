@@ -49,6 +49,7 @@ public sealed class GetBlogsListCommandHandler : BaseRequestHandler<GetBlogsList
             {
                 HeaderText = localize.FirstOrDefault(p => p.LocalKey == nameof(BlogItem.HeaderText))?.LocalValue!,
                 Title = localize.FirstOrDefault(p => p.LocalKey == nameof(BlogItem.Title))?.LocalValue!,
+                Slug = localize.FirstOrDefault(p => p.LocalKey == nameof(BlogItem.Slug))?.LocalValue!,
                 PicturePath = blog.PicturePath,
                 Likes = blog.Likes,
                 Id = blog.Id

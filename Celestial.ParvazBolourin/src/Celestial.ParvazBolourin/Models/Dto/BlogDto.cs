@@ -1,4 +1,7 @@
-﻿namespace Celestial.ParvazBolourin.Api.Models.Dto;
+﻿using Celestial.ParvazBolourin.Core.Attributes;
+using System.ComponentModel.DataAnnotations;
+
+namespace Celestial.ParvazBolourin.Api.Models.Dto;
 
 public sealed class AddBlogReqDto
 {
@@ -13,6 +16,16 @@ public sealed class BlogLocalizedProperty
     public List<string> Tags { get; set; } = new();
     public string HeaderText { get; set; } = string.Empty;
     public string MainText { get; set; } = string.Empty;
+    [MaxLength(255)]
+    public string MetaTitle { get; set; } = string.Empty;
+
+    [MaxLength(500)]
+    public string MetaDescription { get; set; } = string.Empty;
+
+    [MaxLength(1000)]
+    public string MetaKeywords { get; set; } = string.Empty;
+    [Slug]
+    public string Slug { get; set; } = string.Empty;
 }
 
 public sealed class GetBlogsListReqDto

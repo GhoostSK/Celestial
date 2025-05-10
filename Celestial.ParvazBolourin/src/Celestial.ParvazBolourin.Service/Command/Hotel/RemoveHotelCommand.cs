@@ -6,7 +6,7 @@ namespace Celestial.ParvazBolourin.Service.Command.Hotel;
 
 public sealed class RemoveHotelCommandReq : BaseEntity, IRequest<RemoveHotelCommandRes>
 {
-    public int HotelId { get; set; }
+    public long HotelId { get; set; }
 }
 
 public sealed class RemoveHotelCommandRes : ServiceResContextBase

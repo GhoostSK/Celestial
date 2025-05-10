@@ -116,7 +116,39 @@ public sealed class AddTourCommandHandler : BaseRequestHandler<AddTourCommandReq
                     EntityId = tour.Id,
                     LocalKey = nameof(localizedItem.TourTips),
                     LocalValue = localizedItem.TourTips
-                }
+                },
+                new LocalizedProperty
+                {
+                    LanguageId = localizedItem.LanguageId,
+                    LocalKeyGroup = "Tour",
+                    EntityId = tour.Id,
+                    LocalKey = nameof(localizedItem.MetaKeywords),
+                    LocalValue = localizedItem.MetaKeywords
+                },
+                new LocalizedProperty
+                {
+                    LanguageId = localizedItem.LanguageId,
+                    LocalKeyGroup = "Tour",
+                    EntityId = tour.Id,
+                    LocalKey = nameof(localizedItem.MetaTitle),
+                    LocalValue = localizedItem.MetaTitle
+                },
+                new LocalizedProperty
+                {
+                    LanguageId = localizedItem.LanguageId,
+                    LocalKeyGroup = "Tour",
+                    EntityId = tour.Id,
+                    LocalKey = nameof(localizedItem.Slug),
+                    LocalValue = localizedItem.Slug
+                },
+                new LocalizedProperty
+                {
+                    LanguageId = localizedItem.LanguageId,
+                    LocalKeyGroup = "Tour",
+                    EntityId = tour.Id,
+                    LocalKey = nameof(localizedItem.MetaDescription),
+                    LocalValue = localizedItem.MetaDescription
+                },
             });
 
             // افزودن تسهیلات تور

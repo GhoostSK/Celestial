@@ -1,16 +1,25 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Celestial.ParvazBolourin.Core.Attributes;
+using System.ComponentModel.DataAnnotations;
 
 namespace Celestial.ParvazBolourin.Core.DAL.Repositories.Hotel.Model;
 
 public sealed class HotelServiceLocalizedProperty
 {
-    [Required] public int LanguageId { get; set; }
+    [Required]
+    public int LanguageId { get; set; }
+    public string ShortText { get; set; } = string.Empty;
+    public string MainText { get; set; } = string.Empty;
+    public string Address { get; set; } = string.Empty;
+    [MaxLength(255)]
+    public string MetaTitle { get; set; } = string.Empty;
 
-    [Required] public string ShortText { get; set; } = string.Empty;
+    [MaxLength(500)]
+    public string MetaDescription { get; set; } = string.Empty;
 
-    [Required] public string MainText { get; set; } = string.Empty;
-
-    [Required] public string Address { get; set; } = string.Empty;
+    [MaxLength(1000)]
+    public string MetaKeywords { get; set; } = string.Empty;
+    [Slug]
+    public string Slug { get; set; } = string.Empty;
 }
 
 public class GetAllHotelsServiceRes
@@ -23,7 +32,5 @@ public class GetAllHotelsServiceRes
     public string HotelReception { get; set; } = string.Empty;
     public string? ShortText { get; set; }
     public string ImagePath { get; set; } = string.Empty;
-
-    //seo
-    public string Slug { get; set; } = string.Empty;
+    public string? Slug { get; set; } = string.Empty;
 }

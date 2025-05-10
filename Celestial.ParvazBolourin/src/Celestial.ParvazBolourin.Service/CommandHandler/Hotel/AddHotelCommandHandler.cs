@@ -75,6 +75,38 @@ public sealed class AddHotelCommandHandler : BaseRequestHandler<AddHotelCommandR
                 LocalValue = item.Address,
                 LocalKeyGroup = "Hotel"
             });
+            localizedProperties.Add(new LocalizedProperty
+            {
+                EntityId = hotelId,
+                LanguageId = item.LanguageId,
+                LocalKey = nameof(item.MetaDescription),
+                LocalValue = item.MetaDescription,
+                LocalKeyGroup = "Hotel"
+            });
+            localizedProperties.Add(new LocalizedProperty
+            {
+                EntityId = hotelId,
+                LanguageId = item.LanguageId,
+                LocalKey = nameof(item.MetaKeywords),
+                LocalValue = item.MetaKeywords,
+                LocalKeyGroup = "Hotel"
+            });
+            localizedProperties.Add(new LocalizedProperty
+            {
+                EntityId = hotelId,
+                LanguageId = item.LanguageId,
+                LocalKey = nameof(item.MetaTitle),
+                LocalValue = item.MetaTitle,
+                LocalKeyGroup = "Hotel"
+            }); 
+            localizedProperties.Add(new LocalizedProperty
+            {
+                EntityId = hotelId,
+                LanguageId = item.LanguageId,
+                LocalKey = nameof(item.Slug),
+                LocalValue = item.Slug,
+                LocalKeyGroup = "Hotel"
+            });
         }
 
         await _localizedProperty.BulkInsertAsync(localizedProperties, cancellationToken: cancellationToken);

@@ -69,6 +69,10 @@ public sealed class TourLocalizedPropertyItem
     public string TourTips { get; set; } = string.Empty;
     public string PlanShortText { get; set; } = string.Empty;
     public List<PlanTourItem> TourPlans { get; set; } = new();
+    public string MetaTitle { get; set; } = string.Empty;
+    public string MetaDescription { get; set; } = string.Empty;
+    public string MetaKeywords { get; set; } = string.Empty;
+    public string Slug { get; set; } = string.Empty;
 }
 
 public sealed class PlanTourItem

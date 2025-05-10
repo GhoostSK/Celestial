@@ -65,7 +65,39 @@ public sealed class AddBlogCommandHandler : BaseRequestHandler<AddBlogCommandReq
                     EntityId = blogId,
                     LocalKeyGroup = "Blog",
                     LocalValue = item.MainText
-                }
+                },
+                new LocalizedProperty
+                {
+                    LanguageId = item.LanguageId,
+                    LocalKey = nameof(item.Slug),
+                    EntityId = blogId,
+                    LocalKeyGroup = "Blog",
+                    LocalValue = item.Slug
+                },
+                new LocalizedProperty
+                {
+                    LanguageId = item.LanguageId,
+                    LocalKey = nameof(item.MetaKeywords),
+                    EntityId = blogId,
+                    LocalKeyGroup = "Blog",
+                    LocalValue = item.MetaKeywords
+                },
+                new LocalizedProperty
+                {
+                    LanguageId = item.LanguageId,
+                    LocalKey = nameof(item.MetaDescription),
+                    EntityId = blogId,
+                    LocalKeyGroup = "Blog",
+                    LocalValue = item.MetaDescription
+                },
+                new LocalizedProperty
+                {
+                    LanguageId = item.LanguageId,
+                    LocalKey = nameof(item.MetaTitle),
+                    EntityId = blogId,
+                    LocalKeyGroup = "Blog",
+                    LocalValue = item.MetaTitle
+                },
             ]);
 
             foreach (var tag in item.Tags)

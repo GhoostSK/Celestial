@@ -34,10 +34,13 @@ public sealed class HotelDto
     [Required]
     public string HotelReception { get; set; } = string.Empty;
     public List<PictureItem> Picture { get; set; }
-
     [Required]
     public List<HotelServiceLocalizedProperty> LanguageData { get; set; }
 }
+
+
+
+
 
 public sealed class HotelByIdReqDto
 {
