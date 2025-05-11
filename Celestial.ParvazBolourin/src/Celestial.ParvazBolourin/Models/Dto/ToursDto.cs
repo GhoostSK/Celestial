@@ -72,3 +72,8 @@ public sealed class RemoveTourByIdReqDto
 {
     [Required] public int TourId { get; set; }
 }
+public class GetTourFeaturedRequestDto
+{
+    public int LanguageId { get; set; }
+    public int TopCount { get; set; }
+}

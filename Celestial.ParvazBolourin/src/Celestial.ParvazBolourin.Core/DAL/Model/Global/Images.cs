@@ -6,6 +6,6 @@ public class Images : DbBaseEntity<long>
 {
     public string KeyGroup { get; set; } = string.Empty;
     public long EntityId { get; set; }
-    public string PicturePath { get; set; } = String.Empty;
+    public string PicturePath { get; set; } = string.Empty;
     public int DisplayOrder { get; set; }
 }

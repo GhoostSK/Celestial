@@ -559,6 +559,9 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<long>("Views")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
 
                     b.ToTable("Tours", (string)null);

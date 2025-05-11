@@ -29,4 +29,14 @@ public sealed class BlogRepository(MainDbContext dbContext) : RepositoryBase<Blo
         await UnitOfWork.SaveChangesAsync(cancellationToken);
         return blog.Id;
     }
+
+    public async Task<List<Blog>> GetTopBlogsByLikes(int count, CancellationToken cancellationToken)
+    {
+        return await TableNoTracking
+            .IgnoreQueryFilters()
+            .Where(p => p.IsDeleted == false)
+            .OrderByDescending(p => p.Likes)
+            .Take(count)
+            .ToListAsync(cancellationToken);
+    }
 }

@@ -18,8 +18,7 @@ public class ShirdalBlogController : BaseController
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetBlogsId([FromQuery] GetBlogsByIdReqDto request,
-        CancellationToken cancellationToken)
+    public async Task<IActionResult> GetBlogsId([FromQuery] GetBlogsByIdReqDto request, CancellationToken cancellationToken)
     {
         var response =
             await Mediator.Send(new GetBlogByIdCommandReq { LanguageId = request.LanguageId, Id = request.Id },
@@ -27,5 +26,22 @@ public class ShirdalBlogController : BaseController
 
         if (response.HasError) return BadRequest(response.Error);
         return Ok(response);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetTopBlogs([FromQuery] int topCount, [FromQuery] int languageId, CancellationToken cancellationToken)
+    {
+        var command = new GetTopBlogsCommandReq
+        {
+            TopCount = topCount,
+            LanguageId = languageId
+        };
+
+        var result = await Mediator.Send(command, cancellationToken);
+
+        if (result.HasError)
+            return BadRequest(result.Error);
+
+        return Ok(result.Blogs);
     }
 }

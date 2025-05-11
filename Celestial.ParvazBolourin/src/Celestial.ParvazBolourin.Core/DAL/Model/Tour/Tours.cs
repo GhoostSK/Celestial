@@ -28,5 +28,7 @@ public sealed class Tours : DbBaseEntity<long>
     public int DayCount { get; set; }
     public bool RequiresVisa { get; set; }
     public List<DateOnly> ExecDate { get; set; } = new();
+    public long Views { get; set; }
     public bool IsDeleted { get; set; } = false;
+
 }

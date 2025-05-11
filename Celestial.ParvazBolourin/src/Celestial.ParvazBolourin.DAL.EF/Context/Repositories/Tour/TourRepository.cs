@@ -37,11 +37,36 @@ public class TourRepository(MainDbContext dbContext) : RepositoryBase<Tours>(dbC
 
     public async Task<Tours?> GetTourById(long tourId, CancellationToken cancellationToken)
     {
-        return await Table
+        var tour = await Table
             .IgnoreQueryFilters()
             .Include(p => p.PrimaryTransport)
             .Include(p => p.TransPorts)
             .Include(p => p.TourPlans)
             .FirstOrDefaultAsync(p => p.Id == tourId && !p.IsDeleted, cancellationToken);
+
+        if (tour != null)
+        {
+            tour.Views++;
+            await dbContext.SaveChangesAsync(cancellationToken);
+        }
+
+        return tour;
+    }
+
+    public async Task<List<Tours>> GetTopToursByViews(int topCount, CancellationToken cancellationToken)
+    {
+        var query = TableNoTracking
+            .Where(p => !p.IsDeleted)
+            .OrderByDescending(p => p.Views); // مرتب‌سازی براساس Views
+
+        var topTours = await query.Take(topCount).ToListAsync(cancellationToken);
+
+        // اگر تعداد تورها کمتر از 6 باشد، همه تورها را برمی‌گردانیم
+        if (topTours.Count < topCount)
+        {
+            topTours = await query.ToListAsync(cancellationToken); // در صورتی که کمتر از 6 باشد، همه تورها را می‌گیریم
+        }
+
+        return topTours;
     }
 }

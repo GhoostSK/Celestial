@@ -8,4 +8,5 @@ public interface ITourService : IRepositoryEF<Tours>, IScopeLifetime
 {
     public Task<List<Tours>> GetToursList(GetTourListReq model, CancellationToken cancellationToken);
     public Task<Tours?> GetTourById(long tourId, CancellationToken cancellationToken);
+    public Task<List<Tours>> GetTopToursByViews(int topCount, CancellationToken cancellationToken);
 }

@@ -1,5 +1,4 @@
 ﻿using Celestial.ParvazBolourin.Api.Models.Dto;
-using Celestial.ParvazBolourin.Core.DAL.Model.Tour;
 using Celestial.ParvazBolourin.Service.Command.Tour;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
@@ -31,6 +30,15 @@ public class TourController : BaseController
         if (response.HasError)
             return BadRequest(response.Error);
 
+        return Ok(response);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetFeaturedTours([FromQuery] GetTourFeaturedRequestDto request, CancellationToken cancellationToken)
+    {
+        var response = await Mediator.Send(new GetTourFeaturedCommandReq{ LanguageId = request.LanguageId, TopCount = request.TopCount},cancellationToken);
+        if (response.HasError)
+            return BadRequest(response.Error);
         return Ok(response);
     }
 }

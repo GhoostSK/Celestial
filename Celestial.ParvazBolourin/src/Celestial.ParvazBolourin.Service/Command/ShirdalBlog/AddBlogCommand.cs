@@ -27,3 +27,4 @@ public sealed class BlogLocalizedProperty
     public string MetaKeywords { get; set; } = string.Empty;
     public string Slug { get; set; } = string.Empty;
 }
+

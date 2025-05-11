@@ -89,5 +89,6 @@ public class TourEntityTypeConfiguration : IEntityTypeConfiguration<Tours>
             ).IsRequired().HasColumnType("NVARCHAR(MAX)");
 
         builder.Property(p => p.RequiresVisa);
+        builder.Property(p => p.Views).HasColumnType("bigint");
     }
 }
