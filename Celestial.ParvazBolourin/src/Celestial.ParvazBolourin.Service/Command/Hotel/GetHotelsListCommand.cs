@@ -22,4 +22,6 @@ public sealed class GetHotelsListCommandReq : BaseEntity, IRequest<GetHotelsList
 public sealed class GetHotelsListCommandRes : ServiceResContextBase
 {
     public List<GetAllHotelsServiceRes> Items { get; set; } = new();
+    public double MinPrice { get; set; }
+    public double MaxPrice { get; set; }
 }

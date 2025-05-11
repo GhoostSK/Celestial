@@ -31,7 +31,7 @@ public sealed class GetHotelsListCommandHandler : BaseRequestHandler<GetHotelsLi
     }
 
     protected override async Task<GetHotelsListCommandRes> HandleCore(GetHotelsListCommandReq request,
-        CancellationToken cancellationToken)
+    CancellationToken cancellationToken)
     {
         var languages = await _languageService.GetLanguages(cancellationToken);
         if (!languages.Any(p => p.Id == request.LanguageId))
@@ -43,9 +43,17 @@ public sealed class GetHotelsListCommandHandler : BaseRequestHandler<GetHotelsLi
         var response = new GetHotelsListCommandRes();
         var hotels = await _hotelRepository.GetHotelsList(request.Adapt<GetHotelsListReq>(), cancellationToken);
 
+        if (!hotels.Any())
+            return response;
+
+        response.MinPrice = hotels.Min(h => h.Price);
+        response.MaxPrice = hotels.Max(h => h.Price);
+
         foreach (var item in hotels)
         {
-            var picture = await _imageService.FirstOrDefaultAsync(p => p.KeyGroup == "Hotel" && p.EntityId == item.Id, cancellationToken: cancellationToken);
+            var picture = await _imageService.FirstOrDefaultAsync(
+                p => p.KeyGroup == "Hotel" && p.EntityId == item.Id,
+                cancellationToken: cancellationToken);
 
             var localize = await _localizedProperty.GetPropertyByLanguageAndEntityId(
                 new GetLocalizedPropertyReq
@@ -59,12 +67,13 @@ public sealed class GetHotelsListCommandHandler : BaseRequestHandler<GetHotelsLi
 
             var slug = localize.SingleOrDefault(p => p.LocalKey == "Slug")?.LocalValue;
             var shortText = localize.SingleOrDefault(p => p.LocalKey == "ShortText")?.LocalValue;
-            var country = _countryService.FindByIdAsync(cancellationToken, item.CountryId).Result;
+            var country = await _countryService.FindByIdAsync(cancellationToken, item.CountryId);
             var countryName = country?.Name ?? "";
+
             response.Items.Add(new GetAllHotelsServiceRes
             {
                 HotelId = item.Id,
-                ImagePath = picture.PicturePath,
+                ImagePath = picture?.PicturePath,
                 BookingUrl = item.BookingUrl,
                 HotelCountry = countryName,
                 HotelReception = item.HotelReception,
@@ -77,4 +86,5 @@ public sealed class GetHotelsListCommandHandler : BaseRequestHandler<GetHotelsLi
 
         return response;
     }
+
 }
