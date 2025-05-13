@@ -23,6 +23,8 @@ public sealed class GetToursListCommandReq : BaseEntity, IRequest<GetToursListCo
 
 public sealed class GetToursListCommandRes : ServiceResContextBase
 {
+    public double MinPrice { get; set; }
+    public double MaxPrice { get; set; }
     public List<GetToursListItemRes> Items { get; set; } = new();
 }
 

@@ -13,25 +13,29 @@ public sealed class GetBlogsListCommandHandler : BaseRequestHandler<GetBlogsList
     private readonly ILanguageService _languageService;
     private readonly ILocalizedPropertyService _localizedPropertyService;
 
-    public GetBlogsListCommandHandler(ILocalizedPropertyService localizedProperty,
-        ILanguageService languageService, IBlogService blogService)
+    public GetBlogsListCommandHandler(
+        ILocalizedPropertyService localizedPropertyService,
+        ILanguageService languageService,
+        IBlogService blogService)
     {
-        _localizedPropertyService = localizedProperty;
+        _localizedPropertyService = localizedPropertyService;
         _languageService = languageService;
         _blogService = blogService;
     }
 
-    protected override async Task<GetBlogsListCommandRes> HandleCore(GetBlogsListCommandReq request,
-        CancellationToken cancellationToken)
+    protected override async Task<GetBlogsListCommandRes> HandleCore(GetBlogsListCommandReq request, CancellationToken cancellationToken)
     {
         var languages = await _languageService.GetLanguages(cancellationToken);
         if (!languages.Any(p => p.Id == request.LanguageId))
+        {
             return new GetBlogsListCommandRes
             {
                 Error = new ValidationError("LA400", "invalid Language")
             };
+        }
 
-        var blogs = await _blogService.GetBlogsList(cancellationToken);
+        var blogs = await _blogService.GetBlogsList(request.CategoryIds, cancellationToken);
+
         var response = new GetBlogsListCommandRes();
         foreach (var blog in blogs)
         {
@@ -42,17 +46,15 @@ public sealed class GetBlogsListCommandHandler : BaseRequestHandler<GetBlogsList
                     LanguageId = request.LanguageId,
                     LocalKeyGroup = "Blog"
                 }, cancellationToken);
-            var tags = new List<string>();
-
 
             response.Items.Add(new BlogItem
             {
-                HeaderText = localize.FirstOrDefault(p => p.LocalKey == nameof(BlogItem.HeaderText))?.LocalValue!,
-                Title = localize.FirstOrDefault(p => p.LocalKey == nameof(BlogItem.Title))?.LocalValue!,
-                Slug = localize.FirstOrDefault(p => p.LocalKey == nameof(BlogItem.Slug))?.LocalValue!,
+                Id = blog.Id,
                 PicturePath = blog.PicturePath,
                 Likes = blog.Likes,
-                Id = blog.Id
+                HeaderText = localize.FirstOrDefault(p => p.LocalKey == nameof(BlogItem.HeaderText))?.LocalValue ?? "",
+                Title = localize.FirstOrDefault(p => p.LocalKey == nameof(BlogItem.Title))?.LocalValue ?? "",
+                Slug = localize.FirstOrDefault(p => p.LocalKey == nameof(BlogItem.Slug))?.LocalValue ?? ""
             });
         }
 

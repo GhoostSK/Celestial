@@ -18,10 +18,15 @@ public sealed class GetBlogByIdCommandRes : ServiceResContextBase
     public string MainText { get; set; } = string.Empty;
     public List<string> Tags { get; set; } = new();
     public int Likes { get; set; }
-
-    //seo
+    public List<BlogCategoryDto> BlogCategories { get; set; } = new();
+ 
     public string MetaTitle { get; set; } = string.Empty;
     public string MetaDescription { get; set; } = string.Empty;
     public string MetaKeywords { get; set; } = string.Empty;
     public string Slug { get; set; } = string.Empty;
+}
+
+public sealed class BlogCategoryDto
+{
+    public long Id { get; set; }
 }

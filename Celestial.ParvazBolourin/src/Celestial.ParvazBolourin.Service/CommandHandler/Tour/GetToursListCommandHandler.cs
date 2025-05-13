@@ -16,7 +16,7 @@ public sealed class GetToursListCommandHandler(
     : BaseRequestHandler<GetToursListCommandReq, GetToursListCommandRes>
 {
     protected override async Task<GetToursListCommandRes> HandleCore(GetToursListCommandReq request,
-        CancellationToken cancellationToken)
+     CancellationToken cancellationToken)
     {
         var languages = await languageService.GetLanguages(cancellationToken);
         if (!languages.Any(p => p.Id == request.LanguageId))
@@ -33,6 +33,10 @@ public sealed class GetToursListCommandHandler(
             {
                 Error = new ValidationError("T404", "Tour Not Found")
             };
+
+        // حساب کردن MinPrice و MaxPrice
+        response.MinPrice = tourData.Min(t => t.Price);
+        response.MaxPrice = tourData.Max(t => t.Price);
 
         var data = new List<GetToursListItemRes>();
 
@@ -52,6 +56,7 @@ public sealed class GetToursListCommandHandler(
                 .FirstOrDefault(p => p.LocalKey == nameof(TourLocalizedPropertyItem.TourMainText))?.LocalValue;
             var slug = localizeData.FirstOrDefault(p => p.LocalKey == nameof(TourLocalizedPropertyItem.Slug))?.LocalValue;
             var picture = await imageService.FirstOrDefaultAsync(p => p.EntityId == item.Id && p.KeyGroup == "Tour" && p.DisplayOrder == 0, cancellationToken: cancellationToken);
+
             data.Add(new GetToursListItemRes
             {
                 Id = item.Id,
@@ -69,4 +74,5 @@ public sealed class GetToursListCommandHandler(
         response.Items = data;
         return response;
     }
+
 }

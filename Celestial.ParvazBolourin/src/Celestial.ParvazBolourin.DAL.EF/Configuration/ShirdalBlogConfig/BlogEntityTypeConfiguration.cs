@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Celestial.ParvazBolourin.DAL.EF.Configuration.ShirdalBlogConfig;
 
-public sealed class HotelEntityTypeConfiguration : IEntityTypeConfiguration<Blog>
+public sealed class BlogEntityTypeConfiguration : IEntityTypeConfiguration<Blog>
 {
     public void Configure(EntityTypeBuilder<Blog> builder)
     {
@@ -18,5 +18,15 @@ public sealed class HotelEntityTypeConfiguration : IEntityTypeConfiguration<Blog
             .IsRequired()
             .HasDefaultValue(0)
             .HasComment("Number of likes for the blog post.");
+
+        builder.Property(p => p.IsDeleted)
+            .IsRequired()
+            .HasDefaultValue(false);
+
+        // Many-to-Many relation
+        builder
+            .HasMany(p => p.Categories)
+            .WithMany(p => p.Blogs)
+            .UsingEntity(j => j.ToTable("Blog_BlogCategory"));
     }
 }

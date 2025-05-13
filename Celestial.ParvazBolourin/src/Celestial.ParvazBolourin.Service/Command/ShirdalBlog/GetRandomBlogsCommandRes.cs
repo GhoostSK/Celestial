@@ -23,6 +23,5 @@ public class TopBlogDto
     public string PicturePath { get; set; } = string.Empty;
     public string Title { get; set; } = string.Empty;
     public string HeaderText { get; set; } = string.Empty;
-    public string Slug { get; set; } = string.Empty;
     public List<string> Tags { get; set; } = new();
 }

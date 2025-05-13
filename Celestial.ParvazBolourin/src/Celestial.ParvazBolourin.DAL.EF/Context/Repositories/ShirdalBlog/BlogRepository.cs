@@ -15,11 +15,17 @@ public sealed class BlogRepository(MainDbContext dbContext) : RepositoryBase<Blo
             .FirstOrDefaultAsync(p => p.Id == id && p.IsDeleted == false, cancellationToken);
     }
 
-    public async Task<List<Blog>> GetBlogsList(CancellationToken cancellationToken)
+    public async Task<List<Blog>> GetBlogsList(List<long> categoryIds, CancellationToken cancellationToken)
     {
-        return await TableNoTracking
+        var query = TableNoTracking
             .IgnoreQueryFilters()
-            .Where(p => p.IsDeleted == false)
+            .Where(p => !p.IsDeleted);
+
+        if (categoryIds.Any())
+            query = query.Where(p => p.Categories.Any(c => categoryIds.Contains(c.Id)));
+
+        return await query
+            .Include(p => p.Categories)
             .ToListAsync(cancellationToken);
     }
 
@@ -39,4 +45,5 @@ public sealed class BlogRepository(MainDbContext dbContext) : RepositoryBase<Blo
             .Take(count)
             .ToListAsync(cancellationToken);
     }
+
 }
