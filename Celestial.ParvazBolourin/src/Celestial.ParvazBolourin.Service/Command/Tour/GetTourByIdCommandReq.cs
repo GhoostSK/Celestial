@@ -8,10 +8,10 @@ namespace Celestial.ParvazBolourin.Service.Command.Tour;
 
 public class GetTourByIdCommandReq : BaseEntity, IRequest<GetTourByIdCommandRes>
 {
-    public int TourId { get; set; }
+    public long TourId { get; set; }
     public int LanguageId { get; set; }
+    public string? Slug { get; set; } // اضافه شد
 }
-
 public sealed class GetTourByIdCommandRes : ServiceResContextBase
 {
     public GetTourByIdItemRes Item { get; set; } = new();

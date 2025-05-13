@@ -26,7 +26,7 @@ public class HotelController : BaseController
     {
         var response =
             await Mediator.Send(
-                new GetHotelByIdCommandReq { LanguageId = request.LanguageId, HotelId = request.HotelId },
+                new GetHotelByIdCommandReq { LanguageId = request.LanguageId, HotelId = request.HotelId,Slug = request.Slug},
                 cancellationToken);
         if (response.HasError)
             return BadRequest(response.Error);

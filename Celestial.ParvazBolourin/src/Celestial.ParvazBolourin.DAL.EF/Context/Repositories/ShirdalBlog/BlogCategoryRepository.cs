@@ -14,4 +14,10 @@ public sealed class BlogCategoryRepository(MainDbContext dbContext) : Repository
             .IgnoreQueryFilters()
             .Where(p => !p.IsDeleted).ToListAsync(cancellationToken: cancellationToken);
     }
+    public async Task<List<BlogCategory>> GetBlogCategoriesByIdsAsync(List<long> ids, CancellationToken cancellationToken)
+    {
+        return await TableNoTracking.IgnoreQueryFilters()
+            .Where(x => ids.Contains(x.Id))
+            .ToListAsync(cancellationToken);
+    }
 }

@@ -23,6 +23,7 @@ public sealed class AddVisaReqDto
     [MaxLength(1000)]
     public string MetaKeywords { get; set; } = string.Empty;
     [Slug]
+
     public string Slug { get; set; } = string.Empty;
 }
 

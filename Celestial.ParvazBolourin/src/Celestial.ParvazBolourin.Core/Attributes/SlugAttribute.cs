@@ -8,12 +8,11 @@ public class SlugAttribute : ValidationAttribute
 {
     public override bool IsValid(object? value)
     {
-        if (value is string strValue)
-        {
-            string slug = GenerateSlug(strValue);
-            return slug == strValue; // مقدار باید از قبل به‌صورت slug باشد
-        }
-        return false;
+        if (value is not string strValue || string.IsNullOrWhiteSpace(strValue))
+            return false;
+
+        string slug = GenerateSlug(strValue);
+        return slug == strValue;
     }
 
     public override string FormatErrorMessage(string name)

@@ -12,7 +12,7 @@ public sealed class GetTourFeaturedCommandReq : BaseEntity, IRequest<GetTourFeat
 }
 public sealed class GetTourFeaturedCommandRes : ServiceResContextBase
 {
-    public List<GetTourFeaturedItemDto> Data { get; set; }
+    public List<GetTourFeaturedItemDto> Data { get; set; } = new();
 
 }
 

@@ -1,6 +1,8 @@
 ﻿using Celestial.ParvazBolourin.Core.DAL.Model.Global;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Visa;
+using Celestial.ParvazBolourin.Service.Command.Hotel;
+using Celestial.ParvazBolourin.Service.Command.Tour;
 using Celestial.ParvazBolourin.Service.Command.Visa;
 using MofidApp.SharedKernel.Common.Model;
 using MofidApp.SharedKernel.Domain.Services;
@@ -31,7 +33,17 @@ public sealed class AddVisaCommandHandler : BaseRequestHandler<AddVisaCommandReq
                 {
                     Error = new ValidationError("LA400", "Invalid Language")
                 };
-
+        //foreach (var localizeSlug in request.VisaLocalizedProperty)
+        //{
+        //    var checkSlug = await _localizedPropertyService.FirstOrDefaultAsync(p => p.LocalKeyGroup == "Visa" && p.LocalKey == "Slug" && p.LocalValue == localizeSlug.Slug && p.LanguageId == localizeSlug.LanguageId, cancellationToken: cancellationToken);
+        //    if (checkSlug != null)
+        //    {
+        //        return new AddVisaCommandRes()
+        //        {
+        //            Error = ValidationError.UnhandledValidationError("S403", $"Slug Already exist({checkSlug.LanguageId})")
+        //        };
+        //    }
+        //}
         var visa = request.Visa;
         var visaId = await _visaService.AddVisa(visa, cancellationToken);
 

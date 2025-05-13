@@ -1,8 +1,12 @@
-﻿using Celestial.ParvazBolourin.Core.DAL.Repositories.Geo;
+﻿using Celestial.ParvazBolourin.Core.DAL.Model.Hotel;
+using Celestial.ParvazBolourin.Core.DAL.Model.ShirdalBlog;
+using Celestial.ParvazBolourin.Core.DAL.Repositories.Geo;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global.Model;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Hotel;
+using Celestial.ParvazBolourin.Core.DAL.Repositories.ShirdalBlog;
 using Celestial.ParvazBolourin.Service.Command.Hotel;
+using Celestial.ParvazBolourin.Service.Command.ShirdalBlog;
 using Mapster;
 using MofidApp.SharedKernel.Common.Model;
 using MofidApp.SharedKernel.Domain.Services;
@@ -31,22 +35,42 @@ public sealed class GetHotelByIdCommandHandler : BaseRequestHandler<GetHotelById
 
     protected override async Task<GetHotelByIdCommandRes> HandleCore(GetHotelByIdCommandReq request, CancellationToken cancellationToken)
     {
-        var languages = await _languageService.GetLanguages(cancellationToken);
-        if (!languages.Any(p => p.Id == request.LanguageId))
-            return new GetHotelByIdCommandRes
-            {
-                Error = new ValidationError("LA400", "invalid Language")
-            };
+        var hotel = new Hotels();
+        if (request.HotelId != 0)
+        {
+            var languages = await _languageService.GetLanguages(cancellationToken);
+            if (!languages.Any(p => p.Id == request.LanguageId))
+                return new GetHotelByIdCommandRes
+                {
+                    Error = new ValidationError("LA400", "invalid Language")
+                };
+            hotel = await _hotelService.GetHotelById(request.HotelId, cancellationToken: cancellationToken);
+            if (hotel == null)
+                return new GetHotelByIdCommandRes
+                {
+                    Error = ValidationError.UnhandledValidationError("406", "Hotel Not Found")
+                };
 
-        var hotel = await _hotelService.GetHotelById(request.HotelId, cancellationToken: cancellationToken);
-        if (hotel == null)
-            return new GetHotelByIdCommandRes
-            {
-                Error = ValidationError.UnhandledValidationError("406", "Hotel Not Found")
-            };
+        }
+        else if (!string.IsNullOrEmpty(request.Slug))
+        {
+            var localizedProperty = await _localizedPropertyService.FirstOrDefaultAsync(p =>
+                p.LocalKey == "Slug" && p.LocalValue == request.Slug && p.LocalKeyGroup == "Hotel", cancellationToken: cancellationToken);
+
+            if (localizedProperty == null)
+                return new GetHotelByIdCommandRes
+                {
+                    Error = new ValidationError("404", "Hotel not found with slug")
+                };
+
+            hotel = await _hotelService.GetHotelById(localizedProperty.EntityId, cancellationToken);
+            request.LanguageId = localizedProperty.LanguageId;
+            request.HotelId = localizedProperty.EntityId;
+        }
+
 
         var response = hotel.Adapt<GetHotelByIdCommandRes>();
-        response.HotelCountry = _countryService.FindByIdAsync(cancellationToken, hotel.CountryId).Result.Name;
+        response.HotelCountry = _countryService.FindByIdAsync(cancellationToken, hotel!.CountryId).Result.Name;
 
         response.HotelPictures = await _imageService.GetImagesByEntityId(hotel.Id, "Hotel", cancellationToken);
 

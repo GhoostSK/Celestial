@@ -33,6 +33,17 @@ public sealed class AddHotelCommandHandler : BaseRequestHandler<AddHotelCommandR
                 {
                     Error = new ValidationError("LA400", "invalid Language")
                 };
+        foreach (var localizeSlug in request.HotelLocalizeProperty)
+        {
+            var checkSlug = await _localizedProperty.FirstOrDefaultAsync(p => p.LocalKeyGroup == "Hotel" && p.LocalKey == "Slug" && p.LocalValue == localizeSlug.Slug && p.LanguageId == localizeSlug.LanguageId, cancellationToken: cancellationToken);
+            if (checkSlug != null)
+            {
+                return new AddHotelCommandRes()
+                {
+                    Error = ValidationError.UnhandledValidationError("S403", $"Slug Already exist({checkSlug.LanguageId})")
+                };
+            }
+        }
 
         var data = request.Hotel;
 
@@ -98,7 +109,7 @@ public sealed class AddHotelCommandHandler : BaseRequestHandler<AddHotelCommandR
                 LocalKey = nameof(item.MetaTitle),
                 LocalValue = item.MetaTitle,
                 LocalKeyGroup = "Hotel"
-            }); 
+            });
             localizedProperties.Add(new LocalizedProperty
             {
                 EntityId = hotelId,

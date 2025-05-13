@@ -25,5 +25,4 @@ public class ShirdalBlogCategoryController : BaseController
         var result = await Mediator.Send(new DeleteBlogCategoryCommandReq { Id = id });
         return Ok(result);
     }
-
 }

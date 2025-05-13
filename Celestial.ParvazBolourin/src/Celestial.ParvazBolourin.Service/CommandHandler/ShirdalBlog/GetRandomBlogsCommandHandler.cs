@@ -50,6 +50,7 @@ public sealed class GetTopBlogsCommandHandler : BaseRequestHandler<GetTopBlogsCo
                 PicturePath = blog.PicturePath,
                 Title = localizedProps.FirstOrDefault(p => p.LocalKey == "Title")?.LocalValue ?? string.Empty,
                 HeaderText = localizedProps.FirstOrDefault(p => p.LocalKey == "HeaderText")?.LocalValue ?? string.Empty,
+                Slug = localizedProps.FirstOrDefault(p => p.LocalKey == "Slug")?.LocalValue ?? string.Empty,
                 Tags = localizedProps.Where(p => p.LocalKey == "Tags").Select(p => p.LocalValue).ToList()
             });
         }

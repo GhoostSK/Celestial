@@ -23,10 +23,10 @@ public class ShirdalBlogController : BaseController
 
 
     [HttpGet]
-    public async Task<IActionResult> GetBlogsId([FromQuery] GetBlogsByIdReqDto request, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetBlogById([FromQuery] GetBlogsByIdReqDto request, CancellationToken cancellationToken)
     {
         var response =
-            await Mediator.Send(new GetBlogByIdCommandReq { LanguageId = request.LanguageId, Id = request.Id },
+            await Mediator.Send(new GetBlogByIdCommandReq { LanguageId = request.LanguageId, Id = request.Id ,Slug = request.Slug},
                 cancellationToken);
 
         if (response.HasError) return BadRequest(response.Error);

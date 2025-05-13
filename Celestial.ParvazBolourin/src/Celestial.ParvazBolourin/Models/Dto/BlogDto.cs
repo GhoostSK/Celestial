@@ -7,6 +7,7 @@ public sealed class AddBlogReqDto
 {
     public List<BlogLocalizedProperty> BlogLocalizedProperties { get; set; } = new();
     public string PicturePath { get; set; } = string.Empty;
+    public List<long> BlogCategoryIds { get; set; } = new();
 }
 
 public sealed class BlogLocalizedProperty
@@ -25,6 +26,7 @@ public sealed class BlogLocalizedProperty
     [MaxLength(1000)]
     public string MetaKeywords { get; set; } = string.Empty;
     [Slug]
+
     public string Slug { get; set; } = string.Empty;
 }
 
@@ -43,4 +45,6 @@ public sealed class GetBlogsByIdReqDto
 {
     public int LanguageId { get; set; }
     public int Id { get; set; }
+    [Slug]
+    public string Slug { get; set; }
 }

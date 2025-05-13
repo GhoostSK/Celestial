@@ -9,5 +9,5 @@ public interface IVisaService : IRepositoryEF<Visas>, IScopeLifetime
     public Task<int> AddVisa(Visas model, CancellationToken cancellationToken);
 
     public Task<List<Visas>> GetVisaList(CancellationToken cancellationToken);
-    public Task<Visas?> GetVisaById(int tourId, CancellationToken cancellationToken);
+    public Task<Visas?> GetVisaById(long tourId, CancellationToken cancellationToken);
 }

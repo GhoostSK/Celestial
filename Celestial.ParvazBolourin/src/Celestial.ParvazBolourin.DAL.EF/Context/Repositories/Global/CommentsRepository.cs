@@ -13,7 +13,7 @@ public sealed class CommentsRepository(MainDbContext dbContext) : RepositoryBase
         await AddAsync(model, cancellationToken);
     }
 
-    public async Task<List<Comments>> GetComments(int entityId, CancellationToken cancellationToken)
+    public async Task<List<Comments>> GetComments(long entityId, CancellationToken cancellationToken)
     {
         return await TableNoTracking
             .Where(p => p.EntityId == entityId && p.IsConfirmed == true)

@@ -23,10 +23,5 @@ public sealed class BlogEntityTypeConfiguration : IEntityTypeConfiguration<Blog>
             .IsRequired()
             .HasDefaultValue(false);
 
-        // Many-to-Many relation
-        builder
-            .HasMany(p => p.Categories)
-            .WithMany(p => p.Blogs)
-            .UsingEntity(j => j.ToTable("Blog_BlogCategory"));
     }
 }

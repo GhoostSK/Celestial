@@ -9,6 +9,7 @@ public sealed class GetVisaByIdCommandReq : BaseEntity, IRequest<GetVisaByIdComm
 {
     public int Id { get; set; }
     public int LanguageId { get; set; }
+    public string? Slug { get; set; } // ➕ اضافه شده
 }
 
 public sealed class GetVisaByIdCommandRes : ServiceResContextBase

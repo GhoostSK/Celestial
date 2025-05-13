@@ -8,7 +8,7 @@ namespace Celestial.ParvazBolourin.DAL.EF.Context.Repositories.ShirdalBlog;
 
 public sealed class BlogRepository(MainDbContext dbContext) : RepositoryBase<Blog>(dbContext), IBlogService
 {
-    public async Task<Blog?> GetBlogById(int id, CancellationToken cancellationToken)
+    public async Task<Blog?> GetBlogById(long id, CancellationToken cancellationToken)
     {
         return await Table
             .IgnoreQueryFilters()
@@ -22,10 +22,9 @@ public sealed class BlogRepository(MainDbContext dbContext) : RepositoryBase<Blo
             .Where(p => !p.IsDeleted);
 
         if (categoryIds.Any())
-            query = query.Where(p => p.Categories.Any(c => categoryIds.Contains(c.Id)));
+            query = query.Where(p => p.CategoriesId.Any(categoryIds.Contains));
 
         return await query
-            .Include(p => p.Categories)
             .ToListAsync(cancellationToken);
     }
 

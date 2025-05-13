@@ -25,7 +25,7 @@ public class TourController : BaseController
         CancellationToken cancellationToken)
     {
         var response =
-            await Mediator.Send(new GetTourByIdCommandReq { LanguageId = request.LanguageId, TourId = request.TourId },
+            await Mediator.Send(new GetTourByIdCommandReq { LanguageId = request.LanguageId, TourId = request.TourId, Slug = request.Slug },
                 cancellationToken);
         if (response.HasError)
             return BadRequest(response.Error);
@@ -36,7 +36,7 @@ public class TourController : BaseController
     [HttpGet]
     public async Task<IActionResult> GetFeaturedTours([FromQuery] GetTourFeaturedRequestDto request, CancellationToken cancellationToken)
     {
-        var response = await Mediator.Send(new GetTourFeaturedCommandReq{ LanguageId = request.LanguageId, TopCount = request.TopCount},cancellationToken);
+        var response = await Mediator.Send(new GetTourFeaturedCommandReq { LanguageId = request.LanguageId, TopCount = request.TopCount }, cancellationToken);
         if (response.HasError)
             return BadRequest(response.Error);
         return Ok(response);

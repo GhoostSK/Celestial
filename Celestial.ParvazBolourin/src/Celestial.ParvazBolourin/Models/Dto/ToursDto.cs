@@ -66,6 +66,8 @@ public sealed class GetTourByIdReqDto
     [Required] public int LanguageId { get; set; }
 
     [Required] public int TourId { get; set; }
+    [Slug]
+    public string Slug { get; set; } = string.Empty;
 }
 
 public sealed class RemoveTourByIdReqDto

@@ -15,7 +15,7 @@ public sealed class HotelRepository(MainDbContext dbContext) : RepositoryBase<Ho
         return model.Id;
     }
 
-    public async Task<Hotels?> GetHotelById(int id, CancellationToken cancellationToken)
+    public async Task<Hotels?> GetHotelById(long id, CancellationToken cancellationToken)
     {
         return await Table.IgnoreQueryFilters()
             .FirstOrDefaultAsync(p => p.Id == id, cancellationToken: cancellationToken);

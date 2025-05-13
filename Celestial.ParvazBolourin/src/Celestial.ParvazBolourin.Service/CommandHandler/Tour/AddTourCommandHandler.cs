@@ -2,6 +2,7 @@
 using Celestial.ParvazBolourin.Core.DAL.Model.Tour;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Tour;
+using Celestial.ParvazBolourin.Service.Command.Hotel;
 using Celestial.ParvazBolourin.Service.Command.Tour;
 using Mapster;
 using MofidApp.SharedKernel.Common.Model;
@@ -32,6 +33,17 @@ public sealed class AddTourCommandHandler : BaseRequestHandler<AddTourCommandReq
         var languages = await _languageService.GetLanguages(cancellationToken);
         if (request.LocalizedProperty.Any(item => !languages.Any(p => p.Id == item.LanguageId)))
             return new AddTourCommandRes { Error = new ValidationError("LA400", "Invalid Language") };
+        foreach (var localizeSlug in request.LocalizedProperty)
+        {
+            var checkSlug = await _localizedPropertyService.FirstOrDefaultAsync(p => p.LocalKeyGroup == "Tour" && p.LocalKey == "Slug" && p.LocalValue == localizeSlug.Slug && p.LanguageId == localizeSlug.LanguageId, cancellationToken: cancellationToken);
+            if (checkSlug != null)
+            {
+                return new AddTourCommandRes()
+                {
+                    Error = ValidationError.UnhandledValidationError("S403", $"Slug Already exist({checkSlug.LanguageId})")
+                };
+            }
+        }
 
         // افزودن تور
         var tour = request.Tours.Adapt<Tours>();

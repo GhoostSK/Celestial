@@ -1,5 +1,4 @@
-﻿using Celestial.ParvazBolourin.Core.DAL.Model.Geo;
-using Celestial.ParvazBolourin.Core.DAL.Model.Hotel;
+﻿using Celestial.ParvazBolourin.Core.DAL.Model.Hotel;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Geo;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global.Model;
@@ -73,7 +72,7 @@ public sealed class GetHotelsListCommandHandler : BaseRequestHandler<GetHotelsLi
             response.Items.Add(new GetAllHotelsServiceRes
             {
                 HotelId = item.Id,
-                ImagePath = picture?.PicturePath,
+                ImagePath = picture?.PicturePath!,
                 BookingUrl = item.BookingUrl,
                 HotelCountry = countryName,
                 HotelReception = item.HotelReception,

@@ -2,6 +2,7 @@
 using Celestial.ParvazBolourin.Core.DAL.Model.ShirdalBlog;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.ShirdalBlog;
+using Celestial.ParvazBolourin.Service.Command.Hotel;
 using Celestial.ParvazBolourin.Service.Command.ShirdalBlog;
 using MofidApp.SharedKernel.Common.Model;
 using MofidApp.SharedKernel.Domain.Services;
@@ -13,56 +14,140 @@ public sealed class AddBlogCommandHandler : BaseRequestHandler<AddBlogCommandReq
     private readonly IBlogService _blogService;
     private readonly ILanguageService _languageService;
     private readonly ILocalizedPropertyService _localizedProperty;
+    private readonly IBlogCategoryService _blogCategoryService;
 
-    public AddBlogCommandHandler(ILocalizedPropertyService localizedProperty,
-        ILanguageService languageService, IBlogService blogService)
+    public AddBlogCommandHandler(
+        ILocalizedPropertyService localizedProperty,
+        ILanguageService languageService,
+        IBlogService blogService, IBlogCategoryService blogCategoryService)
     {
         _localizedProperty = localizedProperty;
         _languageService = languageService;
         _blogService = blogService;
+        _blogCategoryService = blogCategoryService;
     }
 
     protected override async Task<AddBlogCommandRes> HandleCore(AddBlogCommandReq request, CancellationToken cancellationToken)
     {
         var languages = await _languageService.GetLanguages(cancellationToken);
-        foreach (var item in request.BlogLocalizedProperties)
-            if (!languages.Any(p => p.Id == item.LanguageId))
-                return new AddBlogCommandRes
-                {
-                    Error = new ValidationError("LA400", "invalid Language")
-                };
 
+        if (request.BlogLocalizedProperties.Any(x => !languages.Any(lang => lang.Id == x.LanguageId)))
+        {
+            return new AddBlogCommandRes
+            {
+                Error = new ValidationError("LA400", "invalid Language")
+            };
+        }
+        foreach (var localizeSlug in request.BlogLocalizedProperties)
+        {
+            var checkSlug = await _localizedProperty.FirstOrDefaultAsync(p => p.LocalKeyGroup == "Blog" && p.LocalKey == "Slug" && p.LocalValue == localizeSlug.Slug && p.LanguageId == localizeSlug.LanguageId, cancellationToken: cancellationToken);
+            if (checkSlug != null)
+            {
+                return new AddBlogCommandRes()
+                {
+                    Error = ValidationError.UnhandledValidationError("S403", $"Slug Already exist({checkSlug.LanguageId})")
+                };
+            }
+        }
+        foreach (var catId in request.BlogCategoryIds)
+        {
+            var category = await _blogCategoryService.FindByIdAsync(cancellationToken, catId);
+            if (category==null)
+            {
+                return new AddBlogCommandRes()
+                {
+                    Error = ValidationError.UnhandledValidationError("C404", "Invalid Category")
+                };
+            }
+
+        }
         var blog = new Blog
         {
             PicturePath = request.PicturePath,
-            Categories = request.BlogCategoryIds.Select(id => new BlogCategory { Id = id }).ToList() 
+            CategoriesId = request.BlogCategoryIds
         };
 
-        var blogId = await _blogService.AddBlog(blog, cancellationToken);
+
+
+        await _blogService.AddBlog(blog, cancellationToken);
 
         var localizedData = new List<LocalizedProperty>();
+
         foreach (var item in request.BlogLocalizedProperties)
         {
-            localizedData.AddRange([
-                new LocalizedProperty { LanguageId = item.LanguageId, LocalKey = nameof(item.Title), EntityId = blogId, LocalKeyGroup = "Blog", LocalValue = item.Title },
-            new LocalizedProperty { LanguageId = item.LanguageId, LocalKey = nameof(item.HeaderText), EntityId = blogId, LocalKeyGroup = "Blog", LocalValue = item.HeaderText },
-            new LocalizedProperty { LanguageId = item.LanguageId, LocalKey = nameof(item.MainText), EntityId = blogId, LocalKeyGroup = "Blog", LocalValue = item.MainText },
-            new LocalizedProperty { LanguageId = item.LanguageId, LocalKey = nameof(item.Slug), EntityId = blogId, LocalKeyGroup = "Blog", LocalValue = item.Slug },
-            new LocalizedProperty { LanguageId = item.LanguageId, LocalKey = nameof(item.MetaKeywords), EntityId = blogId, LocalKeyGroup = "Blog", LocalValue = item.MetaKeywords },
-            new LocalizedProperty { LanguageId = item.LanguageId, LocalKey = nameof(item.MetaDescription), EntityId = blogId, LocalKeyGroup = "Blog", LocalValue = item.MetaDescription },
-            new LocalizedProperty { LanguageId = item.LanguageId, LocalKey = nameof(item.MetaTitle), EntityId = blogId, LocalKeyGroup = "Blog", LocalValue = item.MetaTitle },
-        ]);
-
-            foreach (var tag in item.Tags)
+            localizedData.AddRange(new[]
             {
-                localizedData.Add(new LocalizedProperty
+                new LocalizedProperty
                 {
                     LanguageId = item.LanguageId,
-                    LocalKey = nameof(item.Tags),
-                    EntityId = blogId,
+                    EntityId = blog.Id,
+                    LocalKey = nameof(item.Title),
                     LocalKeyGroup = "Blog",
-                    LocalValue = tag
-                });
+                    LocalValue = item.Title
+                },
+                new LocalizedProperty
+                {
+                    LanguageId = item.LanguageId,
+                    EntityId = blog.Id,
+                    LocalKey = nameof(item.HeaderText),
+                    LocalKeyGroup = "Blog",
+                    LocalValue = item.HeaderText
+                },
+                new LocalizedProperty
+                {
+                    LanguageId = item.LanguageId,
+                    EntityId = blog.Id,
+                    LocalKey = nameof(item.MainText),
+                    LocalKeyGroup = "Blog",
+                    LocalValue = item.MainText
+                },
+                new LocalizedProperty
+                {
+                    LanguageId = item.LanguageId,
+                    EntityId = blog.Id,
+                    LocalKey = nameof(item.Slug),
+                    LocalKeyGroup = "Blog",
+                    LocalValue = item.Slug
+                },
+                new LocalizedProperty
+                {
+                    LanguageId = item.LanguageId,
+                    EntityId = blog.Id,
+                    LocalKey = nameof(item.MetaKeywords),
+                    LocalKeyGroup = "Blog",
+                    LocalValue = item.MetaKeywords
+                },
+                new LocalizedProperty
+                {
+                    LanguageId = item.LanguageId,
+                    EntityId = blog.Id,
+                    LocalKey = nameof(item.MetaDescription),
+                    LocalKeyGroup = "Blog",
+                    LocalValue = item.MetaDescription
+                },
+                new LocalizedProperty
+                {
+                    LanguageId = item.LanguageId,
+                    EntityId = blog.Id,
+                    LocalKey = nameof(item.MetaTitle),
+                    LocalKeyGroup = "Blog",
+                    LocalValue = item.MetaTitle
+                }
+            });
+
+            if (item.Tags != null)
+            {
+                foreach (var tag in item.Tags.Where(tag => !string.IsNullOrWhiteSpace(tag)))
+                {
+                    localizedData.Add(new LocalizedProperty
+                    {
+                        LanguageId = item.LanguageId,
+                        EntityId = blog.Id,
+                        LocalKey = nameof(item.Tags),
+                        LocalKeyGroup = "Blog",
+                        LocalValue = tag
+                    });
+                }
             }
         }
 
@@ -70,5 +155,4 @@ public sealed class AddBlogCommandHandler : BaseRequestHandler<AddBlogCommandReq
 
         return new AddBlogCommandRes();
     }
-
 }

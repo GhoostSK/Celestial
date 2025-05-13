@@ -29,23 +29,47 @@ public class GetTourByIdCommandHandler : IRequestHandler<GetTourByIdCommandReq, 
 
     public async Task<GetTourByIdCommandRes> Handle(GetTourByIdCommandReq request, CancellationToken cancellationToken)
     {
-        var languages = await _languageService.GetLanguages(cancellationToken);
-        if (!languages.Any(p => p.Id == request.LanguageId))
-            return new GetTourByIdCommandRes
-            {
-                Error = new ValidationError("LA400", "Invalid Language")
-            };
 
-        var tour = await _tourService.GetTourById(request.TourId, cancellationToken);
+        var tour = new Core.DAL.Model.Tour.Tours();
+
+        if (request.TourId > 0)
+        {
+            var languages = await _languageService.GetLanguages(cancellationToken);
+            if (!languages.Any(p => p.Id == request.LanguageId))
+                return new GetTourByIdCommandRes
+                {
+                    Error = new ValidationError("LA400", "Invalid Language")
+                };
+
+            tour = await _tourService.GetTourById(request.TourId, cancellationToken);
+        }
+        else if (!string.IsNullOrWhiteSpace(request.Slug))
+        {
+            var localizedProperty = await _localizedPropertyService.FirstOrDefaultAsync(p =>
+                p.LocalKey == "Slug" &&
+                p.LocalValue == request.Slug &&
+                p.LocalKeyGroup == "Tour", cancellationToken: cancellationToken);
+
+            if (localizedProperty == null)
+            {
+                return new GetTourByIdCommandRes
+                {
+                    Error = new ValidationError("T404", "Tour not found with provided slug")
+                };
+            }
+
+            tour = await _tourService.GetTourById(localizedProperty.EntityId, cancellationToken);
+            request.LanguageId = localizedProperty.LanguageId;
+            request.TourId = localizedProperty.EntityId;
+        }
+
         if (tour == null)
             return new GetTourByIdCommandRes
             {
                 Error = new ValidationError("T404", "Tour Not Found")
             };
 
-        // دریافت تصویر اصلی تور و برگرداندن مسیر آن
         var tourImage = await _imageService.FirstOrDefaultAsync(p => p.EntityId == tour.Id, cancellationToken: cancellationToken);
-
         var localizedData = await _localizedPropertyService.GetPropertyByLanguageAndEntityId(new GetLocalizedPropertyReq
         {
             EntityId = tour.Id,
@@ -54,11 +78,13 @@ public class GetTourByIdCommandHandler : IRequestHandler<GetTourByIdCommandReq, 
         }, cancellationToken);
 
         var itemResponse = tour.Adapt<GetTourByIdItemRes>();
+
         foreach (var country in tour.CountriesId)
         {
             var countryData = await _countryService.FindByIdAsync(cancellationToken, country);
             itemResponse.Countries.Add(countryData.Name);
         }
+
         itemResponse.LanguageId = request.LanguageId;
         itemResponse.PicturePath = tourImage?.PicturePath ?? string.Empty;
         itemResponse.Name = localizedData.FirstOrDefault(p => p.LocalKey == nameof(GetTourByIdItemRes.Name))?.LocalValue ?? string.Empty;
@@ -71,8 +97,6 @@ public class GetTourByIdCommandHandler : IRequestHandler<GetTourByIdCommandReq, 
         itemResponse.MetaKeywords = localizedData.FirstOrDefault(p => p.LocalKey == nameof(GetTourByIdItemRes.MetaKeywords))?.LocalValue ?? string.Empty;
         itemResponse.MetaTitle = localizedData.FirstOrDefault(p => p.LocalKey == nameof(GetTourByIdItemRes.MetaTitle))?.LocalValue ?? string.Empty;
 
-
-        // دریافت تصاویر و محتوای Localized برای TourPlans
         for (var i = 0; i < tour.TourPlans.Count; i++)
         {
             var tourPlanLocalizeData = await _localizedPropertyService.GetPropertyByLanguageAndEntityId(
@@ -92,7 +116,6 @@ public class GetTourByIdCommandHandler : IRequestHandler<GetTourByIdCommandReq, 
             itemResponse.TourPlans[i].PlanText = tourPlanLocalizeData.FirstOrDefault(p => p.LocalKey == "PlanText")?.LocalValue ?? string.Empty;
             itemResponse.TourPlans[i].PlanDayText = tourPlanLocalizeData.FirstOrDefault(p => p.LocalKey == "PlanDayText")?.LocalValue ?? string.Empty;
             itemResponse.TourPlans[i].PlanPicturePath = planPicturePaths;
-
         }
 
         return new GetTourByIdCommandRes

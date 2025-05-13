@@ -8,7 +8,8 @@ namespace Celestial.ParvazBolourin.Service.Command.Hotel;
 
 public sealed class GetHotelByIdCommandReq : BaseEntity, IRequest<GetHotelByIdCommandRes>
 {
-    public int HotelId { get; set; }
+    public long HotelId { get; set; }
+    public string? Slug { get; set; }
     public int LanguageId { get; set; }
 }
 

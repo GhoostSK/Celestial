@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Celestial.ParvazBolourin.Core.Attributes;
 using Celestial.ParvazBolourin.Core.DAL.Model.Hotel;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global.Model;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Hotel.Model;
@@ -44,9 +45,10 @@ public sealed class HotelDto
 
 public sealed class HotelByIdReqDto
 {
-    [Required] public int LanguageId { get; set; }
-
-    [Required] public int HotelId { get; set; }
+    public int LanguageId { get; set; }
+    public int HotelId { get; set; }
+    [Slug]
+    public string Slug { get; set; }
 }
 
 public sealed class GetHotelListReqDto

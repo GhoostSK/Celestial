@@ -7,7 +7,8 @@ namespace Celestial.ParvazBolourin.Service.Command.ShirdalBlog;
 public sealed class GetBlogByIdCommandReq : BaseEntity, IRequest<GetBlogByIdCommandRes>
 {
     public int LanguageId { get; set; }
-    public int Id { get; set; }
+    public string? Slug { get; set; }
+    public long Id { get; set; } = 0;
 }
 
 public sealed class GetBlogByIdCommandRes : ServiceResContextBase
@@ -19,7 +20,7 @@ public sealed class GetBlogByIdCommandRes : ServiceResContextBase
     public List<string> Tags { get; set; } = new();
     public int Likes { get; set; }
     public List<BlogCategoryDto> BlogCategories { get; set; } = new();
- 
+
     public string MetaTitle { get; set; } = string.Empty;
     public string MetaDescription { get; set; } = string.Empty;
     public string MetaKeywords { get; set; } = string.Empty;
@@ -29,4 +30,5 @@ public sealed class GetBlogByIdCommandRes : ServiceResContextBase
 public sealed class BlogCategoryDto
 {
     public long Id { get; set; }
+    public string Name { get; set; } = string.Empty;
 }

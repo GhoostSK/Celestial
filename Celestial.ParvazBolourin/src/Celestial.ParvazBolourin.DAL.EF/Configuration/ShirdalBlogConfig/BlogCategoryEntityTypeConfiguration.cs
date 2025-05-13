@@ -10,9 +10,5 @@ public sealed class BlogCategoryEntityTypeConfiguration : IEntityTypeConfigurati
     {
         builder.ToTable(nameof(BlogCategory));
 
-        builder
-            .HasMany(p => p.Blogs)
-            .WithMany(p => p.Categories)
-            .UsingEntity(j => j.ToTable("Blog_BlogCategory"));
     }
 }

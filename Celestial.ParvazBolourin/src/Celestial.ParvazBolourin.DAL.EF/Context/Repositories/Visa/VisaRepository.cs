@@ -20,7 +20,7 @@ public class VisaRepository(MainDbContext dbContext) : RepositoryBase<Visas>(dbC
         return await TableNoTracking.Where(p => p.IsDeleted == false).ToListAsync(cancellationToken);
     }
 
-    public async Task<Visas?> GetVisaById(int visaId, CancellationToken cancellationToken)
+    public async Task<Visas?> GetVisaById(long visaId, CancellationToken cancellationToken)
     {
         return await Table.FirstOrDefaultAsync(p => p.Id == visaId && p.IsDeleted == false, cancellationToken);
     }
