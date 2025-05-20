@@ -5,10 +5,8 @@ using Celestial.ParvazBolourin.Core.DAL.Repositories.Global.Model;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Tour;
 using Celestial.ParvazBolourin.Service.Command.Tour;
 using Mapster;
-using Microsoft.IdentityModel.Tokens;
 using MofidApp.SharedKernel.Common.Model;
 using MofidApp.SharedKernel.Domain.Services;
-using System.Reflection;
 
 namespace Celestial.ParvazBolourin.Service.CommandHandler.Tour;
 
@@ -89,7 +87,10 @@ public sealed class GetToursListCommandHandler(
         {
             response.Items = data;
         }
-
+        response.CountryList = data
+    .SelectMany(p => p.Country)
+    .Distinct()
+    .ToList();
 
         return response;
     }

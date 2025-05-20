@@ -17,12 +17,12 @@ public sealed class GetHotelsListCommandReq : BaseEntity, IRequest<GetHotelsList
     public double ToPrice { get; set; } = 0;
     public List<string> HotelCountry { get; set; } = new();
     public List<int> HotelScore { get; set; } = new();
-    public List<string> CountryList { get; set; } = new();
 }
 
 public sealed class GetHotelsListCommandRes : ServiceResContextBase
 {
-    public List<GetAllHotelsServiceRes> Items { get; set; } = new();
     public double MinPrice { get; set; }
     public double MaxPrice { get; set; }
+    public List<string> CountryList { get; set; } = new();
+    public List<GetAllHotelsServiceRes> Items { get; set; } = new();
 }

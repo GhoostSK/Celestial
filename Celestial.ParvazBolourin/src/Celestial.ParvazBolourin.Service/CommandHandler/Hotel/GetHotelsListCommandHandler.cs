@@ -82,7 +82,11 @@ public sealed class GetHotelsListCommandHandler : BaseRequestHandler<GetHotelsLi
                 Slug = slug
             });
         }
-
+        response.CountryList = response.Items
+    .Select(p => p.HotelCountry)
+    .Where(c => !string.IsNullOrWhiteSpace(c))
+    .Distinct()
+    .ToList();
         return response;
     }
 
