@@ -7,8 +7,8 @@ namespace Celestial.ParvazBolourin.Api.Controllers.Tour;
 
 public class TourController : BaseController
 {
-    [HttpPost]
-    public async Task<IActionResult> GetToursList([FromBody] GetToursListReqDto request,
+    [HttpGet]
+    public async Task<IActionResult> GetToursList([FromQuery] GetToursListReqDto request,
         CancellationToken cancellationToken)
     {
         var model = request.Adapt<GetToursListCommandReq>();

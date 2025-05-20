@@ -82,7 +82,7 @@ public class GetTourByIdCommandHandler : IRequestHandler<GetTourByIdCommandReq, 
         foreach (var country in tour.CountriesId)
         {
             var countryData = await _countryService.FindByIdAsync(cancellationToken, country);
-            itemResponse.Countries.Add(countryData.Name);
+            itemResponse.Countries.Add(countryData.Shortname);
         }
 
         itemResponse.LanguageId = request.LanguageId;

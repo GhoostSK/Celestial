@@ -70,7 +70,7 @@ public sealed class GetHotelByIdCommandHandler : BaseRequestHandler<GetHotelById
 
 
         var response = hotel.Adapt<GetHotelByIdCommandRes>();
-        response.HotelCountry = _countryService.FindByIdAsync(cancellationToken, hotel!.CountryId).Result.Name;
+        response.HotelCountry = _countryService.FindByIdAsync(cancellationToken, hotel!.CountryId).Result.Shortname;
 
         response.HotelPictures = await _imageService.GetImagesByEntityId(hotel.Id, "Hotel", cancellationToken);
 

@@ -5,7 +5,7 @@ namespace Celestial.ParvazBolourin.Core.DAL.Model.Hotel;
 
 public class GetHotelsListReq
 {
-    public string Name { get; set; } = string.Empty;
+    public string Title { get; set; } = string.Empty;
     public List<HotelLocation> HotelLocation { get; set; } = new();
     public List<Continent> HotelContinent { get; set; } = new();
     public double FromPrice { get; set; } = 0;

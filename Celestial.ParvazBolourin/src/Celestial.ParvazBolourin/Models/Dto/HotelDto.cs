@@ -55,7 +55,7 @@ public sealed class GetHotelListReqDto
 {
     [Required]
     public int LanguageId { get; set; }
-    public string Name { get; set; } = string.Empty;
+    public string Title { get; set; } = string.Empty;
     public List<HotelLocation> HotelLocation { get; set; } = new();
     public List<Continent> HotelContinent { get; set; } = new();
     public double FromPrice { get; set; } = 0;

@@ -1,17 +1,21 @@
 ﻿using Celestial.ParvazBolourin.Core.DAL.Model.Tour;
+using Celestial.ParvazBolourin.Core.DAL.Repositories.Geo;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global.Model;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Tour;
 using Celestial.ParvazBolourin.Service.Command.Tour;
 using Mapster;
+using Microsoft.IdentityModel.Tokens;
 using MofidApp.SharedKernel.Common.Model;
 using MofidApp.SharedKernel.Domain.Services;
+using System.Reflection;
 
 namespace Celestial.ParvazBolourin.Service.CommandHandler.Tour;
 
 public sealed class GetToursListCommandHandler(
     ITourService tourService,
     ILocalizedPropertyService localizedPropertyService,
+    ICountryService countryService,
     ILanguageService languageService, IImageService imageService)
     : BaseRequestHandler<GetToursListCommandReq, GetToursListCommandRes>
 {
@@ -34,7 +38,6 @@ public sealed class GetToursListCommandHandler(
                 Error = new ValidationError("T404", "Tour Not Found")
             };
 
-        // حساب کردن MinPrice و MaxPrice
         response.MinPrice = tourData.Min(t => t.Price);
         response.MaxPrice = tourData.Max(t => t.Price);
 
@@ -57,6 +60,12 @@ public sealed class GetToursListCommandHandler(
             var slug = localizeData.FirstOrDefault(p => p.LocalKey == nameof(TourLocalizedPropertyItem.Slug))?.LocalValue;
             var picture = await imageService.FirstOrDefaultAsync(p => p.EntityId == item.Id && p.KeyGroup == "Tour" && p.DisplayOrder == 0, cancellationToken: cancellationToken);
 
+            var countries = new List<string>();
+            foreach (var country in item.CountriesId)
+            {
+                var countryData = await countryService.FindByIdAsync(cancellationToken, country);
+                countries.Add(countryData.Shortname);
+            }
             data.Add(new GetToursListItemRes
             {
                 Id = item.Id,
@@ -65,13 +74,23 @@ public sealed class GetToursListCommandHandler(
                 StartDate = item.StartDate,
                 TourText = tourText!,
                 PicturePath = picture.PicturePath,
-                Country = item.CountriesId,
+                Country = countries,
                 TourStatus = item.TourStatus.ToString(),
                 Slug = slug!
             });
         }
+        //TEMP
+        if (!string.IsNullOrEmpty(request.Title))
+        {
+            var filtredData = data.Where(p => p.Name.Contains(request.Title)).ToList();
+            response.Items = filtredData;
+        }
+        else
+        {
+            response.Items = data;
+        }
 
-        response.Items = data;
+
         return response;
     }
 

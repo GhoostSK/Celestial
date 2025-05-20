@@ -33,6 +33,7 @@ public sealed class BlogLocalizedProperty
 public sealed class GetBlogsListReqDto
 {
     public int LanguageId { get; set; }
+    public string Title { get; set; }
     public List<long> CategoryIds { get; set; } = new();
 }
 

@@ -67,7 +67,7 @@ public sealed class GetHotelsListCommandHandler : BaseRequestHandler<GetHotelsLi
             var slug = localize.SingleOrDefault(p => p.LocalKey == "Slug")?.LocalValue;
             var shortText = localize.SingleOrDefault(p => p.LocalKey == "ShortText")?.LocalValue;
             var country = await _countryService.FindByIdAsync(cancellationToken, item.CountryId);
-            var countryName = country?.Name ?? "";
+            var countryName = country?.Shortname ?? "";
 
             response.Items.Add(new GetAllHotelsServiceRes
             {

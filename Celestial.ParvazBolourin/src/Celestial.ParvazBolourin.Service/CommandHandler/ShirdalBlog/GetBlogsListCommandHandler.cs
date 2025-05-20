@@ -4,6 +4,7 @@ using Celestial.ParvazBolourin.Core.DAL.Repositories.ShirdalBlog;
 using Celestial.ParvazBolourin.Service.Command.ShirdalBlog;
 using MofidApp.SharedKernel.Common.Model;
 using MofidApp.SharedKernel.Domain.Services;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Celestial.ParvazBolourin.Service.CommandHandler.ShirdalBlog;
 
@@ -57,7 +58,12 @@ public sealed class GetBlogsListCommandHandler : BaseRequestHandler<GetBlogsList
                 Slug = localize.FirstOrDefault(p => p.LocalKey == nameof(BlogItem.Slug))?.LocalValue ?? ""
             });
         }
+        if (!string.IsNullOrEmpty(request.Title))
+        {
+            var filtredData = response.Items.Where(p => p.Title.Contains(request.Title)).ToList();
+            response.Items = filtredData;
 
+        }
         return response;
     }
 }

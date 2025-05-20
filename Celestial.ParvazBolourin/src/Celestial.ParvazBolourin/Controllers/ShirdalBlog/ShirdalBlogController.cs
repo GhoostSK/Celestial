@@ -12,7 +12,8 @@ public class ShirdalBlogController : BaseController
         var response = await Mediator.Send(new GetBlogsListCommandReq
         {
             LanguageId = request.LanguageId,
-            CategoryIds = request.CategoryIds
+            CategoryIds = request.CategoryIds,
+            Title = request.Title,
         }, cancellationToken);
 
         if (response.HasError)

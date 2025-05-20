@@ -48,6 +48,7 @@ public sealed class PlanTourItemDto
 public sealed class GetToursListReqDto
 {
     [Required] public int LanguageId { get; set; }
+    public string Title { get; set; }
     public List<string> Countries { get; set; } = new();
     public List<string> Cities { get; set; } = new();
     public int FromDay { get; set; }

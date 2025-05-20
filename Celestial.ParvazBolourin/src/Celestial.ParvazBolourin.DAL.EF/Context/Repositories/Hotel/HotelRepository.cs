@@ -27,8 +27,8 @@ public sealed class HotelRepository(MainDbContext dbContext) : RepositoryBase<Ho
             .IgnoreQueryFilters()
             .Where(p => !p.IsDeleted);
 
-        if (!string.IsNullOrEmpty(model.Name))
-            query = query.Where(p => p.Name.Contains(model.Name));
+        if (!string.IsNullOrEmpty(model.Title))
+            query = query.Where(p => p.Name.Contains(model.Title));
 
         if (model.FromPrice != 0 && model.ToPrice != 0)
             query = query.Where(p => p.Price >= model.FromPrice && p.Price <= model.ToPrice);
