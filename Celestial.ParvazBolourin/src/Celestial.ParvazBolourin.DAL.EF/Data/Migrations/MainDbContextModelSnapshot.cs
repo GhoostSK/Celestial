@@ -406,6 +406,48 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
                     b.ToTable("BlogCategory", (string)null);
                 });
 
+            modelBuilder.Entity("Celestial.ParvazBolourin.Core.DAL.Model.ShirdalBlog.BlogTags", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<int>("ViewCount")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0)
+                        .HasComment("Number of Views for the blog Tag.");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BlogTags", (string)null);
+                });
+
+            modelBuilder.Entity("Celestial.ParvazBolourin.Core.DAL.Model.ShirdalBlog.BlogTagsMap", b =>
+                {
+                    b.Property<long>("BlogId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("BlogTagId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("BlogId", "BlogTagId");
+
+                    b.HasIndex("BlogTagId");
+
+                    b.ToTable("BlogTagsMap", (string)null);
+                });
+
             modelBuilder.Entity("Celestial.ParvazBolourin.Core.DAL.Model.Tour.TourPlans", b =>
                 {
                     b.Property<long>("Id")
@@ -629,6 +671,25 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
                     b.ToTable("Visas", (string)null);
                 });
 
+            modelBuilder.Entity("Celestial.ParvazBolourin.Core.DAL.Model.ShirdalBlog.BlogTagsMap", b =>
+                {
+                    b.HasOne("Celestial.ParvazBolourin.Core.DAL.Model.ShirdalBlog.Blog", "Blog")
+                        .WithMany("Tags")
+                        .HasForeignKey("BlogId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Celestial.ParvazBolourin.Core.DAL.Model.ShirdalBlog.BlogTags", "BlogTag")
+                        .WithMany("BlogTagsMaps")
+                        .HasForeignKey("BlogTagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Blog");
+
+                    b.Navigation("BlogTag");
+                });
+
             modelBuilder.Entity("Celestial.ParvazBolourin.Core.DAL.Model.Tour.TourPlans", b =>
                 {
                     b.HasOne("Celestial.ParvazBolourin.Core.DAL.Model.Tour.Tours", null)
@@ -656,6 +717,16 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("PrimaryTransport");
+                });
+
+            modelBuilder.Entity("Celestial.ParvazBolourin.Core.DAL.Model.ShirdalBlog.Blog", b =>
+                {
+                    b.Navigation("Tags");
+                });
+
+            modelBuilder.Entity("Celestial.ParvazBolourin.Core.DAL.Model.ShirdalBlog.BlogTags", b =>
+                {
+                    b.Navigation("BlogTagsMaps");
                 });
 
             modelBuilder.Entity("Celestial.ParvazBolourin.Core.DAL.Model.Tour.Tours", b =>

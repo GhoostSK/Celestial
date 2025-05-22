@@ -19,9 +19,13 @@ public sealed class BlogEntityTypeConfiguration : IEntityTypeConfiguration<Blog>
             .HasDefaultValue(0)
             .HasComment("Number of likes for the blog post.");
 
+        builder
+    .HasMany(t => t.Tags)
+    .WithOne(bt => bt.Blog)
+    .HasForeignKey(bt => bt.BlogTagId);
+
         builder.Property(p => p.IsDeleted)
             .IsRequired()
             .HasDefaultValue(false);
-
     }
 }
