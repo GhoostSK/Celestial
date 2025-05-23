@@ -30,18 +30,18 @@ public sealed class GetToursListCommandHandler(
         var response = new GetToursListCommandRes();
         var tourData = await tourService.GetToursList(request.Adapt<GetTourListReq>(), cancellationToken);
 
-        if (!tourData.Any())
+        if (!tourData.Items.Any())
             return new GetToursListCommandRes
             {
                 Error = new ValidationError("T404", "Tour Not Found")
             };
 
-        response.MinPrice = tourData.Min(t => t.Price);
-        response.MaxPrice = tourData.Max(t => t.Price);
+        response.MinPrice = tourData.Items.Min(t => t.Price);
+        response.MaxPrice = tourData.Items.Max(t => t.Price);
 
         var data = new List<GetToursListItemRes>();
 
-        foreach (var item in tourData)
+        foreach (var item in tourData.Items)
         {
             var localizeData = await localizedPropertyService.GetPropertyByLanguageAndEntityId(
                 new GetLocalizedPropertyReq
@@ -87,6 +87,7 @@ public sealed class GetToursListCommandHandler(
         {
             response.Items = data;
         }
+        response.TotalPage = tourData.TotalPages;
         response.CountryList = data
     .SelectMany(p => p.Country)
     .Distinct()

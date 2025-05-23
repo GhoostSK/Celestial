@@ -54,7 +54,7 @@ public sealed class GetBlogsListCommandHandler : BaseRequestHandler<GetBlogsList
         var blogs = await _blogService.GetBlogsList(request.CategoriesId, request.TagsId,request.PageNumber,request.PageSize, cancellationToken);
 
         var response = new GetBlogsListCommandRes();
-        foreach (var blog in blogs)
+        foreach (var blog in blogs.Items)
         {
             var localize = await _localizedPropertyService.GetPropertyByLanguageAndEntityId(
                 new GetLocalizedPropertyReq
@@ -80,6 +80,7 @@ public sealed class GetBlogsListCommandHandler : BaseRequestHandler<GetBlogsList
             response.Items = filtredData;
 
         }
+        response.TotalPage = blogs.TotalPages;
         response.BlogTagsList = blogTags;
         return response;
     }

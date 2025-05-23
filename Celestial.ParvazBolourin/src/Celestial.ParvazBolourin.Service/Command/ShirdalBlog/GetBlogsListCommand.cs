@@ -20,6 +20,8 @@ public sealed class GetBlogsListCommandRes : ServiceResContextBase
 {
     public List<BlogItem> Items { get; set; } = new();
     public List<BlogTagDto> BlogTagsList { get; set; }
+    public int TotalPage { get; set; }
+
 }
 
 public sealed class BlogItem

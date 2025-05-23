@@ -1,4 +1,5 @@
-﻿using Celestial.ParvazBolourin.Core.DAL.Model.Tour;
+﻿using Celestial.ParvazBolourin.Core.DAL.Model.ShirdalBlog;
+using Celestial.ParvazBolourin.Core.DAL.Model.Tour;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Tour;
 using Celestial.ParvazBolourin.Core.Enum.Tour;
 using Celestial.ParvazBolourin.DAL.EF.Context.DatabaseContext;
@@ -9,7 +10,7 @@ namespace Celestial.ParvazBolourin.DAL.EF.Context.Repositories.Tour;
 
 public class TourRepository(MainDbContext dbContext) : RepositoryBase<Tours>(dbContext), ITourService
 {
-    public async Task<List<Tours>> GetToursList(GetTourListReq model, CancellationToken cancellationToken)
+    public async Task<(List<Tours> Items, int TotalPages)> GetToursList(GetTourListReq model, CancellationToken cancellationToken)
     {
         var query = TableNoTracking
             .Where(p => !p.IsDeleted);
@@ -38,11 +39,18 @@ public class TourRepository(MainDbContext dbContext) : RepositoryBase<Tours>(dbC
         if (model.IsActiveTour)
             query = query.Where(p => p.TourStatus == TourStatus.Active);
 
-        return await query
+        var totalItems = await query.CountAsync(cancellationToken);
+        var totalPages = (int)Math.Ceiling(totalItems / (double)model.PageSize);
+
+        var items = await query
             .Skip((model.PageNumber - 1) * model.PageSize)
             .Take(model.PageSize)
             .ToListAsync(cancellationToken);
+
+        return (items, totalPages);
     }
+
+
 
 
     public async Task<Tours?> GetTourById(long tourId, CancellationToken cancellationToken)

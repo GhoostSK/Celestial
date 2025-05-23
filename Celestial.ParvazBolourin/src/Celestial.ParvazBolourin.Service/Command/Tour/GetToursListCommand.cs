@@ -31,6 +31,8 @@ public sealed class GetToursListCommandRes : ServiceResContextBase
     public double MaxPrice { get; set; }
     public List<string> CountryList { get; set; } = new();
     public List<GetToursListItemRes> Items { get; set; } = new();
+    public int TotalPage { get; set; }
+
 }
 
 public sealed class GetToursListItemRes

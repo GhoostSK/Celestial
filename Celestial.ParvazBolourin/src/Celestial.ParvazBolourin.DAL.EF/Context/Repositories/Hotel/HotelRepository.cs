@@ -21,7 +21,7 @@ public sealed class HotelRepository(MainDbContext dbContext) : RepositoryBase<Ho
             .FirstOrDefaultAsync(p => p.Id == id, cancellationToken: cancellationToken);
     }
 
-    public async Task<List<Hotels>> GetHotelsList(GetHotelsListReq model, CancellationToken cancellationToken)
+    public async Task<(List<Hotels> Items, int TotalPages)> GetHotelsList(GetHotelsListReq model, CancellationToken cancellationToken)
     {
         var query = Table
             .IgnoreQueryFilters()
@@ -45,9 +45,15 @@ public sealed class HotelRepository(MainDbContext dbContext) : RepositoryBase<Ho
         if (model.HotelScore.Any())
             query = query.Where(p => model.HotelScore.Contains(p.HotelScore));
 
-        return await query
+        var totalItems = await query.CountAsync(cancellationToken);
+        var totalPages = (int)Math.Ceiling(totalItems / (double)model.PageSize);
+
+        var items = await query
             .Skip((model.PageNumber - 1) * model.PageSize)
             .Take(model.PageSize)
             .ToListAsync(cancellationToken);
+
+        return (items, totalPages);
     }
+
 }

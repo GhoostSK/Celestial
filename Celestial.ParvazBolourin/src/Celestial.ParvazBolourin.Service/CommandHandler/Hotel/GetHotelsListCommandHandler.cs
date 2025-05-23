@@ -42,13 +42,13 @@ public sealed class GetHotelsListCommandHandler : BaseRequestHandler<GetHotelsLi
         var response = new GetHotelsListCommandRes();
         var hotels = await _hotelRepository.GetHotelsList(request.Adapt<GetHotelsListReq>(), cancellationToken);
 
-        if (!hotels.Any())
+        if (!hotels.Items.Any())
             return response;
 
-        response.MinPrice = hotels.Min(h => h.Price);
-        response.MaxPrice = hotels.Max(h => h.Price);
+        response.MinPrice = hotels.Items.Min(h => h.Price);
+        response.MaxPrice = hotels.Items.Max(h => h.Price);
 
-        foreach (var item in hotels)
+        foreach (var item in hotels.Items)
         {
             var picture = await _imageService.FirstOrDefaultAsync(
                 p => p.KeyGroup == "Hotel" && p.EntityId == item.Id,
@@ -82,6 +82,7 @@ public sealed class GetHotelsListCommandHandler : BaseRequestHandler<GetHotelsLi
                 Slug = slug
             });
         }
+        response.TotalPage = hotels.TotalPages;
         response.CountryList = response.Items
     .Select(p => p.HotelCountry)
     .Where(c => !string.IsNullOrWhiteSpace(c))
