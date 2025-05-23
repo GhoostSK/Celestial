@@ -14,17 +14,20 @@ public sealed class GetBlogsListCommandHandler : BaseRequestHandler<GetBlogsList
     private readonly ILanguageService _languageService;
     private readonly ILocalizedPropertyService _localizedPropertyService;
     private readonly IBlogTagService _blogTagService;
+    private readonly IBlogCategoryService _blogCategoryService;
 
     public GetBlogsListCommandHandler(
         ILocalizedPropertyService localizedPropertyService,
         ILanguageService languageService,
         IBlogService blogService,
-        IBlogTagService blogTagService)
+        IBlogTagService blogTagService,
+        IBlogCategoryService blogCategoryService)
     {
         _localizedPropertyService = localizedPropertyService;
         _languageService = languageService;
         _blogService = blogService;
         _blogTagService = blogTagService;
+        _blogCategoryService = blogCategoryService;
     }
 
     protected override async Task<GetBlogsListCommandRes> HandleCore(GetBlogsListCommandReq request, CancellationToken cancellationToken)
@@ -51,7 +54,7 @@ public sealed class GetBlogsListCommandHandler : BaseRequestHandler<GetBlogsList
             });
         }
 
-        var blogs = await _blogService.GetBlogsList(request.CategoriesId, request.TagsId,request.PageNumber,request.PageSize, cancellationToken);
+        var blogs = await _blogService.GetBlogsList(request.CategoriesId, request.TagsId, request.PageNumber, request.PageSize, cancellationToken);
 
         var response = new GetBlogsListCommandRes();
         foreach (var blog in blogs.Items)
@@ -74,6 +77,7 @@ public sealed class GetBlogsListCommandHandler : BaseRequestHandler<GetBlogsList
                 Slug = localize.FirstOrDefault(p => p.LocalKey == nameof(BlogItem.Slug))?.LocalValue ?? ""
             });
         }
+
         if (!string.IsNullOrEmpty(request.Title))
         {
             var filtredData = response.Items.Where(p => p.Title.Contains(request.Title)).ToList();

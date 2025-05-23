@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Celestial.ParvazBolourin.Service.Command.ShirdalBlog.BlogCategory;
+using MediatR;
 using MofidApp.SharedKernel.Common.Model;
 using MofidApp.SharedKernel.Domain.Services;
 
@@ -20,6 +21,7 @@ public sealed class GetBlogsListCommandRes : ServiceResContextBase
 {
     public List<BlogItem> Items { get; set; } = new();
     public List<BlogTagDto> BlogTagsList { get; set; }
+    public List<BlogCategoryListItemDto> Categories { get; set; }
     public int TotalPage { get; set; }
 
 }

@@ -1,5 +1,6 @@
 ﻿using Celestial.ParvazBolourin.Api.Models.Dto;
 using Celestial.ParvazBolourin.Service.Command.ShirdalBlog;
+using Celestial.ParvazBolourin.Service.Command.ShirdalBlog.BlogCategory;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Celestial.ParvazBolourin.Api.Controllers.ShirdalBlog;
@@ -19,7 +20,11 @@ public class ShirdalBlogController : BaseController
             PageSize = request.PageSize,
             PopularTagCount = request.PopularTagsCount
         }, cancellationToken);
-
+        var categoriesList = await Mediator.Send(new GetBlogCategoryListCommandReq
+        {
+            LanguageId = request.LanguageId
+        });
+        response.Categories = categoriesList.Items;
         if (response.HasError)
             return BadRequest(response.Error);
 
