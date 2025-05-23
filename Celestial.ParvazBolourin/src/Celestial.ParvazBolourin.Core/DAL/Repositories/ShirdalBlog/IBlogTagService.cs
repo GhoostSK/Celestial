@@ -6,4 +6,7 @@ namespace Celestial.ParvazBolourin.Core.DAL.Repositories.ShirdalBlog;
 
 public interface IBlogTagService : IRepositoryEF<BlogTags>, IScopeLifetime
 {
+    Task<List<BlogTags>> GetTopTagsByViewCountAsync(int count, CancellationToken cancellationToken);
+    public Task<List<BlogTags>> GetTagsList(CancellationToken cancellationToken);
+
 }

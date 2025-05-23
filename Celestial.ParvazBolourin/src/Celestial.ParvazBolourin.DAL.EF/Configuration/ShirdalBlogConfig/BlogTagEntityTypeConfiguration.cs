@@ -8,7 +8,7 @@ public sealed class BlogTagEntityTypeConfiguration : IEntityTypeConfiguration<Bl
 {
     public void Configure(EntityTypeBuilder<BlogTags> builder)
     {
-        builder.ToTable("BlogTags"); // اینجا درستش کن
+        builder.ToTable("BlogTags");
 
         builder.Property(p => p.ViewCount)
             .IsRequired()
@@ -18,10 +18,5 @@ public sealed class BlogTagEntityTypeConfiguration : IEntityTypeConfiguration<Bl
         builder.Property(p => p.IsDeleted)
             .IsRequired()
             .HasDefaultValue(false);
-
-        builder
-            .HasMany(b => b.BlogTagsMaps)
-            .WithOne(bt => bt.BlogTag)
-            .HasForeignKey(bt => bt.BlogTagId);
     }
 }

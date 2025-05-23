@@ -92,16 +92,6 @@ public class UpdateBlogCommandHandler : BaseRequestHandler<UpdateBlogCommandReq,
                     LocalValue = item.HeaderText
                 }, cancellationToken);
 
-            if (!localizedData.Any(p => p.LocalKey == nameof(item.Tags)))
-                await _localizedPropertyService.AddAsync(new LocalizedProperty
-                {
-                    LanguageId = item.LanguageId,
-                    LocalKey = nameof(item.Tags),
-                    EntityId = request.Id,
-                    LocalKeyGroup = "Blog",
-                    LocalValue = string.Join(",", item.Tags)
-                }, cancellationToken);
-
             if (!localizedData.Any(p => p.LocalKey == nameof(item.Title)))
                 await _localizedPropertyService.AddAsync(new LocalizedProperty
                 {
@@ -120,9 +110,6 @@ public class UpdateBlogCommandHandler : BaseRequestHandler<UpdateBlogCommandReq,
                 {
                     case nameof(item.Title):
                         existingProperty.LocalValue = item.Title;
-                        break;
-                    case nameof(item.Tags):
-                        existingProperty.LocalValue = string.Join(",", item.Tags);
                         break;
                     case nameof(item.HeaderText):
                         existingProperty.LocalValue = item.HeaderText;

@@ -13,15 +13,18 @@ public sealed class GetBlogsListCommandHandler : BaseRequestHandler<GetBlogsList
     private readonly IBlogService _blogService;
     private readonly ILanguageService _languageService;
     private readonly ILocalizedPropertyService _localizedPropertyService;
+    private readonly IBlogTagService _blogTagService;
 
     public GetBlogsListCommandHandler(
         ILocalizedPropertyService localizedPropertyService,
         ILanguageService languageService,
-        IBlogService blogService)
+        IBlogService blogService,
+        IBlogTagService blogTagService)
     {
         _localizedPropertyService = localizedPropertyService;
         _languageService = languageService;
         _blogService = blogService;
+        _blogTagService = blogTagService;
     }
 
     protected override async Task<GetBlogsListCommandRes> HandleCore(GetBlogsListCommandReq request, CancellationToken cancellationToken)
@@ -35,7 +38,20 @@ public sealed class GetBlogsListCommandHandler : BaseRequestHandler<GetBlogsList
             };
         }
 
-        var blogs = await _blogService.GetBlogsList(request.CategoryIds, cancellationToken);
+        var blogTags = new List<BlogTagDto>();
+
+        var popularTag = await _blogTagService.GetTopTagsByViewCountAsync(request.PopularTagCount, cancellationToken);
+        foreach (var tag in popularTag)
+        {
+            var localizeTag = await _localizedPropertyService.FirstOrDefaultAsync(p => p.EntityId == tag.Id && p.LocalKeyGroup == "BlogTag" && p.LocalKey == "Name" && p.LanguageId == request.LanguageId);
+            blogTags.Add(new()
+            {
+                Id = tag.Id,
+                Name = localizeTag.LocalValue!
+            });
+        }
+
+        var blogs = await _blogService.GetBlogsList(request.CategoriesId, request.TagsId, cancellationToken);
 
         var response = new GetBlogsListCommandRes();
         foreach (var blog in blogs)
@@ -64,6 +80,7 @@ public sealed class GetBlogsListCommandHandler : BaseRequestHandler<GetBlogsList
             response.Items = filtredData;
 
         }
+        response.BlogTagsList = blogTags;
         return response;
     }
 }

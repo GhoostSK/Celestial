@@ -15,16 +15,18 @@ public sealed class GetBlogByIdCommandHandler : BaseRequestHandler<GetBlogByIdCo
     private readonly ILanguageService _languageService;
     private readonly ILocalizedPropertyService _localizedPropertyService;
     private readonly IBlogCategoryService _blogCategoryService;
+    private readonly IBlogTagService _blogTagService;
 
     public GetBlogByIdCommandHandler(
         IBlogService blogService,
         ILocalizedPropertyService localizedPropertyService,
-        ILanguageService languageService, IBlogCategoryService blogCategoryService)
+        ILanguageService languageService, IBlogCategoryService blogCategoryService, IBlogTagService blogTagService)
     {
         _blogService = blogService;
         _localizedPropertyService = localizedPropertyService;
         _languageService = languageService;
         _blogCategoryService = blogCategoryService;
+        _blogTagService = blogTagService;
     }
 
     protected override async Task<GetBlogByIdCommandRes> HandleCore(GetBlogByIdCommandReq request, CancellationToken cancellationToken)
@@ -93,7 +95,22 @@ public sealed class GetBlogByIdCommandHandler : BaseRequestHandler<GetBlogByIdCo
                 Name = categoryName.LocalValue
             });
         }
+        var tags = new List<BlogTagDto>();
 
+        foreach (var catId in blog.TagsId)
+        {
+            var tag = await _blogTagService.FindByIdAsync(cancellationToken, catId);
+            tag.ViewCount++;
+            var tagName = await _localizedPropertyService.FirstOrDefaultAsync(
+                p => p.EntityId == tag.Id && p.LanguageId == request.LanguageId && p.LocalKey == "Name" &&
+                     p.LocalKeyGroup == "BlogTag", cancellationToken: cancellationToken);
+            tags.Add(new BlogTagDto()
+            {
+                Id = tag.Id,
+                Name = tagName.LocalValue
+            });
+        }
+        await _blogTagService.UnitOfWork.SaveChangesAsync(cancellationToken);
         response.Title = localizedProperties.FirstOrDefault(p => p.LocalKey == "Title")?.LocalValue ?? string.Empty;
         response.HeaderText = localizedProperties.FirstOrDefault(p => p.LocalKey == "HeaderText")?.LocalValue ?? string.Empty;
         response.MainText = localizedProperties.FirstOrDefault(p => p.LocalKey == "MainText")?.LocalValue ?? string.Empty;
@@ -101,9 +118,9 @@ public sealed class GetBlogByIdCommandHandler : BaseRequestHandler<GetBlogByIdCo
         response.MetaTitle = localizedProperties.FirstOrDefault(p => p.LocalKey == "MetaTitle")?.LocalValue ?? string.Empty;
         response.MetaKeywords = localizedProperties.FirstOrDefault(p => p.LocalKey == "MetaKeywords")?.LocalValue ?? string.Empty;
         response.MetaDescription = localizedProperties.FirstOrDefault(p => p.LocalKey == "MetaDescription")?.LocalValue ?? string.Empty;
-        response.Tags = localizedProperties.Where(p => p.LocalKey == "Tags").Select(p => p.LocalValue).ToList();
 
         response.BlogCategories = categories;
+        response.BlogTags = tags;
         return response;
     }
 }

@@ -2,10 +2,10 @@
 using Celestial.ParvazBolourin.Core.DAL.Model.ShirdalBlog;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.ShirdalBlog;
-using Celestial.ParvazBolourin.Service.Command.Hotel;
 using Celestial.ParvazBolourin.Service.Command.ShirdalBlog;
 using MofidApp.SharedKernel.Common.Model;
 using MofidApp.SharedKernel.Domain.Services;
+using System.Reflection.Metadata;
 
 namespace Celestial.ParvazBolourin.Service.CommandHandler.ShirdalBlog;
 
@@ -15,16 +15,18 @@ public sealed class AddBlogCommandHandler : BaseRequestHandler<AddBlogCommandReq
     private readonly ILanguageService _languageService;
     private readonly ILocalizedPropertyService _localizedProperty;
     private readonly IBlogCategoryService _blogCategoryService;
+    private readonly IBlogTagService _blogTagService;
 
     public AddBlogCommandHandler(
         ILocalizedPropertyService localizedProperty,
         ILanguageService languageService,
-        IBlogService blogService, IBlogCategoryService blogCategoryService)
+        IBlogService blogService, IBlogCategoryService blogCategoryService, IBlogTagService blogTagService)
     {
         _localizedProperty = localizedProperty;
         _languageService = languageService;
         _blogService = blogService;
         _blogCategoryService = blogCategoryService;
+        _blogTagService = blogTagService;
     }
 
     protected override async Task<AddBlogCommandRes> HandleCore(AddBlogCommandReq request, CancellationToken cancellationToken)
@@ -52,7 +54,7 @@ public sealed class AddBlogCommandHandler : BaseRequestHandler<AddBlogCommandReq
         foreach (var catId in request.BlogCategoryIds)
         {
             var category = await _blogCategoryService.FindByIdAsync(cancellationToken, catId);
-            if (category==null)
+            if (category == null)
             {
                 return new AddBlogCommandRes()
                 {
@@ -61,10 +63,24 @@ public sealed class AddBlogCommandHandler : BaseRequestHandler<AddBlogCommandReq
             }
 
         }
+        foreach (var tagId in request.BlogTagIds)
+        {
+            var tag = await _blogTagService.FindByIdAsync(cancellationToken, tagId);
+            if (tag == null)
+            {
+                return new AddBlogCommandRes()
+                {
+                    Error = ValidationError.UnhandledValidationError("C404", $"Invalid Tag")
+                };
+            }
+        }
+
+
         var blog = new Blog
         {
             PicturePath = request.PicturePath,
-            CategoriesId = request.BlogCategoryIds
+            CategoriesId = request.BlogCategoryIds,
+            TagsId = request.BlogTagIds,
         };
 
 
@@ -134,22 +150,8 @@ public sealed class AddBlogCommandHandler : BaseRequestHandler<AddBlogCommandReq
                     LocalValue = item.MetaTitle
                 }
             });
-
-            if (item.Tags != null)
-            {
-                foreach (var tag in item.Tags.Where(tag => !string.IsNullOrWhiteSpace(tag)))
-                {
-                    localizedData.Add(new LocalizedProperty
-                    {
-                        LanguageId = item.LanguageId,
-                        EntityId = blog.Id,
-                        LocalKey = nameof(item.Tags),
-                        LocalKeyGroup = "Blog",
-                        LocalValue = tag
-                    });
-                }
-            }
         }
+
 
         await _localizedProperty.BulkInsertAsync(localizedData, cancellationToken: cancellationToken);
 

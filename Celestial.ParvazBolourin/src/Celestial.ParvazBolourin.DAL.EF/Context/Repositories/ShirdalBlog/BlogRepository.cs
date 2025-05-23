@@ -15,15 +15,17 @@ public sealed class BlogRepository(MainDbContext dbContext) : RepositoryBase<Blo
             .FirstOrDefaultAsync(p => p.Id == id && p.IsDeleted == false, cancellationToken);
     }
 
-    public async Task<List<Blog>> GetBlogsList(List<long> categoryIds, CancellationToken cancellationToken)
+    public async Task<List<Blog>> GetBlogsList(List<long> categoryIds, List<long> tagsId, CancellationToken cancellationToken)
     {
         var query = TableNoTracking
             .IgnoreQueryFilters()
             .Where(p => !p.IsDeleted);
 
         if (categoryIds.Any())
-            query = query.Where(p => p.CategoriesId.Any(categoryIds.Contains));
+            query = query.Where(p => p.CategoriesId.Any(id => categoryIds.Contains(id)));
 
+        if (tagsId.Any())
+            query = query.Where(p => p.TagsId.Any(id => tagsId.Contains(id)));
         return await query
             .ToListAsync(cancellationToken);
     }

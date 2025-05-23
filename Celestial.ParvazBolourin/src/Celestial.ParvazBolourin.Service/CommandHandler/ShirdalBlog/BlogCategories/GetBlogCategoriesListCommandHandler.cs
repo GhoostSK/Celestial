@@ -7,12 +7,12 @@ using MofidApp.SharedKernel.Domain.Services;
 
 namespace Celestial.ParvazBolourin.Service.CommandHandler.ShirdalBlog.BlogCategories;
 
-public sealed class GetBlogCategoriesListCommandHandler : IRequestHandler<GetBlogCategoryListCommandReq, GetBlogCategoryListCommandRes>
+public sealed class GetBlogTagsListCommandHandler : IRequestHandler<GetBlogCategoryListCommandReq, GetBlogCategoryListCommandRes>
 {
     private readonly IBlogCategoryService _categoryService;
     private readonly ILocalizedPropertyService _localizedPropertyService;
 
-    public GetBlogCategoriesListCommandHandler(IBlogCategoryService categoryService, ILocalizedPropertyService localizedPropertyService)
+    public GetBlogTagsListCommandHandler(IBlogCategoryService categoryService, ILocalizedPropertyService localizedPropertyService)
     {
         _categoryService = categoryService;
         _localizedPropertyService = localizedPropertyService;

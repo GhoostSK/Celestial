@@ -8,13 +8,16 @@ public sealed class GetBlogsListCommandReq : BaseEntity, IRequest<GetBlogsListCo
 {
     public int LanguageId { get; set; }
     public string Title { get; set; }
-    public List<long> CategoryIds { get; set; } = new();
+    public List<long> CategoriesId { get; set; } = new();
+    public List<long> TagsId { get; set; } = new();
+    public int PopularTagCount { get; set; }
 }
 
 
 public sealed class GetBlogsListCommandRes : ServiceResContextBase
 {
     public List<BlogItem> Items { get; set; } = new();
+    public List<BlogTagDto> BlogTagsList { get; set; }
 }
 
 public sealed class BlogItem

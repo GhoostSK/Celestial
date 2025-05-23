@@ -12,8 +12,10 @@ public class ShirdalBlogController : BaseController
         var response = await Mediator.Send(new GetBlogsListCommandReq
         {
             LanguageId = request.LanguageId,
-            CategoryIds = request.CategoryIds,
+            CategoriesId = request.CategoriesId,
+            TagsId = request.TagsId,
             Title = request.Title,
+            PopularTagCount = request.PopularTagsCount
         }, cancellationToken);
 
         if (response.HasError)
@@ -27,7 +29,7 @@ public class ShirdalBlogController : BaseController
     public async Task<IActionResult> GetBlogById([FromQuery] GetBlogsByIdReqDto request, CancellationToken cancellationToken)
     {
         var response =
-            await Mediator.Send(new GetBlogByIdCommandReq { LanguageId = request.LanguageId, Id = request.Id ,Slug = request.Slug},
+            await Mediator.Send(new GetBlogByIdCommandReq { LanguageId = request.LanguageId, Id = request.Id, Slug = request.Slug },
                 cancellationToken);
 
         if (response.HasError) return BadRequest(response.Error);
