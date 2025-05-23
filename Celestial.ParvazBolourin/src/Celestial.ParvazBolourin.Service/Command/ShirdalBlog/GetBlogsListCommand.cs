@@ -11,6 +11,8 @@ public sealed class GetBlogsListCommandReq : BaseEntity, IRequest<GetBlogsListCo
     public List<long> CategoriesId { get; set; } = new();
     public List<long> TagsId { get; set; } = new();
     public int PopularTagCount { get; set; }
+    public int PageNumber { get; set; } = 1;
+    public int PageSize { get; set; } = 10;
 }
 
 

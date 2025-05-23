@@ -33,7 +33,7 @@ public sealed class GetVisaListCommandHandler : BaseRequestHandler<GetVisaListCo
             };
 
         var response = new GetVisaListCommandRes();
-        var visas = await _visaService.GetVisaList(cancellationToken);
+        var visas = await _visaService.GetVisaList(request.PageNumber, request.PageSize, cancellationToken);
 
         foreach (var visa in visas)
         {

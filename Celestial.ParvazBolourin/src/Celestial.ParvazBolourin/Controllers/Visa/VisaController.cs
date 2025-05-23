@@ -10,7 +10,7 @@ public class VisaController : BaseController
     public async Task<IActionResult> GetVisaList([FromQuery] GetVisaListReqDto request,
         CancellationToken cancellationToken)
     {
-        var response = await Mediator.Send(new GetVisaListCommandReq { LanguageId = request.LanguageId },
+        var response = await Mediator.Send(new GetVisaListCommandReq { LanguageId = request.LanguageId, PageNumber = request.PageNumber, PageSize = request.PageSize },
             cancellationToken);
 
         if (response.HasError)

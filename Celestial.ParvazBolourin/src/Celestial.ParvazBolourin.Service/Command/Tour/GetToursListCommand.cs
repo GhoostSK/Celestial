@@ -19,7 +19,10 @@ public sealed class GetToursListCommandReq : BaseEntity, IRequest<GetToursListCo
     public List<Continent> TourContinent { get; set; } = new();
     public List<TourType> TourType { get; set; } = new();
     public List<TourScope> TourScope { get; set; } = new();
+
     public bool IsActiveTour { get; set; }
+    public int PageNumber { get; set; } = 1;
+    public int PageSize { get; set; } = 10;
 }
 
 public sealed class GetToursListCommandRes : ServiceResContextBase

@@ -17,6 +17,8 @@ public sealed class GetHotelsListCommandReq : BaseEntity, IRequest<GetHotelsList
     public double ToPrice { get; set; } = 0;
     public List<string> HotelCountry { get; set; } = new();
     public List<int> HotelScore { get; set; } = new();
+    public int PageNumber { get; set; }
+    public int PageSize { get; set; }
 }
 
 public sealed class GetHotelsListCommandRes : ServiceResContextBase

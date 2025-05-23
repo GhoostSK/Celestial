@@ -39,13 +39,15 @@ public sealed class HotelRepository(MainDbContext dbContext) : RepositoryBase<Ho
         if (model.HotelLocation.Any())
             query = query.Where(p => model.HotelLocation.Contains(p.HotelLocation));
 
-        if (model.HotelCountry.Any()) query = query.Where(p => model.HotelCountry.Contains(p.CountryId));
-
+        if (model.HotelCountry.Any())
+            query = query.Where(p => model.HotelCountry.Contains(p.CountryId));
 
         if (model.HotelScore.Any())
             query = query.Where(p => model.HotelScore.Contains(p.HotelScore));
 
         return await query
+            .Skip((model.PageNumber - 1) * model.PageSize)
+            .Take(model.PageSize)
             .ToListAsync(cancellationToken);
     }
 }

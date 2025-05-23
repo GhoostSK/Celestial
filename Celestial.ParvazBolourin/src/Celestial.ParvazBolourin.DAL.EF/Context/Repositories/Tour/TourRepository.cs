@@ -14,9 +14,11 @@ public class TourRepository(MainDbContext dbContext) : RepositoryBase<Tours>(dbC
         var query = TableNoTracking
             .Where(p => !p.IsDeleted);
 
-        if (model.Countries.Any()) query = query.Where(p => p.CountriesId.Any(c => model.Countries.Contains(c)));
+        if (model.Countries.Any())
+            query = query.Where(p => p.CountriesId.Any(c => model.Countries.Contains(c)));
 
-        if (model.Cities.Any()) query = query.Where(p => p.CitiesId.Any(c => model.Cities.Contains(c)));
+        if (model.Cities.Any())
+            query = query.Where(p => p.CitiesId.Any(c => model.Cities.Contains(c)));
 
         if (model.FromPrice != 0 && model.ToPrice != 0)
             query = query.Where(p => p.Price >= model.FromPrice && p.Price <= model.ToPrice);
@@ -24,16 +26,24 @@ public class TourRepository(MainDbContext dbContext) : RepositoryBase<Tours>(dbC
         if (model.FromDay != 0 && model.ToDay != 0)
             query = query.Where(p => p.DayCount >= model.FromDay && p.DayCount <= model.ToDay);
 
-        if (model.TourContinent.Any()) query = query.Where(p => model.TourContinent.Contains(p.TourContinent));
+        if (model.TourContinent.Any())
+            query = query.Where(p => model.TourContinent.Contains(p.TourContinent));
 
-        if (model.TourType.Any()) query = query.Where(p => model.TourType.Contains(p.TourType));
+        if (model.TourType.Any())
+            query = query.Where(p => model.TourType.Contains(p.TourType));
 
-        if (model.TourScope.Any()) query = query.Where(p => model.TourScope.Contains(p.TourScope));
+        if (model.TourScope.Any())
+            query = query.Where(p => model.TourScope.Contains(p.TourScope));
 
-        if (model.IsActiveTour) query = query.Where(p => p.TourStatus == TourStatus.Active);
+        if (model.IsActiveTour)
+            query = query.Where(p => p.TourStatus == TourStatus.Active);
 
-        return await query.ToListAsync(cancellationToken);
+        return await query
+            .Skip((model.PageNumber - 1) * model.PageSize)
+            .Take(model.PageSize)
+            .ToListAsync(cancellationToken);
     }
+
 
     public async Task<Tours?> GetTourById(long tourId, CancellationToken cancellationToken)
     {

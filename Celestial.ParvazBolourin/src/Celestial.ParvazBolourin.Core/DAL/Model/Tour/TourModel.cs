@@ -14,5 +14,7 @@ public class GetTourListReq
     public List<Continent> TourContinent { get; set; } = new();
     public List<TourType> TourType { get; set; } = new();
     public List<TourScope> TourScope { get; set; } = new();
+    public int PageSize { get; set; } = 10;
+    public int PageNumber { get; set; } = 1;
     public bool IsActiveTour { get; set; }
 }

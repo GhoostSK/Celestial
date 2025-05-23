@@ -59,6 +59,8 @@ public sealed class GetToursListReqDto
     public List<TourType> TourType { get; set; } = new();
     public List<TourScope> TourScope { get; set; } = new();
     public bool IsActiveTour { get; set; }
+    public int PageSize { get; set; } = 10;
+    public int PageNumber { get; set; } = 1;
 
 }
 

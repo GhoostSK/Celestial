@@ -12,4 +12,6 @@ public class GetHotelsListReq
     public double ToPrice { get; set; } = 0;
     public List<int> HotelCountry { get; set; } = new();
     public List<int> HotelScore { get; set; } = new();
+    public int PageSize { get; set; } = 10;
+    public int PageNumber { get; set; } = 1;
 }

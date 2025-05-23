@@ -5,6 +5,8 @@ namespace Celestial.ParvazBolourin.Api.Models.Dto;
 public class GetVisaListReqDto
 {
     public int LanguageId { get; set; }
+    public int PageSize { get; set; } = 10;
+    public int PageNumber { get; set; } = 1;
 }
 
 public sealed class GetVisaByIdReqDto

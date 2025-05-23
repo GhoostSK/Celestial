@@ -15,9 +15,14 @@ public class VisaRepository(MainDbContext dbContext) : RepositoryBase<Visas>(dbC
         return model.Id;
     }
 
-    public async Task<List<Visas>> GetVisaList(CancellationToken cancellationToken)
+    public async Task<List<Visas>> GetVisaList(int pageNumber = 1, int pageSize = 10, CancellationToken cancellationToken = default)
     {
-        return await TableNoTracking.Where(p => p.IsDeleted == false).ToListAsync(cancellationToken);
+        var query = TableNoTracking.Where(p => !p.IsDeleted);
+
+        return await query
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(cancellationToken);
     }
 
     public async Task<Visas?> GetVisaById(long visaId, CancellationToken cancellationToken)

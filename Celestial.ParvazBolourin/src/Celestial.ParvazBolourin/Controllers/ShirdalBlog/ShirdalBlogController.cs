@@ -15,6 +15,8 @@ public class ShirdalBlogController : BaseController
             CategoriesId = request.CategoriesId,
             TagsId = request.TagsId,
             Title = request.Title,
+            PageNumber = request.PageNumber,
+            PageSize = request.PageSize,
             PopularTagCount = request.PopularTagsCount
         }, cancellationToken);
 

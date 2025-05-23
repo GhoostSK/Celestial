@@ -51,7 +51,7 @@ public sealed class GetBlogsListCommandHandler : BaseRequestHandler<GetBlogsList
             });
         }
 
-        var blogs = await _blogService.GetBlogsList(request.CategoriesId, request.TagsId, cancellationToken);
+        var blogs = await _blogService.GetBlogsList(request.CategoriesId, request.TagsId,request.PageNumber,request.PageSize, cancellationToken);
 
         var response = new GetBlogsListCommandRes();
         foreach (var blog in blogs)

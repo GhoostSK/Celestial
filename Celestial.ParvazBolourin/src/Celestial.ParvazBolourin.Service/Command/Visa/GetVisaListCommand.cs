@@ -8,6 +8,8 @@ namespace Celestial.ParvazBolourin.Service.Command.Visa;
 public sealed class GetVisaListCommandReq : BaseEntity, IRequest<GetVisaListCommandRes>
 {
     public int LanguageId { get; set; }
+    public int PageNumber { get; set; } = 1;
+    public int PageSize { get; set; } = 10;
 }
 
 public sealed class GetVisaListCommandRes : ServiceResContextBase

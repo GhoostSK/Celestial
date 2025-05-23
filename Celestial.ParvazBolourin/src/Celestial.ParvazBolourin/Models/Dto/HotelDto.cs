@@ -62,6 +62,8 @@ public sealed class GetHotelListReqDto
     public double ToPrice { get; set; } = 0;
     public List<string> HotelCountry { get; set; } = new();
     public List<int> HotelScore { get; set; } = new();
+    public int PageSize { get; set; } = 10;
+    public int PageNumber { get; set; } = 1;
 }
 
 public sealed class UpdateHotelReqDto
