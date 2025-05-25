@@ -24,7 +24,7 @@ public class GeoController : BaseController
     [HttpGet]
     public async Task<IActionResult> CityList([Required] int stateId, CancellationToken cancellationToken)
     {
-        var data = await Mediator.Send(new GetCityListCommandReq { StateId = stateId }, cancellationToken);
+        var data = await Mediator.Send(new GetCityListCommandReq { CountryId = stateId }, cancellationToken);
 
         return Ok(data);
     }

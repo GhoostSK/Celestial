@@ -8,6 +8,6 @@ public sealed class Blog : DbBaseEntity<long>
     public string PicturePath { get; set; } = string.Empty;
     public bool IsDeleted { get; set; } = false;
     public List<long> CategoriesId { get; set; } = new();
-    public List<long> TagsId { get; set; }
+    public List<long> TagsId { get; set; }=new();
     public DateTime RegistrationDate { get; set; }
 }

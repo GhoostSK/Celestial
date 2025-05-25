@@ -1,5 +1,6 @@
 ﻿namespace Celestial.ParvazBolourin.Core.Enum.Global;
 
+
 public enum Continent
 {
     None,

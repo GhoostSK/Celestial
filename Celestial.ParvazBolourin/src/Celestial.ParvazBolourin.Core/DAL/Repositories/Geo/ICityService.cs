@@ -6,5 +6,5 @@ namespace Celestial.ParvazBolourin.Core.DAL.Repositories.Geo;
 
 public interface ICityService : IRepositoryEF<City>, IScopeLifetime
 {
-    public Task<List<City>> GetCityList(int stateId, CancellationToken cancellationToken);
+    public Task<List<City>> GetCityList(int countryId, CancellationToken cancellationToken);
 }

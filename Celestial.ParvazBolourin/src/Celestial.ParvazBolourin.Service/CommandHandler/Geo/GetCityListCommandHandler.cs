@@ -9,7 +9,7 @@ public class GetCityListCommandHandler(ICityService cityService)
 {
     public async Task<GetCityListCommandRes> Handle(GetCityListCommandReq request, CancellationToken cancellationToken)
     {
-        var data = await cityService.GetCityList(request.StateId, cancellationToken);
+        var data = await cityService.GetCityList(request.CountryId, cancellationToken);
         return new GetCityListCommandRes
         {
             Items = data

@@ -7,7 +7,7 @@ namespace Celestial.ParvazBolourin.Service.Command.Geo;
 
 public class GetCityListCommandReq : IRequest<GetCityListCommandRes>
 {
-    [Required] public int StateId { get; set; }
+    [Required] public int CountryId { get; set; }
 }
 
 public class GetCityListCommandRes : ServiceResContextBase

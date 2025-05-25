@@ -99,6 +99,9 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
                     b.Property<int>("State_id")
                         .HasColumnType("int");
 
+                    b.Property<int>("country_id")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("City");
