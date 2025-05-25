@@ -9,4 +9,5 @@ public sealed class Blog : DbBaseEntity<long>
     public bool IsDeleted { get; set; } = false;
     public List<long> CategoriesId { get; set; } = new();
     public List<long> TagsId { get; set; }
+    public DateTime RegistrationDate { get; set; }
 }

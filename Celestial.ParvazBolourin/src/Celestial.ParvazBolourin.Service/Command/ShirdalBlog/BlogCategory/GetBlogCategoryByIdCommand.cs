@@ -8,6 +8,7 @@ public sealed class GetBlogCategoryByIdCommandReq : BaseEntity, IRequest<GetBlog
 {
     public long Id { get; set; }
     public int LanguageId { get; set; }
+    public string Slug { get; set; }
 }
 
 public sealed class GetBlogCategoryByIdCommandRes : ServiceResContextBase

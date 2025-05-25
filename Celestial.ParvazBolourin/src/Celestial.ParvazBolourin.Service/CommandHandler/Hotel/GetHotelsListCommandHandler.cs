@@ -82,7 +82,14 @@ public sealed class GetHotelsListCommandHandler : BaseRequestHandler<GetHotelsLi
                 Slug = slug
             });
         }
-        response.TotalPage = hotels.TotalPages;
+        response.Pagination = new()
+        {
+            TotalRecords = hotels.totalRecord,
+            CurrentPage = request.PageNumber,
+            TotalPages = hotels.TotalPages,
+            PrevPage = request.PageNumber > 1 ? request.PageNumber - 1 : null,
+            NextPage = request.PageNumber < hotels.TotalPages ? request.PageNumber + 1 : null
+        };
         response.CountryList = response.Items
     .Select(p => p.HotelCountry)
     .Where(c => !string.IsNullOrWhiteSpace(c))

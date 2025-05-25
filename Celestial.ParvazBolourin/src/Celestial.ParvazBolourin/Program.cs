@@ -5,13 +5,14 @@ using Celestial.ParvazBolourin.Api.Identity.Services.JwtToken;
 using Celestial.ParvazBolourin.Core;
 using Celestial.ParvazBolourin.DAL.EF.DependencyInjection;
 using Celestial.ParvazBolourin.Service.Service.EmailSender;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using MofidApp.SharedKernel.DependencyInjection;
 using System.Reflection;
 using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
+using System.Text.Json.Serialization;
 using Unleash;
 
 
@@ -93,6 +94,11 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = "/api/Account/AccessDenied";
     options.SlidingExpiration = true;
 });
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
 
 builder.Services.Configure<AppSettings>(builder.Configuration);
 

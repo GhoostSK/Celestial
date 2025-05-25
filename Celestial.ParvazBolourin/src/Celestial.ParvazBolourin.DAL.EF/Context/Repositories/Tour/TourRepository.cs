@@ -10,7 +10,7 @@ namespace Celestial.ParvazBolourin.DAL.EF.Context.Repositories.Tour;
 
 public class TourRepository(MainDbContext dbContext) : RepositoryBase<Tours>(dbContext), ITourService
 {
-    public async Task<(List<Tours> Items, int TotalPages)> GetToursList(GetTourListReq model, CancellationToken cancellationToken)
+    public async Task<(List<Tours> Items, int TotalPages, int totalRecord)> GetToursList(GetTourListReq model, CancellationToken cancellationToken)
     {
         var query = TableNoTracking
             .Where(p => !p.IsDeleted);
@@ -46,8 +46,9 @@ public class TourRepository(MainDbContext dbContext) : RepositoryBase<Tours>(dbC
             .Skip((model.PageNumber - 1) * model.PageSize)
             .Take(model.PageSize)
             .ToListAsync(cancellationToken);
+        int totalRecord = await Table.IgnoreQueryFilters().CountAsync(cancellationToken);
 
-        return (items, totalPages);
+        return (items, totalPages, totalRecord);
     }
 
 

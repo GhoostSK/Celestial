@@ -1,4 +1,5 @@
-﻿using Celestial.ParvazBolourin.Core.DAL.Repositories.Hotel.Model;
+﻿using Celestial.ParvazBolourin.Core.DAL.Model.Global;
+using Celestial.ParvazBolourin.Core.DAL.Repositories.Hotel.Model;
 using Celestial.ParvazBolourin.Core.Enum.Global;
 using Celestial.ParvazBolourin.Core.Enum.Hotel;
 using MediatR;
@@ -27,5 +28,5 @@ public sealed class GetHotelsListCommandRes : ServiceResContextBase
     public double MaxPrice { get; set; }
     public List<string> CountryList { get; set; } = new();
     public List<GetAllHotelsServiceRes> Items { get; set; } = new();
-    public int TotalPage { get; set; }
+    public PaginationMeta Pagination { get; set; }
 }

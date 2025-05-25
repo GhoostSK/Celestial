@@ -8,6 +8,7 @@ public sealed class GetBlogTagByIdCommandReq : BaseEntity, IRequest<GetBlogTagBy
 {
     public long Id { get; set; }
     public int LanguageId { get; set; }
+    public string Slug { get; set; }
 }
 
 public sealed class GetBlogTagByIdCommandRes : ServiceResContextBase

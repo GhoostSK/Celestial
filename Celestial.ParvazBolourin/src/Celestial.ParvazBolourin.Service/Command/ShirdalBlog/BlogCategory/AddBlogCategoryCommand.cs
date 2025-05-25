@@ -17,10 +17,12 @@ public sealed class LocalizedNameDto
 {
     public int LanguageId { get; set; }
     public string Name { get; set; } = string.Empty;
+    public string Slug { get; set; } = string.Empty;
 }
 
 public sealed class BlogCategoryListItemDto
 {
     public long Id { get; set; }
     public string Name { get; set; } = string.Empty;
+    public string Slug { get; set; }
 }

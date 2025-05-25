@@ -14,7 +14,7 @@ public sealed class BlogRepository(MainDbContext dbContext) : RepositoryBase<Blo
             .IgnoreQueryFilters()
             .FirstOrDefaultAsync(p => p.Id == id && p.IsDeleted == false, cancellationToken);
     }
-    public async Task<(List<Blog> Items, int TotalPages)> GetBlogsList(List<long> categoryIds,List<long> tagsId,int pageNumber,int pageSize,CancellationToken cancellationToken)
+    public async Task<(List<Blog> Items, int TotalPages, int totalRecord)> GetBlogsList(List<long> categoryIds,List<long> tagsId,int pageNumber,int pageSize,CancellationToken cancellationToken)
     {
         var query = TableNoTracking
             .IgnoreQueryFilters()
@@ -33,8 +33,9 @@ public sealed class BlogRepository(MainDbContext dbContext) : RepositoryBase<Blo
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync(cancellationToken);
+        int totalRecord = await Table.IgnoreQueryFilters().CountAsync(cancellationToken);
 
-        return (items, totalPages);
+        return (items, totalPages, totalRecord);
     }
 
     public async Task<long> AddBlog(Blog blog, CancellationToken cancellationToken)

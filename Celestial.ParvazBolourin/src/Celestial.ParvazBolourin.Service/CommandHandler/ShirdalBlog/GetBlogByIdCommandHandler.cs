@@ -89,10 +89,14 @@ public sealed class GetBlogByIdCommandHandler : BaseRequestHandler<GetBlogByIdCo
             var categoryName = await _localizedPropertyService.FirstOrDefaultAsync(
                 p => p.EntityId == category.Id && p.LanguageId == request.LanguageId && p.LocalKey == "Name" &&
                      p.LocalKeyGroup == "BlogCategory", cancellationToken: cancellationToken);
+            var Slug = await _localizedPropertyService.FirstOrDefaultAsync(
+    p => p.EntityId == category.Id && p.LanguageId == request.LanguageId && p.LocalKey == "Name" &&
+         p.LocalKeyGroup == "BlogCategory", cancellationToken: cancellationToken);
             categories.Add(new BlogCategoryDto()
             {
                 Id = category.Id,
-                Name = categoryName.LocalValue
+                Name = categoryName?.LocalValue ?? string.Empty,
+                Slug = Slug?.LocalValue ?? string.Empty
             });
         }
         var tags = new List<BlogTagDto>();
@@ -104,10 +108,16 @@ public sealed class GetBlogByIdCommandHandler : BaseRequestHandler<GetBlogByIdCo
             var tagName = await _localizedPropertyService.FirstOrDefaultAsync(
                 p => p.EntityId == tag.Id && p.LanguageId == request.LanguageId && p.LocalKey == "Name" &&
                      p.LocalKeyGroup == "BlogTag", cancellationToken: cancellationToken);
+
+            var slug = await _localizedPropertyService.FirstOrDefaultAsync(
+     p => p.EntityId == tag.Id && p.LanguageId == request.LanguageId && p.LocalKey == "Slug" &&
+          p.LocalKeyGroup == "BlogTag", cancellationToken: cancellationToken);
             tags.Add(new BlogTagDto()
             {
                 Id = tag.Id,
-                Name = tagName.LocalValue
+                Name = tagName?.LocalValue ?? string.Empty,
+                Slug = slug?.LocalValue ?? string.Empty
+
             });
         }
         await _blogTagService.UnitOfWork.SaveChangesAsync(cancellationToken);
@@ -121,6 +131,9 @@ public sealed class GetBlogByIdCommandHandler : BaseRequestHandler<GetBlogByIdCo
 
         response.BlogCategories = categories;
         response.BlogTags = tags;
+        response.RegistrationDate = blog.RegistrationDate;
+        response.CreatedBy = "meysam peyghamy";
+        response.CreatedByProfilePicture = "images/Profile/sample-User.jpg";
         return response;
     }
 }

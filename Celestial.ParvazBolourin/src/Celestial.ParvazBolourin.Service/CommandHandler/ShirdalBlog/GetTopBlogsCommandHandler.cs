@@ -43,6 +43,29 @@ public sealed class GetTopBlogsCommandHandler : BaseRequestHandler<GetTopBlogsCo
                 LanguageId = request.LanguageId,
                 LocalKeyGroup = "Blog"
             }, cancellationToken);
+            var Tag = new List<Tag>();
+            foreach (var TagId in blog.TagsId)
+            {
+                var Title = await _localizedPropertyService.FirstOrDefaultAsync(p => p.LocalKeyGroup == "BlogTag" && p.LocalKey == "Name" && p.EntityId == TagId, cancellationToken: cancellationToken);
+                var Slug = await _localizedPropertyService.FirstOrDefaultAsync(p => p.LocalKeyGroup == "BlogTag" && p.LocalKey == "Slug" && p.EntityId == TagId, cancellationToken: cancellationToken);
+                Tag.Add(new()
+                {
+                    Title = Title!.LocalValue ?? string.Empty,
+                    Slug = Slug!.LocalValue ?? string.Empty
+                });
+            }
+
+            var BlogCategory = new List<Categories>();
+            foreach (var categoryId in blog.CategoriesId)
+            {
+                var Title = await _localizedPropertyService.FirstOrDefaultAsync(p => p.LocalKeyGroup == "BlogCategory" && p.LocalKey == "Name" && p.EntityId == categoryId, cancellationToken: cancellationToken);
+                var Slug = await _localizedPropertyService.FirstOrDefaultAsync(p => p.LocalKeyGroup == "BlogCategory" && p.LocalKey == "Slug" && p.EntityId == categoryId, cancellationToken: cancellationToken);
+                BlogCategory.Add(new()
+                {
+                    Title = Title!.LocalValue ?? string.Empty,
+                    Slug = Slug!.LocalValue ?? string.Empty
+                });
+            }
 
             resList.Add(new TopBlogDto
             {
@@ -51,7 +74,11 @@ public sealed class GetTopBlogsCommandHandler : BaseRequestHandler<GetTopBlogsCo
                 Title = localizedProps.FirstOrDefault(p => p.LocalKey == "Title")?.LocalValue ?? string.Empty,
                 HeaderText = localizedProps.FirstOrDefault(p => p.LocalKey == "HeaderText")?.LocalValue ?? string.Empty,
                 Slug = localizedProps.FirstOrDefault(p => p.LocalKey == "Slug")?.LocalValue ?? string.Empty,
-                Tags = localizedProps.Where(p => p.LocalKey == "Tags").Select(p => p.LocalValue).ToList()
+                Tags = Tag,
+                Categories= BlogCategory,
+                RegistrationDate = blog.RegistrationDate,
+                CreatedBy = "meysam Peyghamy",
+                CreatedByProfilePicture = "images/Profile/sample-User.jpg"
             });
         }
 

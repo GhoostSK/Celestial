@@ -57,7 +57,6 @@ public sealed class GetVisaListCommandHandler : BaseRequestHandler<GetVisaListCo
 
             response.Items.Add(visaItem);
         }
-
         return response;
     }
 }

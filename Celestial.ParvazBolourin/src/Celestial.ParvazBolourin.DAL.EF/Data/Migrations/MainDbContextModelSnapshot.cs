@@ -385,6 +385,9 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
                         .HasColumnType("nvarchar(500)")
                         .HasComment("Path to the picture associated with the blog.");
 
+                    b.Property<DateTime>("RegistrationDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("TagsId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

@@ -24,5 +24,21 @@ public class TopBlogDto
     public string Title { get; set; } = string.Empty;
     public string HeaderText { get; set; } = string.Empty;
     public string Slug { get; set; } = string.Empty;
-    public List<string> Tags { get; set; } = new();
+    public List<Tag> Tags { get; set; } = new();
+    public List<Categories> Categories { get; set; } = new();
+    public DateTime RegistrationDate { get; set; }
+    public string CreatedBy { get; set; }
+    public string CreatedByProfilePicture { get; set; }
+}
+
+public class Tag
+{
+    public string Title { get; set; }
+    public string Slug { get; set; }
+}
+
+public class Categories
+{
+    public string Title { get; set; }
+    public string Slug { get; set; }
 }

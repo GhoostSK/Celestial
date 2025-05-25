@@ -6,4 +6,5 @@ public sealed class City : DbBaseEntity<long>
 {
     public string Name { get; set; } = string.Empty;
     public int State_id { get; set; }
+    public int country_id { get; set; }
 }

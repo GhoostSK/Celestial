@@ -1,4 +1,5 @@
-﻿using Celestial.ParvazBolourin.Core.DAL.Repositories.Global;
+﻿using Celestial.ParvazBolourin.Core.DAL.Model.Hotel;
+using Celestial.ParvazBolourin.Core.DAL.Repositories.Global;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global.Model;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.ShirdalBlog;
 using Celestial.ParvazBolourin.Service.Command.ShirdalBlog;
@@ -47,10 +48,13 @@ public sealed class GetBlogsListCommandHandler : BaseRequestHandler<GetBlogsList
         foreach (var tag in popularTag)
         {
             var localizeTag = await _localizedPropertyService.FirstOrDefaultAsync(p => p.EntityId == tag.Id && p.LocalKeyGroup == "BlogTag" && p.LocalKey == "Name" && p.LanguageId == request.LanguageId);
+            var localizeSlug = await _localizedPropertyService.FirstOrDefaultAsync(p => p.EntityId == tag.Id && p.LocalKeyGroup == "BlogTag" && p.LocalKey == "Slug" && p.LanguageId == request.LanguageId);
+
             blogTags.Add(new()
             {
                 Id = tag.Id,
-                Name = localizeTag.LocalValue!
+                Name = localizeTag?.LocalValue ?? string.Empty,
+                Slug = localizeSlug?.LocalValue ?? string.Empty
             });
         }
 
@@ -66,6 +70,29 @@ public sealed class GetBlogsListCommandHandler : BaseRequestHandler<GetBlogsList
                     LanguageId = request.LanguageId,
                     LocalKeyGroup = "Blog"
                 }, cancellationToken);
+            var Tag = new List<Tag>();
+            foreach (var TagId in blog.TagsId)
+            {
+                var Title = await _localizedPropertyService.FirstOrDefaultAsync(p => p.LocalKeyGroup == "BlogTag" && p.LocalKey == "Name" && p.EntityId == TagId, cancellationToken: cancellationToken);
+                var Slug = await _localizedPropertyService.FirstOrDefaultAsync(p => p.LocalKeyGroup == "BlogTag" && p.LocalKey == "Slug" && p.EntityId == TagId, cancellationToken: cancellationToken);
+                Tag.Add(new()
+                {
+                    Title = Title!.LocalValue ?? string.Empty,
+                    Slug = Slug!.LocalValue ?? string.Empty
+                });
+            }
+
+            var BlogCategory = new List<Categories>();
+            foreach (var categoryId in blog.CategoriesId)
+            {
+                var Title = await _localizedPropertyService.FirstOrDefaultAsync(p => p.LocalKeyGroup == "BlogCategory" && p.LocalKey == "Name" && p.EntityId == categoryId, cancellationToken: cancellationToken);
+                var Slug = await _localizedPropertyService.FirstOrDefaultAsync(p => p.LocalKeyGroup == "BlogCategory" && p.LocalKey == "Slug" && p.EntityId == categoryId, cancellationToken: cancellationToken);
+                BlogCategory.Add(new()
+                {
+                    Title = Title!.LocalValue ?? string.Empty,
+                    Slug = Slug!.LocalValue ?? string.Empty
+                });
+            }
 
             response.Items.Add(new BlogItem
             {
@@ -74,7 +101,12 @@ public sealed class GetBlogsListCommandHandler : BaseRequestHandler<GetBlogsList
                 Likes = blog.Likes,
                 HeaderText = localize.FirstOrDefault(p => p.LocalKey == nameof(BlogItem.HeaderText))?.LocalValue ?? "",
                 Title = localize.FirstOrDefault(p => p.LocalKey == nameof(BlogItem.Title))?.LocalValue ?? "",
-                Slug = localize.FirstOrDefault(p => p.LocalKey == nameof(BlogItem.Slug))?.LocalValue ?? ""
+                Slug = localize.FirstOrDefault(p => p.LocalKey == nameof(BlogItem.Slug))?.LocalValue ?? "",
+                Categories = BlogCategory,
+                Tags = Tag,
+                RegistrationDate = blog.RegistrationDate,
+                CreatedBy = "meysam Peyghamy",
+                CreatedByProfilePicture = "images/Profile/sample-User.jpg"
             });
         }
 
@@ -84,8 +116,16 @@ public sealed class GetBlogsListCommandHandler : BaseRequestHandler<GetBlogsList
             response.Items = filtredData;
 
         }
-        response.TotalPage = blogs.TotalPages;
         response.BlogTagsList = blogTags;
+        response.Pagination = new()
+        {
+            TotalRecords = blogs.totalRecord,
+            CurrentPage = request.PageNumber,
+            TotalPages = blogs.TotalPages,
+            PrevPage = request.PageNumber > 1 ? request.PageNumber - 1 : null,
+            NextPage = request.PageNumber < blogs.TotalPages ? request.PageNumber + 1 : null
+        };
+
         return response;
     }
 }

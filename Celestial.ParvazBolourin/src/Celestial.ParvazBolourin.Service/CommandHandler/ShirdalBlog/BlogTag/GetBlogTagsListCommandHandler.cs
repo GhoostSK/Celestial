@@ -44,6 +44,7 @@ public sealed class GetBlogTagsListCommandHandler : IRequestHandler<GetBlogTagLi
             {
                 Id = item.Id,
                 Name = localize.FirstOrDefault(p => p.LocalKey == "Name")?.LocalValue ?? "",
+                Slug= localize.FirstOrDefault(p => p.LocalKey == "Slug")?.LocalValue ?? ""
             });
         }
 

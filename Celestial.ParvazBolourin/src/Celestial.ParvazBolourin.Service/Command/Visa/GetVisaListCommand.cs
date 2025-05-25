@@ -1,4 +1,5 @@
-﻿using Celestial.ParvazBolourin.Core.Enum.Visa;
+﻿using Celestial.ParvazBolourin.Core.DAL.Model.Global;
+using Celestial.ParvazBolourin.Core.Enum.Visa;
 using MediatR;
 using MofidApp.SharedKernel.Common.Model;
 using MofidApp.SharedKernel.Domain.Services;

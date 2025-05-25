@@ -1,4 +1,5 @@
-﻿using Celestial.ParvazBolourin.Core.Enum.Global;
+﻿using Celestial.ParvazBolourin.Core.DAL.Model.Global;
+using Celestial.ParvazBolourin.Core.Enum.Global;
 using Celestial.ParvazBolourin.Core.Enum.Tour;
 using MediatR;
 using MofidApp.SharedKernel.Common.Model;
@@ -31,7 +32,8 @@ public sealed class GetToursListCommandRes : ServiceResContextBase
     public double MaxPrice { get; set; }
     public List<string> CountryList { get; set; } = new();
     public List<GetToursListItemRes> Items { get; set; } = new();
-    public int TotalPage { get; set; }
+    public PaginationMeta Pagination { get; set; }
+
 
 }
 

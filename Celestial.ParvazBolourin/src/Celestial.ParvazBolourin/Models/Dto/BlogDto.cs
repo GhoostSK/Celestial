@@ -11,6 +11,21 @@ public sealed class AddBlogReqDto
     public List<long> BlogTagIds { get; set; } = new();
 }
 
+public sealed class GetBlogCategoryByIdReqDto
+{
+    public long Id { get; set; }
+    public string slug { get; set; }
+    public int LanguageId { get; set; }
+}
+
+
+public sealed class GetBlogTagByIdReqDto
+{
+    public long Id { get; set; }
+    [Slug]
+    public string slug { get; set; }
+}
+
 public sealed class BlogLocalizedProperty
 {
     public int LanguageId { get; set; }

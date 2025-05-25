@@ -31,6 +31,7 @@ public sealed class GetBlogTagsListCommandHandler : IRequestHandler<GetBlogCateg
 
 
         var Data = new List<BlogCategoryListItemDto>();
+
         foreach (var item in categories)
         {
             var localize = await _localizedPropertyService.GetPropertyByLanguageAndEntityId(
@@ -44,6 +45,7 @@ public sealed class GetBlogTagsListCommandHandler : IRequestHandler<GetBlogCateg
             {
                 Id = item.Id,
                 Name = localize.FirstOrDefault(p => p.LocalKey == "Name")?.LocalValue ?? "",
+                Slug = localize.FirstOrDefault(p => p.LocalKey == "Slug")?.LocalValue ?? ""
             });
         }
 

@@ -87,7 +87,14 @@ public sealed class GetToursListCommandHandler(
         {
             response.Items = data;
         }
-        response.TotalPage = tourData.TotalPages;
+        response.Pagination = new()
+        {
+            TotalRecords = tourData.totalRecord,
+            CurrentPage = request.PageNumber,
+            TotalPages = tourData.TotalPages,
+            PrevPage = request.PageNumber > 1 ? request.PageNumber - 1 : null,
+            NextPage = request.PageNumber < tourData.TotalPages ? request.PageNumber + 1 : null
+        };
         response.CountryList = data
     .SelectMany(p => p.Country)
     .Distinct()

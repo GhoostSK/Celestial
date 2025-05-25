@@ -81,6 +81,7 @@ public sealed class AddBlogCommandHandler : BaseRequestHandler<AddBlogCommandReq
             PicturePath = request.PicturePath,
             CategoriesId = request.BlogCategoryIds,
             TagsId = request.BlogTagIds,
+            RegistrationDate = DateTime.Now,
         };
 
 

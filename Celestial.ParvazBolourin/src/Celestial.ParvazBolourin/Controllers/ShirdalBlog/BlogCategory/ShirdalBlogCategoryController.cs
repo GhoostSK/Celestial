@@ -1,4 +1,5 @@
-﻿using Celestial.ParvazBolourin.Service.Command.ShirdalBlog.BlogCategory;
+﻿using Celestial.ParvazBolourin.Api.Models.Dto;
+using Celestial.ParvazBolourin.Service.Command.ShirdalBlog.BlogCategory;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,15 +14,16 @@ public class ShirdalBlogCategoryController : BaseController
         _mediator = mediator;
     }
 
-    
+
     [HttpGet]
-    public async Task<IActionResult> GetById([FromQuery] long id, [FromQuery] int languageId)
+    public async Task<IActionResult> GetById([FromQuery] GetBlogCategoryByIdReqDto request, CancellationToken cancellationToken)
     {
         var result = await Mediator.Send(new GetBlogCategoryByIdCommandReq
         {
-            Id = id,
-            LanguageId = languageId
-        });
+            Id = request.Id,
+            LanguageId = request.LanguageId,
+            Slug = request.slug
+        },cancellationToken);
 
         if (result == null)
             return NotFound("BlogCategory not found");
@@ -30,12 +32,12 @@ public class ShirdalBlogCategoryController : BaseController
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetList([FromQuery] int languageId)
+    public async Task<IActionResult> GetList([FromQuery] int languageId, CancellationToken cancellationToken)
     {
         var result = await Mediator.Send(new GetBlogCategoryListCommandReq
         {
             LanguageId = languageId
-        });
+        }, cancellationToken);
 
         return Ok(result);
     }

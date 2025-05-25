@@ -1,4 +1,5 @@
-﻿using Celestial.ParvazBolourin.Service.Command.ShirdalBlog.BlogCategory;
+﻿using Celestial.ParvazBolourin.Core.DAL.Model.Global;
+using Celestial.ParvazBolourin.Service.Command.ShirdalBlog.BlogCategory;
 using MediatR;
 using MofidApp.SharedKernel.Common.Model;
 using MofidApp.SharedKernel.Domain.Services;
@@ -22,7 +23,7 @@ public sealed class GetBlogsListCommandRes : ServiceResContextBase
     public List<BlogItem> Items { get; set; } = new();
     public List<BlogTagDto> BlogTagsList { get; set; }
     public List<BlogCategoryListItemDto> Categories { get; set; }
-    public int TotalPage { get; set; }
+    public PaginationMeta Pagination { get; set; }
 
 }
 
@@ -33,6 +34,11 @@ public sealed class BlogItem
     public string HeaderText { get; set; } = string.Empty;
     public string PicturePath { get; set; } = string.Empty;
     public int Likes { get; set; }
+    public List<Tag> Tags { get; set; } = new();
+    public List<Categories> Categories { get; set; } = new();
+    public DateTime RegistrationDate { get; set; }
+    public string CreatedBy { get; set; }
+    public string CreatedByProfilePicture { get; set; }
 
     //seo
     public string Slug { get; set; } = string.Empty;
