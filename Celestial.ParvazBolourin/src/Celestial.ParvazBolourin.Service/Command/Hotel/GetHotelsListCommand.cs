@@ -28,5 +28,5 @@ public sealed class GetHotelsListCommandRes : ServiceResContextBase
     public double MaxPrice { get; set; }
     public List<string> CountryList { get; set; } = new();
     public List<GetAllHotelsServiceRes> Items { get; set; } = new();
-    public PaginationMeta Pagination { get; set; }
+    public PaginationMeta Pagination { get; set; }=new();
 }

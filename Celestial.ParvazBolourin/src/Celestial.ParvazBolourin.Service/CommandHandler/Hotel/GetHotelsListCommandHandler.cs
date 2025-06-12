@@ -1,4 +1,5 @@
-﻿using Celestial.ParvazBolourin.Core.DAL.Model.Hotel;
+﻿using Celestial.ParvazBolourin.Core.DAL.Model.Global;
+using Celestial.ParvazBolourin.Core.DAL.Model.Hotel;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Geo;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global.Model;
@@ -11,28 +12,18 @@ using MofidApp.SharedKernel.Domain.Services;
 
 namespace Celestial.ParvazBolourin.Service.CommandHandler.Hotel;
 
-public sealed class GetHotelsListCommandHandler : BaseRequestHandler<GetHotelsListCommandReq, GetHotelsListCommandRes>
+public sealed class GetHotelsListCommandHandler(
+    IHotelService hotel,
+    ILocalizedPropertyService localizedProperty,
+    ILanguageService languageService,
+    ICountryService countryService,
+    IImageService imageService)
+    : BaseRequestHandler<GetHotelsListCommandReq, GetHotelsListCommandRes>
 {
-    private readonly IHotelService _hotelRepository;
-    private readonly ILanguageService _languageService;
-    private readonly ILocalizedPropertyService _localizedProperty;
-    private readonly ICountryService _countryService;
-    private readonly IImageService _imageService;
-
-    public GetHotelsListCommandHandler(IHotelService hotel, ILocalizedPropertyService localizedProperty,
-        ILanguageService languageService, ICountryService countryService, IImageService imageService)
-    {
-        _hotelRepository = hotel;
-        _localizedProperty = localizedProperty;
-        _languageService = languageService;
-        _countryService = countryService;
-        _imageService = imageService;
-    }
-
     protected override async Task<GetHotelsListCommandRes> HandleCore(GetHotelsListCommandReq request,
     CancellationToken cancellationToken)
     {
-        var languages = await _languageService.GetLanguages(cancellationToken);
+        var languages = await languageService.GetLanguages(cancellationToken);
         if (!languages.Any(p => p.Id == request.LanguageId))
             return new GetHotelsListCommandRes
             {
@@ -40,7 +31,7 @@ public sealed class GetHotelsListCommandHandler : BaseRequestHandler<GetHotelsLi
             };
 
         var response = new GetHotelsListCommandRes();
-        var hotels = await _hotelRepository.GetHotelsList(request.Adapt<GetHotelsListReq>(), cancellationToken);
+        var hotels = await hotel.GetHotelsList(request.Adapt<GetHotelsListReq>(), cancellationToken);
 
         if (!hotels.Items.Any())
             return response;
@@ -50,23 +41,23 @@ public sealed class GetHotelsListCommandHandler : BaseRequestHandler<GetHotelsLi
 
         foreach (var item in hotels.Items)
         {
-            var picture = await _imageService.FirstOrDefaultAsync(
+            var picture = await imageService.FirstOrDefaultAsync(
                 p => p.KeyGroup == "Hotel" && p.EntityId == item.Id,
                 cancellationToken: cancellationToken);
 
-            var localize = await _localizedProperty.GetPropertyByLanguageAndEntityId(
+            var localize = await localizedProperty.GetPropertyByLanguageAndEntityId(
                 new GetLocalizedPropertyReq
                 {
                     EntityId = item.Id,
                     LanguageId = request.LanguageId,
-                    LocalKeyGroup = "Hotel"
+                    LocalKeyGroup = LocalKeyGroupType.Hotel
                 },
                 cancellationToken
             );
 
             var slug = localize.SingleOrDefault(p => p.LocalKey == "Slug")?.LocalValue;
             var shortText = localize.SingleOrDefault(p => p.LocalKey == "ShortText")?.LocalValue;
-            var country = await _countryService.FindByIdAsync(cancellationToken, item.CountryId);
+            var country = await countryService.FindByIdAsync(cancellationToken, item.CountryId);
             var countryName = country?.Shortname ?? "";
 
             response.Items.Add(new GetAllHotelsServiceRes

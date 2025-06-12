@@ -1,4 +1,5 @@
-﻿using Celestial.ParvazBolourin.Core.DAL.Model.Visa;
+﻿using Celestial.ParvazBolourin.Core.DAL.Model.Global;
+using Celestial.ParvazBolourin.Core.DAL.Model.Visa;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global.Model;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Visa;
@@ -35,7 +36,7 @@ public sealed class GetVisaByIdCommandHandler : BaseRequestHandler<GetVisaByIdCo
             var localizedProperty = await _localizedPropertyService.FirstOrDefaultAsync(p =>
                 p.LocalKey == "Slug" &&
                 p.LocalValue == request.Slug &&
-                p.LocalKeyGroup == "Visa", cancellationToken: cancellationToken);
+                p.LocalKeyGroup == LocalKeyGroupType.Visa, cancellationToken: cancellationToken);
 
             if (localizedProperty == null)
             {
@@ -73,7 +74,7 @@ public sealed class GetVisaByIdCommandHandler : BaseRequestHandler<GetVisaByIdCo
             {
                 EntityId = visa.Id,
                 LanguageId = request.LanguageId,
-                LocalKeyGroup = "Visa"
+                LocalKeyGroup = LocalKeyGroupType.Visa
             },
             cancellationToken
         );

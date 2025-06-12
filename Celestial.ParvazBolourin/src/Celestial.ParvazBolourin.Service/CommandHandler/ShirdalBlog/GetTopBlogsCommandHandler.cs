@@ -1,4 +1,5 @@
-﻿using Celestial.ParvazBolourin.Core.DAL.Repositories.Global;
+﻿using Celestial.ParvazBolourin.Core.DAL.Model.Global;
+using Celestial.ParvazBolourin.Core.DAL.Repositories.Global;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.ShirdalBlog;
 using Celestial.ParvazBolourin.Service.Command.ShirdalBlog;
 using MofidApp.SharedKernel.Common.Model;
@@ -41,13 +42,13 @@ public sealed class GetTopBlogsCommandHandler : BaseRequestHandler<GetTopBlogsCo
             {
                 EntityId = blog.Id,
                 LanguageId = request.LanguageId,
-                LocalKeyGroup = "Blog"
+                LocalKeyGroup = LocalKeyGroupType.Blog
             }, cancellationToken);
             var Tag = new List<Tag>();
             foreach (var TagId in blog.TagsId)
             {
-                var Title = await _localizedPropertyService.FirstOrDefaultAsync(p => p.LocalKeyGroup == "BlogTag" && p.LocalKey == "Name" && p.EntityId == TagId, cancellationToken: cancellationToken);
-                var Slug = await _localizedPropertyService.FirstOrDefaultAsync(p => p.LocalKeyGroup == "BlogTag" && p.LocalKey == "Slug" && p.EntityId == TagId, cancellationToken: cancellationToken);
+                var Title = await _localizedPropertyService.FirstOrDefaultAsync(p => p.LocalKeyGroup == LocalKeyGroupType.BlogTag && p.LocalKey == "Name" && p.EntityId == TagId, cancellationToken: cancellationToken);
+                var Slug = await _localizedPropertyService.FirstOrDefaultAsync(p => p.LocalKeyGroup == LocalKeyGroupType.BlogTag && p.LocalKey == "Slug" && p.EntityId == TagId, cancellationToken: cancellationToken);
                 Tag.Add(new()
                 {
                     Title = Title!.LocalValue ?? string.Empty,
@@ -58,8 +59,8 @@ public sealed class GetTopBlogsCommandHandler : BaseRequestHandler<GetTopBlogsCo
             var BlogCategory = new List<Categories>();
             foreach (var categoryId in blog.CategoriesId)
             {
-                var Title = await _localizedPropertyService.FirstOrDefaultAsync(p => p.LocalKeyGroup == "BlogCategory" && p.LocalKey == "Name" && p.EntityId == categoryId, cancellationToken: cancellationToken);
-                var Slug = await _localizedPropertyService.FirstOrDefaultAsync(p => p.LocalKeyGroup == "BlogCategory" && p.LocalKey == "Slug" && p.EntityId == categoryId, cancellationToken: cancellationToken);
+                var Title = await _localizedPropertyService.FirstOrDefaultAsync(p => p.LocalKeyGroup == LocalKeyGroupType.BlogCategory && p.LocalKey == "Name" && p.EntityId == categoryId, cancellationToken: cancellationToken);
+                var Slug = await _localizedPropertyService.FirstOrDefaultAsync(p => p.LocalKeyGroup == LocalKeyGroupType.BlogCategory && p.LocalKey == "Slug" && p.EntityId == categoryId, cancellationToken: cancellationToken);
                 BlogCategory.Add(new()
                 {
                     Title = Title!.LocalValue ?? string.Empty,
@@ -75,16 +76,17 @@ public sealed class GetTopBlogsCommandHandler : BaseRequestHandler<GetTopBlogsCo
                 HeaderText = localizedProps.FirstOrDefault(p => p.LocalKey == "HeaderText")?.LocalValue ?? string.Empty,
                 Slug = localizedProps.FirstOrDefault(p => p.LocalKey == "Slug")?.LocalValue ?? string.Empty,
                 Tags = Tag,
-                Categories= BlogCategory,
+                Categories = BlogCategory,
                 RegistrationDate = blog.RegistrationDate,
                 CreatedBy = "meysam Peyghamy",
-                CreatedByProfilePicture = "images/Profile/sample-User.jpg"
+                CreatedByProfilePicture = "images/Profile/sample-User.jpg",
+                Likes = blog.Likes
             });
         }
 
         return new GetTopBlogsCommandRes
         {
-            Blogs = resList
+            Items = resList
         };
     }
 }

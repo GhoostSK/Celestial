@@ -57,7 +57,7 @@ public sealed class AddVisaCommandHandler : BaseRequestHandler<AddVisaCommandReq
                 LanguageId = item.LanguageId,
                 LocalKey = nameof(item.Text),
                 LocalValue = item.Text,
-                LocalKeyGroup = "Visa"
+                LocalKeyGroup = LocalKeyGroupType.Visa
             });
 
             localizedProperties.Add(new LocalizedProperty
@@ -66,7 +66,7 @@ public sealed class AddVisaCommandHandler : BaseRequestHandler<AddVisaCommandReq
                 LanguageId = item.LanguageId,
                 LocalKey = nameof(item.Name),
                 LocalValue = item.Name,
-                LocalKeyGroup = "Visa"
+                LocalKeyGroup = LocalKeyGroupType.Visa
             });
 
             foreach (var embassy in item.Embassy)
@@ -77,7 +77,7 @@ public sealed class AddVisaCommandHandler : BaseRequestHandler<AddVisaCommandReq
                     LanguageId = item.LanguageId,
                     LocalKey = "Embassy_" + kvp.Key,
                     LocalValue = kvp.Value,
-                    LocalKeyGroup = "Visa"
+                    LocalKeyGroup = LocalKeyGroupType.Visa
                 });
         }
 

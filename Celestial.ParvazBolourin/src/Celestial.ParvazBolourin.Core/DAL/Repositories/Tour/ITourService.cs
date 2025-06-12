@@ -10,4 +10,5 @@ public interface ITourService : IRepositoryEF<Tours>, IScopeLifetime
 
     public Task<Tours?> GetTourById(long tourId, CancellationToken cancellationToken);
     public Task<List<Tours>> GetTopToursByViews(int topCount, CancellationToken cancellationToken);
+    public Task<string> GenerateUniqueTourCodeAsync(CancellationToken cancellationToken);
 }

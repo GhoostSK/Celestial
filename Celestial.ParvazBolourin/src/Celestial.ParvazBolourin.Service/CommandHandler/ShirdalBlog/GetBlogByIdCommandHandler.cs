@@ -1,4 +1,5 @@
-﻿using Celestial.ParvazBolourin.Core.DAL.Model.ShirdalBlog;
+﻿using Celestial.ParvazBolourin.Core.DAL.Model.Global;
+using Celestial.ParvazBolourin.Core.DAL.Model.ShirdalBlog;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global.Model;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.ShirdalBlog;
@@ -46,7 +47,7 @@ public sealed class GetBlogByIdCommandHandler : BaseRequestHandler<GetBlogByIdCo
         else if (!string.IsNullOrEmpty(request.Slug))
         {
             var localizedProperty = await _localizedPropertyService.FirstOrDefaultAsync(p =>
-                p.LocalKey == "Slug" && p.LocalValue == request.Slug && p.LocalKeyGroup == "Blog", cancellationToken: cancellationToken);
+                p.LocalKey == "Slug" && p.LocalValue == request.Slug && p.LocalKeyGroup == LocalKeyGroupType.Blog, cancellationToken: cancellationToken);
 
             if (localizedProperty == null)
                 return new GetBlogByIdCommandRes
@@ -72,7 +73,7 @@ public sealed class GetBlogByIdCommandHandler : BaseRequestHandler<GetBlogByIdCo
             {
                 EntityId = request.Id,
                 LanguageId = request.LanguageId,
-                LocalKeyGroup = "Blog"
+                LocalKeyGroup = LocalKeyGroupType.Blog
             },
             cancellationToken
         );
@@ -88,10 +89,10 @@ public sealed class GetBlogByIdCommandHandler : BaseRequestHandler<GetBlogByIdCo
             var category = await _blogCategoryService.FindByIdAsync(cancellationToken, catId);
             var categoryName = await _localizedPropertyService.FirstOrDefaultAsync(
                 p => p.EntityId == category.Id && p.LanguageId == request.LanguageId && p.LocalKey == "Name" &&
-                     p.LocalKeyGroup == "BlogCategory", cancellationToken: cancellationToken);
+                     p.LocalKeyGroup == LocalKeyGroupType.BlogCategory, cancellationToken: cancellationToken);
             var Slug = await _localizedPropertyService.FirstOrDefaultAsync(
     p => p.EntityId == category.Id && p.LanguageId == request.LanguageId && p.LocalKey == "Name" &&
-         p.LocalKeyGroup == "BlogCategory", cancellationToken: cancellationToken);
+         p.LocalKeyGroup == LocalKeyGroupType.BlogCategory, cancellationToken: cancellationToken);
             categories.Add(new BlogCategoryDto()
             {
                 Id = category.Id,
@@ -107,11 +108,11 @@ public sealed class GetBlogByIdCommandHandler : BaseRequestHandler<GetBlogByIdCo
             tag.ViewCount++;
             var tagName = await _localizedPropertyService.FirstOrDefaultAsync(
                 p => p.EntityId == tag.Id && p.LanguageId == request.LanguageId && p.LocalKey == "Name" &&
-                     p.LocalKeyGroup == "BlogTag", cancellationToken: cancellationToken);
+                     p.LocalKeyGroup == LocalKeyGroupType.BlogTag, cancellationToken: cancellationToken);
 
             var slug = await _localizedPropertyService.FirstOrDefaultAsync(
      p => p.EntityId == tag.Id && p.LanguageId == request.LanguageId && p.LocalKey == "Slug" &&
-          p.LocalKeyGroup == "BlogTag", cancellationToken: cancellationToken);
+          p.LocalKeyGroup == LocalKeyGroupType.BlogTag, cancellationToken: cancellationToken);
             tags.Add(new BlogTagDto()
             {
                 Id = tag.Id,

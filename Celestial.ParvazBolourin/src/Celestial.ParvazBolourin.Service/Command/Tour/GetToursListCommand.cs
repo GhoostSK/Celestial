@@ -28,11 +28,9 @@ public sealed class GetToursListCommandReq : BaseEntity, IRequest<GetToursListCo
 
 public sealed class GetToursListCommandRes : ServiceResContextBase
 {
-    public double MinPrice { get; set; }
-    public double MaxPrice { get; set; }
-    public List<string> CountryList { get; set; } = new();
     public List<GetToursListItemRes> Items { get; set; } = new();
-    public PaginationMeta Pagination { get; set; }
+    public TourFiltersDto Filters { get; set; } = new();
+    public PaginationMeta Pagination { get; set; } = new();
 
 
 }
@@ -40,13 +38,35 @@ public sealed class GetToursListCommandRes : ServiceResContextBase
 public sealed class GetToursListItemRes
 {
     public long Id { get; set; }
+    public int TotalDay { get; set; }
     public int Score { get; set; }
     public string Name { get; set; } = string.Empty;
-    public DateTime StartDate { get; set; }
+    public DateOnly StartDate { get; set; }
     public string TourText { get; set; } = string.Empty;
     public string PicturePath { get; set; } = string.Empty;
     public List<string> Country { get; set; } = new();
-    public string TourStatus { get; set; } = string.Empty;
+    public DateOnly? RegistrationDeadline { get; set; }
+    public int? DaysUntilRegistrationDeadline { get; set; }
+    public TourStatus TourStatus { get; set; } = new();
+
+    public int RemainingCapacity { get; set; }
+    public decimal BasePrice { get; set; }
+    public decimal? ForeignPrice { get; set; }
+    public string? ForeignCurrency { get; set; }
     //seo
     public string Slug { get; set; } = string.Empty;
+}
+
+
+public class TourFiltersDto
+{
+    public List<string> Countries { get; set; } = new();
+    public int FromDay { get; set; }
+    public int ToDay { get; set; }
+    public double FromPrice { get; set; }
+    public double ToPrice { get; set; }
+    public List<Continent> TourContinent { get; set; } = new();
+    public List<TourType> TourType { get; set; } = new();
+    public List<TourScope> TourScope { get; set; } = new();
+    public List<bool> IsActiveTour { get; set; }
 }

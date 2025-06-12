@@ -1,4 +1,5 @@
-﻿using Celestial.ParvazBolourin.Core.DAL.Repositories.Global;
+﻿using Celestial.ParvazBolourin.Core.DAL.Model.Global;
+using Celestial.ParvazBolourin.Core.DAL.Repositories.Global;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global.Model;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.ShirdalBlog;
 using Celestial.ParvazBolourin.Service.Command.ShirdalBlog.BlogTag;
@@ -7,20 +8,14 @@ using MofidApp.SharedKernel.Domain.Services;
 
 namespace Celestial.ParvazBolourin.Service.CommandHandler.ShirdalBlog.BlogTag;
 
-public sealed class GetBlogTagsListCommandHandler : IRequestHandler<GetBlogTagListCommandReq, GetBlogTagListCommandRes>
+public sealed class GetBlogTagsListCommandHandler(
+    IBlogTagService blogTagService,
+    ILocalizedPropertyService localizedPropertyService)
+    : IRequestHandler<GetBlogTagListCommandReq, GetBlogTagListCommandRes>
 {
-    private readonly IBlogTagService _blogTagService;
-    private readonly ILocalizedPropertyService _localizedPropertyService;
-
-    public GetBlogTagsListCommandHandler(IBlogTagService blogTagService, ILocalizedPropertyService localizedPropertyService)
-    {
-        _blogTagService = blogTagService;
-        _localizedPropertyService = localizedPropertyService;
-    }
-
     public async Task<GetBlogTagListCommandRes> Handle(GetBlogTagListCommandReq request, CancellationToken cancellationToken)
     {
-        var categories = await _blogTagService.GetTagsList(cancellationToken);
+        var categories = await blogTagService.GetTagsList(cancellationToken);
         if (categories.Count == 0)
         {
             return new()
@@ -33,12 +28,12 @@ public sealed class GetBlogTagsListCommandHandler : IRequestHandler<GetBlogTagLi
         var Data = new List<BlogTagListItemDto>();
         foreach (var item in categories)
         {
-            var localize = await _localizedPropertyService.GetPropertyByLanguageAndEntityId(
+            var localize = await localizedPropertyService.GetPropertyByLanguageAndEntityId(
                 new GetLocalizedPropertyReq
                 {
                     EntityId = item.Id,
                     LanguageId = request.LanguageId,
-                    LocalKeyGroup = "BlogTag"
+                    LocalKeyGroup = LocalKeyGroupType.BlogTag
                 }, cancellationToken);
             Data.Add(new BlogTagListItemDto()
             {

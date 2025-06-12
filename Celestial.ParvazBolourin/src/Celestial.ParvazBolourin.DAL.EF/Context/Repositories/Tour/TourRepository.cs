@@ -22,10 +22,10 @@ public class TourRepository(MainDbContext dbContext) : RepositoryBase<Tours>(dbC
             query = query.Where(p => p.CitiesId.Any(c => model.Cities.Contains(c)));
 
         if (model.FromPrice != 0 && model.ToPrice != 0)
-            query = query.Where(p => p.Price >= model.FromPrice && p.Price <= model.ToPrice);
+            query = query.Where(p => p.BasePrice >= model.FromPrice && p.BasePrice <= model.ToPrice);
 
         if (model.FromDay != 0 && model.ToDay != 0)
-            query = query.Where(p => p.DayCount >= model.FromDay && p.DayCount <= model.ToDay);
+            query = query.Where(p => p.ExecDate.Count >= model.FromDay && p.ExecDate.Count <= model.ToDay);
 
         if (model.TourContinent.Any())
             query = query.Where(p => model.TourContinent.Contains(p.TourContinent));
@@ -76,16 +76,39 @@ public class TourRepository(MainDbContext dbContext) : RepositoryBase<Tours>(dbC
     {
         var query = TableNoTracking
             .Where(p => !p.IsDeleted)
-            .OrderByDescending(p => p.Views); // مرتب‌سازی براساس Views
+            .OrderByDescending(p => p.Views);
 
         var topTours = await query.Take(topCount).ToListAsync(cancellationToken);
 
-        // اگر تعداد تورها کمتر از 6 باشد، همه تورها را برمی‌گردانیم
         if (topTours.Count < topCount)
         {
-            topTours = await query.ToListAsync(cancellationToken); // در صورتی که کمتر از 6 باشد، همه تورها را می‌گیریم
+            topTours = await query.ToListAsync(cancellationToken);
         }
 
         return topTours;
+    }
+
+    public string GenerateTourCode(CancellationToken cancellationToken)
+    {
+        const string upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const string digits = "0123456789";
+
+        var random = new Random();
+        var part1 = new string(Enumerable.Range(0, 3).Select(_ => digits[random.Next(digits.Length)]).ToArray());
+        var part2 = new string(Enumerable.Range(0, 3).Select(_ => upper[random.Next(upper.Length)]).ToArray());
+        var part3 = new string(Enumerable.Range(0, 2).Select(_ => digits[random.Next(digits.Length)]).ToArray());
+
+        return $"{part1}{part2}{part3}";
+    }
+
+    public async Task<string> GenerateUniqueTourCodeAsync(CancellationToken cancellationToken)
+    {
+        string code;
+        do
+        {
+            code = GenerateTourCode(cancellationToken);
+        } while (await Table.AnyAsync(t => t.TourCode == code, cancellationToken));
+
+        return code;
     }
 }

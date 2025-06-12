@@ -9,29 +9,17 @@ using System.Reflection.Metadata;
 
 namespace Celestial.ParvazBolourin.Service.CommandHandler.ShirdalBlog;
 
-public sealed class AddBlogCommandHandler : BaseRequestHandler<AddBlogCommandReq, AddBlogCommandRes>
+public sealed class AddBlogCommandHandler(
+    ILocalizedPropertyService localizedProperty,
+    ILanguageService languageService,
+    IBlogService blogService,
+    IBlogCategoryService blogCategoryService,
+    IBlogTagService blogTagService)
+    : BaseRequestHandler<AddBlogCommandReq, AddBlogCommandRes>
 {
-    private readonly IBlogService _blogService;
-    private readonly ILanguageService _languageService;
-    private readonly ILocalizedPropertyService _localizedProperty;
-    private readonly IBlogCategoryService _blogCategoryService;
-    private readonly IBlogTagService _blogTagService;
-
-    public AddBlogCommandHandler(
-        ILocalizedPropertyService localizedProperty,
-        ILanguageService languageService,
-        IBlogService blogService, IBlogCategoryService blogCategoryService, IBlogTagService blogTagService)
-    {
-        _localizedProperty = localizedProperty;
-        _languageService = languageService;
-        _blogService = blogService;
-        _blogCategoryService = blogCategoryService;
-        _blogTagService = blogTagService;
-    }
-
     protected override async Task<AddBlogCommandRes> HandleCore(AddBlogCommandReq request, CancellationToken cancellationToken)
     {
-        var languages = await _languageService.GetLanguages(cancellationToken);
+        var languages = await languageService.GetLanguages(cancellationToken);
 
         if (request.BlogLocalizedProperties.Any(x => !languages.Any(lang => lang.Id == x.LanguageId)))
         {
@@ -42,7 +30,7 @@ public sealed class AddBlogCommandHandler : BaseRequestHandler<AddBlogCommandReq
         }
         foreach (var localizeSlug in request.BlogLocalizedProperties)
         {
-            var checkSlug = await _localizedProperty.FirstOrDefaultAsync(p => p.LocalKeyGroup == "Blog" && p.LocalKey == "Slug" && p.LocalValue == localizeSlug.Slug && p.LanguageId == localizeSlug.LanguageId, cancellationToken: cancellationToken);
+            var checkSlug = await localizedProperty.FirstOrDefaultAsync(p => p.LocalKeyGroup == LocalKeyGroupType.Blog && p.LocalKey == "Slug" && p.LocalValue == localizeSlug.Slug && p.LanguageId == localizeSlug.LanguageId, cancellationToken: cancellationToken);
             if (checkSlug != null)
             {
                 return new AddBlogCommandRes()
@@ -53,7 +41,7 @@ public sealed class AddBlogCommandHandler : BaseRequestHandler<AddBlogCommandReq
         }
         foreach (var catId in request.BlogCategoryIds)
         {
-            var category = await _blogCategoryService.FindByIdAsync(cancellationToken, catId);
+            var category = await blogCategoryService.FindByIdAsync(cancellationToken, catId);
             if (category == null)
             {
                 return new AddBlogCommandRes()
@@ -65,7 +53,7 @@ public sealed class AddBlogCommandHandler : BaseRequestHandler<AddBlogCommandReq
         }
         foreach (var tagId in request.BlogTagIds)
         {
-            var tag = await _blogTagService.FindByIdAsync(cancellationToken, tagId);
+            var tag = await blogTagService.FindByIdAsync(cancellationToken, tagId);
             if (tag == null)
             {
                 return new AddBlogCommandRes()
@@ -86,7 +74,7 @@ public sealed class AddBlogCommandHandler : BaseRequestHandler<AddBlogCommandReq
 
 
 
-        await _blogService.AddBlog(blog, cancellationToken);
+        await blogService.AddBlog(blog, cancellationToken);
 
         var localizedData = new List<LocalizedProperty>();
 
@@ -99,7 +87,7 @@ public sealed class AddBlogCommandHandler : BaseRequestHandler<AddBlogCommandReq
                     LanguageId = item.LanguageId,
                     EntityId = blog.Id,
                     LocalKey = nameof(item.Title),
-                    LocalKeyGroup = "Blog",
+                    LocalKeyGroup = LocalKeyGroupType.Blog,
                     LocalValue = item.Title
                 },
                 new LocalizedProperty
@@ -107,7 +95,7 @@ public sealed class AddBlogCommandHandler : BaseRequestHandler<AddBlogCommandReq
                     LanguageId = item.LanguageId,
                     EntityId = blog.Id,
                     LocalKey = nameof(item.HeaderText),
-                    LocalKeyGroup = "Blog",
+                    LocalKeyGroup = LocalKeyGroupType.Blog,
                     LocalValue = item.HeaderText
                 },
                 new LocalizedProperty
@@ -115,7 +103,7 @@ public sealed class AddBlogCommandHandler : BaseRequestHandler<AddBlogCommandReq
                     LanguageId = item.LanguageId,
                     EntityId = blog.Id,
                     LocalKey = nameof(item.MainText),
-                    LocalKeyGroup = "Blog",
+                    LocalKeyGroup = LocalKeyGroupType.Blog,
                     LocalValue = item.MainText
                 },
                 new LocalizedProperty
@@ -123,7 +111,7 @@ public sealed class AddBlogCommandHandler : BaseRequestHandler<AddBlogCommandReq
                     LanguageId = item.LanguageId,
                     EntityId = blog.Id,
                     LocalKey = nameof(item.Slug),
-                    LocalKeyGroup = "Blog",
+                    LocalKeyGroup = LocalKeyGroupType.Blog,
                     LocalValue = item.Slug
                 },
                 new LocalizedProperty
@@ -131,7 +119,7 @@ public sealed class AddBlogCommandHandler : BaseRequestHandler<AddBlogCommandReq
                     LanguageId = item.LanguageId,
                     EntityId = blog.Id,
                     LocalKey = nameof(item.MetaKeywords),
-                    LocalKeyGroup = "Blog",
+                    LocalKeyGroup = LocalKeyGroupType.Blog,
                     LocalValue = item.MetaKeywords
                 },
                 new LocalizedProperty
@@ -139,7 +127,7 @@ public sealed class AddBlogCommandHandler : BaseRequestHandler<AddBlogCommandReq
                     LanguageId = item.LanguageId,
                     EntityId = blog.Id,
                     LocalKey = nameof(item.MetaDescription),
-                    LocalKeyGroup = "Blog",
+                    LocalKeyGroup = LocalKeyGroupType.Blog,
                     LocalValue = item.MetaDescription
                 },
                 new LocalizedProperty
@@ -147,14 +135,14 @@ public sealed class AddBlogCommandHandler : BaseRequestHandler<AddBlogCommandReq
                     LanguageId = item.LanguageId,
                     EntityId = blog.Id,
                     LocalKey = nameof(item.MetaTitle),
-                    LocalKeyGroup = "Blog",
+                    LocalKeyGroup = LocalKeyGroupType.Blog,
                     LocalValue = item.MetaTitle
                 }
             });
         }
 
 
-        await _localizedProperty.BulkInsertAsync(localizedData, cancellationToken: cancellationToken);
+        await localizedProperty.BulkInsertAsync(localizedData, cancellationToken: cancellationToken);
 
         return new AddBlogCommandRes();
     }

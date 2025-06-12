@@ -11,10 +11,9 @@ public enum TransportVehicleType
 public enum TourStatus
 {
     Active = 1,
-    Inactive = 2,
-    Planning = 3,
-    Completed = 4,
-    RegistrationClosed = 5
+    Planning = 2,
+    Completed = 3,
+    RegistrationClosed = 4
 }
 
 public enum TourType

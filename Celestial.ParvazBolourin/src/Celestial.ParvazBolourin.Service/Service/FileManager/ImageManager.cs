@@ -56,16 +56,16 @@ public sealed class ImageManager : IImageManager
                 if (File.Exists(filePath))
                 {
                     File.Delete(filePath);
-                    result[filePath] = true;  // موفقیت در حذف فایل
+                    result[filePath] = true;
                 }
                 else
                 {
-                    result[filePath!] = false; // فایل وجود نداشت
+                    result[filePath!] = false;
                 }
             }
             catch
             {
-                result[filePath!] = false;     // خطا در حذف فایل
+                result[filePath!] = false;
             }
         }
 
@@ -75,7 +75,9 @@ public sealed class ImageManager : IImageManager
 
     public async Task<byte[]> ReadFileAsBytesAsync(string filePath)
     {
-        if (File.Exists(filePath)) return await File.ReadAllBytesAsync(filePath);
+        if (File.Exists(_directoryPath+filePath))
+            return await File.ReadAllBytesAsync(_directoryPath+filePath);
+
         return null!;
     }
 }

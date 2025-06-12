@@ -10,5 +10,7 @@ public sealed class TourPrimaryTransport : DbBaseEntity<long>
     public string LeadStartTime { get; set; } = string.Empty;
     public string LeadEndTime { get; set; } = string.Empty;
     public string ReturnStartTime { get; set; } = string.Empty;
+    public string AirLine { get; set; }= string.Empty;
+    public string AirLineImagePath { get; set; } = string.Empty;
     public string ReturnEndTimeTime { get; set; } = string.Empty;
 }

@@ -7,26 +7,17 @@ using MofidApp.SharedKernel.Domain.Services;
 
 namespace Celestial.ParvazBolourin.Service.CommandHandler.Hotel;
 
-public sealed class AddHotelCommandHandler : BaseRequestHandler<AddHotelCommandReq, AddHotelCommandRes>
+public sealed class AddHotelCommandHandler(
+    IHotelService hotel,
+    ILocalizedPropertyService localizedProperty,
+    ILanguageService languageService,
+    IImageService imageService)
+    : BaseRequestHandler<AddHotelCommandReq, AddHotelCommandRes>
 {
-    private readonly IHotelService _hotelRepository;
-    private readonly ILanguageService _languageService;
-    private readonly ILocalizedPropertyService _localizedProperty;
-    private readonly IImageService _imageService;
-
-    public AddHotelCommandHandler(IHotelService hotel, ILocalizedPropertyService localizedProperty,
-        ILanguageService languageService, IImageService imageService)
-    {
-        _hotelRepository = hotel;
-        _localizedProperty = localizedProperty;
-        _languageService = languageService;
-        _imageService = imageService;
-    }
-
     protected override async Task<AddHotelCommandRes> HandleCore(AddHotelCommandReq request,
         CancellationToken cancellationToken)
     {
-        var languages = await _languageService.GetLanguages(cancellationToken);
+        var languages = await languageService.GetLanguages(cancellationToken);
         foreach (var item in request.HotelLocalizeProperty)
             if (!languages.Any(p => p.Id == item.LanguageId))
                 return new AddHotelCommandRes
@@ -35,7 +26,7 @@ public sealed class AddHotelCommandHandler : BaseRequestHandler<AddHotelCommandR
                 };
         foreach (var localizeSlug in request.HotelLocalizeProperty)
         {
-            var checkSlug = await _localizedProperty.FirstOrDefaultAsync(p => p.LocalKeyGroup == "Hotel" && p.LocalKey == "Slug" && p.LocalValue == localizeSlug.Slug && p.LanguageId == localizeSlug.LanguageId, cancellationToken: cancellationToken);
+            var checkSlug = await localizedProperty.FirstOrDefaultAsync(p => p.LocalKeyGroup == LocalKeyGroupType.Hotel && p.LocalKey == "Slug" && p.LocalValue == localizeSlug.Slug && p.LanguageId == localizeSlug.LanguageId, cancellationToken: cancellationToken);
             if (checkSlug != null)
             {
                 return new AddHotelCommandRes()
@@ -48,11 +39,11 @@ public sealed class AddHotelCommandHandler : BaseRequestHandler<AddHotelCommandR
         var data = request.Hotel;
 
 
-        var hotelId = await _hotelRepository.AddHotel(data, cancellationToken);
+        var hotelId = await hotel.AddHotel(data, cancellationToken);
         var localizedProperties = new List<LocalizedProperty>();
 
         foreach (var item in request.HotelPictures)
-            await _imageService.AddAsync(new Images()
+            await imageService.AddAsync(new Images()
             {
                 PicturePath = item.FilePath,
                 EntityId = hotelId,
@@ -68,7 +59,7 @@ public sealed class AddHotelCommandHandler : BaseRequestHandler<AddHotelCommandR
                 LanguageId = item.LanguageId,
                 LocalKey = nameof(item.ShortText),
                 LocalValue = item.ShortText,
-                LocalKeyGroup = "Hotel"
+                LocalKeyGroup = LocalKeyGroupType.Hotel
             });
             localizedProperties.Add(new LocalizedProperty
             {
@@ -76,7 +67,7 @@ public sealed class AddHotelCommandHandler : BaseRequestHandler<AddHotelCommandR
                 LanguageId = item.LanguageId,
                 LocalKey = nameof(item.MainText),
                 LocalValue = item.MainText,
-                LocalKeyGroup = "Hotel"
+                LocalKeyGroup = LocalKeyGroupType.Hotel
             });
             localizedProperties.Add(new LocalizedProperty
             {
@@ -84,7 +75,7 @@ public sealed class AddHotelCommandHandler : BaseRequestHandler<AddHotelCommandR
                 LanguageId = item.LanguageId,
                 LocalKey = nameof(item.Address),
                 LocalValue = item.Address,
-                LocalKeyGroup = "Hotel"
+                LocalKeyGroup = LocalKeyGroupType.Hotel
             });
             localizedProperties.Add(new LocalizedProperty
             {
@@ -92,7 +83,7 @@ public sealed class AddHotelCommandHandler : BaseRequestHandler<AddHotelCommandR
                 LanguageId = item.LanguageId,
                 LocalKey = nameof(item.MetaDescription),
                 LocalValue = item.MetaDescription,
-                LocalKeyGroup = "Hotel"
+                LocalKeyGroup = LocalKeyGroupType.Hotel
             });
             localizedProperties.Add(new LocalizedProperty
             {
@@ -100,7 +91,7 @@ public sealed class AddHotelCommandHandler : BaseRequestHandler<AddHotelCommandR
                 LanguageId = item.LanguageId,
                 LocalKey = nameof(item.MetaKeywords),
                 LocalValue = item.MetaKeywords,
-                LocalKeyGroup = "Hotel"
+                LocalKeyGroup = LocalKeyGroupType.Hotel
             });
             localizedProperties.Add(new LocalizedProperty
             {
@@ -108,7 +99,7 @@ public sealed class AddHotelCommandHandler : BaseRequestHandler<AddHotelCommandR
                 LanguageId = item.LanguageId,
                 LocalKey = nameof(item.MetaTitle),
                 LocalValue = item.MetaTitle,
-                LocalKeyGroup = "Hotel"
+                LocalKeyGroup = LocalKeyGroupType.Hotel
             });
             localizedProperties.Add(new LocalizedProperty
             {
@@ -116,12 +107,12 @@ public sealed class AddHotelCommandHandler : BaseRequestHandler<AddHotelCommandR
                 LanguageId = item.LanguageId,
                 LocalKey = nameof(item.Slug),
                 LocalValue = item.Slug,
-                LocalKeyGroup = "Hotel"
+                LocalKeyGroup = LocalKeyGroupType.Hotel
             });
         }
 
-        await _localizedProperty.BulkInsertAsync(localizedProperties, cancellationToken: cancellationToken);
-        await _imageService.UnitOfWork.SaveChangesAsync(cancellationToken);
+        await localizedProperty.BulkInsertAsync(localizedProperties, cancellationToken: cancellationToken);
+        await imageService.UnitOfWork.SaveChangesAsync(cancellationToken);
         return new AddHotelCommandRes();
     }
 }

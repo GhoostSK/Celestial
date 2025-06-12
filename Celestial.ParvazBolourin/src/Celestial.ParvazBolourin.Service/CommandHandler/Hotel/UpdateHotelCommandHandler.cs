@@ -101,7 +101,7 @@ public sealed class UpdateHotelCommandHandler : BaseRequestHandler<UpdateHotelCo
                 new GetLocalizedPropertyReq
                 {
                     LanguageId = localizedItem.LanguageId,
-                    LocalKeyGroup = "Hotel",
+                    LocalKeyGroup = LocalKeyGroupType.Hotel,
                     EntityId = request.Id
                 }, cancellationToken);
 
@@ -120,7 +120,7 @@ public sealed class UpdateHotelCommandHandler : BaseRequestHandler<UpdateHotelCo
                     await _localizedPropertyService.AddAsync(new LocalizedProperty
                     {
                         LanguageId = localizedItem.LanguageId,
-                        LocalKeyGroup = "Hotel",
+                        LocalKeyGroup = LocalKeyGroupType.Hotel,
                         EntityId = request.Id,
                         LocalKey = key,
                         LocalValue = value

@@ -64,6 +64,12 @@ public sealed class GetToursListReqDto
 
 }
 
+public sealed class GetEquipmentById()
+{
+    public long Id { get; set; }
+    public int LanguageId { get; set; }
+}
+
 public sealed class GetTourByIdReqDto
 {
     [Required] public int LanguageId { get; set; }
@@ -71,14 +77,28 @@ public sealed class GetTourByIdReqDto
     [Required] public int TourId { get; set; }
     [Slug]
     public string Slug { get; set; } = string.Empty;
+
+
 }
 
 public sealed class RemoveTourByIdReqDto
 {
     [Required] public int TourId { get; set; }
 }
+
 public class GetTourFeaturedRequestDto
 {
     public int LanguageId { get; set; }
     public int TopCount { get; set; }
+}
+
+public sealed class RemoveTourRequiredItemByIdReqDto
+{
+    [Required] public int TourId { get; set; }
+}
+
+public sealed class GetTourByIdRequiredItemReqDto
+{
+    public long Id { get; set; }
+    public int LanguageId { get; set; }
 }

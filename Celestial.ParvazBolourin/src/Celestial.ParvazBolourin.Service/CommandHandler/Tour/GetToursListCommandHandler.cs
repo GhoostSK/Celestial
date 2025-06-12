@@ -1,8 +1,10 @@
-﻿using Celestial.ParvazBolourin.Core.DAL.Model.Tour;
+﻿using Celestial.ParvazBolourin.Core.DAL.Model.Global;
+using Celestial.ParvazBolourin.Core.DAL.Model.Tour;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Geo;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global.Model;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Tour;
+using Celestial.ParvazBolourin.Core.Enum.Tour;
 using Celestial.ParvazBolourin.Service.Command.Tour;
 using Mapster;
 using MofidApp.SharedKernel.Common.Model;
@@ -36,9 +38,6 @@ public sealed class GetToursListCommandHandler(
                 Error = new ValidationError("T404", "Tour Not Found")
             };
 
-        response.MinPrice = tourData.Items.Min(t => t.Price);
-        response.MaxPrice = tourData.Items.Max(t => t.Price);
-
         var data = new List<GetToursListItemRes>();
 
         foreach (var item in tourData.Items)
@@ -48,7 +47,7 @@ public sealed class GetToursListCommandHandler(
                 {
                     EntityId = item.Id,
                     LanguageId = request.LanguageId,
-                    LocalKeyGroup = "Tour"
+                    LocalKeyGroup = LocalKeyGroupType.Tour
                 }, cancellationToken);
 
             var name = localizeData.FirstOrDefault(p => p.LocalKey == nameof(TourLocalizedPropertyItem.Name))
@@ -73,9 +72,20 @@ public sealed class GetToursListCommandHandler(
                 TourText = tourText!,
                 PicturePath = picture.PicturePath,
                 Country = countries,
-                TourStatus = item.TourStatus.ToString(),
-                Slug = slug!
+                TourStatus = item.TourStatus,
+                Slug = slug!,
+                DaysUntilRegistrationDeadline = item.TourStatus == TourStatus.Planning
+                    ? null
+                    : item.RegistrationDeadline.DayNumber - DateOnly.FromDateTime(DateTime.Today).DayNumber,
+                RegistrationDeadline = item.TourStatus == TourStatus.Planning
+                    ? null
+                    : item.RegistrationDeadline,
+                ForeignCurrency = item.ForeignCurrency,
+                ForeignPrice = item.ForeignPrice,
+                BasePrice = item.BasePrice,
+                TotalDay = item.TotalDay
             });
+
         }
         //TEMP
         if (!string.IsNullOrEmpty(request.Title))
@@ -87,6 +97,8 @@ public sealed class GetToursListCommandHandler(
         {
             response.Items = data;
         }
+
+
         response.Pagination = new()
         {
             TotalRecords = tourData.totalRecord,
@@ -95,10 +107,20 @@ public sealed class GetToursListCommandHandler(
             PrevPage = request.PageNumber > 1 ? request.PageNumber - 1 : null,
             NextPage = request.PageNumber < tourData.TotalPages ? request.PageNumber + 1 : null
         };
-        response.CountryList = data
-    .SelectMany(p => p.Country)
-    .Distinct()
-    .ToList();
+
+
+        response.Filters = new TourFiltersDto
+        {
+            Countries = data.SelectMany(p => p.Country).Distinct().ToList(),
+            TourContinent = tourData.Items.Select(p => p.TourContinent).Distinct().ToList(),
+            TourType = tourData.Items.Select(p => p.TourType).Distinct().ToList(),
+            TourScope = tourData.Items.Select(p => p.TourScope).Distinct().ToList(),
+            FromDay = tourData.Items.Min(t => t.TotalDay),
+            ToDay = tourData.Items.Max(t => t.TotalDay),
+            FromPrice = (double)tourData.Items.Min(t => t.BasePrice),
+            ToPrice = (double)tourData.Items.Max(t => t.BasePrice),
+            IsActiveTour = [true, false]
+        };
 
         return response;
     }

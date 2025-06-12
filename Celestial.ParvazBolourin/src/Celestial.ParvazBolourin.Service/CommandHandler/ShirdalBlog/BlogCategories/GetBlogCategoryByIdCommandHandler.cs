@@ -1,4 +1,5 @@
-﻿using Celestial.ParvazBolourin.Core.DAL.Model.ShirdalBlog;
+﻿using Celestial.ParvazBolourin.Core.DAL.Model.Global;
+using Celestial.ParvazBolourin.Core.DAL.Model.ShirdalBlog;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global.Model;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.ShirdalBlog;
@@ -45,7 +46,7 @@ public sealed class GetBlogCategoryByIdCommandHandler : IRequestHandler<GetBlogC
         else if (!string.IsNullOrEmpty(request.Slug))
         {
             var localizedProperty = await _localizedPropertyService.FirstOrDefaultAsync(p =>
-                p.LocalKey == "Slug" && p.LocalValue == request.Slug && p.LocalKeyGroup == "BlogCategory", cancellationToken: cancellationToken);
+                p.LocalKey == "Slug" && p.LocalValue == request.Slug && p.LocalKeyGroup == LocalKeyGroupType.BlogCategory, cancellationToken: cancellationToken);
 
             if (localizedProperty == null)
                 return new GetBlogCategoryByIdCommandRes
@@ -64,7 +65,7 @@ public sealed class GetBlogCategoryByIdCommandHandler : IRequestHandler<GetBlogC
         {
             EntityId = request.Id,
             LanguageId = request.LanguageId,
-            LocalKeyGroup = "BlogCategory"
+            LocalKeyGroup = LocalKeyGroupType.BlogCategory
         }, cancellationToken);
 
         return new()

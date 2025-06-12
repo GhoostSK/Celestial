@@ -1,4 +1,5 @@
-﻿using Celestial.ParvazBolourin.Core.DAL.Repositories.Global;
+﻿using Celestial.ParvazBolourin.Core.DAL.Model.Global;
+using Celestial.ParvazBolourin.Core.DAL.Repositories.Global;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global.Model;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Tour;
 using Celestial.ParvazBolourin.Service.Command.Hotel;
@@ -8,41 +9,33 @@ using MofidApp.SharedKernel.Domain.Services;
 
 namespace Celestial.ParvazBolourin.Service.CommandHandler.Tour;
 
-public class GetTourFeaturedCommandHandler : IRequestHandler<GetTourFeaturedCommandReq, GetTourFeaturedCommandRes>
+public class GetTourFeaturedCommandHandler(
+    ITourService tourService,
+    ILocalizedPropertyService localizedPropertyService,
+    ILanguageService languageService)
+    : IRequestHandler<GetTourFeaturedCommandReq, GetTourFeaturedCommandRes>
 {
-    private readonly ITourService _tourService;
-    private readonly ILocalizedPropertyService _localizedPropertyService;
-    private readonly ILanguageService _languageService;
-
-
-    public GetTourFeaturedCommandHandler(ITourService tourService, ILocalizedPropertyService localizedPropertyService, ILanguageService languageService)
-    {
-        _tourService = tourService;
-        _localizedPropertyService = localizedPropertyService;
-        _languageService = languageService;
-    }
-
     public async Task<GetTourFeaturedCommandRes> Handle(GetTourFeaturedCommandReq request, CancellationToken cancellationToken)
     {
 
-        var languages = await _languageService.GetLanguages(cancellationToken);
+        var languages = await languageService.GetLanguages(cancellationToken);
         if (!languages.Any(p => p.Id == request.LanguageId))
             return new GetTourFeaturedCommandRes
             {
                 Error = new ValidationError("LA400", "invalid Language")
             };
-        var topTours = await _tourService.GetTopToursByViews(request.TopCount, cancellationToken);
+        var topTours = await tourService.GetTopToursByViews(request.TopCount, cancellationToken);
 
         var result = new List<GetTourFeaturedItemDto>();
 
         foreach (var tour in topTours)
         {
-            var localizedName = await _localizedPropertyService.GetPropertyByLanguageAndEntityId(
+            var localizedName = await localizedPropertyService.GetPropertyByLanguageAndEntityId(
                 new GetLocalizedPropertyReq
                 {
                     EntityId = tour.Id,
                     LanguageId = request.LanguageId,
-                    LocalKeyGroup = "Tour"
+                    LocalKeyGroup = LocalKeyGroupType.Tour
                 },
                 cancellationToken
             );
@@ -51,17 +44,19 @@ public class GetTourFeaturedCommandHandler : IRequestHandler<GetTourFeaturedComm
 
             result.Add(new GetTourFeaturedItemDto
             {
-                Price = tour.Price,
+                BasePrice = tour.BasePrice,
                 PictureId = tour.PictureId,
                 StartDate = tour.StartDate,
                 CountriesId = tour.CountriesId,
-                Name = name
+                Title = name,
+                ForeignCurrency = tour.ForeignCurrency,
+                ForeignPrice = tour.ForeignPrice
             });
         }
 
         return new GetTourFeaturedCommandRes
         {
-            Data = result
+            Items = result
         };
     }
 }

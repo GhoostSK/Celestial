@@ -1,4 +1,5 @@
-﻿using Celestial.ParvazBolourin.Core.DAL.Model.ShirdalBlog;
+﻿using Celestial.ParvazBolourin.Core.DAL.Model.Global;
+using Celestial.ParvazBolourin.Core.DAL.Model.ShirdalBlog;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global.Model;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.ShirdalBlog;
@@ -42,7 +43,7 @@ public sealed class GetBlogTagByIdCommandHandler : IRequestHandler<GetBlogTagByI
         else if (!string.IsNullOrEmpty(request.Slug))
         {
             var localizedProperty = await _localizedPropertyService.FirstOrDefaultAsync(p =>
-                p.LocalKey == "Slug" && p.LocalValue == request.Slug && p.LocalKeyGroup == "BlogTag", cancellationToken: cancellationToken);
+                p.LocalKey == "Slug" && p.LocalValue == request.Slug && p.LocalKeyGroup == LocalKeyGroupType.BlogTag, cancellationToken: cancellationToken);
 
             if (localizedProperty == null)
                 return new GetBlogTagByIdCommandRes
@@ -59,7 +60,7 @@ public sealed class GetBlogTagByIdCommandHandler : IRequestHandler<GetBlogTagByI
         {
             EntityId = request.Id,
             LanguageId = request.LanguageId,
-            LocalKeyGroup = "BlogTag"
+            LocalKeyGroup = LocalKeyGroupType.BlogTag
         }, cancellationToken);
 
         return new()

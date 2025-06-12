@@ -1,4 +1,5 @@
-﻿using Celestial.ParvazBolourin.Core.DAL.Model.Hotel;
+﻿using Celestial.ParvazBolourin.Core.DAL.Model.Global;
+using Celestial.ParvazBolourin.Core.DAL.Model.Hotel;
 using Celestial.ParvazBolourin.Core.DAL.Model.ShirdalBlog;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Geo;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global;
@@ -55,7 +56,7 @@ public sealed class GetHotelByIdCommandHandler : BaseRequestHandler<GetHotelById
         else if (!string.IsNullOrEmpty(request.Slug))
         {
             var localizedProperty = await _localizedPropertyService.FirstOrDefaultAsync(p =>
-                p.LocalKey == "Slug" && p.LocalValue == request.Slug && p.LocalKeyGroup == "Hotel", cancellationToken: cancellationToken);
+                p.LocalKey == "Slug" && p.LocalValue == request.Slug && p.LocalKeyGroup == LocalKeyGroupType.Hotel, cancellationToken: cancellationToken);
 
             if (localizedProperty == null)
                 return new GetHotelByIdCommandRes
@@ -81,7 +82,7 @@ public sealed class GetHotelByIdCommandHandler : BaseRequestHandler<GetHotelById
             {
                 EntityId = request.HotelId,
                 LanguageId = request.LanguageId,
-                LocalKeyGroup = "Hotel"
+                LocalKeyGroup = LocalKeyGroupType.Hotel
             },
             cancellationToken
         );

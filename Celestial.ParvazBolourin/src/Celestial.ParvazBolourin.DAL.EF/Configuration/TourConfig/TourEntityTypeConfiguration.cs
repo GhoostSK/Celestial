@@ -26,9 +26,13 @@ public class TourEntityTypeConfiguration : IEntityTypeConfiguration<Tours>
         builder.Property(p => p.Score)
             .IsRequired();
 
-        builder.Property(p => p.HotelCode)
+        builder.Property(p => p.TourCode)
             .HasMaxLength(20)
             .IsRequired();
+
+        builder
+            .HasIndex(p => p.TourCode)
+            .IsUnique();
 
         builder.Property(p => p.ImportantTips)
             .IsRequired();
@@ -44,20 +48,32 @@ public class TourEntityTypeConfiguration : IEntityTypeConfiguration<Tours>
         builder.Property(p => p.Hotels)
             .IsRequired();
 
-        builder.Property(p => p.StartDate)
-            .IsRequired();
+        builder.Property(p => p.StartDate);
 
-        builder.Property(p => p.PictureId)
-            .IsRequired();
+        builder.Property(p => p.RegistrationDeadline);
 
-        builder.Property(p => p.Price)
+        builder.Property(p => p.PictureId);
+
+        builder.Property(p => p.BasePrice)
             .HasMaxLength(20)
             .IsRequired();
+
+        builder.Property(p => p.ForeignCurrency)
+            .HasMaxLength(100);
+
+        builder.Property(p => p.ForeignPrice)
+            .HasColumnType("decimal(18,2)");
+
+        builder.Property(p => p.TotalDay).IsRequired();
+
 
         builder.HasOne(p => p.PrimaryTransport)
             .WithMany()
             .HasForeignKey(t => t.Id)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Property(p => p.NecessaryEquipment).IsRequired(false).HasMaxLength(200);
+        builder.Property(p => p.UnNecessaryEquipment).IsRequired(false).HasMaxLength(200);
 
         builder.HasMany(p => p.TransPorts)
             .WithOne()
@@ -77,10 +93,6 @@ public class TourEntityTypeConfiguration : IEntityTypeConfiguration<Tours>
 
         builder.Property(t => t.TourScope)
             .HasConversion<string>();
-
-        builder.Property(p => p.DayCount)
-            .HasMaxLength(100)
-            .IsRequired();
 
         builder.Property(t => t.ExecDate)
             .HasConversion(

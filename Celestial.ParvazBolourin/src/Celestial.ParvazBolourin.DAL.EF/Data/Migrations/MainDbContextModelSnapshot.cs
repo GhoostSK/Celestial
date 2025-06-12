@@ -275,8 +275,7 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
 
                     b.Property<string>("LocalKeyGroup")
                         .IsRequired()
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LocalValue")
                         .IsRequired()
@@ -440,6 +439,27 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
                     b.ToTable("BlogTags", (string)null);
                 });
 
+            modelBuilder.Entity("Celestial.ParvazBolourin.Core.DAL.Model.Tour.TourEquipment.TourEquipments", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Icon")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TourEquipments");
+                });
+
             modelBuilder.Entity("Celestial.ParvazBolourin.Core.DAL.Model.Tour.TourPlans", b =>
                 {
                     b.Property<long>("Id")
@@ -469,6 +489,16 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
                         .HasColumnType("bigint");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("AirLine")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("AirLineImagePath")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
@@ -543,6 +573,11 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
                     b.Property<long>("Id")
                         .HasColumnType("bigint");
 
+                    b.Property<decimal>("BasePrice")
+                        .HasMaxLength(20)
+                        .HasPrecision(22, 3)
+                        .HasColumnType("decimal(22,3)");
+
                     b.Property<string>("CitiesId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -552,18 +587,17 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
-                    b.Property<int>("DayCount")
-                        .HasMaxLength(100)
-                        .HasColumnType("int");
-
                     b.Property<string>("ExecDate")
                         .IsRequired()
                         .HasColumnType("NVARCHAR(MAX)");
 
-                    b.Property<string>("HotelCode")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                    b.Property<string>("ForeignCurrency")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<decimal?>("ForeignPrice")
+                        .HasPrecision(22, 3)
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Hotels")
                         .IsRequired()
@@ -577,6 +611,10 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<string>("NecessaryEquipment")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
                     b.Property<int>("PassengerCapacity")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
@@ -585,9 +623,8 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
                     b.Property<long>("PictureId")
                         .HasColumnType("bigint");
 
-                    b.Property<double>("Price")
-                        .HasMaxLength(20)
-                        .HasColumnType("float");
+                    b.Property<DateOnly>("RegistrationDeadline")
+                        .HasColumnType("date");
 
                     b.Property<bool>("RequiresVisa")
                         .HasColumnType("bit");
@@ -595,8 +632,16 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
                     b.Property<int>("Score")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateOnly>("StartDate")
+                        .HasColumnType("date");
+
+                    b.Property<int>("TotalDay")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TourCode")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("TourContinent")
                         .IsRequired()
@@ -615,10 +660,20 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("TourUserRegistrations")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UnNecessaryEquipment")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
                     b.Property<long>("Views")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("TourCode")
+                        .IsUnique();
 
                     b.ToTable("Tours", (string)null);
                 });
@@ -686,7 +741,7 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
                     b.HasOne("Celestial.ParvazBolourin.Core.DAL.Model.Tour.TourPrimaryTransport", "PrimaryTransport")
                         .WithMany()
                         .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("PrimaryTransport");

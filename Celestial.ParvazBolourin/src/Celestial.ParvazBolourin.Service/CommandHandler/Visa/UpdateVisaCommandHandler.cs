@@ -39,7 +39,7 @@ public class UpdateVisaCommandHandler : BaseRequestHandler<UpdateVisaCommandReq,
         Expression<Func<LocalizedProperty, bool>> predicate = property =>
             (property.EntityId == request.Id &&
              property.LocalKey == "Embassy_Address" &&
-             property.LocalKeyGroup == "Visa") ||
+             property.LocalKeyGroup == LocalKeyGroupType.Visa) ||
             property.LocalKey == "Embassy_PhoneNumber";
 
         await _localizedPropertyService.BulkRemove(predicate, cancellationToken);
@@ -50,7 +50,7 @@ public class UpdateVisaCommandHandler : BaseRequestHandler<UpdateVisaCommandReq,
                 new GetLocalizedPropertyReq
                 {
                     LanguageId = item.LanguageId,
-                    LocalKeyGroup = "Visa",
+                    LocalKeyGroup = LocalKeyGroupType.Visa,
                     EntityId = request.Id
                 }, cancellationToken);
 
@@ -62,7 +62,7 @@ public class UpdateVisaCommandHandler : BaseRequestHandler<UpdateVisaCommandReq,
                     LanguageId = item.LanguageId,
                     LocalKey = "Embassy_" + kvp.Key,
                     LocalValue = kvp.Value,
-                    LocalKeyGroup = "Visa"
+                    LocalKeyGroup = LocalKeyGroupType.Visa
                 }, cancellationToken);
             foreach (var property in localizedData)
             {

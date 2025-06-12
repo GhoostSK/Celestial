@@ -57,6 +57,6 @@ public class ShirdalBlogController : BaseController
         if (result.HasError)
             return BadRequest(result.Error);
 
-        return Ok(result.Blogs);
+        return Ok(result.Items);
     }
 }

@@ -47,7 +47,7 @@ public class UpdateBlogCommandHandler : BaseRequestHandler<UpdateBlogCommandReq,
         Expression<Func<LocalizedProperty, bool>> predicate = property =>
             property.EntityId == request.Id &&
             property.LocalKey == "Tags" &&
-            property.LocalKeyGroup == "Blog";
+            property.LocalKeyGroup == LocalKeyGroupType.Blog;
 
         await _localizedPropertyService.BulkRemove(predicate, cancellationToken);
         await _localizedPropertyService.UnitOfWork.SaveChangesAsync(cancellationToken);
@@ -58,7 +58,7 @@ public class UpdateBlogCommandHandler : BaseRequestHandler<UpdateBlogCommandReq,
                 new GetLocalizedPropertyReq
                 {
                     LanguageId = item.LanguageId,
-                    LocalKeyGroup = "Blog",
+                    LocalKeyGroup = LocalKeyGroupType.Blog,
                     EntityId = request.Id
                 }, cancellationToken);
 
@@ -68,7 +68,7 @@ public class UpdateBlogCommandHandler : BaseRequestHandler<UpdateBlogCommandReq,
                     LanguageId = item.LanguageId,
                     LocalKey = nameof(item.Title),
                     EntityId = request.Id,
-                    LocalKeyGroup = "Blog",
+                    LocalKeyGroup = LocalKeyGroupType.Blog,
                     LocalValue = item.Title
                 }, cancellationToken);
 
@@ -78,7 +78,7 @@ public class UpdateBlogCommandHandler : BaseRequestHandler<UpdateBlogCommandReq,
                     LanguageId = item.LanguageId,
                     LocalKey = nameof(item.MainText),
                     EntityId = request.Id,
-                    LocalKeyGroup = "Blog",
+                    LocalKeyGroup = LocalKeyGroupType.Blog,
                     LocalValue = item.MainText
                 }, cancellationToken);
 
@@ -88,7 +88,7 @@ public class UpdateBlogCommandHandler : BaseRequestHandler<UpdateBlogCommandReq,
                     LanguageId = item.LanguageId,
                     LocalKey = nameof(item.HeaderText),
                     EntityId = request.Id,
-                    LocalKeyGroup = "Blog",
+                    LocalKeyGroup = LocalKeyGroupType.Blog,
                     LocalValue = item.HeaderText
                 }, cancellationToken);
 
@@ -98,7 +98,7 @@ public class UpdateBlogCommandHandler : BaseRequestHandler<UpdateBlogCommandReq,
                     LanguageId = item.LanguageId,
                     LocalKey = nameof(item.Title),
                     EntityId = request.Id,
-                    LocalKeyGroup = "Blog",
+                    LocalKeyGroup = LocalKeyGroupType.Blog,
                     LocalValue = item.Title
                 }, cancellationToken);
 

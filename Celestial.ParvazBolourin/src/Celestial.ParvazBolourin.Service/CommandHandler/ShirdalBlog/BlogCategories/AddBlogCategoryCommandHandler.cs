@@ -38,7 +38,7 @@ public sealed class AddBlogCategoryCommandHandler : IRequestHandler<AddBlogCateg
         foreach (var localizeSlug in request.LocalizedNames)
         {
             var existingSlug = await _localizedPropertyService.FirstOrDefaultAsync(
-                p => p.LocalKeyGroup == "BlogCategory" &&
+                p => p.LocalKeyGroup == LocalKeyGroupType.BlogCategory &&
                      p.LocalKey == "Slug" &&
                      p.LocalValue == localizeSlug.Slug &&
                      p.LanguageId == localizeSlug.LanguageId,
@@ -64,7 +64,7 @@ public sealed class AddBlogCategoryCommandHandler : IRequestHandler<AddBlogCateg
                 EntityId = entity.Id,
                 LanguageId = name.LanguageId,
                 LocalKey = nameof(name.Name),
-                LocalKeyGroup = "BlogCategory",
+                LocalKeyGroup = LocalKeyGroupType.BlogCategory,
                 LocalValue = name.Name
             },
             new LocalizedProperty
@@ -72,7 +72,7 @@ public sealed class AddBlogCategoryCommandHandler : IRequestHandler<AddBlogCateg
                 EntityId = entity.Id,
                 LanguageId = name.LanguageId,
                 LocalKey = nameof(name.Slug),
-                LocalKeyGroup = "BlogCategory",
+                LocalKeyGroup = LocalKeyGroupType.BlogCategory,
                 LocalValue = name.Slug
             }
         }).ToList();

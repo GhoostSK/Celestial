@@ -30,7 +30,7 @@ public sealed class AddBlogTagCommandHandler : IRequestHandler<AddBlogTagCommand
             return new AddBlogTagCommandRes { Error = new ValidationError("LA400", "Invalid Language") };
         foreach (var localizeSlug in request.LocalizedNames)
         {
-            var checkSlug = await _localizedPropertyService.FirstOrDefaultAsync(p => p.LocalKeyGroup == "BlogTag" && p.LocalKey == "Slug" && p.LocalValue == localizeSlug.Slug && p.LanguageId == localizeSlug.LanguageId, cancellationToken: cancellationToken);
+            var checkSlug = await _localizedPropertyService.FirstOrDefaultAsync(p => p.LocalKeyGroup == LocalKeyGroupType.BlogTag && p.LocalKey == "Slug" && p.LocalValue == localizeSlug.Slug && p.LanguageId == localizeSlug.LanguageId, cancellationToken: cancellationToken);
             if (checkSlug != null)
             {
                 return new AddBlogTagCommandRes()
@@ -52,7 +52,7 @@ public sealed class AddBlogTagCommandHandler : IRequestHandler<AddBlogTagCommand
             EntityId = entity.Id,
             LanguageId = name.LanguageId,
             LocalKey = nameof(name.Name),
-            LocalKeyGroup = "BlogTag",
+            LocalKeyGroup = LocalKeyGroupType.BlogTag,
             LocalValue = name.Name
         },
         new LocalizedProperty
@@ -60,7 +60,7 @@ public sealed class AddBlogTagCommandHandler : IRequestHandler<AddBlogTagCommand
             EntityId = entity.Id,
             LanguageId = name.LanguageId,
             LocalKey = nameof(name.Slug),
-            LocalKeyGroup = "BlogTag",
+            LocalKeyGroup = LocalKeyGroupType.BlogTag,
             LocalValue = name.Slug
         }
     }).ToList();

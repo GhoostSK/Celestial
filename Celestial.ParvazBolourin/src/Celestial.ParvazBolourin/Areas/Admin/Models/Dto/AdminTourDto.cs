@@ -24,3 +24,15 @@ public class TourPlanLocalizeDataDto
     public string PlanDayText { get; set; } = string.Empty;
     public string PlanText { get; set; } = string.Empty;
 }
+
+
+public sealed class AddTourEquipmentDto
+{
+    public List<LocalizedTourEquipmentDto> LocalizedNames { get; set; } = new();
+    public string Icon { get; set; } = string.Empty;
+}
+public sealed class LocalizedTourEquipmentDto
+{
+    public int LanguageId { get; set; }
+    public string Name { get; set; } = string.Empty;
+}

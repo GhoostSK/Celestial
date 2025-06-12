@@ -25,13 +25,15 @@ public sealed class ToursItemDto
     public long ImageId { get; set; }
     public List<int> CountriesId { get; set; } = new();
     public List<int> CitiesId { get; set; } = new();
-    public string HotelCode { get; set; } = string.Empty;
+    public string TourCode { get; set; } = string.Empty;
     public TourStatus TourStatus { get; set; }
-    public DateTime StartDate { get; set; }
+    public DateOnly StartDate { get; set; }
     public int PassengerCapacity { get; set; }
     public string ImportantTips { get; set; } = string.Empty;
     public List<TourPlansItem> TourPlans { get; set; } = new();
     public List<TourTransPorts> TransPorts { get; set; } = new();
+    public List<long> UnNecessaryEquipment { get; set; } = new();
+    public List<long> NecessaryEquipment { get; set; } = new();
     public List<long> Hotels { get; set; } = new();
     public TourPrimaryTransport PrimaryTransport { get; set; } = new();
     public double Price { get; set; }
@@ -42,6 +44,11 @@ public sealed class ToursItemDto
     public TourScope TourScope { get; set; }
     public int DayCount { get; set; }
     public bool RequiresVisa { get; set; }
+    public DateOnly RegistrationDeadline { get; set; }
+
+    public decimal BasePrice { get; set; }
+    public decimal? ForeignPrice { get; set; }
+    public string? ForeignCurrency { get; set; } = string.Empty;
     public List<DateOnly> ExecDate { get; set; } = new();
     [MaxLength(255)]
     public string MetaTitle { get; set; } = string.Empty;

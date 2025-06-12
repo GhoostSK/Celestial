@@ -32,7 +32,7 @@ public sealed class UpdateBlogTagCommandHandler : IRequestHandler<UpdateBlogCate
         Expression<Func<LocalizedProperty, bool>> predicate = property =>
             property.EntityId == request.Id &&
             property.LocalKey == "Name" &&
-            property.LocalKeyGroup == "BlogCategory";
+            property.LocalKeyGroup == LocalKeyGroupType.BlogCategory;
 
         await _localizedPropertyService.BulkRemove(predicate,cancellationToken);
 
@@ -41,7 +41,7 @@ public sealed class UpdateBlogTagCommandHandler : IRequestHandler<UpdateBlogCate
             EntityId = request.Id,
             LanguageId = name.LanguageId,
             LocalKey = nameof(name.Name),
-            LocalKeyGroup = "BlogCategory",
+            LocalKeyGroup = LocalKeyGroupType.BlogCategory,
             LocalValue = name.Name
         }).ToList();
 
