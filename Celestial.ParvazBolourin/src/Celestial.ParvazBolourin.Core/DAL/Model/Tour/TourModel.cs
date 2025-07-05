@@ -6,7 +6,7 @@ namespace Celestial.ParvazBolourin.Core.DAL.Model.Tour;
 public class GetTourListReq
 {
     public List<int> Countries { get; set; } = new();
-    public List<int> Cities { get; set; } = new();
+    public List<long> Cities { get; set; } = new();
     public int FromDay { get; set; }
     public int ToDay { get; set; }
     public decimal ToPrice { get; set; }

@@ -7,17 +7,14 @@ namespace Celestial.ParvazBolourin.Core.DAL.Model.Tour;
 
 public sealed class Tours : DbBaseEntity<long>
 {
-
-
     public List<int> CountriesId { get; set; } = new();
-    public List<int> CitiesId { get; set; } = new();
+    public List<long> CitiesId { get; set; } = new();
     public string TourCode { get; set; } = string.Empty;
     public TourStatus TourStatus { get; set; }
     public DateOnly StartDate { get; set; }
     public DateOnly RegistrationDeadline { get; set; }
     public int PassengerCapacity { get; set; }
     public int TourUserRegistrations { get; set; }
-    public string ImportantTips { get; set; } = string.Empty;
     public List<TourPlans> TourPlans { get; set; } = new();
     public List<long> UnNecessaryEquipment { get; set; } = new();
     public List<long> NecessaryEquipment { get; set; } = new();

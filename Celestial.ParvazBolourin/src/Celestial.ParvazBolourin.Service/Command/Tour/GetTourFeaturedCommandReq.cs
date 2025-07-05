@@ -18,14 +18,14 @@ public sealed class GetTourFeaturedCommandRes : ServiceResContextBase
 
 public sealed class GetTourFeaturedItemDto
 {
-    public long PictureId { get; set; }
+    public string PicturePath { get; set; } = string.Empty;
     public DateOnly StartDate { get; set; }
-    public List<int> CountriesId { get; set; } = new();
+    public List<string> Countries { get; set; } = new();
     public string Title { get; set; } = string.Empty;
     public decimal BasePrice { get; set; }
     public decimal? ForeignPrice { get; set; }
     public string? ForeignCurrency { get; set; }
     public int DaysUntilRegistrationDeadline { get; set; }
-    public int Score { get; set; }= 0;
+    public int Score { get; set; } = 0;
     public int VoteCount { get; set; } = 0;
 }

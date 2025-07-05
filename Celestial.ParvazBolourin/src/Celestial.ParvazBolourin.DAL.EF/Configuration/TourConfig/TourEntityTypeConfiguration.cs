@@ -34,9 +34,6 @@ public class TourEntityTypeConfiguration : IEntityTypeConfiguration<Tours>
             .HasIndex(p => p.TourCode)
             .IsUnique();
 
-        builder.Property(p => p.ImportantTips)
-            .IsRequired();
-
         builder.Property(p => p.PassengerCapacity)
             .IsRequired()
             .HasDefaultValue(0);

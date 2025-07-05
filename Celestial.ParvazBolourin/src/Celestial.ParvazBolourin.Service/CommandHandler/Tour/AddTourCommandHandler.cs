@@ -107,7 +107,7 @@ public sealed class AddTourCommandHandler(
         for (int i = 0; i < request.Tours.TourPlans.Count; i++)
         {
             var plan = request.Tours.TourPlans[i];
-            var planPictureIds = new List<int>();
+            var planPictureIds = new List<long>();
 
             foreach (var picturePath in plan.PlanPicturePath)
             {

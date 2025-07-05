@@ -47,24 +47,24 @@ public sealed class GetTopBlogsCommandHandler : BaseRequestHandler<GetTopBlogsCo
             var Tag = new List<Tag>();
             foreach (var TagId in blog.TagsId)
             {
-                var Title = await _localizedPropertyService.FirstOrDefaultAsync(p => p.LocalKeyGroup == LocalKeyGroupType.BlogTag && p.LocalKey == "Name" && p.EntityId == TagId, cancellationToken: cancellationToken);
-                var Slug = await _localizedPropertyService.FirstOrDefaultAsync(p => p.LocalKeyGroup == LocalKeyGroupType.BlogTag && p.LocalKey == "Slug" && p.EntityId == TagId, cancellationToken: cancellationToken);
+                var title = await _localizedPropertyService.FirstOrDefaultAsync(p => p.LocalKeyGroup == LocalKeyGroupType.BlogTag && p.LocalKey == "Name" && p.EntityId == TagId, cancellationToken: cancellationToken);
+                var slug = await _localizedPropertyService.FirstOrDefaultAsync(p => p.LocalKeyGroup == LocalKeyGroupType.BlogTag && p.LocalKey == "Slug" && p.EntityId == TagId, cancellationToken: cancellationToken);
                 Tag.Add(new()
                 {
-                    Title = Title!.LocalValue ?? string.Empty,
-                    Slug = Slug!.LocalValue ?? string.Empty
+                    Title = title?.LocalValue ?? string.Empty,
+                    Slug = slug?.LocalValue ?? string.Empty
                 });
             }
 
             var BlogCategory = new List<Categories>();
             foreach (var categoryId in blog.CategoriesId)
             {
-                var Title = await _localizedPropertyService.FirstOrDefaultAsync(p => p.LocalKeyGroup == LocalKeyGroupType.BlogCategory && p.LocalKey == "Name" && p.EntityId == categoryId, cancellationToken: cancellationToken);
-                var Slug = await _localizedPropertyService.FirstOrDefaultAsync(p => p.LocalKeyGroup == LocalKeyGroupType.BlogCategory && p.LocalKey == "Slug" && p.EntityId == categoryId, cancellationToken: cancellationToken);
+                var title = await _localizedPropertyService.FirstOrDefaultAsync(p => p.LocalKeyGroup == LocalKeyGroupType.BlogCategory && p.LocalKey == "Name" && p.EntityId == categoryId, cancellationToken: cancellationToken);
+                var slug = await _localizedPropertyService.FirstOrDefaultAsync(p => p.LocalKeyGroup == LocalKeyGroupType.BlogCategory && p.LocalKey == "Slug" && p.EntityId == categoryId, cancellationToken: cancellationToken);
                 BlogCategory.Add(new()
                 {
-                    Title = Title!.LocalValue ?? string.Empty,
-                    Slug = Slug!.LocalValue ?? string.Empty
+                    Title = title?.LocalValue ?? string.Empty,
+                    Slug = slug?.LocalValue ?? string.Empty
                 });
             }
 

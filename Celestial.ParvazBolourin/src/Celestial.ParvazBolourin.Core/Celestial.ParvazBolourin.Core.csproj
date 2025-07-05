@@ -10,21 +10,20 @@
     <Compile Remove="DAL\Model\ShirdalAtelier\**" />
     <Compile Remove="DAL\Repositories\Main\**" />
     <Compile Remove="DAL\Repositories\ShirdalAtelier\**" />
+    <Compile Remove="Services\EmailSender\**" />
     <EmbeddedResource Remove="DAL\Model\ShirdalAtelier\**" />
     <EmbeddedResource Remove="DAL\Repositories\Main\**" />
     <EmbeddedResource Remove="DAL\Repositories\ShirdalAtelier\**" />
+    <EmbeddedResource Remove="Services\EmailSender\**" />
     <None Remove="DAL\Model\ShirdalAtelier\**" />
     <None Remove="DAL\Repositories\Main\**" />
     <None Remove="DAL\Repositories\ShirdalAtelier\**" />
+    <None Remove="Services\EmailSender\**" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Celestia.SharedKernel" Version="1.2.6" />
     <PackageReference Include="Celestial.SharedKernel.DataMigration" Version="1.0.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Services\EmailSender\" />
   </ItemGroup>
 
 </Project>

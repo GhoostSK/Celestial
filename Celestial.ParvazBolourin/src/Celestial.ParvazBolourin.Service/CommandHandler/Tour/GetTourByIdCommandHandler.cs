@@ -80,7 +80,7 @@ public class GetTourByIdCommandHandler(
             var countryData = await countryService.FindByIdAsync(cancellationToken, country);
             itemResponse.Countries.Add(countryData.Shortname);
         }
-        
+
         itemResponse.LanguageId = request.LanguageId;
         itemResponse.PicturePath = tourImage?.PicturePath ?? string.Empty;
         itemResponse.Name = localizedData.FirstOrDefault(p => p.LocalKey == nameof(GetTourByIdItemRes.Name))?.LocalValue ?? string.Empty;
@@ -123,8 +123,8 @@ public class GetTourByIdCommandHandler(
                 p.EntityId == item && p.LocalKeyGroup == LocalKeyGroupType.TourEquipment && p.LocalKey == "Name" && p.LanguageId == request.LanguageId, cancellationToken: cancellationToken);
             itemResponse.NecessaryEquipment.Add(new()
             {
-                Icon = equipment.Icon,
-                Name = localizeName.LocalValue
+                Icon = equipment?.Icon ?? "",
+                Name = localizeName?.LocalValue ?? ""
             });
         }
         foreach (var item in tour.UnNecessaryEquipment)
@@ -134,8 +134,8 @@ public class GetTourByIdCommandHandler(
                 p.EntityId == item && p.LocalKeyGroup == LocalKeyGroupType.TourEquipment && p.LocalKey == "Name" && p.LanguageId == request.LanguageId, cancellationToken: cancellationToken);
             itemResponse.UnNecessaryEquipment.Add(new()
             {
-                Icon = equipment.Icon,
-                Name = localizeName.LocalValue
+                Icon = equipment?.Icon??"",
+                Name = localizeName?.LocalValue ?? ""
             });
         }
         await tourService.UnitOfWork.SaveChangesAsync(cancellationToken);

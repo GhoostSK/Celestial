@@ -12,7 +12,7 @@ public class TourRequiredItemsConfig
         public void Configure(EntityTypeBuilder<TourEquipments> builder)
         {
             builder.ToTable(nameof(Tours));
-            builder.Property(p => p.Icon).HasMaxLength(100).IsRequired();
+            builder.Property(p => p.Icon).HasColumnType("NVARCHAR(MAX)").IsRequired();
         }
     }
 }
