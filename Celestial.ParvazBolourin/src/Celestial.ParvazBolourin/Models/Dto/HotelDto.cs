@@ -5,6 +5,7 @@ using Celestial.ParvazBolourin.Core.DAL.Repositories.Global.Model;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Hotel.Model;
 using Celestial.ParvazBolourin.Core.Enum.Global;
 using Celestial.ParvazBolourin.Core.Enum.Hotel;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Celestial.ParvazBolourin.Api.Models.Dto;
 
@@ -43,18 +44,18 @@ public sealed class HotelDto
 
 
 
-public sealed class HotelByIdReqDto
+public sealed class GetHotelReqDto
 {
-    public int LanguageId { get; set; }
-    public int HotelId { get; set; }
     [Slug]
+    [FromRoute]
     public string Slug { get; set; }
 }
 
 public sealed class GetHotelListReqDto
 {
     [Required]
-    public int LanguageId { get; set; }
+    [FromRoute]
+    public string Language { get; set; }
     public string Title { get; set; } = string.Empty;
     public List<HotelLocation> HotelLocation { get; set; } = new();
     public List<Continent> HotelContinent { get; set; } = new();

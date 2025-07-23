@@ -1,5 +1,6 @@
 ﻿using Celestial.ParvazBolourin.Core.Attributes;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Celestial.ParvazBolourin.Api.Models.Dto;
 
@@ -15,7 +16,7 @@ public sealed class GetBlogCategoryByIdReqDto
 {
     public long Id { get; set; }
     public string slug { get; set; }
-    public int LanguageId { get; set; }
+    public string Language { get; set; }
 }
 
 
@@ -23,12 +24,12 @@ public sealed class GetBlogTagByIdReqDto
 {
     public long Id { get; set; }
     [Slug]
-    public string slug { get; set; }
+    public string Slug { get; set; }
 }
 
 public sealed class BlogLocalizedProperty
 {
-    public int LanguageId { get; set; }
+    public string Language { get; set; }
     public string Title { get; set; } = string.Empty;
     public List<string> Tags { get; set; } = new();
     public string HeaderText { get; set; } = string.Empty;
@@ -48,7 +49,7 @@ public sealed class BlogLocalizedProperty
 
 public sealed class GetBlogsListReqDto
 {
-    public int LanguageId { get; set; }
+    public string Language { get; set; }
     public string Title { get; set; }
     public List<long> CategoriesId { get; set; } = new();
     public List<long> TagsId { get; set; } = new();
@@ -64,8 +65,9 @@ public sealed class RemoveBlogsReqDto
 
 public sealed class GetBlogsByIdReqDto
 {
-    public int LanguageId { get; set; }
+    public string Language { get; set; }
     public int Id { get; set; }
     [Slug]
+    [FromRoute]
     public string Slug { get; set; }
 }

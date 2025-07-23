@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Celestial.ParvazBolourin.Api.Controllers;
 using Celestial.ParvazBolourin.Service.Command.Geo;
+using Celestial.Service.Command.Geo;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Celestial.ParvazBolourin.Api.Controllers.Geo;
+namespace Celestial.Api.Controllers.Geo;
 
 public class GeoController : BaseController
 {

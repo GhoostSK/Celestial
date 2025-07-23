@@ -1,8 +1,8 @@
-﻿using Azure;
+﻿using Celestial.ParvazBolourin.Api.Areas.Admin.Controllers;
 using Celestial.ParvazBolourin.Service.Command.ShirdalBlog.BlogCategory;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Celestial.ParvazBolourin.Api.Areas.Admin.Controllers.ShirdalBlog.BlogCategory;
+namespace Celestial.Api.Areas.Admin.Controllers.ShirdalBlog.BlogCategory;
 
 public class ShirdalBlogCategoryController : BaseController
 {

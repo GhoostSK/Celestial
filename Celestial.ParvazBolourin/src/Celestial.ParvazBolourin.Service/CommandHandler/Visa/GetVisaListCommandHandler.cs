@@ -2,12 +2,12 @@
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global.Model;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Visa;
-using Celestial.ParvazBolourin.Service.Command.Visa;
+using Celestial.Service.Command.Visa;
 using Mapster;
 using MofidApp.SharedKernel.Common.Model;
 using MofidApp.SharedKernel.Domain.Services;
 
-namespace Celestial.ParvazBolourin.Service.CommandHandler.Visa;
+namespace Celestial.Service.CommandHandler.Visa;
 
 public sealed class GetVisaListCommandHandler(
     IVisaService visaService,
@@ -19,7 +19,7 @@ public sealed class GetVisaListCommandHandler(
         CancellationToken cancellationToken)
     {
         var languages = await languageService.GetLanguages(cancellationToken);
-        if (!languages.Any(p => p.Id == request.LanguageId))
+        if (languages.Any(p => p.LanguageCulture.Split('-')[0] == request.Language))
             return new GetVisaListCommandRes
             {
                 Error = new ValidationError("LA400", "invalid Language")
@@ -38,7 +38,7 @@ public sealed class GetVisaListCommandHandler(
                 new GetLocalizedPropertyReq
                 {
                     EntityId = visa.Id,
-                    LanguageId = request.LanguageId,
+                    Language = request.Language,
                     LocalKeyGroup = LocalKeyGroupType.Visa
                 },
                 cancellationToken
@@ -46,7 +46,7 @@ public sealed class GetVisaListCommandHandler(
 
             visaItem.Text = localizedProperties.FirstOrDefault(p => p.LocalKey == "Text")?.LocalValue ?? string.Empty;
             visaItem.Name = localizedProperties.FirstOrDefault(p => p.LocalKey == "Name")?.LocalValue ?? string.Empty;
-            visaItem.LanguageId = request.LanguageId;
+            visaItem.Language = request.Language;
 
             response.Items.Add(visaItem);
         }

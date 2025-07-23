@@ -1,12 +1,12 @@
-﻿using Celestial.ParvazBolourin.Core.DAL.Model.Global;
+﻿using System.Linq.Expressions;
+using Celestial.ParvazBolourin.Core.DAL.Model.Global;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.ShirdalBlog;
 using Celestial.ParvazBolourin.Service.Command.ShirdalBlog.BlogCategory;
 using MediatR;
 using MofidApp.SharedKernel.Domain.Services;
-using System.Linq.Expressions;
 
-namespace Celestial.ParvazBolourin.Service.CommandHandler.ShirdalBlog.BlogTag;
+namespace Celestial.Service.CommandHandler.ShirdalBlog.BlogTag;
 
 public sealed class UpdateBlogTagCommandHandler : IRequestHandler<UpdateBlogCategoryCommandReq, UpdateBlogCategoryCommandRes>
 {
@@ -39,7 +39,7 @@ public sealed class UpdateBlogTagCommandHandler : IRequestHandler<UpdateBlogCate
         var localizedNames = request.LocalizedNames.Select(name => new LocalizedProperty
         {
             EntityId = request.Id,
-            LanguageId = name.LanguageId,
+            Language = name.Language,
             LocalKey = nameof(name.Name),
             LocalKeyGroup = LocalKeyGroupType.BlogCategory,
             LocalValue = name.Name

@@ -3,15 +3,16 @@ using Celestial.ParvazBolourin.Core.DAL.Model.ShirdalBlog;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.ShirdalBlog;
 using Celestial.ParvazBolourin.Service.Command.ShirdalBlog;
+using Celestial.ParvazBolourin.Service.Command.ValidateLanguage;
+using MediatR;
 using MofidApp.SharedKernel.Common.Model;
 using MofidApp.SharedKernel.Domain.Services;
-using System.Reflection.Metadata;
 
-namespace Celestial.ParvazBolourin.Service.CommandHandler.ShirdalBlog;
+namespace Celestial.Service.CommandHandler.ShirdalBlog;
 
 public sealed class AddBlogCommandHandler(
     ILocalizedPropertyService localizedProperty,
-    ILanguageService languageService,
+    IMediator mediator,
     IBlogService blogService,
     IBlogCategoryService blogCategoryService,
     IBlogTagService blogTagService)
@@ -19,23 +20,28 @@ public sealed class AddBlogCommandHandler(
 {
     protected override async Task<AddBlogCommandRes> HandleCore(AddBlogCommandReq request, CancellationToken cancellationToken)
     {
-        var languages = await languageService.GetLanguages(cancellationToken);
-
-        if (request.BlogLocalizedProperties.Any(x => !languages.Any(lang => lang.Id == x.LanguageId)))
+        var langs = new List<string>();
+        foreach (var lang in request.BlogLocalizedProperties)
         {
-            return new AddBlogCommandRes
+            lang.Language = lang.Language?.ToLowerInvariant()!;
+            langs.Add(lang.Language);
+        }
+        var validateLanguage = await mediator.Send(new ValidateLanguageCommandReq() { Language = langs }, cancellationToken);
+        if (validateLanguage.HasError)
+        {
+            return new()
             {
-                Error = new ValidationError("LA400", "invalid Language")
+                Error = validateLanguage.Error
             };
         }
         foreach (var localizeSlug in request.BlogLocalizedProperties)
         {
-            var checkSlug = await localizedProperty.FirstOrDefaultAsync(p => p.LocalKeyGroup == LocalKeyGroupType.Blog && p.LocalKey == "Slug" && p.LocalValue == localizeSlug.Slug && p.LanguageId == localizeSlug.LanguageId, cancellationToken: cancellationToken);
+            var checkSlug = await localizedProperty.FirstOrDefaultAsync(p => p.LocalKeyGroup == LocalKeyGroupType.Blog && p.LocalKey == "Slug" && p.LocalValue == localizeSlug.Slug && p.Language == localizeSlug.Language, cancellationToken: cancellationToken);
             if (checkSlug != null)
             {
                 return new AddBlogCommandRes()
                 {
-                    Error = ValidationError.UnhandledValidationError("S403", $"Slug Already exist({checkSlug.LanguageId})")
+                    Error = ValidationError.UnhandledValidationError("S403", $"Slug Already exist({checkSlug.Language})")
                 };
             }
         }
@@ -84,7 +90,7 @@ public sealed class AddBlogCommandHandler(
             {
                 new LocalizedProperty
                 {
-                    LanguageId = item.LanguageId,
+                    Language = item.Language,
                     EntityId = blog.Id,
                     LocalKey = nameof(item.Title),
                     LocalKeyGroup = LocalKeyGroupType.Blog,
@@ -92,7 +98,7 @@ public sealed class AddBlogCommandHandler(
                 },
                 new LocalizedProperty
                 {
-                    LanguageId = item.LanguageId,
+                    Language = item.Language,
                     EntityId = blog.Id,
                     LocalKey = nameof(item.HeaderText),
                     LocalKeyGroup = LocalKeyGroupType.Blog,
@@ -100,7 +106,7 @@ public sealed class AddBlogCommandHandler(
                 },
                 new LocalizedProperty
                 {
-                    LanguageId = item.LanguageId,
+                    Language = item.Language,
                     EntityId = blog.Id,
                     LocalKey = nameof(item.MainText),
                     LocalKeyGroup = LocalKeyGroupType.Blog,
@@ -108,7 +114,7 @@ public sealed class AddBlogCommandHandler(
                 },
                 new LocalizedProperty
                 {
-                    LanguageId = item.LanguageId,
+                    Language = item.Language,
                     EntityId = blog.Id,
                     LocalKey = nameof(item.Slug),
                     LocalKeyGroup = LocalKeyGroupType.Blog,
@@ -116,7 +122,7 @@ public sealed class AddBlogCommandHandler(
                 },
                 new LocalizedProperty
                 {
-                    LanguageId = item.LanguageId,
+                    Language = item.Language,
                     EntityId = blog.Id,
                     LocalKey = nameof(item.MetaKeywords),
                     LocalKeyGroup = LocalKeyGroupType.Blog,
@@ -124,7 +130,7 @@ public sealed class AddBlogCommandHandler(
                 },
                 new LocalizedProperty
                 {
-                    LanguageId = item.LanguageId,
+                    Language = item.Language,
                     EntityId = blog.Id,
                     LocalKey = nameof(item.MetaDescription),
                     LocalKeyGroup = LocalKeyGroupType.Blog,
@@ -132,7 +138,7 @@ public sealed class AddBlogCommandHandler(
                 },
                 new LocalizedProperty
                 {
-                    LanguageId = item.LanguageId,
+                    Language = item.Language,
                     EntityId = blog.Id,
                     LocalKey = nameof(item.MetaTitle),
                     LocalKeyGroup = LocalKeyGroupType.Blog,

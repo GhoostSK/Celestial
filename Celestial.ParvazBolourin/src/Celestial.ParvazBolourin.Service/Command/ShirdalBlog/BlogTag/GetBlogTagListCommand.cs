@@ -6,7 +6,7 @@ namespace Celestial.ParvazBolourin.Service.Command.ShirdalBlog.BlogTag;
 
 public sealed class GetBlogTagListCommandReq : BaseEntity, IRequest<GetBlogTagListCommandRes>
 {
-    public int LanguageId { get; set; }
+    public string Language { get; set; } = string.Empty;
 }
 
 public sealed class GetBlogTagListCommandRes : ServiceResContextBase

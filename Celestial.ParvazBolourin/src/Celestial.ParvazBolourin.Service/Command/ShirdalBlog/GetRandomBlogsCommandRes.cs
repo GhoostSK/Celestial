@@ -9,7 +9,7 @@ namespace Celestial.ParvazBolourin.Service.Command.ShirdalBlog;
 public sealed class GetTopBlogsCommandReq : BaseEntity, IRequest<GetTopBlogsCommandRes>
 {
     public int TopCount { get; set; }
-    public int LanguageId { get; set; }
+    public string Language { get; set; } = string.Empty;
 }
 
 public class GetTopBlogsCommandRes : ServiceResContextBase

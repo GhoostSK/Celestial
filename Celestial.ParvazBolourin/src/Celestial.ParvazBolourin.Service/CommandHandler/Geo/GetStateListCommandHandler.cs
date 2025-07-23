@@ -1,8 +1,9 @@
 ﻿using Celestial.ParvazBolourin.Core.DAL.Repositories.Geo;
 using Celestial.ParvazBolourin.Service.Command.Geo;
+using Celestial.Service.Command.Geo;
 using MediatR;
 
-namespace Celestial.ParvazBolourin.Service.CommandHandler.Geo;
+namespace Celestial.Service.CommandHandler.Geo;
 
 public class GetStateListCommandHandler(IStateService stateService)
     : IRequestHandler<GetStateListCommandReq, GetStateListCommandRes>

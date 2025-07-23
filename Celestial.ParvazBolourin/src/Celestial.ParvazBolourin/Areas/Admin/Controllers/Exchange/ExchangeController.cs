@@ -1,9 +1,10 @@
-﻿using Celestial.ParvazBolourin.Api.Areas.Admin.Models.Dto;
+﻿using Celestial.ParvazBolourin.Api.Areas.Admin.Controllers;
+using Celestial.ParvazBolourin.Api.Areas.Admin.Models.Dto;
 using Celestial.ParvazBolourin.Service.Command.Exchange;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Celestial.ParvazBolourin.Api.Areas.Admin.Controllers.Exchange;
+namespace Celestial.Api.Areas.Admin.Controllers.Exchange;
 
 public class CurrencyController : BaseController
 {

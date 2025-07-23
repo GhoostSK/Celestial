@@ -1,6 +1,8 @@
-﻿using Celestial.ParvazBolourin.Api.Areas.Admin.Models.Dto;
+﻿using Celestial.Api.Models.Dto;
+using Celestial.ParvazBolourin.Api.Areas.Admin.Models.Dto;
 using Celestial.ParvazBolourin.Api.Models.Dto;
 using Celestial.ParvazBolourin.Service.Command.Tour;
+using Celestial.Service.Command.Tour;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
 

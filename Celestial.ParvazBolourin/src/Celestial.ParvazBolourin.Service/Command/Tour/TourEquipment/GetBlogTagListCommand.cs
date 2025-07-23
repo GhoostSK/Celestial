@@ -7,7 +7,7 @@ namespace Celestial.ParvazBolourin.Service.Command.Tour.TourEquipment;
 
 public sealed class GetTourEquipmentListCommandReq : BaseEntity, IRequest<GetTourEquipmentListCommandRes>
 {
-    public int LanguageId { get; set; }
+    public string Language { get; set; } = string.Empty;
 }
 
 public sealed class GetTourEquipmentListCommandRes : ServiceResContextBase
@@ -19,5 +19,5 @@ public sealed class TourEquipmentListItemDto
 {
     public long Id { get; set; }
     public string Name { get; set; } = string.Empty;
-    public string Icon { get; set; }
+    public string Icon { get; set; } = string.Empty;
 }

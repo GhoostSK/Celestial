@@ -1,11 +1,13 @@
-﻿using Celestial.ParvazBolourin.Api.Models.Dto;
+﻿using Celestial.ParvazBolourin.Api.Areas.Admin.Controllers;
+using Celestial.ParvazBolourin.Api.Models.Dto;
 using Celestial.ParvazBolourin.Core.DAL.Model.Hotel;
 using Celestial.ParvazBolourin.Service.Command.Geo;
 using Celestial.ParvazBolourin.Service.Command.Hotel;
+using Celestial.Service.Command.Hotel;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Celestial.ParvazBolourin.Api.Areas.Admin.Controllers.Hotel;
+namespace Celestial.Api.Areas.Admin.Controllers.Hotel;
 
 public class HotelController : BaseController
 {

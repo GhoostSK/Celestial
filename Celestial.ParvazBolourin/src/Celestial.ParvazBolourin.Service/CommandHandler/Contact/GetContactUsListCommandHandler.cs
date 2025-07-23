@@ -3,7 +3,7 @@ using Celestial.ParvazBolourin.Service.Command.Contact;
 using Mapster;
 using MofidApp.SharedKernel.Common.Model;
 
-namespace Celestial.ParvazBolourin.Service.CommandHandler.Contact;
+namespace Celestial.Service.CommandHandler.Contact;
 
 public sealed class
     GetContactUsListCommandHandler : BaseRequestHandler<GetContactUsListCommandReq, GetContactUsListCommandRes>

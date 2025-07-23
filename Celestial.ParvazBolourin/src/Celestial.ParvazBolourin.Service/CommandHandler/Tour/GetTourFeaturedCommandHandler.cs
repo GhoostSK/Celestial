@@ -3,12 +3,11 @@ using Celestial.ParvazBolourin.Core.DAL.Repositories.Geo;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global.Model;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Tour;
-using Celestial.ParvazBolourin.Service.Command.Hotel;
 using Celestial.ParvazBolourin.Service.Command.Tour;
 using MediatR;
 using MofidApp.SharedKernel.Domain.Services;
 
-namespace Celestial.ParvazBolourin.Service.CommandHandler.Tour;
+namespace Celestial.Service.CommandHandler.Tour;
 
 public class GetTourFeaturedCommandHandler(
     ITourService tourService,
@@ -21,7 +20,7 @@ public class GetTourFeaturedCommandHandler(
     {
 
         var languages = await languageService.GetLanguages(cancellationToken);
-        if (!languages.Any(p => p.Id == request.LanguageId))
+        if (languages.All(p => p.LanguageCulture.Split('-')[0] != request.Language))
             return new GetTourFeaturedCommandRes
             {
                 Error = new ValidationError("LA400", "invalid Language")
@@ -36,7 +35,7 @@ public class GetTourFeaturedCommandHandler(
                 new GetLocalizedPropertyReq
                 {
                     EntityId = tour.Id,
-                    LanguageId = request.LanguageId,
+                    Language = request.Language,
                     LocalKeyGroup = LocalKeyGroupType.Tour
                 },
                 cancellationToken

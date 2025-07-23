@@ -7,7 +7,7 @@ namespace Celestial.ParvazBolourin.Service.Command.ShirdalBlog.BlogCategory;
 public sealed class GetBlogCategoryByIdCommandReq : BaseEntity, IRequest<GetBlogCategoryByIdCommandRes>
 {
     public long Id { get; set; }
-    public int LanguageId { get; set; }
+    public string Language { get; set; } = string.Empty;
     public string Slug { get; set; } = string.Empty;
 }
 

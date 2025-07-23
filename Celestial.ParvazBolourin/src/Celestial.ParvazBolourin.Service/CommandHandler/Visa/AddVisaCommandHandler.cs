@@ -1,38 +1,33 @@
 ﻿using Celestial.ParvazBolourin.Core.DAL.Model.Global;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Visa;
-using Celestial.ParvazBolourin.Service.Command.Hotel;
-using Celestial.ParvazBolourin.Service.Command.Tour;
-using Celestial.ParvazBolourin.Service.Command.Visa;
+using Celestial.ParvazBolourin.Service.Command.ValidateLanguage;
+using Celestial.Service.Command.Visa;
+using MediatR;
 using MofidApp.SharedKernel.Common.Model;
-using MofidApp.SharedKernel.Domain.Services;
 
-namespace Celestial.ParvazBolourin.Service.CommandHandler.Visa;
+namespace Celestial.Service.CommandHandler.Visa;
 
-public sealed class AddVisaCommandHandler : BaseRequestHandler<AddVisaCommandReq, AddVisaCommandRes>
+public sealed class AddVisaCommandHandler(IVisaService visaService, ILocalizedPropertyService localizedPropertyService, IMediator mediator)
+    : BaseRequestHandler<AddVisaCommandReq, AddVisaCommandRes>
 {
-    private readonly ILanguageService _languageService;
-    private readonly ILocalizedPropertyService _localizedPropertyService;
-    private readonly IVisaService _visaService;
-
-    public AddVisaCommandHandler(IVisaService visaService, ILocalizedPropertyService localizedPropertyService,
-        ILanguageService languageService)
-    {
-        _visaService = visaService;
-        _localizedPropertyService = localizedPropertyService;
-        _languageService = languageService;
-    }
-
     protected override async Task<AddVisaCommandRes> HandleCore(AddVisaCommandReq request,
         CancellationToken cancellationToken)
     {
-        var languages = await _languageService.GetLanguages(cancellationToken);
-        foreach (var item in request.VisaLocalizedProperty)
-            if (!languages.Any(lang => lang.Id == item.LanguageId))
-                return new AddVisaCommandRes
-                {
-                    Error = new ValidationError("LA400", "Invalid Language")
-                };
+        var langs = new List<string>();
+        foreach (var lang in request.VisaLocalizedProperty)
+        {
+            lang.Language = lang.Language?.ToLowerInvariant()!;
+            langs.Add(lang.Language);
+        }
+        var validateLanguage = await mediator.Send(new ValidateLanguageCommandReq() { Language = langs }, cancellationToken);
+        if (validateLanguage.HasError)
+        {
+            return new()
+            {
+                Error = validateLanguage.Error
+            };
+        }
         //foreach (var localizeSlug in request.VisaLocalizedProperty)
         //{
         //    var checkSlug = await _localizedPropertyService.FirstOrDefaultAsync(p => p.LocalKeyGroup == "Visa" && p.LocalKey == "Slug" && p.LocalValue == localizeSlug.Slug && p.LanguageId == localizeSlug.LanguageId, cancellationToken: cancellationToken);
@@ -45,7 +40,7 @@ public sealed class AddVisaCommandHandler : BaseRequestHandler<AddVisaCommandReq
         //    }
         //}
         var visa = request.Visa;
-        var visaId = await _visaService.AddVisa(visa, cancellationToken);
+        var visaId = await visaService.AddVisa(visa, cancellationToken);
 
         var localizedProperties = new List<LocalizedProperty>();
 
@@ -54,7 +49,7 @@ public sealed class AddVisaCommandHandler : BaseRequestHandler<AddVisaCommandReq
             localizedProperties.Add(new LocalizedProperty
             {
                 EntityId = visaId,
-                LanguageId = item.LanguageId,
+                Language = item.Language,
                 LocalKey = nameof(item.Text),
                 LocalValue = item.Text,
                 LocalKeyGroup = LocalKeyGroupType.Visa
@@ -63,7 +58,7 @@ public sealed class AddVisaCommandHandler : BaseRequestHandler<AddVisaCommandReq
             localizedProperties.Add(new LocalizedProperty
             {
                 EntityId = visaId,
-                LanguageId = item.LanguageId,
+                Language = item.Language,
                 LocalKey = nameof(item.Name),
                 LocalValue = item.Name,
                 LocalKeyGroup = LocalKeyGroupType.Visa
@@ -74,14 +69,14 @@ public sealed class AddVisaCommandHandler : BaseRequestHandler<AddVisaCommandReq
                 localizedProperties.Add(new LocalizedProperty
                 {
                     EntityId = visaId,
-                    LanguageId = item.LanguageId,
+                    Language = item.Language,
                     LocalKey = "Embassy_" + kvp.Key,
                     LocalValue = kvp.Value,
                     LocalKeyGroup = LocalKeyGroupType.Visa
                 });
         }
 
-        await _localizedPropertyService.BulkInsertAsync(localizedProperties, cancellationToken: cancellationToken);
+        await localizedPropertyService.BulkInsertAsync(localizedProperties, cancellationToken: cancellationToken);
 
         return new AddVisaCommandRes();
     }

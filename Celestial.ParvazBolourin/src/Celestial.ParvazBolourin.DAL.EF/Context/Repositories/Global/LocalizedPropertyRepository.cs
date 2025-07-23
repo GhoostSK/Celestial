@@ -14,7 +14,7 @@ public sealed class LocalizedPropertyRepository(MainDbContext dbContext)
         CancellationToken cancellationToken)
     {
         return await Table
-            .Where(p => p.LanguageId == model.LanguageId && p.EntityId == model.EntityId &&
+            .Where(p => p.Language == model.Language && p.EntityId == model.EntityId &&
                         p.LocalKeyGroup == model.LocalKeyGroup)
             .Select(p => new GetLocalizedPropertyRes
             {
@@ -22,7 +22,7 @@ public sealed class LocalizedPropertyRepository(MainDbContext dbContext)
                 LocalKey = p.LocalKey,
                 LocalValue = p.LocalValue,
                 LocalKeyGroup = p.LocalKeyGroup,
-                LanguageId = p.LanguageId
+                Language = p.Language
             })
             .ToListAsync(cancellationToken);
     }

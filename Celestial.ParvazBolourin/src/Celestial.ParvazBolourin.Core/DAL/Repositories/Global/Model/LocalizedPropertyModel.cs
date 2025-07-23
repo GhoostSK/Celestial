@@ -4,7 +4,7 @@ namespace Celestial.ParvazBolourin.Core.DAL.Repositories.Global.Model;
 
 public sealed class GetLocalizedPropertyReq
 {
-    public int LanguageId { get; set; }
+    public string Language { get; set; }=string.Empty;
     public long EntityId { get; set; }
     public LocalKeyGroupType LocalKeyGroup { get; set; }
 }
@@ -15,5 +15,5 @@ public sealed class GetLocalizedPropertyRes
     public string LocalKey { get; set; } = string.Empty;
     public string LocalValue { get; set; } = string.Empty;
     public LocalKeyGroupType LocalKeyGroup { get; set; }
-    public int LanguageId { get; set; }
+    public string Language { get; set; } = string.Empty;
 }

@@ -1,27 +1,21 @@
-﻿using Celestial.ParvazBolourin.Core.DAL.Model.Global;
+﻿using System.Linq.Expressions;
+using Celestial.ParvazBolourin.Core.DAL.Model.Global;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.ShirdalBlog;
 using Celestial.ParvazBolourin.Service.Command.ShirdalBlog.BlogCategory;
 using MediatR;
 using MofidApp.SharedKernel.Domain.Services;
-using System.Linq.Expressions;
 
-namespace Celestial.ParvazBolourin.Service.CommandHandler.ShirdalBlog.BlogCategories;
+namespace Celestial.Service.CommandHandler.ShirdalBlog.BlogCategories;
 
-public sealed class UpdateBlogCategoryCommandHandler : IRequestHandler<UpdateBlogCategoryCommandReq, UpdateBlogCategoryCommandRes>
+public sealed class UpdateBlogCategoryCommandHandler(
+    IBlogCategoryService categoryService,
+    ILocalizedPropertyService localizedPropertyService)
+    : IRequestHandler<UpdateBlogCategoryCommandReq, UpdateBlogCategoryCommandRes>
 {
-    private readonly IBlogCategoryService _categoryService;
-    private readonly ILocalizedPropertyService _localizedPropertyService;
-
-    public UpdateBlogCategoryCommandHandler(IBlogCategoryService categoryService, ILocalizedPropertyService localizedPropertyService)
-    {
-        _categoryService = categoryService;
-        _localizedPropertyService = localizedPropertyService;
-    }
-
     public async Task<UpdateBlogCategoryCommandRes> Handle(UpdateBlogCategoryCommandReq request, CancellationToken cancellationToken)
     {
-        var entity = await _categoryService.FindByIdAsync(cancellationToken, request.Id);
+        var entity = await categoryService.FindByIdAsync(cancellationToken, request.Id);
         if (entity == null)
         {
             return new UpdateBlogCategoryCommandRes()
@@ -34,18 +28,18 @@ public sealed class UpdateBlogCategoryCommandHandler : IRequestHandler<UpdateBlo
             property.LocalKey == "Name" &&
             property.LocalKeyGroup == LocalKeyGroupType.BlogCategory;
 
-        await _localizedPropertyService.BulkRemove(predicate,cancellationToken);
+        await localizedPropertyService.BulkRemove(predicate,cancellationToken);
 
         var localizedNames = request.LocalizedNames.Select(name => new LocalizedProperty
         {
             EntityId = request.Id,
-            LanguageId = name.LanguageId,
+            Language = name.Language,
             LocalKey = nameof(name.Name),
             LocalKeyGroup = LocalKeyGroupType.BlogCategory,
             LocalValue = name.Name
         }).ToList();
 
-        await _localizedPropertyService.BulkInsertAsync(localizedNames, cancellationToken: cancellationToken);
+        await localizedPropertyService.BulkInsertAsync(localizedNames, cancellationToken: cancellationToken);
         return new UpdateBlogCategoryCommandRes();
     }
 }

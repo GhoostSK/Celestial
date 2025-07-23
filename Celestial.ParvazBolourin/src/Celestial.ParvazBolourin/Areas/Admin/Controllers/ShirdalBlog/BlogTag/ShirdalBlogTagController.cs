@@ -1,8 +1,8 @@
-﻿using Azure;
+﻿using Celestial.ParvazBolourin.Api.Controllers;
 using Celestial.ParvazBolourin.Service.Command.ShirdalBlog.BlogTag;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Celestial.ParvazBolourin.Api.Areas.Admin.Controllers.ShirdalBlog.BlogTag;
+namespace Celestial.Api.Areas.Admin.Controllers.ShirdalBlog.BlogTag;
 
 public class ShirdalBlogTagController : BaseController
 {

@@ -2,7 +2,7 @@
 using Celestial.ParvazBolourin.Service.Command.ShirdalBlog;
 using MofidApp.SharedKernel.Common.Model;
 
-namespace Celestial.ParvazBolourin.Service.CommandHandler.ShirdalBlog;
+namespace Celestial.Service.CommandHandler.ShirdalBlog;
 
 public sealed class RemoveBlogCommandHandler : BaseRequestHandler<RemoveBlogCommandReq, RemoveBlogCommandRes>
 {

@@ -6,7 +6,7 @@ namespace Celestial.ParvazBolourin.Core.DAL.Repositories.Hotel.Model;
 public sealed class HotelServiceLocalizedProperty
 {
     [Required]
-    public int LanguageId { get; set; }
+    public string Language { get; set; } = string.Empty;
     public string ShortText { get; set; } = string.Empty;
     public string MainText { get; set; } = string.Empty;
     public string Address { get; set; } = string.Empty;

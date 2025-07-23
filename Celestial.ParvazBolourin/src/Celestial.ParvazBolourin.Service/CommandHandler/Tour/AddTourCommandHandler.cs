@@ -3,36 +3,48 @@ using Celestial.ParvazBolourin.Core.DAL.Model.Tour;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Exchange;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Tour;
-using Celestial.ParvazBolourin.Service.Command.Hotel;
-using Celestial.ParvazBolourin.Service.Command.Tour;
+using Celestial.ParvazBolourin.Service.Command.ValidateLanguage;
+using Celestial.Service.Command.Tour;
 using Mapster;
+using MediatR;
 using MofidApp.SharedKernel.Common.Model;
 using MofidApp.SharedKernel.Domain.Services;
 
-namespace Celestial.ParvazBolourin.Service.CommandHandler.Tour;
+namespace Celestial.Service.CommandHandler.Tour;
 
 public sealed class AddTourCommandHandler(
     ITourService tourService,
     ILocalizedPropertyService localizedPropertyService,
-    ILanguageService languageService,
     ICurrencyService currencyService,
     IImageService imageService,
-    ITourEquipmentsService iEquipmentsService)
+    ITourEquipmentsService iEquipmentsService, IMediator mediator)
     : BaseRequestHandler<AddTourCommandReq, AddTourCommandRes>
 {
     protected override async Task<AddTourCommandRes> HandleCore(AddTourCommandReq request, CancellationToken cancellationToken)
     {
-        var languages = await languageService.GetLanguages(cancellationToken);
-        if (request.LocalizedProperty.Any(item => languages.All(p => p.Id != item.LanguageId)))
-            return new AddTourCommandRes { Error = new ValidationError("LA400", "Invalid Language") };
+        var langs = new List<string>();
+        foreach (var lang in request.LocalizedProperty)
+        {
+            lang.Language = lang.Language?.ToLowerInvariant()!;
+            langs.Add(lang.Language);
+        }
+        var validateLanguage = await mediator.Send(new ValidateLanguageCommandReq() { Language = langs }, cancellationToken);
+
+        if (validateLanguage.HasError)
+        {
+            return new()
+            {
+                Error = validateLanguage.Error
+            };
+        }
         foreach (var localizeSlug in request.LocalizedProperty)
         {
-            var checkSlug = await localizedPropertyService.FirstOrDefaultAsync(p => p.LocalKeyGroup == LocalKeyGroupType.Tour && p.LocalKey == "Slug" && p.LocalValue == localizeSlug.Slug && p.LanguageId == localizeSlug.LanguageId, cancellationToken: cancellationToken);
+            var checkSlug = await localizedPropertyService.FirstOrDefaultAsync(p => p.LocalKeyGroup == LocalKeyGroupType.Tour && p.LocalKey == "Slug" && p.LocalValue == localizeSlug.Slug && p.Language == localizeSlug.Language, cancellationToken: cancellationToken);
             if (checkSlug != null)
             {
                 return new AddTourCommandRes()
                 {
-                    Error = ValidationError.UnhandledValidationError("S403", $"Slug Already exist({checkSlug.LanguageId})")
+                    Error = ValidationError.UnhandledValidationError("S403", $"Slug Already exist({checkSlug.Language})")
                 };
             }
         }
@@ -136,7 +148,7 @@ public sealed class AddTourCommandHandler(
             {
                 new LocalizedProperty
                 {
-                    LanguageId = localizedItem.LanguageId,
+                    Language = localizedItem.Language,
                     LocalKeyGroup = LocalKeyGroupType.Tour,
                     EntityId = tour.Id,
                     LocalKey = nameof(localizedItem.Name),
@@ -144,7 +156,7 @@ public sealed class AddTourCommandHandler(
                 },
                 new LocalizedProperty
                 {
-                    LanguageId = localizedItem.LanguageId,
+                    Language = localizedItem.Language,
                     LocalKeyGroup = LocalKeyGroupType.Tour,
                     EntityId = tour.Id,
                     LocalKey = nameof(localizedItem.TourMainText),
@@ -152,7 +164,7 @@ public sealed class AddTourCommandHandler(
                 },
                 new LocalizedProperty
                 {
-                    LanguageId = localizedItem.LanguageId,
+                    Language = localizedItem.Language,
                     LocalKeyGroup = LocalKeyGroupType.Tour,
                     EntityId = tour.Id,
                     LocalKey = nameof(localizedItem.PlanShortText),
@@ -160,7 +172,7 @@ public sealed class AddTourCommandHandler(
                 },
                 new LocalizedProperty
                 {
-                    LanguageId = localizedItem.LanguageId,
+                    Language = localizedItem.Language,
                     LocalKeyGroup = LocalKeyGroupType.Tour,
                     EntityId = tour.Id,
                     LocalKey = nameof(localizedItem.TourTips),
@@ -168,7 +180,7 @@ public sealed class AddTourCommandHandler(
                 },
                 new LocalizedProperty
                 {
-                    LanguageId = localizedItem.LanguageId,
+                    Language = localizedItem.Language,
                     LocalKeyGroup = LocalKeyGroupType.Tour,
                     EntityId = tour.Id,
                     LocalKey = nameof(localizedItem.MetaKeywords),
@@ -176,7 +188,7 @@ public sealed class AddTourCommandHandler(
                 },
                 new LocalizedProperty
                 {
-                    LanguageId = localizedItem.LanguageId,
+                    Language = localizedItem.Language,
                     LocalKeyGroup = LocalKeyGroupType.Tour,
                     EntityId = tour.Id,
                     LocalKey = nameof(localizedItem.MetaTitle),
@@ -184,7 +196,7 @@ public sealed class AddTourCommandHandler(
                 },
                 new LocalizedProperty
                 {
-                    LanguageId = localizedItem.LanguageId,
+                    Language = localizedItem.Language,
                     LocalKeyGroup = LocalKeyGroupType.Tour,
                     EntityId = tour.Id,
                     LocalKey = nameof(localizedItem.Slug),
@@ -192,7 +204,7 @@ public sealed class AddTourCommandHandler(
                 },
                 new LocalizedProperty
                 {
-                    LanguageId = localizedItem.LanguageId,
+                    Language = localizedItem.Language,
                     LocalKeyGroup = LocalKeyGroupType.Tour,
                     EntityId = tour.Id,
                     LocalKey = nameof(localizedItem.MetaDescription),
@@ -202,7 +214,7 @@ public sealed class AddTourCommandHandler(
 
             localizedProperties.AddRange(localizedItem.TourFacilities.Select(facility => new LocalizedProperty
             {
-                LanguageId = localizedItem.LanguageId,
+                Language = localizedItem.Language,
                 LocalKeyGroup = LocalKeyGroupType.Tour,
                 EntityId = tour.Id,
                 LocalKey = nameof(localizedItem.TourFacilities),
@@ -218,7 +230,7 @@ public sealed class AddTourCommandHandler(
                 {
                     new LocalizedProperty
                     {
-                        LanguageId = localizedItem.LanguageId,
+                        Language = localizedItem.Language,
                         LocalKeyGroup = LocalKeyGroupType.TourPlan,
                         EntityId = tour.TourPlans[index].Id,
                         LocalKey = nameof(plan.PlanDayText),
@@ -226,7 +238,7 @@ public sealed class AddTourCommandHandler(
                     },
                     new LocalizedProperty
                     {
-                        LanguageId = localizedItem.LanguageId,
+                        Language = localizedItem.Language,
                         LocalKeyGroup = LocalKeyGroupType.TourPlan,
                         EntityId = tour.TourPlans[index].Id,
                         LocalKey = nameof(plan.PlanText),

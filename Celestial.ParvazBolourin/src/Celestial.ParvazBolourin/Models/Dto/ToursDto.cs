@@ -1,10 +1,11 @@
 ﻿using Celestial.ParvazBolourin.Core.Attributes;
 using Celestial.ParvazBolourin.Core.Enum.Global;
 using Celestial.ParvazBolourin.Core.Enum.Tour;
-using Celestial.ParvazBolourin.Service.Command.Tour;
+using Celestial.Service.Command.Tour;
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
-namespace Celestial.ParvazBolourin.Api.Models.Dto;
+namespace Celestial.Api.Models.Dto;
 
 public sealed class AddTourReqDto
 {
@@ -20,7 +21,7 @@ public sealed class TourPlansItem
 
 public sealed class TourLocalizedPropertyItemDto
 {
-    public int LanguageId { get; set; }
+    public string Language { get; set; }
     public string Name { get; set; }
     public string TourMainText { get; set; }
     public List<string> TourFacilities { get; set; }
@@ -47,7 +48,9 @@ public sealed class PlanTourItemDto
 
 public sealed class GetToursListReqDto
 {
-    [Required] public int LanguageId { get; set; }
+    [Required]
+    [FromRoute]
+    public string Language { get; set; }
     public string Title { get; set; }
     public List<string> Countries { get; set; } = new();
     public List<string> Cities { get; set; } = new();
@@ -67,12 +70,12 @@ public sealed class GetToursListReqDto
 public sealed class GetEquipmentById()
 {
     public long Id { get; set; }
-    public int LanguageId { get; set; }
+    public string Language { get; set; }
 }
 
 public sealed class GetTourByIdReqDto
 {
-    [Required] public int LanguageId { get; set; }
+    [Required] public string Language { get; set; }
 
     [Required] public int TourId { get; set; }
     [Slug]
@@ -88,7 +91,8 @@ public sealed class RemoveTourByIdReqDto
 
 public class GetTourFeaturedRequestDto
 {
-    public int LanguageId { get; set; }
+    [FromRoute]
+    public string Language { get; set; }
     public int TopCount { get; set; }
 }
 
@@ -100,5 +104,5 @@ public sealed class RemoveTourRequiredItemByIdReqDto
 public sealed class GetTourByIdRequiredItemReqDto
 {
     public long Id { get; set; }
-    public int LanguageId { get; set; }
+    public string Language { get; set; }
 }

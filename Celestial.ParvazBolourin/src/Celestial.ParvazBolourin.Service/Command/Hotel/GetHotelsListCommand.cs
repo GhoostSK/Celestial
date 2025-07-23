@@ -6,11 +6,11 @@ using MediatR;
 using MofidApp.SharedKernel.Common.Model;
 using MofidApp.SharedKernel.Domain.Services;
 
-namespace Celestial.ParvazBolourin.Service.Command.Hotel;
+namespace Celestial.Service.Command.Hotel;
 
 public sealed class GetHotelsListCommandReq : BaseEntity, IRequest<GetHotelsListCommandRes>
 {
-    public int LanguageId { get; set; }
+    public string Language { get; set; } = string.Empty;
     public string Title { get; set; } = string.Empty;
     public List<HotelLocation> HotelLocation { get; set; } = new();
     public List<Continent> HotelContinent { get; set; } = new();

@@ -3,7 +3,7 @@ using MediatR;
 using MofidApp.SharedKernel.Common.Model;
 using MofidApp.SharedKernel.Domain.Services;
 
-namespace Celestial.ParvazBolourin.Service.Command.Exchange;
+namespace Celestial.Service.Command.Exchange;
 
 public sealed class GetCurrenciesListCommandReq : BaseEntity, IRequest<GetCurrenciesListCommandRes>
 {

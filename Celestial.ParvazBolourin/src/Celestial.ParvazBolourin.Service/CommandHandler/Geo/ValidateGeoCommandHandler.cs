@@ -2,7 +2,7 @@
 using Celestial.ParvazBolourin.Service.Command.Geo;
 using MediatR;
 
-namespace Celestial.ParvazBolourin.Service.CommandHandler.Geo;
+namespace Celestial.Service.CommandHandler.Geo;
 
 public class ValidateGeoCommandHandler(IStateService stateService, ICityService cityService, ICountryService countryService) : IRequestHandler<ValidateGeoCommandReq, bool>
 {

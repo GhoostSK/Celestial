@@ -3,7 +3,7 @@ using MediatR;
 using MofidApp.SharedKernel.Common.Model;
 using MofidApp.SharedKernel.Domain.Services;
 
-namespace Celestial.ParvazBolourin.Service.Command.Visa;
+namespace Celestial.Service.Command.Visa;
 
 public sealed class UpdateVisaCommandReq : BaseEntity, IRequest<UpdateVisaCommandRes>
 {

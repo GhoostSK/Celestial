@@ -7,7 +7,7 @@ public sealed class LocalizedProperty : DbBaseEntity<long>
     public LocalKeyGroupType LocalKeyGroup { get; set; }
     public string LocalKey { get; set; } = string.Empty;
     public string LocalValue { get; set; } = string.Empty;
-    public int LanguageId { get; set; }
+    public string Language { get; set; }
     public long EntityId { get; set; }
 }
 

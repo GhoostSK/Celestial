@@ -2,36 +2,45 @@
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Hotel;
 using Celestial.ParvazBolourin.Service.Command.Hotel;
+using Celestial.ParvazBolourin.Service.Command.ValidateLanguage;
+using Celestial.Service.Command.Hotel;
+using MediatR;
 using MofidApp.SharedKernel.Common.Model;
 using MofidApp.SharedKernel.Domain.Services;
 
-namespace Celestial.ParvazBolourin.Service.CommandHandler.Hotel;
+namespace Celestial.Service.CommandHandler.Hotel;
 
 public sealed class AddHotelCommandHandler(
     IHotelService hotel,
     ILocalizedPropertyService localizedProperty,
-    ILanguageService languageService,
-    IImageService imageService)
+    IImageService imageService, IMediator mediator)
     : BaseRequestHandler<AddHotelCommandReq, AddHotelCommandRes>
 {
     protected override async Task<AddHotelCommandRes> HandleCore(AddHotelCommandReq request,
         CancellationToken cancellationToken)
     {
-        var languages = await languageService.GetLanguages(cancellationToken);
-        foreach (var item in request.HotelLocalizeProperty)
-            if (!languages.Any(p => p.Id == item.LanguageId))
-                return new AddHotelCommandRes
-                {
-                    Error = new ValidationError("LA400", "invalid Language")
-                };
+        var langs = new List<string>();
+        foreach (var lang in request.HotelLocalizeProperty)
+        {
+            lang.Language = lang.Language?.ToLowerInvariant()!;
+            langs.Add(lang.Language);
+        }
+        var validateLanguage =await mediator.Send(new ValidateLanguageCommandReq(){Language = langs }, cancellationToken);
+        if (validateLanguage.HasError)
+        {
+            return new()
+            {
+                Error = validateLanguage.Error
+            };
+        }
         foreach (var localizeSlug in request.HotelLocalizeProperty)
         {
-            var checkSlug = await localizedProperty.FirstOrDefaultAsync(p => p.LocalKeyGroup == LocalKeyGroupType.Hotel && p.LocalKey == "Slug" && p.LocalValue == localizeSlug.Slug && p.LanguageId == localizeSlug.LanguageId, cancellationToken: cancellationToken);
+            var checkSlug = await localizedProperty.FirstOrDefaultAsync(p => p.LocalKeyGroup == LocalKeyGroupType.Hotel && p.LocalKey == "Slug" && p.LocalValue == localizeSlug.Slug && p.Language == localizeSlug.Language, cancellationToken: cancellationToken);
             if (checkSlug != null)
             {
                 return new AddHotelCommandRes()
                 {
-                    Error = ValidationError.UnhandledValidationError("S403", $"Slug Already exist({checkSlug.LanguageId})")
+                    Error = ValidationError.UnhandledValidationError("S403", $"Slug Already exist({checkSlug.Language})")
                 };
             }
         }
@@ -56,7 +65,7 @@ public sealed class AddHotelCommandHandler(
             localizedProperties.Add(new LocalizedProperty
             {
                 EntityId = hotelId,
-                LanguageId = item.LanguageId,
+                Language = item.Language,
                 LocalKey = nameof(item.ShortText),
                 LocalValue = item.ShortText,
                 LocalKeyGroup = LocalKeyGroupType.Hotel
@@ -64,7 +73,7 @@ public sealed class AddHotelCommandHandler(
             localizedProperties.Add(new LocalizedProperty
             {
                 EntityId = hotelId,
-                LanguageId = item.LanguageId,
+                Language = item.Language,
                 LocalKey = nameof(item.MainText),
                 LocalValue = item.MainText,
                 LocalKeyGroup = LocalKeyGroupType.Hotel
@@ -72,7 +81,7 @@ public sealed class AddHotelCommandHandler(
             localizedProperties.Add(new LocalizedProperty
             {
                 EntityId = hotelId,
-                LanguageId = item.LanguageId,
+                Language = item.Language,
                 LocalKey = nameof(item.Address),
                 LocalValue = item.Address,
                 LocalKeyGroup = LocalKeyGroupType.Hotel
@@ -80,7 +89,7 @@ public sealed class AddHotelCommandHandler(
             localizedProperties.Add(new LocalizedProperty
             {
                 EntityId = hotelId,
-                LanguageId = item.LanguageId,
+                Language = item.Language,
                 LocalKey = nameof(item.MetaDescription),
                 LocalValue = item.MetaDescription,
                 LocalKeyGroup = LocalKeyGroupType.Hotel
@@ -88,7 +97,7 @@ public sealed class AddHotelCommandHandler(
             localizedProperties.Add(new LocalizedProperty
             {
                 EntityId = hotelId,
-                LanguageId = item.LanguageId,
+                Language = item.Language,
                 LocalKey = nameof(item.MetaKeywords),
                 LocalValue = item.MetaKeywords,
                 LocalKeyGroup = LocalKeyGroupType.Hotel
@@ -96,7 +105,7 @@ public sealed class AddHotelCommandHandler(
             localizedProperties.Add(new LocalizedProperty
             {
                 EntityId = hotelId,
-                LanguageId = item.LanguageId,
+                Language = item.Language,
                 LocalKey = nameof(item.MetaTitle),
                 LocalValue = item.MetaTitle,
                 LocalKeyGroup = LocalKeyGroupType.Hotel
@@ -104,7 +113,7 @@ public sealed class AddHotelCommandHandler(
             localizedProperties.Add(new LocalizedProperty
             {
                 EntityId = hotelId,
-                LanguageId = item.LanguageId,
+                Language = item.Language,
                 LocalKey = nameof(item.Slug),
                 LocalValue = item.Slug,
                 LocalKeyGroup = LocalKeyGroupType.Hotel

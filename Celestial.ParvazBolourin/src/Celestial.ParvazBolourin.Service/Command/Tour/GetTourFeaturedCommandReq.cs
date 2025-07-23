@@ -7,8 +7,7 @@ namespace Celestial.ParvazBolourin.Service.Command.Tour;
 public sealed class GetTourFeaturedCommandReq : BaseEntity, IRequest<GetTourFeaturedCommandRes>
 {
     public int TopCount { get; set; }
-    public int LanguageId { get; set; }
-
+    public string Language { get; set; } = string.Empty;
 }
 public sealed class GetTourFeaturedCommandRes : ServiceResContextBase
 {

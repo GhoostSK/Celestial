@@ -4,6 +4,8 @@ namespace Celestial.ParvazBolourin.Core.DAL.Model.Tour;
 
 public sealed class TourPrimaryTransport : DbBaseEntity<long>
 {
+    public long TourId { get; set; }
+    public Tours Tour { get; set; }
     public string LeadFlightCode { get; set; } = string.Empty;
     public string ReturnFlightCode { get; set; } = string.Empty;
     public DateTime Date { get; set; }

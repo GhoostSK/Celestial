@@ -1,11 +1,8 @@
-﻿using Azure;
-using Azure.Core;
-using Celestial.ParvazBolourin.Service.Command.ShirdalBlog.BlogCategory;
+﻿using Celestial.ParvazBolourin.Api.Controllers;
 using Celestial.ParvazBolourin.Service.Command.ShirdalBlog.BlogTag;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Celestial.ParvazBolourin.Api.Controllers.ShirdalBlog.BlogTag;
+namespace Celestial.Api.Controllers.ShirdalBlog.BlogTag;
 
 public class ShirdalBlogTagController : BaseController
 {
@@ -15,7 +12,7 @@ public class ShirdalBlogTagController : BaseController
         var response = await Mediator.Send(new GetBlogTagByIdCommandReq
         {
             Id = request.Id,
-            LanguageId = request.LanguageId,
+            Language = request.Language,
             Slug = request.Slug,
         });
 
@@ -26,11 +23,11 @@ public class ShirdalBlogTagController : BaseController
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetList([FromQuery] int languageId)
+    public async Task<IActionResult> GetList([FromQuery] string language)
     {
         var response = await Mediator.Send(new GetBlogTagListCommandReq
         {
-            LanguageId = languageId,
+            Language = language,
 
         });
 

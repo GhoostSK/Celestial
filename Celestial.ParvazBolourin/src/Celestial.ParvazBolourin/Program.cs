@@ -3,8 +3,6 @@ using Celestial.ParvazBolourin.Api.Identity.Context;
 using Celestial.ParvazBolourin.Api.Identity.Model;
 using Celestial.ParvazBolourin.Api.Identity.Services.JwtToken;
 using Celestial.ParvazBolourin.Core;
-using Celestial.ParvazBolourin.DAL.EF.DependencyInjection;
-using Celestial.ParvazBolourin.DAL.EF.Seeder;
 using Celestial.ParvazBolourin.Service.Service.EmailSender;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -14,6 +12,8 @@ using MofidApp.SharedKernel.DependencyInjection;
 using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
+using Celestial.ParvazBolourin.DAL.EF.DependencyInjection;
+using Celestial.ParvazBolourin.DAL.EF.Seeder;
 using Unleash;
 
 

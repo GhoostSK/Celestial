@@ -1,9 +1,11 @@
-﻿using Celestial.ParvazBolourin.Api.Models.Dto;
+﻿using Celestial.ParvazBolourin.Api.Controllers;
+using Celestial.ParvazBolourin.Api.Models.Dto;
 using Celestial.ParvazBolourin.Service.Command.ShirdalBlog;
 using Celestial.ParvazBolourin.Service.Command.ShirdalBlog.BlogCategory;
+using Celestial.Service.Command.ShirdalBlog;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Celestial.ParvazBolourin.Api.Controllers.ShirdalBlog;
+namespace Celestial.Api.Controllers.ShirdalBlog;
 
 public class ShirdalBlogController : BaseController
 {
@@ -12,7 +14,7 @@ public class ShirdalBlogController : BaseController
     {
         var response = await Mediator.Send(new GetBlogsListCommandReq
         {
-            LanguageId = request.LanguageId,
+            Language = request.Language,
             CategoriesId = request.CategoriesId,
             TagsId = request.TagsId,
             Title = request.Title,
@@ -22,8 +24,8 @@ public class ShirdalBlogController : BaseController
         }, cancellationToken);
         var categoriesList = await Mediator.Send(new GetBlogCategoryListCommandReq
         {
-            LanguageId = request.LanguageId
-        });
+            Language = request.Language
+        }, cancellationToken);
         response.Categories = categoriesList.Items;
         if (response.HasError)
             return BadRequest(response.Error);
@@ -32,11 +34,11 @@ public class ShirdalBlogController : BaseController
     }
 
 
-    [HttpGet]
+    [HttpGet("{slug}")]
     public async Task<IActionResult> GetBlogById([FromQuery] GetBlogsByIdReqDto request, CancellationToken cancellationToken)
     {
         var response =
-            await Mediator.Send(new GetBlogByIdCommandReq { LanguageId = request.LanguageId, Id = request.Id, Slug = request.Slug },
+            await Mediator.Send(new GetBlogCommandReq {Slug = request.Slug },
                 cancellationToken);
 
         if (response.HasError) return BadRequest(response.Error);
@@ -44,12 +46,12 @@ public class ShirdalBlogController : BaseController
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetTopBlogs([FromQuery] int topCount, [FromQuery] int languageId, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetTopBlogs([FromQuery] int topCount, [FromRoute] string language, CancellationToken cancellationToken)
     {
         var command = new GetTopBlogsCommandReq
         {
             TopCount = topCount,
-            LanguageId = languageId
+            Language = language
         };
 
         var result = await Mediator.Send(command, cancellationToken);

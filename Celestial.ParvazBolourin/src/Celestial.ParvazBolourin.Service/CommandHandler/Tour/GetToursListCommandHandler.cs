@@ -6,6 +6,7 @@ using Celestial.ParvazBolourin.Core.DAL.Repositories.Global.Model;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Tour;
 using Celestial.ParvazBolourin.Core.Enum.Tour;
 using Celestial.ParvazBolourin.Service.Command.Tour;
+using Celestial.Service.Command.Tour;
 using Mapster;
 using MofidApp.SharedKernel.Common.Model;
 using MofidApp.SharedKernel.Domain.Services;
@@ -23,7 +24,7 @@ public sealed class GetToursListCommandHandler(
      CancellationToken cancellationToken)
     {
         var languages = await languageService.GetLanguages(cancellationToken);
-        if (!languages.Any(p => p.Id == request.LanguageId))
+        if (languages.Any(p => p.LanguageCulture.Split('-')[0] == request.Language))
             return new GetToursListCommandRes
             {
                 Error = new ValidationError("LA400", "invalid Language")
@@ -46,7 +47,7 @@ public sealed class GetToursListCommandHandler(
                 new GetLocalizedPropertyReq
                 {
                     EntityId = item.Id,
-                    LanguageId = request.LanguageId,
+                    Language = request.Language,
                     LocalKeyGroup = LocalKeyGroupType.Tour
                 }, cancellationToken);
 

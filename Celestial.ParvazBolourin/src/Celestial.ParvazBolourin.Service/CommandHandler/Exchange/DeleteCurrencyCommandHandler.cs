@@ -2,25 +2,19 @@
 using Celestial.ParvazBolourin.Service.Command.Exchange;
 using MediatR;
 
-namespace Celestial.ParvazBolourin.Service.CommandHandler.Exchange;
+namespace Celestial.Service.CommandHandler.Exchange;
 
-public class DeleteCurrencyCommandHandler : IRequestHandler<DeleteCurrencyCommandReq, DeleteCurrencyCommandRes>
+public class DeleteCurrencyCommandHandler(ICurrencyService currencyService)
+    : IRequestHandler<DeleteCurrencyCommandReq, DeleteCurrencyCommandRes>
 {
-    private readonly ICurrencyService _currencyService;
-
-    public DeleteCurrencyCommandHandler(ICurrencyService currencyService)
-    {
-        _currencyService = currencyService;
-    }
-
     public async Task<DeleteCurrencyCommandRes> Handle(DeleteCurrencyCommandReq request, CancellationToken cancellationToken)
     {
 
-        var currency = await _currencyService.FindByIdAsync(cancellationToken, request.Id);
+        var currency = await currencyService.FindByIdAsync(cancellationToken, request.Id);
         if (currency == null)
             return new DeleteCurrencyCommandRes { Success = false, Message = "Currency not found" };
 
-        await _currencyService.BulkRemove(p => p.Id == request.Id, cancellationToken);
+        await currencyService.BulkRemove(p => p.Id == request.Id, cancellationToken);
         return new DeleteCurrencyCommandRes { Success = true };
     }
 }

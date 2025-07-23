@@ -24,7 +24,14 @@ public static class TourSeeder
 
         var random = new Random();
         var languages = await db.Language.ToListAsync();
-    
+        languages = languages
+            .Select(lang =>
+            {
+                lang.LanguageCulture = lang.LanguageCulture.Split('-')[0];
+                return lang;
+            })
+            .ToList();
+
         for (int i = 0; i < 30; i++)
         {
             var countries = await db.Country.ToListAsync();
@@ -134,7 +141,7 @@ public static class TourSeeder
                     {
                         new LocalizedProperty
                         {
-                            LanguageId = lang.Id,
+                            Language = lang.LanguageCulture,
                             LocalKeyGroup = LocalKeyGroupType.TourPlan,
                             EntityId = plan.Id,
                             LocalKey = "PlanDayText",
@@ -142,7 +149,7 @@ public static class TourSeeder
                         },
                         new LocalizedProperty
                         {
-                            LanguageId = lang.Id,
+                            Language = lang.LanguageCulture,
                             LocalKeyGroup = LocalKeyGroupType.TourPlan,
                             EntityId = plan.Id,
                             LocalKey = "PlanText",
@@ -174,7 +181,7 @@ public static class TourSeeder
 
                 new()
                 {
-                    LanguageId = lang.Id,
+                    Language = lang.LanguageCulture,
                     LocalKeyGroup = LocalKeyGroupType.Tour,
                     EntityId = tour.Id,
                     LocalKey = "Name",
@@ -182,7 +189,7 @@ public static class TourSeeder
                 },
                 new()
                 {
-                    LanguageId = lang.Id,
+                    Language = lang.LanguageCulture,
                     LocalKeyGroup = LocalKeyGroupType.Tour,
                     EntityId = tour.Id,
                     LocalKey = "TourMainText",
@@ -190,7 +197,7 @@ public static class TourSeeder
                 },
                 new()
                 {
-                    LanguageId = lang.Id,
+                    Language = lang.LanguageCulture,
                     LocalKeyGroup = LocalKeyGroupType.Tour,
                     EntityId = tour.Id,
                     LocalKey = "TourTips",
@@ -198,7 +205,7 @@ public static class TourSeeder
                 },
                 new()
                 {
-                    LanguageId = lang.Id,
+                    Language = lang.LanguageCulture,
                     LocalKeyGroup = LocalKeyGroupType.Tour,
                     EntityId = tour.Id,
                     LocalKey = "MetaKeywords",
@@ -206,7 +213,7 @@ public static class TourSeeder
                 },
                 new ()
                 {
-                    LanguageId = lang.Id,
+                    Language = lang.LanguageCulture,
                     LocalKeyGroup = LocalKeyGroupType.Tour,
                     EntityId = tour.Id,
                     LocalKey = "PlanShortText",
@@ -214,7 +221,7 @@ public static class TourSeeder
                 },
                 new()
                 {
-                    LanguageId = lang.Id,
+                    Language = lang.LanguageCulture,
                     LocalKeyGroup = LocalKeyGroupType.Tour,
                     EntityId = tour.Id,
                     LocalKey = "MetaTitle",
@@ -222,7 +229,7 @@ public static class TourSeeder
                 },
                 new()
                 {
-                    LanguageId = lang.Id,
+                    Language = lang.LanguageCulture,
                     LocalKeyGroup = LocalKeyGroupType.Tour,
                     EntityId = tour.Id,
                     LocalKey = "Slug",
@@ -230,7 +237,7 @@ public static class TourSeeder
                 },
                 new()
                 {
-                    LanguageId = lang.Id,
+                    Language = lang.LanguageCulture,
                     LocalKeyGroup = LocalKeyGroupType.Tour,
                     EntityId = tour.Id,
                     LocalKey = "MetaDescription",

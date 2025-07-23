@@ -4,11 +4,11 @@ using MediatR;
 using MofidApp.SharedKernel.Common.Model;
 using MofidApp.SharedKernel.Domain.Services;
 
-namespace Celestial.ParvazBolourin.Service.Command.Visa;
+namespace Celestial.Service.Command.Visa;
 
 public sealed class GetVisaListCommandReq : BaseEntity, IRequest<GetVisaListCommandRes>
 {
-    public int LanguageId { get; set; }
+    public string Language { get; set; } = string.Empty;
     public int PageNumber { get; set; } = 1;
     public int PageSize { get; set; } = 10;
 }
@@ -26,7 +26,7 @@ public sealed class GetVisaListItemRes
     public string PicturePath { get; set; } = string.Empty;
     public VisaIssuer VisaIssuer { get; set; }
     public int IssueDate { get; set; }
-    public int LanguageId { get; set; }
+    public string Language { get; set; } = string.Empty;
     public string Text { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;
 }

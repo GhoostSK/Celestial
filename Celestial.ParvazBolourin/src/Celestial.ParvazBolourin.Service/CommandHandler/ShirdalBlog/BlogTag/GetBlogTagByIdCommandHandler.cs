@@ -7,7 +7,7 @@ using Celestial.ParvazBolourin.Service.Command.ShirdalBlog.BlogTag;
 using MediatR;
 using MofidApp.SharedKernel.Domain.Services;
 
-namespace Celestial.ParvazBolourin.Service.CommandHandler.ShirdalBlog.BlogTag;
+namespace Celestial.Service.CommandHandler.ShirdalBlog.BlogTag;
 
 public sealed class GetBlogTagByIdCommandHandler : IRequestHandler<GetBlogTagByIdCommandReq, GetBlogTagByIdCommandRes>
 {
@@ -29,7 +29,7 @@ public sealed class GetBlogTagByIdCommandHandler : IRequestHandler<GetBlogTagByI
         if (request.Id != 0)
         {
             var languages = await _languageService.GetLanguages(cancellationToken);
-            if (!languages.Any(p => p.Id == request.LanguageId))
+            if (languages.Any(p => p.LanguageCulture.Split('-')[0] == request.Language))
                 return new GetBlogTagByIdCommandRes
                 {
                     Error = new ValidationError("LA400", "invalid Language")
@@ -52,14 +52,14 @@ public sealed class GetBlogTagByIdCommandHandler : IRequestHandler<GetBlogTagByI
                 };
 
             entity = await _blogTagService.FindByIdAsync(cancellationToken, localizedProperty.EntityId);
-            request.LanguageId = localizedProperty.LanguageId;
+            request.Language = localizedProperty.Language;
             request.Id = localizedProperty.EntityId;
         }
 
         var localize = await _localizedPropertyService.GetPropertyByLanguageAndEntityId(new GetLocalizedPropertyReq()
         {
             EntityId = request.Id,
-            LanguageId = request.LanguageId,
+            Language = request.Language,
             LocalKeyGroup = LocalKeyGroupType.BlogTag
         }, cancellationToken);
 

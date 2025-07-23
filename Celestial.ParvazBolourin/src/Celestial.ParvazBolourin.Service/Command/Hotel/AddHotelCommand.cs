@@ -5,7 +5,7 @@ using MediatR;
 using MofidApp.SharedKernel.Common.Model;
 using MofidApp.SharedKernel.Domain.Services;
 
-namespace Celestial.ParvazBolourin.Service.Command.Hotel;
+namespace Celestial.Service.Command.Hotel;
 
 public sealed class AddHotelCommandReq : BaseEntity, IRequest<AddHotelCommandRes>
 {

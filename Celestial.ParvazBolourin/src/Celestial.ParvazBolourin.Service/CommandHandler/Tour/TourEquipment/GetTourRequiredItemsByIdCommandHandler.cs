@@ -2,12 +2,11 @@
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global.Model;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Tour;
-using Celestial.ParvazBolourin.Service.Command.ShirdalBlog.BlogTag;
 using Celestial.ParvazBolourin.Service.Command.Tour.TourEquipment;
 using MediatR;
 using MofidApp.SharedKernel.Domain.Services;
 
-namespace Celestial.ParvazBolourin.Service.CommandHandler.Tour.TourEquipment;
+namespace Celestial.Service.CommandHandler.Tour.TourEquipment;
 
 public sealed class GetTourEquipmentByIdCommandHandler(
     ITourEquipmentsService tourEquipmentsService,
@@ -18,7 +17,7 @@ public sealed class GetTourEquipmentByIdCommandHandler(
     public async Task<GetTourEquipmentByIdCommandRes> Handle(GetTourEquipmentByIdCommandReq request, CancellationToken cancellationToken)
     {
         var languages = await languageService.GetLanguages(cancellationToken);
-            if (!languages.Any(p => p.Id == request.LanguageId))
+            if (languages.Any(p => p.LanguageCulture.Split('-')[0] == request.Language))
                 return new GetTourEquipmentByIdCommandRes
                 {
                     Error = new ValidationError("LA400", "invalid Language")
@@ -32,7 +31,7 @@ public sealed class GetTourEquipmentByIdCommandHandler(
         var localize = await localizedPropertyService.GetPropertyByLanguageAndEntityId(new GetLocalizedPropertyReq()
         {
             EntityId = request.Id,
-            LanguageId = request.LanguageId,
+            Language = request.Language,
             LocalKeyGroup = LocalKeyGroupType.TourEquipment
         }, cancellationToken);
 

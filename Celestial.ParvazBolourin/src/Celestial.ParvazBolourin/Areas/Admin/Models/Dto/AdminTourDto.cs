@@ -1,5 +1,6 @@
 ﻿using Celestial.ParvazBolourin.Core.DAL.Model.Tour;
 using Celestial.ParvazBolourin.Service.Command.Tour;
+using Celestial.Service.Command.Tour;
 
 namespace Celestial.ParvazBolourin.Api.Areas.Admin.Models.Dto;
 
@@ -20,7 +21,7 @@ public class TourPlansUpdateDto
 
 public class TourPlanLocalizeDataDto
 {
-    public int LanguageId { get; set; }
+    public string Language { get; set; }
     public string PlanDayText { get; set; } = string.Empty;
     public string PlanText { get; set; } = string.Empty;
 }
@@ -33,6 +34,6 @@ public sealed class AddTourEquipmentDto
 }
 public sealed class LocalizedTourEquipmentDto
 {
-    public int LanguageId { get; set; }
+    public string Language { get; set; }
     public string Name { get; set; } = string.Empty;
 }

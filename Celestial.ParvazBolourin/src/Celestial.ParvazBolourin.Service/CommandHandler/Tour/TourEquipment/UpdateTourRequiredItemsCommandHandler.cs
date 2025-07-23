@@ -6,7 +6,7 @@ using Celestial.ParvazBolourin.Service.Command.ShirdalBlog.BlogCategory;
 using MediatR;
 using MofidApp.SharedKernel.Domain.Services;
 
-namespace Celestial.ParvazBolourin.Service.CommandHandler.Tour.TourEquipment;
+namespace Celestial.Service.CommandHandler.Tour.TourEquipment;
 
 public sealed class UpdateTourEquipmentCommandHandler(
     ITourEquipmentsService tourEquipmentsService,
@@ -33,7 +33,7 @@ public sealed class UpdateTourEquipmentCommandHandler(
         var localizedNames = request.LocalizedNames.Select(name => new LocalizedProperty
         {
             EntityId = request.Id,
-            LanguageId = name.LanguageId,
+            Language = name.Language,
             LocalKey = nameof(name.Name),
             LocalKeyGroup = LocalKeyGroupType.TourEquipment,
             LocalValue = name.Name

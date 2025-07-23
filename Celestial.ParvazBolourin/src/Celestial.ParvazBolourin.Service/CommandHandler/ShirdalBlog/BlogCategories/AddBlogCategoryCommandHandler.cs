@@ -6,7 +6,7 @@ using Celestial.ParvazBolourin.Service.Command.ShirdalBlog.BlogCategory;
 using MediatR;
 using MofidApp.SharedKernel.Domain.Services;
 
-namespace Celestial.ParvazBolourin.Service.CommandHandler.ShirdalBlog.BlogCategories;
+namespace Celestial.Service.CommandHandler.ShirdalBlog.BlogCategories;
 
 public sealed class AddBlogCategoryCommandHandler : IRequestHandler<AddBlogCategoryCommandReq, AddBlogCategoryCommandRes>
 {
@@ -27,7 +27,7 @@ public sealed class AddBlogCategoryCommandHandler : IRequestHandler<AddBlogCateg
     public async Task<AddBlogCategoryCommandRes> Handle(AddBlogCategoryCommandReq request, CancellationToken cancellationToken)
     {
         var languages = await _languageService.GetLanguages(cancellationToken);
-        if (request.LocalizedNames.Any(item => !languages.Any(lang => lang.Id == item.LanguageId)))
+        if (request.LocalizedNames.Any(item => languages.Any(lang => lang.LanguageCulture.Split('-')[0] == item.Language)))
         {
             return new AddBlogCategoryCommandRes
             {
@@ -41,14 +41,14 @@ public sealed class AddBlogCategoryCommandHandler : IRequestHandler<AddBlogCateg
                 p => p.LocalKeyGroup == LocalKeyGroupType.BlogCategory &&
                      p.LocalKey == "Slug" &&
                      p.LocalValue == localizeSlug.Slug &&
-                     p.LanguageId == localizeSlug.LanguageId,
+                     p.Language == localizeSlug.Language,
                 cancellationToken: cancellationToken);
 
             if (existingSlug != null)
             {
                 return new AddBlogCategoryCommandRes
                 {
-                    Error = ValidationError.UnhandledValidationError("S403", $"Slug Already exist ({existingSlug.LanguageId})")
+                    Error = ValidationError.UnhandledValidationError("S403", $"Slug Already exist ({existingSlug.Language})")
                 };
             }
         }
@@ -62,7 +62,7 @@ public sealed class AddBlogCategoryCommandHandler : IRequestHandler<AddBlogCateg
             new LocalizedProperty
             {
                 EntityId = entity.Id,
-                LanguageId = name.LanguageId,
+                Language = name.Language,
                 LocalKey = nameof(name.Name),
                 LocalKeyGroup = LocalKeyGroupType.BlogCategory,
                 LocalValue = name.Name
@@ -70,7 +70,7 @@ public sealed class AddBlogCategoryCommandHandler : IRequestHandler<AddBlogCateg
             new LocalizedProperty
             {
                 EntityId = entity.Id,
-                LanguageId = name.LanguageId,
+                Language = name.Language,
                 LocalKey = nameof(name.Slug),
                 LocalKeyGroup = LocalKeyGroupType.BlogCategory,
                 LocalValue = name.Slug

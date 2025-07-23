@@ -1,7 +1,8 @@
-﻿using Celestial.ParvazBolourin.Service.Command.FileManager;
+﻿using Celestial.ParvazBolourin.Api.Controllers;
+using Celestial.ParvazBolourin.Service.Command.FileManager;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Celestial.ParvazBolourin.Api.Controllers.Global;
+namespace Celestial.Api.Controllers.Global;
 
 public class GlobalController : BaseController
 {

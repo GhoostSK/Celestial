@@ -1,4 +1,5 @@
-﻿using Celestial.ParvazBolourin.Api.Areas.Admin.Models.Dto;
+﻿using Celestial.Api.Models.Dto;
+using Celestial.ParvazBolourin.Api.Areas.Admin.Models.Dto;
 using Celestial.ParvazBolourin.Api.Models.Dto;
 using Celestial.ParvazBolourin.Service.Command.Tour;
 using Celestial.ParvazBolourin.Service.Command.Tour.TourEquipment;
@@ -42,11 +43,11 @@ public class TourRequiredItemController : BaseController
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetList([FromQuery] int languageId)
+    public async Task<IActionResult> GetList([FromQuery] string language)
     {
         var response = await Mediator.Send(new GetTourEquipmentListCommandReq
         {
-            LanguageId = languageId,
+            Language = language,
 
         });
 

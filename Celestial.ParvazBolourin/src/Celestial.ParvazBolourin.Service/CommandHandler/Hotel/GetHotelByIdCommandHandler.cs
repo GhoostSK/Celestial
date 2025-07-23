@@ -1,61 +1,27 @@
 ﻿using Celestial.ParvazBolourin.Core.DAL.Model.Global;
-using Celestial.ParvazBolourin.Core.DAL.Model.Hotel;
-using Celestial.ParvazBolourin.Core.DAL.Model.ShirdalBlog;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Geo;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global.Model;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Hotel;
-using Celestial.ParvazBolourin.Core.DAL.Repositories.ShirdalBlog;
 using Celestial.ParvazBolourin.Service.Command.Hotel;
-using Celestial.ParvazBolourin.Service.Command.ShirdalBlog;
+using Celestial.Service.Command.Hotel;
 using Mapster;
 using MofidApp.SharedKernel.Common.Model;
 using MofidApp.SharedKernel.Domain.Services;
 
-namespace Celestial.ParvazBolourin.Service.CommandHandler.Hotel;
+namespace Celestial.Service.CommandHandler.Hotel;
 
-public sealed class GetHotelByIdCommandHandler : BaseRequestHandler<GetHotelByIdCommandReq, GetHotelByIdCommandRes>
+public sealed class GetHotelByIdCommandHandler(
+    IHotelService hotelService,
+    ICommentsService hotelComments,
+    ILocalizedPropertyService localizedPropertyService,
+    ICountryService countryService,
+    IImageService imageService)
+    : BaseRequestHandler<GetHotelCommandReq, GetHotelByIdCommandRes>
 {
-    private readonly ICommentsService _hotelCommentsService;
-    private readonly IHotelService _hotelService;
-    private readonly ILanguageService _languageService;
-    private readonly ILocalizedPropertyService _localizedPropertyService;
-    private readonly ICountryService _countryService;
-    private readonly IImageService _imageService;
-
-    public GetHotelByIdCommandHandler(IHotelService hotel, ICommentsService hotelComments,
-        ILocalizedPropertyService localizedProperty, ILanguageService languageService, ICountryService countryService, IImageService imageService)
+    protected override async Task<GetHotelByIdCommandRes> HandleCore(GetHotelCommandReq request, CancellationToken cancellationToken)
     {
-        _hotelService = hotel;
-        _localizedPropertyService = localizedProperty;
-        _languageService = languageService;
-        _countryService = countryService;
-        _imageService = imageService;
-        _hotelCommentsService = hotelComments;
-    }
-
-    protected override async Task<GetHotelByIdCommandRes> HandleCore(GetHotelByIdCommandReq request, CancellationToken cancellationToken)
-    {
-        var hotel = new Hotels();
-        if (request.HotelId != 0)
-        {
-            var languages = await _languageService.GetLanguages(cancellationToken);
-            if (!languages.Any(p => p.Id == request.LanguageId))
-                return new GetHotelByIdCommandRes
-                {
-                    Error = new ValidationError("LA400", "invalid Language")
-                };
-            hotel = await _hotelService.GetHotelById(request.HotelId, cancellationToken: cancellationToken);
-            if (hotel == null)
-                return new GetHotelByIdCommandRes
-                {
-                    Error = ValidationError.UnhandledValidationError("406", "Hotel Not Found")
-                };
-
-        }
-        else if (!string.IsNullOrEmpty(request.Slug))
-        {
-            var localizedProperty = await _localizedPropertyService.FirstOrDefaultAsync(p =>
+        var localizedProperty = await localizedPropertyService.FirstOrDefaultAsync(p =>
                 p.LocalKey == "Slug" && p.LocalValue == request.Slug && p.LocalKeyGroup == LocalKeyGroupType.Hotel, cancellationToken: cancellationToken);
 
             if (localizedProperty == null)
@@ -64,24 +30,20 @@ public sealed class GetHotelByIdCommandHandler : BaseRequestHandler<GetHotelById
                     Error = new ValidationError("404", "Hotel not found with slug")
                 };
 
-            hotel = await _hotelService.GetHotelById(localizedProperty.EntityId, cancellationToken);
-            request.LanguageId = localizedProperty.LanguageId;
-            request.HotelId = localizedProperty.EntityId;
-        }
-
-
+            var hotel = await hotelService.GetHotelById(localizedProperty.EntityId, cancellationToken);
+            
         var response = hotel.Adapt<GetHotelByIdCommandRes>();
-        response.HotelCountry = _countryService.FindByIdAsync(cancellationToken, hotel!.CountryId).Result.Shortname;
+        response.HotelCountry = countryService.FindByIdAsync(cancellationToken, hotel!.CountryId).Result.Shortname;
 
-        response.HotelPictures = await _imageService.GetImagesByEntityId(hotel.Id, "Hotel", cancellationToken);
+        response.HotelPictures = await imageService.GetImagesByEntityId(hotel.Id, "Hotel", cancellationToken);
 
-        response.HotelComments = await _hotelCommentsService.GetComments(request.HotelId, cancellationToken);
+        response.HotelComments = await hotelComments.GetComments(hotel.Id, cancellationToken);
 
-        var localizedProperties = await _localizedPropertyService.GetPropertyByLanguageAndEntityId(
+        var localizedProperties = await localizedPropertyService.GetPropertyByLanguageAndEntityId(
             new GetLocalizedPropertyReq
             {
-                EntityId = request.HotelId,
-                LanguageId = request.LanguageId,
+                EntityId = hotel.Id,
+                Language = localizedProperty.Language,
                 LocalKeyGroup = LocalKeyGroupType.Hotel
             },
             cancellationToken

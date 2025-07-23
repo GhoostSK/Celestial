@@ -265,8 +265,10 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
                     b.Property<long>("EntityId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("LanguageId")
-                        .HasColumnType("int");
+                    b.Property<string>("Language")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("LocalKey")
                         .IsRequired()
@@ -533,9 +535,15 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<long>("TourId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
 
                     b.HasIndex("LeadFlightCode");
+
+                    b.HasIndex("TourId")
+                        .IsUnique();
 
                     b.ToTable("TourPrimaryTransport", (string)null);
                 });
@@ -571,7 +579,10 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
             modelBuilder.Entity("Celestial.ParvazBolourin.Core.DAL.Model.Tour.Tours", b =>
                 {
                     b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<decimal>("BasePrice")
                         .HasMaxLength(20)
@@ -722,6 +733,17 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Celestial.ParvazBolourin.Core.DAL.Model.Tour.TourPrimaryTransport", b =>
+                {
+                    b.HasOne("Celestial.ParvazBolourin.Core.DAL.Model.Tour.Tours", "Tour")
+                        .WithOne("PrimaryTransport")
+                        .HasForeignKey("Celestial.ParvazBolourin.Core.DAL.Model.Tour.TourPrimaryTransport", "TourId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Tour");
+                });
+
             modelBuilder.Entity("Celestial.ParvazBolourin.Core.DAL.Model.Tour.TourTransPorts", b =>
                 {
                     b.HasOne("Celestial.ParvazBolourin.Core.DAL.Model.Tour.Tours", null)
@@ -733,17 +755,9 @@ namespace Celestial.ParvazBolourin.DAL.EF.Data.Migrations
 
             modelBuilder.Entity("Celestial.ParvazBolourin.Core.DAL.Model.Tour.Tours", b =>
                 {
-                    b.HasOne("Celestial.ParvazBolourin.Core.DAL.Model.Tour.TourPrimaryTransport", "PrimaryTransport")
-                        .WithMany()
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.Navigation("PrimaryTransport")
                         .IsRequired();
 
-                    b.Navigation("PrimaryTransport");
-                });
-
-            modelBuilder.Entity("Celestial.ParvazBolourin.Core.DAL.Model.Tour.Tours", b =>
-                {
                     b.Navigation("TourPlans");
 
                     b.Navigation("TransPorts");

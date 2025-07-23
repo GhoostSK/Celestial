@@ -3,7 +3,7 @@ using Celestial.ParvazBolourin.Core.Services.FileManager;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 
-namespace Celestial.ParvazBolourin.Service.Service.FileManager;
+namespace Celestial.Service.Service.FileManager;
 
 public sealed class ImageManager : IImageManager
 {

@@ -3,36 +3,28 @@ using Celestial.ParvazBolourin.Core.DAL.Repositories.Global;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global.Model;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Hotel;
 using Celestial.ParvazBolourin.Service.Command.Hotel;
+using Celestial.Service.Command.Hotel;
 using Mapster;
 using MofidApp.SharedKernel.Common.Model;
 using MofidApp.SharedKernel.Domain.Services;
 
-namespace Celestial.ParvazBolourin.Service.CommandHandler.Hotel;
+namespace Celestial.Service.CommandHandler.Hotel;
 
-public sealed class UpdateHotelCommandHandler : BaseRequestHandler<UpdateHotelCommandReq, UpdateHotelCommandRes>
+public sealed class UpdateHotelCommandHandler(
+    IHotelService hotelService,
+    ILocalizedPropertyService localizedProperty,
+    ILanguageService languageService,
+    IImageService imageService)
+    : BaseRequestHandler<UpdateHotelCommandReq, UpdateHotelCommandRes>
 {
-    private readonly IHotelService _hotelService;
-    private readonly ILanguageService _languageService;
-    private readonly ILocalizedPropertyService _localizedPropertyService;
-    private readonly IImageService _imageService;
-
-    public UpdateHotelCommandHandler(IHotelService hotelService, ILocalizedPropertyService localizedProperty,
-        ILanguageService languageService, IImageService imageService)
-    {
-        _hotelService = hotelService;
-        _localizedPropertyService = localizedProperty;
-        _languageService = languageService;
-        _imageService = imageService;
-    }
-
     protected override async Task<UpdateHotelCommandRes> HandleCore(UpdateHotelCommandReq request,
         CancellationToken cancellationToken)
     {
         // 🔄 اعتبارسنجی زبان‌های ارسالی
-        var languages = await _languageService.GetLanguages(cancellationToken);
+        var languages = await languageService.GetLanguages(cancellationToken);
         foreach (var item in request.LocalizedProperty)
         {
-            if (!languages.Any(p => p.Id == item.LanguageId))
+            if (languages.Any(p => p.LanguageCulture.Split('-')[0] == item.Language))
                 return new UpdateHotelCommandRes
                 {
                     Error = new ValidationError("LA400", "Invalid Language")
@@ -40,7 +32,7 @@ public sealed class UpdateHotelCommandHandler : BaseRequestHandler<UpdateHotelCo
         }
 
         // 🔍 پیدا کردن هتل در دیتابیس
-        var hotel = await _hotelService.FindByIdAsync(cancellationToken, request.Id);
+        var hotel = await hotelService.FindByIdAsync(cancellationToken, request.Id);
         if (hotel == null)
             return new UpdateHotelCommandRes
             {
@@ -50,10 +42,10 @@ public sealed class UpdateHotelCommandHandler : BaseRequestHandler<UpdateHotelCo
         // 🏨 به‌روز رسانی اطلاعات هتل
         request.Hotel.Id = request.Id;
         request.Hotel.Adapt(hotel);
-        await _hotelService.UnitOfWork.SaveChangesAsync(cancellationToken);
+        await hotelService.UnitOfWork.SaveChangesAsync(cancellationToken);
 
         // 📸 مدیریت تصاویر هتل
-        var existingImages = await _imageService.GetImagesByEntityId(request.Id, "Hotel", cancellationToken);
+        var existingImages = await imageService.GetImagesByEntityId(request.Id, "Hotel", cancellationToken);
 
         // حذف تصاویر قدیمی که در درخواست نیستند
         var imagesToDelete = existingImages
@@ -64,7 +56,7 @@ public sealed class UpdateHotelCommandHandler : BaseRequestHandler<UpdateHotelCo
 
         if (imageIdsToDelete.Any())
         {
-            await _imageService.BulkRemove(img => imageIdsToDelete.Contains(img.Id), cancellationToken);
+            await imageService.BulkRemove(img => imageIdsToDelete.Contains(img.Id), cancellationToken);
         }
 
         // به‌روز رسانی یا افزودن تصاویر جدید
@@ -82,7 +74,7 @@ public sealed class UpdateHotelCommandHandler : BaseRequestHandler<UpdateHotelCo
             }
             else
             {
-                await _imageService.AddAsync(new Images
+                await imageService.AddAsync(new Images
                 {
                     KeyGroup = image.KeyGroup,
                     EntityId = request.Id,
@@ -92,15 +84,15 @@ public sealed class UpdateHotelCommandHandler : BaseRequestHandler<UpdateHotelCo
             }
         }
 
-        await _hotelService.UnitOfWork.SaveChangesAsync(cancellationToken);
+        await hotelService.UnitOfWork.SaveChangesAsync(cancellationToken);
 
         // 🌐 به‌روز رسانی `LocalizedProperty` ها
         foreach (var localizedItem in request.LocalizedProperty)
         {
-            var localizedData = await _localizedPropertyService.GetPropertyByLanguageAndEntityId(
+            var localizedData = await localizedProperty.GetPropertyByLanguageAndEntityId(
                 new GetLocalizedPropertyReq
                 {
-                    LanguageId = localizedItem.LanguageId,
+                    Language = localizedItem.Language,
                     LocalKeyGroup = LocalKeyGroupType.Hotel,
                     EntityId = request.Id
                 }, cancellationToken);
@@ -117,9 +109,9 @@ public sealed class UpdateHotelCommandHandler : BaseRequestHandler<UpdateHotelCo
                 var existingProperty = localizedData.FirstOrDefault(p => p.LocalKey == key);
 
                 if (existingProperty == null)
-                    await _localizedPropertyService.AddAsync(new LocalizedProperty
+                    await localizedProperty.AddAsync(new LocalizedProperty
                     {
-                        LanguageId = localizedItem.LanguageId,
+                        Language = localizedItem.Language,
                         LocalKeyGroup = LocalKeyGroupType.Hotel,
                         EntityId = request.Id,
                         LocalKey = key,
@@ -130,7 +122,7 @@ public sealed class UpdateHotelCommandHandler : BaseRequestHandler<UpdateHotelCo
             }
         }
 
-        await _localizedPropertyService.UnitOfWork.SaveChangesAsync(cancellationToken);
+        await localizedProperty.UnitOfWork.SaveChangesAsync(cancellationToken);
 
         return new UpdateHotelCommandRes();
     }

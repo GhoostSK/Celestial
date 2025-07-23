@@ -7,7 +7,7 @@ using Celestial.ParvazBolourin.Service.Command.ShirdalBlog;
 using MofidApp.SharedKernel.Common.Model;
 using MofidApp.SharedKernel.Domain.Services;
 
-namespace Celestial.ParvazBolourin.Service.CommandHandler.ShirdalBlog;
+namespace Celestial.Service.CommandHandler.ShirdalBlog;
 
 public class UpdateBlogCommandHandler : BaseRequestHandler<UpdateBlogCommandReq, UpdateBlogCommandRes>
 {
@@ -28,7 +28,7 @@ public class UpdateBlogCommandHandler : BaseRequestHandler<UpdateBlogCommandReq,
     {
         var languages = await _languageService.GetLanguages(cancellationToken);
         foreach (var item in request.BlogLocalizedProperties)
-            if (!languages.Any(p => p.Id == item.LanguageId))
+            if (languages.Any(p => p.LanguageCulture.Split('-')[0] == item.Language))
                 return new UpdateBlogCommandRes
                 {
                     Error = new ValidationError("LA400", "invalid Language")
@@ -57,7 +57,7 @@ public class UpdateBlogCommandHandler : BaseRequestHandler<UpdateBlogCommandReq,
             var localizedData = await _localizedPropertyService.GetPropertyByLanguageAndEntityId(
                 new GetLocalizedPropertyReq
                 {
-                    LanguageId = item.LanguageId,
+                    Language = item.Language,
                     LocalKeyGroup = LocalKeyGroupType.Blog,
                     EntityId = request.Id
                 }, cancellationToken);
@@ -65,7 +65,7 @@ public class UpdateBlogCommandHandler : BaseRequestHandler<UpdateBlogCommandReq,
             if (!localizedData.Any(p => p.LocalKey == nameof(item.Title)))
                 await _localizedPropertyService.AddAsync(new LocalizedProperty
                 {
-                    LanguageId = item.LanguageId,
+                    Language = item.Language,
                     LocalKey = nameof(item.Title),
                     EntityId = request.Id,
                     LocalKeyGroup = LocalKeyGroupType.Blog,
@@ -75,7 +75,7 @@ public class UpdateBlogCommandHandler : BaseRequestHandler<UpdateBlogCommandReq,
             if (!localizedData.Any(p => p.LocalKey == nameof(item.MainText)))
                 await _localizedPropertyService.AddAsync(new LocalizedProperty
                 {
-                    LanguageId = item.LanguageId,
+                    Language = item.Language,
                     LocalKey = nameof(item.MainText),
                     EntityId = request.Id,
                     LocalKeyGroup = LocalKeyGroupType.Blog,
@@ -85,7 +85,7 @@ public class UpdateBlogCommandHandler : BaseRequestHandler<UpdateBlogCommandReq,
             if (!localizedData.Any(p => p.LocalKey == nameof(item.HeaderText)))
                 await _localizedPropertyService.AddAsync(new LocalizedProperty
                 {
-                    LanguageId = item.LanguageId,
+                    Language = item.Language,
                     LocalKey = nameof(item.HeaderText),
                     EntityId = request.Id,
                     LocalKeyGroup = LocalKeyGroupType.Blog,
@@ -95,7 +95,7 @@ public class UpdateBlogCommandHandler : BaseRequestHandler<UpdateBlogCommandReq,
             if (!localizedData.Any(p => p.LocalKey == nameof(item.Title)))
                 await _localizedPropertyService.AddAsync(new LocalizedProperty
                 {
-                    LanguageId = item.LanguageId,
+                    Language = item.Language,
                     LocalKey = nameof(item.Title),
                     EntityId = request.Id,
                     LocalKeyGroup = LocalKeyGroupType.Blog,

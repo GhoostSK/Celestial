@@ -33,7 +33,7 @@ public sealed class GetBlogTagsListCommandHandler(
                 new GetLocalizedPropertyReq
                 {
                     EntityId = item.Id,
-                    LanguageId = request.LanguageId,
+                    Language = request.Language,
                     LocalKeyGroup = LocalKeyGroupType.BlogCategory
                 }, cancellationToken);
             Data.Add(new BlogCategoryListItemDto()

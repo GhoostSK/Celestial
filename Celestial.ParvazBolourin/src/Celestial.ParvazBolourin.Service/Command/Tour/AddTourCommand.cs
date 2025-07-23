@@ -1,13 +1,13 @@
-﻿using Celestial.ParvazBolourin.Core.DAL.Model.Tour;
+﻿using System.ComponentModel.DataAnnotations;
+using Celestial.ParvazBolourin.Core.Attributes;
+using Celestial.ParvazBolourin.Core.DAL.Model.Tour;
 using Celestial.ParvazBolourin.Core.Enum.Global;
 using Celestial.ParvazBolourin.Core.Enum.Tour;
 using MediatR;
 using MofidApp.SharedKernel.Common.Model;
 using MofidApp.SharedKernel.Domain.Services;
-using System.ComponentModel.DataAnnotations;
-using Celestial.ParvazBolourin.Core.Attributes;
 
-namespace Celestial.ParvazBolourin.Service.Command.Tour;
+namespace Celestial.Service.Command.Tour;
 
 public sealed class AddTourCommandReq : BaseEntity, IRequest<AddTourCommandRes>
 {
@@ -69,7 +69,7 @@ public sealed class TourPlansItem
 
 public sealed class TourLocalizedPropertyItem
 {
-    public int LanguageId { get; set; }
+    public string Language { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;
     public string TourMainText { get; set; } = string.Empty;
     public List<string> TourFacilities { get; set; } = new();

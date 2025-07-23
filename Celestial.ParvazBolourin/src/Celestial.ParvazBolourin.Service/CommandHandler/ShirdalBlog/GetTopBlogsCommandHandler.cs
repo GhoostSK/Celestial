@@ -5,6 +5,8 @@ using Celestial.ParvazBolourin.Service.Command.ShirdalBlog;
 using MofidApp.SharedKernel.Common.Model;
 using MofidApp.SharedKernel.Domain.Services;
 
+namespace Celestial.Service.CommandHandler.ShirdalBlog;
+
 public sealed class GetTopBlogsCommandHandler : BaseRequestHandler<GetTopBlogsCommandReq, GetTopBlogsCommandRes>
 {
     private readonly IBlogService _blogService;
@@ -24,7 +26,7 @@ public sealed class GetTopBlogsCommandHandler : BaseRequestHandler<GetTopBlogsCo
     protected override async Task<GetTopBlogsCommandRes> HandleCore(GetTopBlogsCommandReq request, CancellationToken cancellationToken)
     {
         var languages = await _languageService.GetLanguages(cancellationToken);
-        if (!languages.Any(p => p.Id == request.LanguageId))
+        if (languages.Any(p => p.LanguageCulture.Split('-')[0] == request.Language))
         {
             return new GetTopBlogsCommandRes
             {
@@ -41,7 +43,7 @@ public sealed class GetTopBlogsCommandHandler : BaseRequestHandler<GetTopBlogsCo
             var localizedProps = await _localizedPropertyService.GetPropertyByLanguageAndEntityId(new()
             {
                 EntityId = blog.Id,
-                LanguageId = request.LanguageId,
+                Language = request.Language,
                 LocalKeyGroup = LocalKeyGroupType.Blog
             }, cancellationToken);
             var Tag = new List<Tag>();

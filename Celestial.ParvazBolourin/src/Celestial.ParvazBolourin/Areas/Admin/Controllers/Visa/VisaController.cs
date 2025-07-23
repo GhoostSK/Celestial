@@ -1,10 +1,13 @@
-﻿using Celestial.ParvazBolourin.Api.Areas.Admin.Models.Dto;
+﻿using Celestial.Api.Areas.Admin.Models.Dto;
+using Celestial.ParvazBolourin.Api.Areas.Admin.Controllers;
+using Celestial.ParvazBolourin.Api.Areas.Admin.Models.Dto;
 using Celestial.ParvazBolourin.Core.DAL.Model.Visa;
 using Celestial.ParvazBolourin.Service.Command.Visa;
+using Celestial.Service.Command.Visa;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Celestial.ParvazBolourin.Api.Areas.Admin.Controllers.Visa;
+namespace Celestial.Api.Areas.Admin.Controllers.Visa;
 
 public class VisaController : BaseController
 {

@@ -1,10 +1,10 @@
-﻿using Celestial.ParvazBolourin.Core.Attributes;
+﻿using System.ComponentModel.DataAnnotations;
+using Celestial.ParvazBolourin.Core.Attributes;
 using Celestial.ParvazBolourin.Core.DAL.Model.Visa;
 using Celestial.ParvazBolourin.Core.Enum.Visa;
-using Celestial.ParvazBolourin.Service.Command.Visa;
-using System.ComponentModel.DataAnnotations;
+using Celestial.Service.Command.Visa;
 
-namespace Celestial.ParvazBolourin.Api.Areas.Admin.Models.Dto;
+namespace Celestial.Api.Areas.Admin.Models.Dto;
 
 public sealed class AddVisaReqDto
 {

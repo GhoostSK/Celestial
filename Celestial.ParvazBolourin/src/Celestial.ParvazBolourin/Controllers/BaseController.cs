@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Celestial.ParvazBolourin.Api.Controllers;
 
-[Route("api/[controller]/[action]")]
+[Route("api/{language}/[controller]/[action]")]
 [ApiController]
 public abstract class BaseController : ControllerBase
 {

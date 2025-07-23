@@ -6,29 +6,34 @@ using Celestial.ParvazBolourin.Core.DAL.Repositories.Global.Model;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Hotel;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Hotel.Model;
 using Celestial.ParvazBolourin.Service.Command.Hotel;
+using Celestial.ParvazBolourin.Service.Command.ValidateLanguage;
+using Celestial.Service.Command.Hotel;
 using Mapster;
+using MediatR;
 using MofidApp.SharedKernel.Common.Model;
-using MofidApp.SharedKernel.Domain.Services;
 
-namespace Celestial.ParvazBolourin.Service.CommandHandler.Hotel;
+namespace Celestial.Service.CommandHandler.Hotel;
 
 public sealed class GetHotelsListCommandHandler(
     IHotelService hotel,
     ILocalizedPropertyService localizedProperty,
-    ILanguageService languageService,
     ICountryService countryService,
-    IImageService imageService)
+    IImageService imageService,
+    IMediator mediator)
     : BaseRequestHandler<GetHotelsListCommandReq, GetHotelsListCommandRes>
 {
     protected override async Task<GetHotelsListCommandRes> HandleCore(GetHotelsListCommandReq request,
     CancellationToken cancellationToken)
     {
-        var languages = await languageService.GetLanguages(cancellationToken);
-        if (!languages.Any(p => p.Id == request.LanguageId))
-            return new GetHotelsListCommandRes
+        var langs = new List<string> { request.Language };
+        var validateLanguage = await mediator.Send(new ValidateLanguageCommandReq() { Language = langs }, cancellationToken);
+        if (validateLanguage.HasError)
+        {
+            return new()
             {
-                Error = new ValidationError("LA400", "invalid Language")
+                Error = validateLanguage.Error
             };
+        }
 
         var response = new GetHotelsListCommandRes();
         var hotels = await hotel.GetHotelsList(request.Adapt<GetHotelsListReq>(), cancellationToken);
@@ -49,7 +54,7 @@ public sealed class GetHotelsListCommandHandler(
                 new GetLocalizedPropertyReq
                 {
                     EntityId = item.Id,
-                    LanguageId = request.LanguageId,
+                    Language = request.Language,
                     LocalKeyGroup = LocalKeyGroupType.Hotel
                 },
                 cancellationToken

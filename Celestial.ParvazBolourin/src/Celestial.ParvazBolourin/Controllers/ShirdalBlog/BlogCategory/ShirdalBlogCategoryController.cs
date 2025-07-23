@@ -1,10 +1,9 @@
-﻿using Azure;
+﻿using Celestial.ParvazBolourin.Api.Controllers;
 using Celestial.ParvazBolourin.Api.Models.Dto;
 using Celestial.ParvazBolourin.Service.Command.ShirdalBlog.BlogCategory;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Celestial.ParvazBolourin.Api.Controllers.ShirdalBlog.BlogCategory;
+namespace Celestial.Api.Controllers.ShirdalBlog.BlogCategory;
 
 public class ShirdalBlogCategoryController : BaseController
 {
@@ -14,7 +13,7 @@ public class ShirdalBlogCategoryController : BaseController
         var response = await Mediator.Send(new GetBlogCategoryByIdCommandReq
         {
             Id = request.Id,
-            LanguageId = request.LanguageId,
+            Language = request.Language,
             Slug = request.slug
         }, cancellationToken);
 
@@ -25,11 +24,11 @@ public class ShirdalBlogCategoryController : BaseController
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetList([FromQuery] int languageId, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetList([FromRoute] string language, CancellationToken cancellationToken)
     {
         var response = await Mediator.Send(new GetBlogCategoryListCommandReq
         {
-            LanguageId = languageId
+            Language = language
         }, cancellationToken);
 
         if (response.HasError)

@@ -8,45 +8,19 @@ using Mapster;
 using MofidApp.SharedKernel.Common.Model;
 using MofidApp.SharedKernel.Domain.Services;
 
-namespace Celestial.ParvazBolourin.Service.CommandHandler.ShirdalBlog;
+namespace Celestial.Service.CommandHandler.ShirdalBlog;
 
-public sealed class GetBlogByIdCommandHandler : BaseRequestHandler<GetBlogByIdCommandReq, GetBlogByIdCommandRes>
+public sealed class GetBlogByIdCommandHandler(
+    IBlogService blogService,
+    ILocalizedPropertyService localizedPropertyService,
+    IBlogCategoryService blogCategoryService,
+    IBlogTagService blogTagService)
+    : BaseRequestHandler<GetBlogCommandReq, GetBlogByIdCommandRes>
 {
-    private readonly IBlogService _blogService;
-    private readonly ILanguageService _languageService;
-    private readonly ILocalizedPropertyService _localizedPropertyService;
-    private readonly IBlogCategoryService _blogCategoryService;
-    private readonly IBlogTagService _blogTagService;
-
-    public GetBlogByIdCommandHandler(
-        IBlogService blogService,
-        ILocalizedPropertyService localizedPropertyService,
-        ILanguageService languageService, IBlogCategoryService blogCategoryService, IBlogTagService blogTagService)
+    protected override async Task<GetBlogByIdCommandRes> HandleCore(GetBlogCommandReq request, CancellationToken cancellationToken)
     {
-        _blogService = blogService;
-        _localizedPropertyService = localizedPropertyService;
-        _languageService = languageService;
-        _blogCategoryService = blogCategoryService;
-        _blogTagService = blogTagService;
-    }
-
-    protected override async Task<GetBlogByIdCommandRes> HandleCore(GetBlogByIdCommandReq request, CancellationToken cancellationToken)
-    {
-        var blog = new Blog();
-
-        if (request.Id != 0)
-        {
-            var languages = await _languageService.GetLanguages(cancellationToken);
-            if (!languages.Any(p => p.Id == request.LanguageId))
-                return new GetBlogByIdCommandRes
-                {
-                    Error = new ValidationError("LA400", "invalid Language")
-                };
-            blog = await _blogService.GetBlogById(request.Id, cancellationToken);
-        }
-        else if (!string.IsNullOrEmpty(request.Slug))
-        {
-            var localizedProperty = await _localizedPropertyService.FirstOrDefaultAsync(p =>
+        Blog? blog;
+            var localizedProperty = await localizedPropertyService.FirstOrDefaultAsync(p =>
                 p.LocalKey == "Slug" && p.LocalValue == request.Slug && p.LocalKeyGroup == LocalKeyGroupType.Blog, cancellationToken: cancellationToken);
 
             if (localizedProperty == null)
@@ -55,10 +29,8 @@ public sealed class GetBlogByIdCommandHandler : BaseRequestHandler<GetBlogByIdCo
                     Error = new ValidationError("404", "Blog not found with slug")
                 };
 
-            blog = await _blogService.GetBlogById(localizedProperty.EntityId, cancellationToken);
-            request.LanguageId = localizedProperty.LanguageId;
-            request.Id = localizedProperty.EntityId;
-        }
+            blog = await blogService.GetBlogById(localizedProperty.EntityId, cancellationToken);
+            blog!.Id = localizedProperty.EntityId;
 
         if (blog == null)
             return new GetBlogByIdCommandRes
@@ -68,11 +40,11 @@ public sealed class GetBlogByIdCommandHandler : BaseRequestHandler<GetBlogByIdCo
 
         var response = blog.Adapt<GetBlogByIdCommandRes>();
 
-        var localizedProperties = await _localizedPropertyService.GetPropertyByLanguageAndEntityId(
+        var localizedProperties = await localizedPropertyService.GetPropertyByLanguageAndEntityId(
             new GetLocalizedPropertyReq
             {
-                EntityId = request.Id,
-                LanguageId = request.LanguageId,
+                EntityId = blog.Id,
+                Language = localizedProperty.Language,
                 LocalKeyGroup = LocalKeyGroupType.Blog
             },
             cancellationToken
@@ -86,12 +58,12 @@ public sealed class GetBlogByIdCommandHandler : BaseRequestHandler<GetBlogByIdCo
         var categories = new List<BlogCategoryDto>();
         foreach (var catId in blog.CategoriesId)
         {
-            var category = await _blogCategoryService.FindByIdAsync(cancellationToken, catId);
-            var categoryName = await _localizedPropertyService.FirstOrDefaultAsync(
-                p => p.EntityId == category.Id && p.LanguageId == request.LanguageId && p.LocalKey == "Name" &&
+            var category = await blogCategoryService.FindByIdAsync(cancellationToken, catId);
+            var categoryName = await localizedPropertyService.FirstOrDefaultAsync(
+                p => p.EntityId == category.Id && p.Language == localizedProperty.Language && p.LocalKey == "Name" &&
                      p.LocalKeyGroup == LocalKeyGroupType.BlogCategory, cancellationToken: cancellationToken);
-            var Slug = await _localizedPropertyService.FirstOrDefaultAsync(
-    p => p.EntityId == category.Id && p.LanguageId == request.LanguageId && p.LocalKey == "Name" &&
+            var Slug = await localizedPropertyService.FirstOrDefaultAsync(
+    p => p.EntityId == category.Id && p.Language == localizedProperty.Language && p.LocalKey == "Name" &&
          p.LocalKeyGroup == LocalKeyGroupType.BlogCategory, cancellationToken: cancellationToken);
             categories.Add(new BlogCategoryDto()
             {
@@ -104,14 +76,14 @@ public sealed class GetBlogByIdCommandHandler : BaseRequestHandler<GetBlogByIdCo
 
         foreach (var catId in blog.TagsId)
         {
-            var tag = await _blogTagService.FindByIdAsync(cancellationToken, catId);
+            var tag = await blogTagService.FindByIdAsync(cancellationToken, catId);
             tag.ViewCount++;
-            var tagName = await _localizedPropertyService.FirstOrDefaultAsync(
-                p => p.EntityId == tag.Id && p.LanguageId == request.LanguageId && p.LocalKey == "Name" &&
+            var tagName = await localizedPropertyService.FirstOrDefaultAsync(
+                p => p.EntityId == tag.Id && p.Language == localizedProperty.Language && p.LocalKey == "Name" &&
                      p.LocalKeyGroup == LocalKeyGroupType.BlogTag, cancellationToken: cancellationToken);
 
-            var slug = await _localizedPropertyService.FirstOrDefaultAsync(
-     p => p.EntityId == tag.Id && p.LanguageId == request.LanguageId && p.LocalKey == "Slug" &&
+            var slug = await localizedPropertyService.FirstOrDefaultAsync(
+     p => p.EntityId == tag.Id && p.Language == localizedProperty.Language && p.LocalKey == "Slug" &&
           p.LocalKeyGroup == LocalKeyGroupType.BlogTag, cancellationToken: cancellationToken);
             tags.Add(new BlogTagDto()
             {
@@ -121,7 +93,7 @@ public sealed class GetBlogByIdCommandHandler : BaseRequestHandler<GetBlogByIdCo
 
             });
         }
-        await _blogTagService.UnitOfWork.SaveChangesAsync(cancellationToken);
+        await blogTagService.UnitOfWork.SaveChangesAsync(cancellationToken);
         response.Title = localizedProperties.FirstOrDefault(p => p.LocalKey == "Title")?.LocalValue ?? string.Empty;
         response.HeaderText = localizedProperties.FirstOrDefault(p => p.LocalKey == "HeaderText")?.LocalValue ?? string.Empty;
         response.MainText = localizedProperties.FirstOrDefault(p => p.LocalKey == "MainText")?.LocalValue ?? string.Empty;

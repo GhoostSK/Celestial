@@ -3,14 +3,14 @@ using Celestial.ParvazBolourin.Core.DAL.Model.Visa;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global.Model;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Visa;
-using Celestial.ParvazBolourin.Service.Command.Visa;
+using Celestial.Service.Command.Visa;
 using Mapster;
 using MofidApp.SharedKernel.Common.Model;
 using MofidApp.SharedKernel.Domain.Services;
 
-namespace Celestial.ParvazBolourin.Service.CommandHandler.Visa;
+namespace Celestial.Service.CommandHandler.Visa;
 
-public sealed class GetVisaByIdCommandHandler : BaseRequestHandler<GetVisaByIdCommandReq, GetVisaByIdCommandRes>
+public sealed class GetVisaByIdCommandHandler : BaseRequestHandler<GetVisaByIdCommandReq, GetVisaCommandRes>
 {
     private readonly ILanguageService _languageService;
     private readonly ILocalizedPropertyService _localizedPropertyService;
@@ -24,15 +24,13 @@ public sealed class GetVisaByIdCommandHandler : BaseRequestHandler<GetVisaByIdCo
         _languageService = languageService;
     }
 
-    protected override async Task<GetVisaByIdCommandRes> HandleCore(GetVisaByIdCommandReq request,
+    protected override async Task<GetVisaCommandRes> HandleCore(GetVisaByIdCommandReq request,
         CancellationToken cancellationToken)
     {
 
 
         var visa = new Visas();
 
-        if (!string.IsNullOrWhiteSpace(request.Slug))
-        {
             var localizedProperty = await _localizedPropertyService.FirstOrDefaultAsync(p =>
                 p.LocalKey == "Slug" &&
                 p.LocalValue == request.Slug &&
@@ -40,40 +38,30 @@ public sealed class GetVisaByIdCommandHandler : BaseRequestHandler<GetVisaByIdCo
 
             if (localizedProperty == null)
             {
-                return new GetVisaByIdCommandRes
+                return new GetVisaCommandRes
                 {
                     Error = new ValidationError("VISA404", "Visa not found by slug")
                 };
             }
 
             visa = await _visaService.GetVisaById(localizedProperty.EntityId, cancellationToken);
-            request.LanguageId = localizedProperty.LanguageId;
-        }
-        else
-        {
-            var languages = await _languageService.GetLanguages(cancellationToken);
-            if (!languages.Any(p => p.Id == request.LanguageId))
-                return new GetVisaByIdCommandRes
-                {
-                    Error = new ValidationError("LA400", "invalid Language")
-                };
-            visa = await _visaService.GetVisaById(request.Id, cancellationToken);
-        }
+        
+
 
         if (visa == null)
-            return new GetVisaByIdCommandRes
+            return new GetVisaCommandRes
             {
                 Error = new ValidationError("VISA404", "Visa not found")
             };
 
-        var response = visa.Adapt<GetVisaByIdCommandRes>();
-        response.LanguageId = request.LanguageId;
+        var response = visa.Adapt<GetVisaCommandRes>();
+        response.Language = localizedProperty.Language;
 
         var localizedProperties = await _localizedPropertyService.GetPropertyByLanguageAndEntityId(
             new GetLocalizedPropertyReq
             {
                 EntityId = visa.Id,
-                LanguageId = request.LanguageId,
+                Language = localizedProperty.Language,
                 LocalKeyGroup = LocalKeyGroupType.Visa
             },
             cancellationToken
@@ -84,7 +72,7 @@ public sealed class GetVisaByIdCommandHandler : BaseRequestHandler<GetVisaByIdCo
 
         var embassy = localizedProperties
             .Where(p => p.LocalKey == "Embassy_Address" ||
-                        (p.LocalKey == "Embassy_PhoneNumber" && p.LanguageId == request.LanguageId))
+                        (p.LocalKey == "Embassy_PhoneNumber" && p.Language == localizedProperty.Language))
             .ToList();
 
         var address = embassy.Where(e => e.LocalKey == "Embassy_Address").ToList();

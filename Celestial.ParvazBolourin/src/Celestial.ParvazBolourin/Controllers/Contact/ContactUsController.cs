@@ -1,20 +1,14 @@
-﻿using Celestial.ParvazBolourin.Api.Identity.Model;
+﻿using Celestial.ParvazBolourin.Api.Controllers;
+using Celestial.ParvazBolourin.Api.Identity.Model;
 using Celestial.ParvazBolourin.Api.Models.Dto;
 using Celestial.ParvazBolourin.Service.Command.Contact;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Celestial.ParvazBolourin.Api.Controllers.Contact;
+namespace Celestial.Api.Controllers.Contact;
 
-public class ContactUsController : BaseController
+public class ContactUsController(UserManager<User> userManager) : BaseController
 {
-    private readonly UserManager<User> _userManager;
-
-    public ContactUsController(UserManager<User> userManager)
-    {
-        _userManager = userManager;
-    }
-
     [HttpPost]
     public async Task<IActionResult> AddContactUs([FromBody] AddContactUsReqDto request,
         CancellationToken cancellationToken)
@@ -23,7 +17,7 @@ public class ContactUsController : BaseController
 
         if (User.Identity.IsAuthenticated)
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await userManager.GetUserAsync(User);
             userId = Guid.Parse(user!.Id);
         }
 

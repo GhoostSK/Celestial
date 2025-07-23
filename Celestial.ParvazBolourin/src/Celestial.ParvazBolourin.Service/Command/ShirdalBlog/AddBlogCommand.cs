@@ -18,7 +18,7 @@ public sealed class AddBlogCommandRes : ServiceResContextBase
 
 public sealed class BlogLocalizedProperty
 {
-    public int LanguageId { get; set; }
+    public string Language { get; set; } = string.Empty;
     public string Title { get; set; } = string.Empty;
     public string HeaderText { get; set; } = string.Empty;
     public string MainText { get; set; } = string.Empty;

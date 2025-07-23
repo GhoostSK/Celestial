@@ -9,7 +9,7 @@ namespace Celestial.ParvazBolourin.Service.Command.Tour;
 
 public sealed class GetToursListCommandReq : BaseEntity, IRequest<GetToursListCommandRes>
 {
-    public int LanguageId { get; set; }
+    public string Language { get; set; } = string.Empty;
     public List<string> Countries { get; set; } = new();
     public List<string> Cities { get; set; } = new();
     public string Title { get; set; } = string.Empty;
@@ -68,5 +68,5 @@ public class TourFiltersDto
     public List<Continent> TourContinent { get; set; } = new();
     public List<TourType> TourType { get; set; } = new();
     public List<TourScope> TourScope { get; set; } = new();
-    public List<bool> IsActiveTour { get; set; }
+    public List<bool> IsActiveTour { get; set; }=new();
 }

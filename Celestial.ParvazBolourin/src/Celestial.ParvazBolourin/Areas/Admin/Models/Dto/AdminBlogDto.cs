@@ -1,6 +1,6 @@
 ﻿using Celestial.ParvazBolourin.Service.Command.ShirdalBlog;
 
-namespace Celestial.ParvazBolourin.Api.Areas.Admin.Models.Dto;
+namespace Celestial.Api.Areas.Admin.Models.Dto;
 
 public class UpdateBlogReqDto
 {

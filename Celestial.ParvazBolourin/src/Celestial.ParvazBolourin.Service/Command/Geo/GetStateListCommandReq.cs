@@ -3,7 +3,7 @@ using Celestial.ParvazBolourin.Core.DAL.Model.Geo;
 using MediatR;
 using MofidApp.SharedKernel.Domain.Services;
 
-namespace Celestial.ParvazBolourin.Service.Command.Geo;
+namespace Celestial.Service.Command.Geo;
 
 public class GetStateListCommandReq : IRequest<GetStateListCommandRes>
 {

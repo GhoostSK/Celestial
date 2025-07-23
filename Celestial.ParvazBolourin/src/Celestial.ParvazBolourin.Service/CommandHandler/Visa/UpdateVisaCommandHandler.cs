@@ -3,12 +3,12 @@ using Celestial.ParvazBolourin.Core.DAL.Model.Global;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global.Model;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Visa;
-using Celestial.ParvazBolourin.Service.Command.Visa;
+using Celestial.Service.Command.Visa;
 using Mapster;
 using MofidApp.SharedKernel.Common.Model;
 using MofidApp.SharedKernel.Domain.Services;
 
-namespace Celestial.ParvazBolourin.Service.CommandHandler.Visa;
+namespace Celestial.Service.CommandHandler.Visa;
 
 public class UpdateVisaCommandHandler : BaseRequestHandler<UpdateVisaCommandReq, UpdateVisaCommandRes>
 {
@@ -49,7 +49,7 @@ public class UpdateVisaCommandHandler : BaseRequestHandler<UpdateVisaCommandReq,
             var localizedData = await _localizedPropertyService.GetPropertyByLanguageAndEntityId(
                 new GetLocalizedPropertyReq
                 {
-                    LanguageId = item.LanguageId,
+                    Language = item.Language,
                     LocalKeyGroup = LocalKeyGroupType.Visa,
                     EntityId = request.Id
                 }, cancellationToken);
@@ -59,7 +59,7 @@ public class UpdateVisaCommandHandler : BaseRequestHandler<UpdateVisaCommandReq,
                 await _localizedPropertyService.AddAsync(new LocalizedProperty
                 {
                     EntityId = request.Id,
-                    LanguageId = item.LanguageId,
+                    Language = item.Language,
                     LocalKey = "Embassy_" + kvp.Key,
                     LocalValue = kvp.Value,
                     LocalKeyGroup = LocalKeyGroupType.Visa

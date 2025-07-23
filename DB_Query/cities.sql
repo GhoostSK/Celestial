@@ -1,4 +1,3 @@
-
 insert into City (name, state_id) values ('Bombuflat', 1);
 insert into City (name, state_id) values ('Garacharma', 1);
 insert into City (name, state_id) values ('Port Blair', 1);

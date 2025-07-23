@@ -3,7 +3,7 @@ using Celestial.ParvazBolourin.Service.Command.Contact;
 using MofidApp.SharedKernel.Common.Model;
 using MofidApp.SharedKernel.Domain.Services;
 
-namespace Celestial.ParvazBolourin.Service.CommandHandler.Contact;
+namespace Celestial.Service.CommandHandler.Contact;
 
 public sealed class
     RemoveContactUsCommandHandler : BaseRequestHandler<RemoveContactUsCommandReq, RemoveContactUsCommandRes>

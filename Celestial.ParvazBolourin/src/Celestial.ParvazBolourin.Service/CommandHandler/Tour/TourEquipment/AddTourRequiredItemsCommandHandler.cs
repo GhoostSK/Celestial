@@ -6,7 +6,7 @@ using Celestial.ParvazBolourin.Service.Command.Tour.TourEquipment;
 using MediatR;
 using MofidApp.SharedKernel.Domain.Services;
 
-namespace Celestial.ParvazBolourin.Service.CommandHandler.Tour.TourEquipment;
+namespace Celestial.Service.CommandHandler.Tour.TourEquipment;
 
 public sealed class AddTourEquipmentsCommandHandler(
     ITourEquipmentsService blogTagService,
@@ -18,7 +18,7 @@ public sealed class AddTourEquipmentsCommandHandler(
     {
 
         var languages = await languageService.GetLanguages(cancellationToken);
-        if (request.LocalizedNames.Any(item => !languages.Any(p => p.Id == item.LanguageId)))
+        if (request.LocalizedNames.Any(item => languages.Any(p => p.LanguageCulture.Split('-')[0] == item.Language)))
             return new AddTourEquipmentCommandRes { Error = new ValidationError("LA400", "Invalid Language") };
 
         var entity = new TourEquipments();
@@ -32,7 +32,7 @@ public sealed class AddTourEquipmentsCommandHandler(
         new LocalizedProperty
         {
             EntityId = entity.Id,
-            LanguageId = name.LanguageId,
+            Language = name.Language,
             LocalKey = nameof(name.Name),
             LocalKeyGroup = LocalKeyGroupType.TourEquipment,
             LocalValue = name.Name

@@ -3,21 +3,15 @@ using Celestial.ParvazBolourin.Service.Command.Visa;
 using MofidApp.SharedKernel.Common.Model;
 using MofidApp.SharedKernel.Domain.Services;
 
-namespace Celestial.ParvazBolourin.Service.CommandHandler.Visa;
+namespace Celestial.Service.CommandHandler.Visa;
 
-public sealed class RemoveVisaCommandHandler : BaseRequestHandler<RemoveVisaCommandReq, RemoveVisaCommandRs>
+public sealed class RemoveVisaCommandHandler(IVisaService visaRepository)
+    : BaseRequestHandler<RemoveVisaCommandReq, RemoveVisaCommandRs>
 {
-    private readonly IVisaService _visaRepository;
-
-    public RemoveVisaCommandHandler(IVisaService visaRepository)
-    {
-        _visaRepository = visaRepository;
-    }
-
     protected override async Task<RemoveVisaCommandRs> HandleCore(RemoveVisaCommandReq request,
         CancellationToken cancellationToken)
     {
-        var visa = await _visaRepository.GetVisaById(request.Id, cancellationToken);
+        var visa = await visaRepository.GetVisaById(request.Id, cancellationToken);
         if (visa == null)
             return new RemoveVisaCommandRs
             {
@@ -26,7 +20,7 @@ public sealed class RemoveVisaCommandHandler : BaseRequestHandler<RemoveVisaComm
 
         visa.IsDeleted = true;
 
-        await _visaRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
+        await visaRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
 
         return new RemoveVisaCommandRs();
     }

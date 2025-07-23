@@ -2,7 +2,7 @@
 using MediatR;
 using MofidApp.SharedKernel.Domain.Services;
 
-namespace Celestial.ParvazBolourin.Service.Command.Geo;
+namespace Celestial.Service.Command.Geo;
 
 public class GetCountryListCommandReq : IRequest<GetCountryListCommandRes>
 {

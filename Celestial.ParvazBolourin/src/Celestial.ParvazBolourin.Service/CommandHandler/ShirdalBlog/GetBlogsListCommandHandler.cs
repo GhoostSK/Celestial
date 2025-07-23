@@ -1,33 +1,34 @@
 ﻿using Celestial.ParvazBolourin.Core.DAL.Model.Global;
-using Celestial.ParvazBolourin.Core.DAL.Model.Hotel;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.Global.Model;
 using Celestial.ParvazBolourin.Core.DAL.Repositories.ShirdalBlog;
 using Celestial.ParvazBolourin.Service.Command.ShirdalBlog;
+using Celestial.ParvazBolourin.Service.Command.ValidateLanguage;
+using Celestial.Service.Command.ShirdalBlog;
+using MediatR;
 using MofidApp.SharedKernel.Common.Model;
-using MofidApp.SharedKernel.Domain.Services;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace Celestial.ParvazBolourin.Service.CommandHandler.ShirdalBlog;
+namespace Celestial.Service.CommandHandler.ShirdalBlog;
 
 public sealed class GetBlogsListCommandHandler(
     ILocalizedPropertyService localizedPropertyService,
-    ILanguageService languageService,
     IBlogService blogService,
     IBlogTagService blogTagService,
-    IBlogCategoryService blogCategoryService)
+    IBlogCategoryService blogCategoryService
+    , IMediator mediator)
     : BaseRequestHandler<GetBlogsListCommandReq, GetBlogsListCommandRes>
 {
     private readonly IBlogCategoryService _blogCategoryService = blogCategoryService;
 
     protected override async Task<GetBlogsListCommandRes> HandleCore(GetBlogsListCommandReq request, CancellationToken cancellationToken)
     {
-        var languages = await languageService.GetLanguages(cancellationToken);
-        if (!languages.Any(p => p.Id == request.LanguageId))
+        var langs = new List<string> { request.Language };
+        var validateLanguage = await mediator.Send(new ValidateLanguageCommandReq() { Language = langs }, cancellationToken);
+        if (validateLanguage.HasError)
         {
-            return new GetBlogsListCommandRes
+            return new()
             {
-                Error = new ValidationError("LA400", "invalid Language")
+                Error = validateLanguage.Error
             };
         }
 
@@ -36,8 +37,8 @@ public sealed class GetBlogsListCommandHandler(
         var popularTag = await blogTagService.GetTopTagsByViewCountAsync(request.PopularTagCount, cancellationToken);
         foreach (var tag in popularTag)
         {
-            var localizeTag = await localizedPropertyService.FirstOrDefaultAsync(p => p.EntityId == tag.Id && p.LocalKeyGroup == LocalKeyGroupType.BlogTag && p.LocalKey == "Name" && p.LanguageId == request.LanguageId, cancellationToken: cancellationToken);
-            var localizeSlug = await localizedPropertyService.FirstOrDefaultAsync(p => p.EntityId == tag.Id && p.LocalKeyGroup == LocalKeyGroupType.BlogTag && p.LocalKey == "Slug" && p.LanguageId == request.LanguageId, cancellationToken: cancellationToken);
+            var localizeTag = await localizedPropertyService.FirstOrDefaultAsync(p => p.EntityId == tag.Id && p.LocalKeyGroup == LocalKeyGroupType.BlogTag && p.LocalKey == "Name" && p.Language == request.Language, cancellationToken: cancellationToken);
+            var localizeSlug = await localizedPropertyService.FirstOrDefaultAsync(p => p.EntityId == tag.Id && p.LocalKeyGroup == LocalKeyGroupType.BlogTag && p.LocalKey == "Slug" && p.Language == request.Language, cancellationToken: cancellationToken);
 
             blogTags.Add(new()
             {
@@ -56,30 +57,30 @@ public sealed class GetBlogsListCommandHandler(
                 new GetLocalizedPropertyReq
                 {
                     EntityId = blog.Id,
-                    LanguageId = request.LanguageId,
+                    Language = request.Language,
                     LocalKeyGroup = LocalKeyGroupType.Blog
                 }, cancellationToken);
-            var Tag = new List<Tag>();
-            foreach (var TagId in blog.TagsId)
+            var tag = new List<Tag>();
+            foreach (var tagId in blog.TagsId)
             {
-                var Title = await localizedPropertyService.FirstOrDefaultAsync(p => p.LocalKeyGroup == LocalKeyGroupType.BlogTag && p.LocalKey == "Name" && p.EntityId == TagId, cancellationToken: cancellationToken);
-                var Slug = await localizedPropertyService.FirstOrDefaultAsync(p => p.LocalKeyGroup == LocalKeyGroupType.BlogTag && p.LocalKey == "Slug" && p.EntityId == TagId, cancellationToken: cancellationToken);
-                Tag.Add(new()
+                var title = await localizedPropertyService.FirstOrDefaultAsync(p => p.LocalKeyGroup == LocalKeyGroupType.BlogTag && p.LocalKey == "Name" && p.EntityId == tagId, cancellationToken: cancellationToken);
+                var slug = await localizedPropertyService.FirstOrDefaultAsync(p => p.LocalKeyGroup == LocalKeyGroupType.BlogTag && p.LocalKey == "Slug" && p.EntityId == tagId, cancellationToken: cancellationToken);
+                tag.Add(new()
                 {
-                    Title = Title!.LocalValue ?? string.Empty,
-                    Slug = Slug!.LocalValue ?? string.Empty
+                    Title = title!.LocalValue ?? string.Empty,
+                    Slug = slug!.LocalValue ?? string.Empty
                 });
             }
 
-            var BlogCategory = new List<Categories>();
+            var blogCategory = new List<Categories>();
             foreach (var categoryId in blog.CategoriesId)
             {
-                var Title = await localizedPropertyService.FirstOrDefaultAsync(p => p.LocalKeyGroup == LocalKeyGroupType.BlogCategory && p.LocalKey == "Name" && p.EntityId == categoryId, cancellationToken: cancellationToken);
-                var Slug = await localizedPropertyService.FirstOrDefaultAsync(p => p.LocalKeyGroup == LocalKeyGroupType.BlogCategory && p.LocalKey == "Slug" && p.EntityId == categoryId, cancellationToken: cancellationToken);
-                BlogCategory.Add(new()
+                var title = await localizedPropertyService.FirstOrDefaultAsync(p => p.LocalKeyGroup == LocalKeyGroupType.BlogCategory && p.LocalKey == "Name" && p.EntityId == categoryId, cancellationToken: cancellationToken);
+                var slug = await localizedPropertyService.FirstOrDefaultAsync(p => p.LocalKeyGroup == LocalKeyGroupType.BlogCategory && p.LocalKey == "Slug" && p.EntityId == categoryId, cancellationToken: cancellationToken);
+                blogCategory.Add(new()
                 {
-                    Title = Title!.LocalValue ?? string.Empty,
-                    Slug = Slug!.LocalValue ?? string.Empty
+                    Title = title!.LocalValue ?? string.Empty,
+                    Slug = slug!.LocalValue ?? string.Empty
                 });
             }
 
@@ -91,8 +92,8 @@ public sealed class GetBlogsListCommandHandler(
                 HeaderText = localize.FirstOrDefault(p => p.LocalKey == nameof(BlogItem.HeaderText))?.LocalValue ?? "",
                 Title = localize.FirstOrDefault(p => p.LocalKey == nameof(BlogItem.Title))?.LocalValue ?? "",
                 Slug = localize.FirstOrDefault(p => p.LocalKey == nameof(BlogItem.Slug))?.LocalValue ?? "",
-                Categories = BlogCategory,
-                Tags = Tag,
+                Categories = blogCategory,
+                Tags = tag,
                 RegistrationDate = blog.RegistrationDate,
                 CreatedBy = "meysam Peyghamy",
                 CreatedByProfilePicture = "images/Profile/sample-User.jpg"

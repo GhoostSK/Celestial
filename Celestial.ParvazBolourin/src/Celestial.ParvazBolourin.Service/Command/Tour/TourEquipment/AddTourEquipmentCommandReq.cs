@@ -17,6 +17,6 @@ public sealed class AddTourEquipmentCommandRes : ServiceResContextBase
 
 public sealed class LocalizedTourEquipmentNameDto
 {
-    public int LanguageId { get; set; }
+    public string Language { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;
 }

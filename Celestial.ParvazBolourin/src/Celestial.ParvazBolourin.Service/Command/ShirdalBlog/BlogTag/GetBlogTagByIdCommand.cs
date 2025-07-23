@@ -7,7 +7,7 @@ namespace Celestial.ParvazBolourin.Service.Command.ShirdalBlog.BlogTag;
 public sealed class GetBlogTagByIdCommandReq : BaseEntity, IRequest<GetBlogTagByIdCommandRes>
 {
     public long Id { get; set; }
-    public int LanguageId { get; set; }
+    public string Language { get; set; } = string.Empty;
     public string Slug { get; set; } = string.Empty;
 }
 

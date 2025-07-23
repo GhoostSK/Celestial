@@ -7,6 +7,7 @@ using Celestial.ParvazBolourin.Core.DAL.Repositories.Tour;
 using Celestial.ParvazBolourin.Core.Enum.Tour;
 using Celestial.ParvazBolourin.Service.Command.ShirdalBlog;
 using Celestial.ParvazBolourin.Service.Command.Tour;
+using Celestial.Service.Command.Tour;
 using Mapster;
 using MediatR;
 using MofidApp.SharedKernel.Domain.Services;
@@ -16,31 +17,14 @@ namespace Celestial.ParvazBolourin.Service.CommandHandler.Tour;
 public class GetTourByIdCommandHandler(
     ITourService tourService,
     ILocalizedPropertyService localizedPropertyService,
-    ILanguageService languageService,
     IImageService imageService,
     ICountryService countryService,
     ITourEquipmentsService equipmentsService, IMediator mediator)
-    : IRequestHandler<GetTourByIdCommandReq, GetTourByIdCommandRes>
+    : IRequestHandler<GetTourCommandReq, GetTourByIdCommandRes>
 {
-    public async Task<GetTourByIdCommandRes> Handle(GetTourByIdCommandReq request, CancellationToken cancellationToken)
+    public async Task<GetTourByIdCommandRes> Handle(GetTourCommandReq request, CancellationToken cancellationToken)
     {
-
-        var tour = new Core.DAL.Model.Tour.Tours();
-
-        if (request.TourId > 0)
-        {
-            var languages = await languageService.GetLanguages(cancellationToken);
-            if (!languages.Any(p => p.Id == request.LanguageId))
-                return new GetTourByIdCommandRes
-                {
-                    Error = new ValidationError("LA400", "Invalid Language")
-                };
-
-            tour = await tourService.GetTourById(request.TourId, cancellationToken);
-        }
-        else if (!string.IsNullOrWhiteSpace(request.Slug))
-        {
-            var localizedProperty = await localizedPropertyService.FirstOrDefaultAsync(p =>
+        var localizedProperty = await localizedPropertyService.FirstOrDefaultAsync(p =>
                 p.LocalKey == "Slug" &&
                 p.LocalValue == request.Slug &&
                 p.LocalKeyGroup == LocalKeyGroupType.Tour, cancellationToken: cancellationToken);
@@ -53,10 +37,8 @@ public class GetTourByIdCommandHandler(
                 };
             }
 
-            tour = await tourService.GetTourById(localizedProperty.EntityId, cancellationToken);
-            request.LanguageId = localizedProperty.LanguageId;
-            request.TourId = localizedProperty.EntityId;
-        }
+            var tour = await tourService.GetTourById(localizedProperty.EntityId, cancellationToken);
+        
 
         if (tour == null)
             return new GetTourByIdCommandRes
@@ -69,11 +51,11 @@ public class GetTourByIdCommandHandler(
         var localizedData = await localizedPropertyService.GetPropertyByLanguageAndEntityId(new GetLocalizedPropertyReq
         {
             EntityId = tour.Id,
-            LanguageId = request.LanguageId,
+            Language = localizedProperty.Language,
             LocalKeyGroup = LocalKeyGroupType.Tour
         }, cancellationToken);
 
-        var itemResponse = tour.Adapt<GetTourByIdItemRes>();
+        var itemResponse = tour.Adapt<GetTourItemRes>();
         itemResponse.DaysUntilRegistrationDeadline = tour.RegistrationDeadline.DayNumber - DateOnly.FromDateTime(DateTime.Today).DayNumber;
         foreach (var country in tour.CountriesId)
         {
@@ -81,17 +63,16 @@ public class GetTourByIdCommandHandler(
             itemResponse.Countries.Add(countryData.Shortname);
         }
 
-        itemResponse.LanguageId = request.LanguageId;
         itemResponse.PicturePath = tourImage?.PicturePath ?? string.Empty;
-        itemResponse.Name = localizedData.FirstOrDefault(p => p.LocalKey == nameof(GetTourByIdItemRes.Name))?.LocalValue ?? string.Empty;
-        itemResponse.TourMainText = localizedData.FirstOrDefault(p => p.LocalKey == nameof(GetTourByIdItemRes.TourMainText))?.LocalValue ?? string.Empty;
-        itemResponse.TourTips = localizedData.FirstOrDefault(p => p.LocalKey == nameof(GetTourByIdItemRes.TourTips))?.LocalValue ?? string.Empty;
-        itemResponse.PlanShortText = localizedData.FirstOrDefault(p => p.LocalKey == nameof(GetTourByIdItemRes.PlanShortText))?.LocalValue ?? string.Empty;
-        itemResponse.TourFacilities = localizedData.Where(p => p.LocalKey == nameof(GetTourByIdItemRes.TourFacilities)).Select(p => p.LocalValue).ToList();
-        itemResponse.Slug = localizedData.FirstOrDefault(p => p.LocalKey == nameof(GetTourByIdItemRes.Slug))?.LocalValue ?? string.Empty;
-        itemResponse.MetaDescription = localizedData.FirstOrDefault(p => p.LocalKey == nameof(GetTourByIdItemRes.MetaDescription))?.LocalValue ?? string.Empty;
-        itemResponse.MetaKeywords = localizedData.FirstOrDefault(p => p.LocalKey == nameof(GetTourByIdItemRes.MetaKeywords))?.LocalValue ?? string.Empty;
-        itemResponse.MetaTitle = localizedData.FirstOrDefault(p => p.LocalKey == nameof(GetTourByIdItemRes.MetaTitle))?.LocalValue ?? string.Empty;
+        itemResponse.Name = localizedData.FirstOrDefault(p => p.LocalKey == nameof(GetTourItemRes.Name))?.LocalValue ?? string.Empty;
+        itemResponse.TourMainText = localizedData.FirstOrDefault(p => p.LocalKey == nameof(GetTourItemRes.TourMainText))?.LocalValue ?? string.Empty;
+        itemResponse.TourTips = localizedData.FirstOrDefault(p => p.LocalKey == nameof(GetTourItemRes.TourTips))?.LocalValue ?? string.Empty;
+        itemResponse.PlanShortText = localizedData.FirstOrDefault(p => p.LocalKey == nameof(GetTourItemRes.PlanShortText))?.LocalValue ?? string.Empty;
+        itemResponse.TourFacilities = localizedData.Where(p => p.LocalKey == nameof(GetTourItemRes.TourFacilities)).Select(p => p.LocalValue).ToList();
+        itemResponse.Slug = localizedData.FirstOrDefault(p => p.LocalKey == nameof(GetTourItemRes.Slug))?.LocalValue ?? string.Empty;
+        itemResponse.MetaDescription = localizedData.FirstOrDefault(p => p.LocalKey == nameof(GetTourItemRes.MetaDescription))?.LocalValue ?? string.Empty;
+        itemResponse.MetaKeywords = localizedData.FirstOrDefault(p => p.LocalKey == nameof(GetTourItemRes.MetaKeywords))?.LocalValue ?? string.Empty;
+        itemResponse.MetaTitle = localizedData.FirstOrDefault(p => p.LocalKey == nameof(GetTourItemRes.MetaTitle))?.LocalValue ?? string.Empty;
 
         for (var i = 0; i < tour.TourPlans.Count; i++)
         {
@@ -99,7 +80,7 @@ public class GetTourByIdCommandHandler(
                 new GetLocalizedPropertyReq
                 {
                     EntityId = tour.TourPlans[i].Id,
-                    LanguageId = request.LanguageId,
+                    Language = localizedProperty.Language,
                     LocalKeyGroup = LocalKeyGroupType.TourPlan
                 }, cancellationToken);
 
@@ -120,7 +101,7 @@ public class GetTourByIdCommandHandler(
         {
             var equipment = await equipmentsService.FindByIdAsync(cancellationToken, item);
             var localizeName = await localizedPropertyService.FirstOrDefaultAsync(p =>
-                p.EntityId == item && p.LocalKeyGroup == LocalKeyGroupType.TourEquipment && p.LocalKey == "Name" && p.LanguageId == request.LanguageId, cancellationToken: cancellationToken);
+                p.EntityId == item && p.LocalKeyGroup == LocalKeyGroupType.TourEquipment && p.LocalKey == "Name" && p.Language == localizedProperty.Language, cancellationToken: cancellationToken);
             itemResponse.NecessaryEquipment.Add(new()
             {
                 Icon = equipment?.Icon ?? "",
@@ -131,7 +112,7 @@ public class GetTourByIdCommandHandler(
         {
             var equipment = await equipmentsService.FindByIdAsync(cancellationToken, item);
             var localizeName = await localizedPropertyService.FirstOrDefaultAsync(p =>
-                p.EntityId == item && p.LocalKeyGroup == LocalKeyGroupType.TourEquipment && p.LocalKey == "Name" && p.LanguageId == request.LanguageId, cancellationToken: cancellationToken);
+                p.EntityId == item && p.LocalKeyGroup == LocalKeyGroupType.TourEquipment && p.LocalKey == "Name" && p.Language == localizedProperty.Language, cancellationToken: cancellationToken);
             itemResponse.UnNecessaryEquipment.Add(new()
             {
                 Icon = equipment?.Icon??"",
@@ -155,7 +136,7 @@ public class GetTourByIdCommandHandler(
                 new GetLocalizedPropertyReq
                 {
                     EntityId = item.Id,
-                    LanguageId = request.LanguageId,
+                    Language = localizedProperty.Language,
                     LocalKeyGroup = LocalKeyGroupType.Tour
                 }, cancellationToken);
 
@@ -200,13 +181,13 @@ public class GetTourByIdCommandHandler(
 
         var similarTour = await mediator.Send(new GetTourFeaturedCommandReq()
         {
-            LanguageId = request.LanguageId,
+            Language = localizedProperty.Language,
             TopCount = 7
         }, cancellationToken);
 
         var similarBlog = await mediator.Send(new GetTopBlogsCommandReq()
         {
-            LanguageId = request.LanguageId,
+            Language = localizedProperty.Language,
             TopCount = 3
         }, cancellationToken);
 

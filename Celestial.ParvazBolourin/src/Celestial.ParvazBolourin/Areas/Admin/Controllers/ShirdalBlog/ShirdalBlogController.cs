@@ -1,10 +1,12 @@
-﻿using Celestial.ParvazBolourin.Api.Areas.Admin.Models.Dto;
+﻿using Celestial.Api.Areas.Admin.Models.Dto;
+using Celestial.ParvazBolourin.Api.Areas.Admin.Controllers;
+using Celestial.ParvazBolourin.Api.Areas.Admin.Models.Dto;
 using Celestial.ParvazBolourin.Api.Models.Dto;
 using Celestial.ParvazBolourin.Service.Command.ShirdalBlog;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Celestial.ParvazBolourin.Api.Areas.Admin.Controllers.ShirdalBlog;
+namespace Celestial.Api.Areas.Admin.Controllers.ShirdalBlog;
 
 public class ShirdalBlogController : BaseController
 {

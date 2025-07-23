@@ -4,7 +4,7 @@ namespace Celestial.ParvazBolourin.Api.Models.Dto;
 
 public class GetVisaListReqDto
 {
-    public int LanguageId { get; set; }
+    public string Language { get; set; }
     public int PageSize { get; set; } = 10;
     public int PageNumber { get; set; } = 1;
 }
@@ -12,7 +12,8 @@ public class GetVisaListReqDto
 public sealed class GetVisaByIdReqDto
 {
     public int Id { get; set; }
-    public int LanguageId { get; set; }
+    public string Language { get; set; }
+    public string Slug { get; set; }
 }
 
 public sealed class GetVisaByIdResDto
@@ -23,7 +24,7 @@ public sealed class GetVisaByIdResDto
     public VisaIssuer VisaIssuer { get; set; }
     public int IssueDate { get; set; }
     public bool IsDeleted { get; set; } = false;
-    public int LanguageId { get; set; }
+    public string Language { get; set; }
     public string Text { get; set; } = string.Empty;
 
     public string Name { get; set; } = string.Empty;

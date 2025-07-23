@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Celestial.ParvazBolourin.DAL.EF.Configuration.TourConfig;
 
-public class TourMainTransportEntityTypeConfiguration : IEntityTypeConfiguration<TourPrimaryTransport>
+public class TourPrimaryTransportEntityTypeConfiguration : IEntityTypeConfiguration<TourPrimaryTransport>
 {
     public void Configure(EntityTypeBuilder<TourPrimaryTransport> builder)
     {

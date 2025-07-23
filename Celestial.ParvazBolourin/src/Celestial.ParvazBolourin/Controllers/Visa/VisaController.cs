@@ -1,8 +1,9 @@
-﻿using Celestial.ParvazBolourin.Api.Models.Dto;
-using Celestial.ParvazBolourin.Service.Command.Visa;
+﻿using Celestial.ParvazBolourin.Api.Controllers;
+using Celestial.ParvazBolourin.Api.Models.Dto;
+using Celestial.Service.Command.Visa;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Celestial.ParvazBolourin.Api.Controllers.Visa;
+namespace Celestial.Api.Controllers.Visa;
 
 public class VisaController : BaseController
 {
@@ -10,7 +11,7 @@ public class VisaController : BaseController
     public async Task<IActionResult> GetVisaList([FromQuery] GetVisaListReqDto request,
         CancellationToken cancellationToken)
     {
-        var response = await Mediator.Send(new GetVisaListCommandReq { LanguageId = request.LanguageId, PageNumber = request.PageNumber, PageSize = request.PageSize },
+        var response = await Mediator.Send(new GetVisaListCommandReq { Language = request.Language, PageNumber = request.PageNumber, PageSize = request.PageSize },
             cancellationToken);
 
         if (response.HasError)
@@ -24,7 +25,7 @@ public class VisaController : BaseController
         CancellationToken cancellationToken)
     {
         var response =
-            await Mediator.Send(new GetVisaByIdCommandReq { Id = request.Id, LanguageId = request.LanguageId },
+            await Mediator.Send(new GetVisaByIdCommandReq {Slug =request.Slug },
                 cancellationToken);
 
         if (response.HasError)

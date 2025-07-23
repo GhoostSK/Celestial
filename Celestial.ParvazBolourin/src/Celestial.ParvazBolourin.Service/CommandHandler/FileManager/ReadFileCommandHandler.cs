@@ -3,7 +3,7 @@ using Celestial.ParvazBolourin.Service.Command.FileManager;
 using MofidApp.SharedKernel.Common.Model;
 using MofidApp.SharedKernel.Domain.Services;
 
-namespace Celestial.ParvazBolourin.Service.CommandHandler.FileManager;
+namespace Celestial.Service.CommandHandler.FileManager;
 
 public sealed class ReadFileCommandHandler : BaseRequestHandler<ReadFileCommandReq, ReadFileCommandRes>
 {

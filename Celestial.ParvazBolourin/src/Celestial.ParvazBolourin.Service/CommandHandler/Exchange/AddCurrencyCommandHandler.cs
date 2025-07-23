@@ -3,7 +3,7 @@ using Celestial.ParvazBolourin.Core.DAL.Repositories.Exchange;
 using Celestial.ParvazBolourin.Service.Command.Exchange;
 using MediatR;
 
-namespace Celestial.ParvazBolourin.Service.CommandHandler.Exchange;
+namespace Celestial.Service.CommandHandler.Exchange;
 
 public class AddCurrencyCommandHandler : IRequestHandler<AddCurrencyCommandReq, AddCurrencyCommandRes>
 {

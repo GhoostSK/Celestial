@@ -2,7 +2,7 @@
 using Celestial.ParvazBolourin.Service.Command.Exchange;
 using MediatR;
 
-namespace Celestial.ParvazBolourin.Service.CommandHandler.Exchange;
+namespace Celestial.Service.CommandHandler.Exchange;
 
 public class EditCurrencyCommandHandler : IRequestHandler<EditCurrencyCommandReq, EditCurrencyCommandRes>
 {

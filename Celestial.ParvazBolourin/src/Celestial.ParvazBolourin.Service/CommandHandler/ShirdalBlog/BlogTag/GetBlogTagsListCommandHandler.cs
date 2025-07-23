@@ -6,7 +6,7 @@ using Celestial.ParvazBolourin.Service.Command.ShirdalBlog.BlogTag;
 using MediatR;
 using MofidApp.SharedKernel.Domain.Services;
 
-namespace Celestial.ParvazBolourin.Service.CommandHandler.ShirdalBlog.BlogTag;
+namespace Celestial.Service.CommandHandler.ShirdalBlog.BlogTag;
 
 public sealed class GetBlogTagsListCommandHandler(
     IBlogTagService blogTagService,
@@ -32,7 +32,7 @@ public sealed class GetBlogTagsListCommandHandler(
                 new GetLocalizedPropertyReq
                 {
                     EntityId = item.Id,
-                    LanguageId = request.LanguageId,
+                    Language = request.Language,
                     LocalKeyGroup = LocalKeyGroupType.BlogTag
                 }, cancellationToken);
             Data.Add(new BlogTagListItemDto()

@@ -64,9 +64,9 @@ public class TourEntityTypeConfiguration : IEntityTypeConfiguration<Tours>
         builder.Property(p => p.TotalDay).IsRequired();
 
 
-        builder.HasOne(p => p.PrimaryTransport)
-            .WithMany()
-            .HasForeignKey(t => t.Id)
+        builder.HasOne(t => t.PrimaryTransport)
+            .WithOne(p => p.Tour)
+            .HasForeignKey<TourPrimaryTransport>(p => p.TourId)
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.Property(p => p.NecessaryEquipment).IsRequired(false).HasMaxLength(200);

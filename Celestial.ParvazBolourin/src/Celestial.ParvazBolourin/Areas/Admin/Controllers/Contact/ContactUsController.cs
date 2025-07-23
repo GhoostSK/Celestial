@@ -1,7 +1,9 @@
-﻿using Celestial.ParvazBolourin.Service.Command.Contact;
+﻿using Celestial.ParvazBolourin.Api.Areas.Admin.Controllers;
+using Celestial.ParvazBolourin.Service.Command.Contact;
+using Celestial.Service.Command.Contact;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Celestial.ParvazBolourin.Api.Areas.Admin.Controllers.Contact;
+namespace Celestial.Api.Areas.Admin.Controllers.Contact;
 
 public class ContactUsController : BaseController
 {

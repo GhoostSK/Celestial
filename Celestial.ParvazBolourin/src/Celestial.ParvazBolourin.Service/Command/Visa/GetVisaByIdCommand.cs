@@ -3,20 +3,17 @@ using MediatR;
 using MofidApp.SharedKernel.Common.Model;
 using MofidApp.SharedKernel.Domain.Services;
 
-namespace Celestial.ParvazBolourin.Service.Command.Visa;
+namespace Celestial.Service.Command.Visa;
 
-public sealed class GetVisaByIdCommandReq : BaseEntity, IRequest<GetVisaByIdCommandRes>
+public sealed class GetVisaByIdCommandReq : BaseEntity, IRequest<GetVisaCommandRes>
 {
-    public int Id { get; set; }
-    public int LanguageId { get; set; }
-    public string? Slug { get; set; } // ➕ اضافه شده
+    public string? Slug { get; set; }
 }
 
-public sealed class GetVisaByIdCommandRes : ServiceResContextBase
+public sealed class GetVisaCommandRes : ServiceResContextBase
 {
-    public int LanguageId { get; set; }
+    public string Language { get; set; } = string.Empty;
     public string Text { get; set; } = string.Empty;
-
     public string Name { get; set; } = string.Empty;
     public string Country { get; set; } = string.Empty;
     public List<Dictionary<string, string>> Embassy { get; set; } = new();

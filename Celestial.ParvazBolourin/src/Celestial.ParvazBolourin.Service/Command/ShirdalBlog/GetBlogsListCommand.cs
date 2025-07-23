@@ -1,14 +1,15 @@
 ﻿using Celestial.ParvazBolourin.Core.DAL.Model.Global;
+using Celestial.ParvazBolourin.Service.Command.ShirdalBlog;
 using Celestial.ParvazBolourin.Service.Command.ShirdalBlog.BlogCategory;
 using MediatR;
 using MofidApp.SharedKernel.Common.Model;
 using MofidApp.SharedKernel.Domain.Services;
 
-namespace Celestial.ParvazBolourin.Service.Command.ShirdalBlog;
+namespace Celestial.Service.Command.ShirdalBlog;
 
 public sealed class GetBlogsListCommandReq : BaseEntity, IRequest<GetBlogsListCommandRes>
 {
-    public int LanguageId { get; set; }
+    public string Language { get; set; }=string.Empty;
     public string Title { get; set; } = string.Empty;
     public List<long> CategoriesId { get; set; } = new();
     public List<long> TagsId { get; set; } = new();

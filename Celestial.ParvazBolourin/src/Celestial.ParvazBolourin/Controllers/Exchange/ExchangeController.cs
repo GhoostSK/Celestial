@@ -1,7 +1,9 @@
-﻿using Celestial.ParvazBolourin.Service.Command.Exchange;
+﻿using Celestial.ParvazBolourin.Api.Controllers;
+using Celestial.ParvazBolourin.Service.Command.Exchange;
+using Celestial.Service.Command.Exchange;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Celestial.ParvazBolourin.Api.Controllers.Exchange;
+namespace Celestial.Api.Controllers.Exchange;
 
 public class CurrencyController : BaseController
 {

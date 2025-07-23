@@ -1,0 +1,50 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UserSecretsId>531b1064-5481-4b56-81c0-db6a7163806d</UserSecretsId>
+		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <Compile Remove="Areas\Admin\Controllers\ShirdalAtelier\**" />
+	  <Compile Remove="Controllers\ShirdalAtelier\**" />
+	  <Content Remove="Areas\Admin\Controllers\ShirdalAtelier\**" />
+	  <Content Remove="Controllers\ShirdalAtelier\**" />
+	  <EmbeddedResource Remove="Areas\Admin\Controllers\ShirdalAtelier\**" />
+	  <EmbeddedResource Remove="Controllers\ShirdalAtelier\**" />
+	  <None Remove="Areas\Admin\Controllers\ShirdalAtelier\**" />
+	  <None Remove="Controllers\ShirdalAtelier\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.10" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.10">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.10" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.10">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+		<PackageReference Include="Unleash.Client" Version="4.1.15" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Celestial.ParvazBolourin.DAL.EF\Celestial.DAL.EF.csproj" />
+		<ProjectReference Include="..\Celestial.ParvazBolourin.Service\Celestial.Service.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Data\Migrations\" />
+		<Folder Include="Identity\Services\ConfirmationService\" />
+	</ItemGroup>
+
+</Project>

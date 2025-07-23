@@ -1,4 +1,5 @@
 ﻿using Celestial.ParvazBolourin.Core.DAL.Model.Tour;
+using Celestial.Service.Command.Tour;
 using MediatR;
 using MofidApp.SharedKernel.Common.Model;
 using MofidApp.SharedKernel.Domain.Services;
@@ -26,7 +27,7 @@ public class TourPlansUpdateReq
 
 public class TourPlanLocalizeDataDto
 {
-    public int LanguageId { get; set; }
+    public string Language { get; set; } = string.Empty;
     public string PlanDayText { get; set; } = string.Empty;
     public string PlanText { get; set; } = string.Empty;
 }
