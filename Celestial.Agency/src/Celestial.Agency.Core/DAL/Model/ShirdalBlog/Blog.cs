@@ -1,0 +1,13 @@
+﻿using MofidApp.SharedKernel.DAL.Abstractions.EntityFramework;
+
+namespace Celestial.Agency.Core.DAL.Model.ShirdalBlog;
+
+public sealed class Blog : DbBaseEntity<long>
+{
+    public int Likes { get; set; }
+    public string PicturePath { get; set; } = string.Empty;
+    public bool IsDeleted { get; set; } = false;
+    public List<long> CategoriesId { get; set; } = new();
+    public List<long> TagsId { get; set; } = new();
+    public DateTime RegistrationDate { get; set; }
+}

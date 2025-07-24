@@ -1,0 +1,15 @@
+﻿using MediatR;
+using MofidApp.SharedKernel.Common.Model;
+using MofidApp.SharedKernel.Domain.Services;
+
+namespace Celestial.Agency.Service.Command.FileManager;
+
+public sealed class DeleteFileCommandReq : BaseEntity, IRequest<DeleteFileCommandRes>
+{
+    public List<string?> FilePath { get; set; } = new();
+}
+
+public sealed class DeleteFileCommandRes : ServiceResContextBase
+{
+    public bool IsDeleted { get; set; }
+}
