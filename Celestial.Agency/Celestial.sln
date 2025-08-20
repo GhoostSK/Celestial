@@ -17,6 +17,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Celestial.Agency.DAL.EF", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Celestial.Agency.Service", "src\Celestial.Agency.Service\Celestial.Agency.Service.csproj", "{179FDBA5-BE5B-AF07-D73F-09B9F6492F3A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebClient", "WebClient", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Celestial.Agency.WebClient", "WebClient\Celestial.Agency.WebClient.csproj", "{43DF8BB5-2827-6D16-9D18-1FC5BD56AEA8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,10 @@ Global
 		{179FDBA5-BE5B-AF07-D73F-09B9F6492F3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{179FDBA5-BE5B-AF07-D73F-09B9F6492F3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{179FDBA5-BE5B-AF07-D73F-09B9F6492F3A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43DF8BB5-2827-6D16-9D18-1FC5BD56AEA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43DF8BB5-2827-6D16-9D18-1FC5BD56AEA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43DF8BB5-2827-6D16-9D18-1FC5BD56AEA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43DF8BB5-2827-6D16-9D18-1FC5BD56AEA8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -50,6 +58,7 @@ Global
 		{85B47D13-3A0E-D93A-CE39-5613FF8E2DFD} = {9EC71E36-D5E8-4845-994D-559F2154101E}
 		{5D938A39-64B2-7775-7FFC-B813905FBD3B} = {9EC71E36-D5E8-4845-994D-559F2154101E}
 		{179FDBA5-BE5B-AF07-D73F-09B9F6492F3A} = {9EC71E36-D5E8-4845-994D-559F2154101E}
+		{43DF8BB5-2827-6D16-9D18-1FC5BD56AEA8} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {98ADA44C-FC17-4606-8D68-5B9BEFA0DF18}
