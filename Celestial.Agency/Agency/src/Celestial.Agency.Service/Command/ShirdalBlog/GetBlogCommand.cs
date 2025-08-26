@@ -16,7 +16,7 @@ public sealed class GetBlogByIdCommandRes : ServiceResContextBase
     public string PicturePath { get; set; } = string.Empty;
     public string MainText { get; set; } = string.Empty;
     public int Likes { get; set; }
-    public List<BlogCategoryDto> BlogCategories { get; set; } = new();
+    public BlogCategoryDto BlogCategory { get; set; } = new();
     public List<BlogTagDto> BlogTags { get; set; } = new();
     public string MetaTitle { get; set; } = string.Empty;
     public string MetaDescription { get; set; } = string.Empty;

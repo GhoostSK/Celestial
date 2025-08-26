@@ -10,7 +10,7 @@ public sealed class GetBlogsListCommandReq : BaseEntity, IRequest<GetBlogsListCo
 {
     public string Language { get; set; } = string.Empty;
     public string Title { get; set; } = string.Empty;
-    public List<long> CategoriesId { get; set; } = new();
+    public long CategoryId { get; set; }
     public List<long> TagsId { get; set; } = new();
     public int PopularTagCount { get; set; }
     public int PageNumber { get; set; } = 1;
@@ -21,7 +21,7 @@ public sealed class GetBlogsListCommandRes : ServiceResContextBase
 {
     public List<BlogItem> Items { get; set; } = new();
     public List<BlogTagDto> BlogTagsList { get; set; } = new();
-    public List<BlogCategoryListItemDto> Categories { get; set; } = new();
+    public List<BlogCategoryItemDto> Categories { get; set; } = new();
     public PaginationMeta Pagination { get; set; } = new();
 }
 
@@ -33,7 +33,7 @@ public sealed class BlogItem
     public string PicturePath { get; set; } = string.Empty;
     public int Likes { get; set; }
     public List<Tag> Tags { get; set; } = new();
-    public List<Categories> Categories { get; set; } = new();
+    public Category Category { get; set; } = new();
     public DateTime RegistrationDate { get; set; }
     public string CreatedBy { get; set; } = string.Empty;
     public string CreatedByProfilePicture { get; set; } = string.Empty;

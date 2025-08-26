@@ -8,7 +8,7 @@ public sealed class AddBlogReqDto
 {
     public List<BlogLocalizedProperty> BlogLocalizedProperties { get; set; } = new();
     public string PicturePath { get; set; } = string.Empty;
-    public List<long> BlogCategoryIds { get; set; } = new();
+    public long BlogCategoryId { get; set; }
     public List<long> BlogTagIds { get; set; } = new();
 }
 
@@ -45,7 +45,8 @@ public sealed class BlogLocalizedProperty
 
 public sealed class GetBlogsListReqDto
 {
-    public string Language { get; set; }
+    [FromRoute] public string Language { get; set; }
+
     public string Title { get; set; }
     public List<long> CategoriesId { get; set; } = new();
     public List<long> TagsId { get; set; } = new();

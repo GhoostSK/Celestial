@@ -8,7 +8,7 @@ public sealed class AddBlogCommandReq : BaseEntity, IRequest<AddBlogCommandRes>
 {
     public List<BlogLocalizedProperty> BlogLocalizedProperties { get; set; } = new();
     public string PicturePath { get; set; } = string.Empty;
-    public List<long> BlogCategoryIds { get; set; } = new();
+    public long BlogCategoryId { get; set; } = new();
     public List<long> BlogTagIds { get; set; } = new();
 }
 

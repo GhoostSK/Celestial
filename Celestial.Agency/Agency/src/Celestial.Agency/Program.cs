@@ -76,7 +76,7 @@ builder.Services.AddControllers(options =>
     options.ModelBinderProviders.Insert(0, new TokenUserIdModelBinderProvider());
 });
 
-//builder.WebHost.UseKestrel();
+builder.WebHost.UseKestrel();
 
 builder.Services.AddSwaggerGen(options =>
 {

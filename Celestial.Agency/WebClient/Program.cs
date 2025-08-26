@@ -1,6 +1,7 @@
-var builder = WebApplication.CreateBuilder(args);
+using Celestial.Agency.WebClient.Services.Extensions;
 
-// Add services to the container.
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddWebClientServices(builder.Configuration); // Add services to the container.
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
@@ -21,6 +22,6 @@ app.UseAuthorization();
 
 app.MapStaticAssets();
 app.MapRazorPages()
-   .WithStaticAssets();
+    .WithStaticAssets();
 
 app.Run();

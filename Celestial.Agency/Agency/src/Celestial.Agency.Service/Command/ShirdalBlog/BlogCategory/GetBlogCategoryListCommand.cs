@@ -11,5 +11,5 @@ public sealed class GetBlogCategoryListCommandReq : BaseEntity, IRequest<GetBlog
 
 public sealed class GetBlogCategoryListCommandRes : ServiceResContextBase
 {
-    public List<BlogCategoryListItemDto> Items { get; set; } = new();
+    public List<BlogCategoryItemDto> Items { get; set; } = new();
 }

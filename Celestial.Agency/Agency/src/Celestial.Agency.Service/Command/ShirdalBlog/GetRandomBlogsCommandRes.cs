@@ -24,7 +24,7 @@ public class TopBlogDto
     public string HeaderText { get; set; } = string.Empty;
     public string Slug { get; set; } = string.Empty;
     public List<Tag> Tags { get; set; } = new();
-    public List<Categories> Categories { get; set; } = new();
+    public Category Categories { get; set; } = new();
     public DateTime RegistrationDate { get; set; }
     public string CreatedBy { get; set; } = string.Empty;
     public string CreatedByProfilePicture { get; set; } = string.Empty;
@@ -36,7 +36,7 @@ public class Tag
     public string Slug { get; set; } = string.Empty;
 }
 
-public class Categories
+public class Category
 {
     public string Title { get; set; } = string.Empty;
     public string Slug { get; set; } = string.Empty;
