@@ -1,4 +1,5 @@
 ﻿using Celestial.Agency.Core.DAL.Model.Global;
+using Celestial.Agency.Core.DAL.Repositories.Blog;
 using Celestial.Agency.Core.DAL.Repositories.Global;
 using Celestial.Agency.Core.DAL.Repositories.Global.Model;
 using Celestial.Agency.Core.DAL.Repositories.ShirdalBlog;
@@ -14,9 +15,9 @@ public sealed class GetBlogByIdCommandHandler(
     ILocalizedPropertyService localizedPropertyService,
     IBlogCategoryService blogCategoryService,
     IBlogTagService blogTagService)
-    : BaseRequestHandler<GetBlogCommandReq, GetBlogByIdCommandRes>
+    : BaseRequestHandler<GetBlogBySlugCommandReq, GetBlogBySlugCommandRes>
 {
-    protected override async Task<GetBlogByIdCommandRes> HandleCore(GetBlogCommandReq request,
+    protected override async Task<GetBlogBySlugCommandRes> HandleCore(GetBlogBySlugCommandReq request,
         CancellationToken cancellationToken)
     {
         Core.DAL.Model.ShirdalBlog.Blog? blog;
@@ -25,7 +26,7 @@ public sealed class GetBlogByIdCommandHandler(
             cancellationToken: cancellationToken);
 
         if (localizedProperty == null)
-            return new GetBlogByIdCommandRes
+            return new GetBlogBySlugCommandRes
             {
                 Error = new ValidationError("404", "Blog not found with slug")
             };
@@ -34,12 +35,12 @@ public sealed class GetBlogByIdCommandHandler(
         blog!.Id = localizedProperty.EntityId;
 
         if (blog == null)
-            return new GetBlogByIdCommandRes
+            return new GetBlogBySlugCommandRes
             {
                 Error = ValidationError.UnhandledValidationError("406", "Blog Not Found")
             };
 
-        var response = blog.Adapt<GetBlogByIdCommandRes>();
+        var response = blog.Adapt<GetBlogBySlugCommandRes>();
 
         var localizedProperties = await localizedPropertyService.GetPropertyByLanguageAndEntityId(
             new GetLocalizedPropertyReq
@@ -52,7 +53,7 @@ public sealed class GetBlogByIdCommandHandler(
         );
 
         if (localizedProperties.Count == 0)
-            return new GetBlogByIdCommandRes
+            return new GetBlogBySlugCommandRes
             {
                 Error = new ValidationError("500", "Language not found")
             };

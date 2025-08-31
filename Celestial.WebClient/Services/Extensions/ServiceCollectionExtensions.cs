@@ -8,12 +8,16 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddWebClientServices(this IServiceCollection services, IConfiguration config)
     {
-        services.AddHttpClient<TourApiClient>(client => { client.BaseAddress = new Uri(config["ApiBaseUrl"]); });
         services.AddHttpClient<BlogApiClient>(client => { client.BaseAddress = new Uri(config["ApiBaseUrl"]); });
 
-        services.AddScoped<ITourService, TourService>();
         services.AddScoped<IBlogService, BlogService>();
 
         return services;
     }
+}
+
+public class ServiceResContextBase
+{
+    public bool HasError { get; set; } = false;
+    public string ErrorMessage { get; set; } = string.Empty;
 }

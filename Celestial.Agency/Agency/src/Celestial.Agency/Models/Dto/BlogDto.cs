@@ -47,10 +47,10 @@ public sealed class GetBlogsListReqDto
 {
     [FromRoute] public string Language { get; set; }
 
-    public string Title { get; set; }
+    public string Title { get; set; } = string.Empty;
     public List<long> CategoriesId { get; set; } = new();
     public List<long> TagsId { get; set; } = new();
-    public int PopularTagsCount { get; set; }
+    public int PopularTagCount { get; set; }
     public int PageSize { get; set; } = 10;
     public int PageNumber { get; set; } = 1;
 }
@@ -60,10 +60,15 @@ public sealed class RemoveBlogsReqDto
     public int BlogId { get; set; }
 }
 
-public sealed class GetBlogsByIdReqDto
+public sealed class GetBlogBySlugReqDto
 {
-    public string Language { get; set; }
-    public int Id { get; set; }
+    [FromRoute] public string Language { get; set; }
 
     [Slug] [FromRoute] public string Slug { get; set; }
+}
+
+public sealed class GetLatestBlogsReqDto
+{
+    [FromRoute] public string Language { get; set; }
+    public int Count { get; set; }
 }

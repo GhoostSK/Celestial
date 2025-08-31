@@ -25,11 +25,11 @@ public class BlogController : BaseController
     }
 
     [HttpGet("{slug}")]
-    public async Task<IActionResult> GetBlogById([FromQuery] GetBlogsByIdReqDto request,
+    public async Task<IActionResult> GetBlogBySlug([FromQuery] GetBlogBySlugReqDto request,
         CancellationToken cancellationToken)
     {
         var response =
-            await Mediator.Send(new GetBlogCommandReq { Slug = request.Slug },
+            await Mediator.Send(new GetBlogBySlugCommandReq { Slug = request.Slug },
                 cancellationToken);
 
         if (response.HasError) return BadRequest(response.Error);
@@ -55,7 +55,13 @@ public class BlogController : BaseController
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetLatestBlog(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetLatestBlog(GetLatestBlogsReqDto request, CancellationToken cancellationToken)
     {
+        var result = await Mediator.Send(request.Adapt<GetLatestBlogListCommandReq>(), cancellationToken);
+
+        if (result.HasError)
+            return BadRequest(result.Error);
+
+        return Ok(result.Items);
     }
 }

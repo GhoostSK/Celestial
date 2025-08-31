@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Celestial.Agency.Api.Controllers.Blog.BlogTag;
 
-public class TagController : BaseController
+public class BlogTagController : BaseController
 {
     [HttpGet]
     public async Task<IActionResult> GetById([FromQuery] GetBlogTagByIdCommandReq request)
@@ -22,7 +22,7 @@ public class TagController : BaseController
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetList([FromQuery] string language)
+    public async Task<IActionResult> GetList([FromRoute] string language)
     {
         var response = await Mediator.Send(new GetBlogTagListCommandReq
         {

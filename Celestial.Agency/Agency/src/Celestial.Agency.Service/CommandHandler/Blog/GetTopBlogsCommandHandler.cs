@@ -1,7 +1,7 @@
 ﻿using Celestial.Agency.Core.DAL.Model.Global;
+using Celestial.Agency.Core.DAL.Repositories.Blog;
 using Celestial.Agency.Core.DAL.Repositories.Global;
 using Celestial.Agency.Core.DAL.Repositories.Global.Model;
-using Celestial.Agency.Core.DAL.Repositories.ShirdalBlog;
 using Celestial.Agency.Service.Command.ShirdalBlog;
 using MofidApp.SharedKernel.Common.Model;
 using MofidApp.SharedKernel.Domain.Services;

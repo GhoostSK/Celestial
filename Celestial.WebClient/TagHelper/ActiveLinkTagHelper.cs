@@ -2,20 +2,20 @@
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 
-namespace Celestial.Agency.WebClient.TagHelper;
+namespace Celestial.WebClient.TagHelper;
 
 [HtmlTargetElement("li", Attributes = "active-if")]
 public class ActiveParentLiTagHelper : Microsoft.AspNetCore.Razor.TagHelpers.TagHelper
 {
-    [HtmlAttributeName("active-if")] public string ActivePage { get; set; }
+    [HtmlAttributeName("active-if")] public string ActivePage { get; set; } = string.Empty;
 
-    [ViewContext] [HtmlAttributeNotBound] public ViewContext ViewContext { get; set; }
+    [ViewContext] [HtmlAttributeNotBound] public ViewContext ViewContext { get; set; } = new();
 
     public override void Process(TagHelperContext context, TagHelperOutput output)
     {
         var currentPage = ViewContext.ActionDescriptor.DisplayName;
 
-        if (currentPage.Contains(ActivePage, StringComparison.OrdinalIgnoreCase))
+        if (currentPage!.Contains(ActivePage, StringComparison.OrdinalIgnoreCase))
         {
             var existingClass = output.Attributes["class"]?.Value?.ToString();
             var newClass = string.IsNullOrEmpty(existingClass) ? "active" : $"{existingClass} active";

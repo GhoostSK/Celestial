@@ -1,4 +1,4 @@
-﻿using Celestial.Agency.Core.DAL.Repositories.ShirdalBlog;
+﻿using Celestial.Agency.Core.DAL.Repositories.Blog;
 using Celestial.Agency.Service.Command.ShirdalBlog;
 using MofidApp.SharedKernel.Common.Model;
 

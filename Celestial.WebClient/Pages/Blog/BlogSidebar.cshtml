@@ -1,4 +1,6 @@
 ﻿@page
+@using Celestial.WebClient.Services.Extensions
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model Celestial.WebClient.Pages.Blog.BlogSidebarModel
 @{
 }
@@ -34,15 +36,14 @@
         <div class="row g-4">
             <div class="col-lg-8 order-lg-1 order-2">
                 <div class="row g-md-4 gy-5 mb-50">
-
-                @if (Model.Blogs.Items.Any())
-                {
-                    foreach (var blog in Model.Blogs.Items)
+                    @if (Model.Blogs.Items.Any())
                     {
+                        foreach (var blog in Model.Blogs.Items)
+                        {
                             <div class="col-md-6  wow animate fadeInUp" data-wow-delay="200ms" data-wow-duration="1500ms">
                                 <div class="blog-sidebar">
                                     <div class="blog-sidebar-img-wrap">
-                                        <a href="package-details.html" class="card-img"><img src="http://127.0.0.1:5000/api/en/Global/ReadFile?filePath=@blog.PicturePath" alt=""></a>
+                                        <a href="package-details.html" class="card-img"><image path="@blog.PicturePath" alt="Blog image" /></a>
                                         <div class="batch">
                                             <span class="featured">@blog.Category.Title</span>
                                         </div>
@@ -75,12 +76,12 @@
                                                         <path d="M11.457 5.4418C11.5483 5.49455 11.5854 5.52915 11.6228 5.62808C11.6188 5.83173 11.4628 5.9657 11.3321 6.10692C11.2656 6.1801 11.203 6.25532 11.1409 6.33218C10.8064 6.74465 10.8064 6.74465 10.6606 6.76798C10.5066 6.7481 10.4427 6.67058 10.3359 6.5629C10.3073 6.53492 10.2787 6.50697 10.2501 6.47905C9.98482 6.21856 9.98482 6.21856 9.97021 6.08951C9.98047 5.98868 9.98047 5.98868 10.0386 5.90836C10.1172 5.85196 10.1172 5.85196 10.1975 5.83658C10.3872 5.87141 10.5091 6.01835 10.6367 6.15274C10.8083 5.96897 10.9742 5.78392 11.1297 5.58611C11.2308 5.46937 11.299 5.41923 11.457 5.4418Z" fill="#111111" fill-opacity="0.5"></path>
                                                     </svg>
                                                 </div>
-                                                <span>۱۲ اسفند ۱۴۰۳</span>
+                                                <span>@blog.RegistrationDate.ToShamsiFullString()</span>
                                             </li>
                                         </ul>
                                         <div class="card-content-top">
                                             <h5>
-                                                <a href="package-details.html">@blog.HeaderText</a>
+                                                <a href="package-details.html">@blog.Title</a>
                                             </h5>
                                         </div>
                                         <a href="blog-details.html" class="view-btn three">
@@ -93,10 +94,58 @@
                                     </div>
                                 </div>
                             </div>
+                        }
                     }
-                }
                 </div>
+
                 <div class="row">
+                    <div class="col-md-12 wow animate fadeInUp" data-wow-delay="200ms" data-wow-duration="1500ms">
+                        <nav class="inner-pagination-area">
+                            <ul class="pagination-list">
+
+                                @if (Model.Blogs.Pagination.PrevPage != null)
+                                {
+                                    <li>
+                                        <a asp-page="/Blog/BlogSidebar"
+                                           asp-route-language="@Request.RouteValues["language"]"
+                                           asp-route-pageNumber="@Model.Blogs.Pagination.PrevPage">
+                                            <b class="shop-pagi-btn"><i class="bi bi-chevron-right"></i></b>
+                                        </a>
+                                    </li>
+                                }
+
+                                @for (int i = 1; i <= Model.Blogs.Pagination.TotalPages; i++)
+                                {
+                                    <li class="@(Model.Blogs.Pagination.CurrentPage == i ? "activeli" : "")">
+                                        <a asp-page="/Blog/BlogSidebar"
+                                           asp-route-language="@Request.RouteValues["language"]"
+                                           asp-route-pageNumber="@i">
+                                            @i
+                                        </a>
+                                    </li>
+                                }
+
+                                @* دکمه بعدی *@
+                                @if (Model.Blogs.Pagination.NextPage != null)
+                                {
+                                    <li>
+                                        <a asp-page="/Blog/BlogSidebar"
+                                           asp-route-language="@Request.RouteValues["language"]"
+                                           asp-route-pageNumber="@Model.Blogs.Pagination.NextPage">
+                                            <b class="shop-pagi-btn"><i class="bi bi-chevron-left"></i></b>
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+
+
+
+
+
+                @*                 <div class="row">
                     <div class="col-md-12 wow animate fadeInUp" data-wow-delay="200ms" data-wow-duration="1500ms">
                         <nav class="inner-pagination-area">
                             <ul class="pagination-list">
@@ -110,7 +159,7 @@
                             </ul>
                         </nav>
                     </div>
-                </div>
+                </div> *@
             </div>
             <div class="col-lg-4 order-lg-1 order-1">
                 <div class="single-widget two mb-30  wow animate fadeInUp" data-wow-delay="200ms" data-wow-duration="1500ms">
@@ -140,70 +189,36 @@
                 </div>
                 <div class="single-widget mb-30  wow animate fadeInUp" data-wow-delay="600ms" data-wow-duration="1500ms">
                     <h5 class="widget-title">مقالات اخیر</h5>
-                    <div class="recent-post-widget">
-                        <div class="recent-post-img">
-                            <a href="blog-details.html"><img src="images/recent-image-1.png" alt=""></a>
-                        </div>
-                        <div class="recent-post-content">
-                            <a href="blog-grid.html">۱۲ اسفند ۱۴۰۳</a>
-                            <h6>
-                                <a href="blog-details.html">نکات درخواست ویزا: از این اشتباهات رایج اجتناب کنید</a>
-                            </h6>
-                        </div>
-                    </div>
-                    <div class="recent-post-widget">
-                        <div class="recent-post-img">
-                            <a href="blog-details.html"><img src="images/recent-image-2.png" alt=""></a>
-                        </div>
-                        <div class="recent-post-content">
-                            <a href="blog-grid.html">۱۵ اسفند ۱۴۰۳</a>
-                            <h6>
-                                <a href="blog-details.html">مهمترین اشتباهاتی که هنگام برنامه ریزی برای تعطیلات رویایی خود باید از آنها اجتناب کنید</a>
-                            </h6>
-                        </div>
-                    </div>
-                    <div class="recent-post-widget">
-                        <div class="recent-post-img">
-                            <a href="blog-details.html"><img src="images/recent-image-3.png" alt=""></a>
-                        </div>
-                        <div class="recent-post-content">
-                            <a href="blog-grid.html">۲۲ اسفند ۱۴۰۳</a>
-                            <h6>
-                                <a href="blog-details.html">راهنمای نهایی سفرهای بین المللی بدون استرس</a>
-                            </h6>
-                        </div>
-                    </div>
+                    @if (Model.LatestBlogList.Any())
+                    {
+                        foreach (var latestBlog in Model.LatestBlogList)
+                        {
+                            <div class="recent-post-widget">
+                                <div class="recent-post-img">
+                                    <a href="blog-details.html"><img src="http://127.0.0.1:5000/api/en/Global/ReadFile?filePath=@latestBlog.PicturePath" alt=""></a>
+                                </div>
+                                <div class="recent-post-content">
+                                    <a href="blog-grid.html">@latestBlog.RegistrationDate.ToShamsiFullString()</a>
+                                    <h6>
+                                        <a href="blog-details.html">@latestBlog.Title</a>
+                                    </h6>
+                                </div>
+                            </div>
+                        }
+                    }
                 </div>
                 <div class="single-widget  wow animate fadeInUp" data-wow-delay="800ms" data-wow-duration="1500ms">
                     <h5 class="widget-title">برچسب ها</h5>
                     <ul class="tag-list">
-                        <li>
-                            <a href="blog-grid.html">سفر بدون دردسر</a>
-                        </li>
-                        <li>
-                            <a href="blog-grid.html">فرارهای تابستانی</a>
-                        </li>
-                        <li>
-                            <a href="blog-grid.html">تعطیلات کروز</a>
-                        </li>
-                        <li>
-                            <a href="blog-grid.html">سفر اروپایی</a>
-                        </li>
-                        <li>
-                            <a href="blog-grid.html">راهنما ویزا </a>
-                        </li>
-                        <li>
-                            <a href="blog-grid.html">نکات سفر</a>
-                        </li>
-                        <li>
-                            <a href="blog-grid.html">لیست سطل</a>
-                        </li>
-                        <li>
-                            <a href="blog-grid.html">جواهرات پنهان</a>
-                        </li>
-                        <li>
-                            <a href="blog-grid.html">سفر تنها</a>
-                        </li>
+                    @if (Model.Blogs.BlogTagsList.Any())
+                        {
+                            foreach (var tag in Model.Blogs.BlogTagsList)
+                            {
+                                <li>
+                                    <a href="#">@tag.Name</a>
+                                </li>   
+                            }
+                        }
                     </ul>
                 </div>
             </div>

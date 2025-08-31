@@ -3,28 +3,39 @@ using Celestial.Agency.Core.DAL.Repositories.Global;
 using Celestial.Agency.Core.DAL.Repositories.Global.Model;
 using Celestial.Agency.Core.DAL.Repositories.ShirdalBlog;
 using Celestial.Agency.Service.Command.ShirdalBlog.BlogTag;
+using Celestial.Agency.Service.Command.ValidateLanguage;
 using MediatR;
 using MofidApp.SharedKernel.Domain.Services;
 
-namespace Celestial.Agency.Service.CommandHandler.ShirdalBlog.BlogTag;
+namespace Celestial.Agency.Service.CommandHandler.Blog.BlogTag;
 
 public sealed class GetBlogTagsListCommandHandler(
     IBlogTagService blogTagService,
-    ILocalizedPropertyService localizedPropertyService)
+    ILocalizedPropertyService localizedPropertyService,
+    IMediator mediator)
     : IRequestHandler<GetBlogTagListCommandReq, GetBlogTagListCommandRes>
 {
     public async Task<GetBlogTagListCommandRes> Handle(GetBlogTagListCommandReq request,
         CancellationToken cancellationToken)
     {
-        var categories = await blogTagService.GetTagsList(cancellationToken);
-        if (categories.Count == 0)
+        var langs = new List<string> { request.Language };
+        var validateLanguage =
+            await mediator.Send(new ValidateLanguageCommandReq { Language = langs }, cancellationToken);
+        if (validateLanguage.HasError)
+            return new GetBlogTagListCommandRes
+            {
+                Error = validateLanguage.Error
+            };
+
+        var tags = await blogTagService.GetTagsList(cancellationToken);
+        if (tags.Count == 0)
             return new GetBlogTagListCommandRes
             {
                 Error = ValidationError.UnhandledValidationError("BT404", "Tag Not Found")
             };
 
-        var Data = new List<BlogTagListItemDto>();
-        foreach (var item in categories)
+        var data = new List<BlogTagListItemDto>();
+        foreach (var item in tags)
         {
             var localize = await localizedPropertyService.GetPropertyByLanguageAndEntityId(
                 new GetLocalizedPropertyReq
@@ -33,7 +44,8 @@ public sealed class GetBlogTagsListCommandHandler(
                     Language = request.Language,
                     LocalKeyGroup = LocalKeyGroupType.BlogTag
                 }, cancellationToken);
-            Data.Add(new BlogTagListItemDto
+
+            data.Add(new BlogTagListItemDto
             {
                 Id = item.Id,
                 Name = localize.FirstOrDefault(p => p.LocalKey == "Name")?.LocalValue ?? "",
@@ -43,7 +55,7 @@ public sealed class GetBlogTagsListCommandHandler(
 
         return new GetBlogTagListCommandRes
         {
-            Items = Data
+            Items = data
         };
     }
 }

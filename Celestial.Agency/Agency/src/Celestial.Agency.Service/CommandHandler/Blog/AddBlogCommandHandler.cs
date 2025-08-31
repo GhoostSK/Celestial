@@ -1,4 +1,5 @@
 ﻿using Celestial.Agency.Core.DAL.Model.Global;
+using Celestial.Agency.Core.DAL.Repositories.Blog;
 using Celestial.Agency.Core.DAL.Repositories.Global;
 using Celestial.Agency.Core.DAL.Repositories.ShirdalBlog;
 using Celestial.Agency.Service.Command.ShirdalBlog;

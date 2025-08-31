@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using System.ComponentModel.DataAnnotations;
+using MediatR;
 using MofidApp.SharedKernel.Common.Model;
 using MofidApp.SharedKernel.Domain.Services;
 
@@ -15,9 +16,10 @@ public sealed class AddBlogTagCommandRes : ServiceResContextBase
 
 public sealed class LocalizedTagNameDto
 {
-    public string Language { get; set; } = string.Empty;
-    public string Name { get; set; } = string.Empty;
-    public string Slug { get; set; } = string.Empty;
+    [Required] public string Language { get; set; } = string.Empty;
+
+    [Required] public string Name { get; set; } = string.Empty;
+    [Required] public string Slug { get; set; } = string.Empty;
 }
 
 public sealed class BlogTagListItemDto

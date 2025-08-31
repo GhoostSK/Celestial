@@ -4,12 +4,13 @@ using MofidApp.SharedKernel.Domain.Services;
 
 namespace Celestial.Agency.Service.Command.ShirdalBlog;
 
-public sealed class GetBlogCommandReq : BaseEntity, IRequest<GetBlogByIdCommandRes>
+public sealed class GetBlogBySlugCommandReq : BaseEntity, IRequest<GetBlogBySlugCommandRes>
 {
     public string? Slug { get; set; }
+    public string Language { get; set; } = string.Empty;
 }
 
-public sealed class GetBlogByIdCommandRes : ServiceResContextBase
+public sealed class GetBlogBySlugCommandRes : ServiceResContextBase
 {
     public string Title { get; set; } = string.Empty;
     public string HeaderText { get; set; } = string.Empty;

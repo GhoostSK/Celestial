@@ -41,3 +41,19 @@ public sealed class BlogItem
     //seo
     public string Slug { get; set; } = string.Empty;
 }
+
+public sealed class LatestBlogItem
+{
+    public long Id { get; set; }
+    public string Title { get; set; } = string.Empty;
+    public string HeaderText { get; set; } = string.Empty;
+    public string PicturePath { get; set; } = string.Empty;
+    public int Likes { get; set; }
+    public DateTime RegistrationDate { get; set; }
+    public string CreatedBy { get; set; } = string.Empty;
+
+    public string CreatedByProfilePicture { get; set; } = string.Empty;
+
+    //seo
+    public string Slug { get; set; } = string.Empty;
+}
