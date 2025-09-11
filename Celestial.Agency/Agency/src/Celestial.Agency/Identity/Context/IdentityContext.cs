@@ -5,13 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Celestial.Agency.Api.Identity.Context;
 
-public class IdentityDbContext : IdentityDbContext<User, IdentityRole, string>
+public class IdentityDbContext(DbContextOptions<IdentityDbContext> options)
+    : IdentityDbContext<User, IdentityRole, string>(options)
 {
-    public IdentityDbContext(DbContextOptions<IdentityDbContext> options)
-        : base(options)
-    {
-    }
-
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);

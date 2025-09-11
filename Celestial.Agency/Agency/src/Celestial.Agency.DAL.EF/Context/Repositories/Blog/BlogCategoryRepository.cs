@@ -9,11 +9,17 @@ namespace Celestial.Agency.DAL.EF.Context.Repositories.Blog;
 public sealed class BlogCategoryRepository(MainDbContext dbContext)
     : RepositoryBase<BlogCategory>(dbContext), IBlogCategoryService
 {
-    public async Task<List<BlogCategory>> GetBlogCategoriesList(CancellationToken cancellationToken)
+    public async Task<List<BlogCategory>> GetBlogCategoriesList(int count, CancellationToken cancellationToken)
     {
-        return await TableNoTracking
+        var query = TableNoTracking
             .IgnoreQueryFilters()
-            .Where(p => !p.IsDeleted).ToListAsync(cancellationToken);
+            .Where(p => !p.IsDeleted);
+
+        var result = count > 0
+            ? await query.Take(count).ToListAsync(cancellationToken)
+            : await query.ToListAsync(cancellationToken);
+
+        return result;
     }
 
     public async Task<List<BlogCategory>> GetBlogCategoriesByIdsAsync(List<long> ids,

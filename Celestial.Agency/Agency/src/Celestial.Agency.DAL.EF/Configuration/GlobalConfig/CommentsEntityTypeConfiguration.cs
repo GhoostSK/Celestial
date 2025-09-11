@@ -10,9 +10,31 @@ public sealed class CommentsEntityTypeConfiguration : IEntityTypeConfiguration<C
     {
         ArgumentNullException.ThrowIfNull(nameof(builder));
 
-        builder.ToTable(nameof(Comments));
-        builder.Property(p => p.CommentText).HasMaxLength(int.MaxValue).IsRequired();
-        builder.Property(p => p.IsConfirmed).IsRequired();
-        builder.Property(p => p.UserId).HasMaxLength(128).IsRequired();
+        builder.Property(c => c.EntityId)
+            .IsRequired();
+
+        builder.Property(c => c.CommentText)
+            .IsRequired()
+            .HasMaxLength(2000);
+
+        builder.Property(c => c.UserId)
+            .IsRequired()
+            .HasMaxLength(450);
+
+        builder.Property(c => c.IsConfirmed)
+            .IsRequired();
+
+        builder.Property(c => c.IsDeleted)
+            .IsRequired()
+            .HasDefaultValue(false);
+
+        builder.Property(c => c.KeyGroup)
+            .HasConversion<int>()
+            .IsRequired();
+
+        builder.HasOne(c => c.ParentComment)
+            .WithMany(c => c.Replies)
+            .HasForeignKey(c => c.ParentCommentId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

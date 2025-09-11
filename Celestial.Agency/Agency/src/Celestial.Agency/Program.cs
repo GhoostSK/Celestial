@@ -67,7 +67,7 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
     };
 });
-
+//builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ActivityLogBehavior<,>));
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.RegisterServices();
 

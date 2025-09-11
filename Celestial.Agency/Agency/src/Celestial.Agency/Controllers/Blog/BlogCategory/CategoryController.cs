@@ -20,7 +20,8 @@ public class CategoryController : BaseController
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetList([FromRoute] string language, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetList([FromRoute] string language, int count,
+        CancellationToken cancellationToken)
     {
         var response = await Mediator.Send(new GetBlogCategoryListCommandReq
         {

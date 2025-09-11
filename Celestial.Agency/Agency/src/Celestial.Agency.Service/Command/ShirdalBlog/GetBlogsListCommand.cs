@@ -19,13 +19,13 @@ public sealed class GetBlogsListCommandReq : BaseEntity, IRequest<GetBlogsListCo
 
 public sealed class GetBlogsListCommandRes : ServiceResContextBase
 {
-    public List<BlogItem> Items { get; set; } = new();
-    public List<BlogTagDto> BlogTagsList { get; set; } = new();
+    public List<BlogListItem> Items { get; set; } = new();
+    public List<BlogTagDto> Tags { get; set; } = new();
     public List<BlogCategoryItemDto> Categories { get; set; } = new();
     public PaginationMeta Pagination { get; set; } = new();
 }
 
-public sealed class BlogItem
+public sealed class BlogListItem
 {
     public long Id { get; set; }
     public string Title { get; set; } = string.Empty;

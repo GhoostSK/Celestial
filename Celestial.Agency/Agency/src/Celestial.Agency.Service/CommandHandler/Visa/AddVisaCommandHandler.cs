@@ -1,7 +1,7 @@
 ﻿using Celestial.Agency.Core.DAL.Model.Global;
 using Celestial.Agency.Core.DAL.Repositories.Global;
 using Celestial.Agency.Core.DAL.Repositories.Visa;
-using Celestial.Agency.Service.Command.ValidateLanguage;
+using Celestial.Agency.Service.Command.localization;
 using Celestial.Agency.Service.Command.Visa;
 using MediatR;
 using MofidApp.SharedKernel.Common.Model;

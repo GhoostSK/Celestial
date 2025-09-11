@@ -13,7 +13,8 @@ public class BlogApiClient(HttpClient http)
             return new T
             {
                 HasError = true,
-                ErrorMessage = $"Request failed with status code {response.StatusCode}"
+                ErrorMessage = $"Request failed {response.StatusCode}",
+                StatusCode = (int)response.StatusCode
             };
 
         var result = await response.Content.ReadFromJsonAsync<T>();
@@ -27,24 +28,36 @@ public class BlogApiClient(HttpClient http)
         return result;
     }
 
-    public async Task<GetBlogListRes> GetBlogListAsync(GetBlogListReqDto request)
+    public async Task<GetBlogListResDto> GetBlogListAsync(GetBlogListReqDto request)
     {
-        return await GetSafeAsync<GetBlogListRes>(
+        return await GetSafeAsync<GetBlogListResDto>(
             $"/api/{request.Language}/Blog/GetBlogsList?PageNumber={request.PageNumber}&PageSize={request.PageSize}&PopularTagCount={request.PopularTagCount}"
-        ) ?? new GetBlogListRes();
+        ) ?? new GetBlogListResDto();
     }
 
-    public async Task<List<LatestBlogItemDto>> GetLatestBlogListAsync(GetLatestBlogListReqDto request)
+    public async Task<GetLatestBlogListResDto> GetLatestBlogListAsync(GetLatestBlogListReqDto request)
     {
-        return await GetSafeAsync<List<LatestBlogItemDto>>(
+        return await GetSafeAsync<GetLatestBlogListResDto>(
             $"/api/{request.Language}/Blog/GetLatestBlog?count={request.Count}"
-        ) ?? new List<LatestBlogItemDto>();
+        ) ?? new GetLatestBlogListResDto();
     }
 
-    public async Task<GetBlogByIdCommandResDto> GetBlogBySlugAsync(GetBlogBySlugReqDto request)
+    public async Task<GetBlogBySlugResDto> GetBlogBySlugAsync(GetBlogBySlugReqDto request)
     {
-        return await GetSafeAsync<GetBlogByIdCommandResDto>(
+        return await GetSafeAsync<GetBlogBySlugResDto>(
             $"/api/{request.Language}/Blog/GetBlogBySlug/{request.Slug}"
-        ) ?? new GetBlogByIdCommandResDto();
+        ) ?? new GetBlogBySlugResDto();
+    }
+
+    public async Task<GetBlogCategoryListResDto> GetBlogCategoriesListAsync(GetBlogCategoryListReqDto request)
+    {
+        return await GetSafeAsync<GetBlogCategoryListResDto>(
+            $"/api/{request.Language}/Category/GetList/?count={request.Count}");
+    }
+
+    public async Task<GetBlogTagListResDto> GetBlogTagListAsync(GetBlogTagListReqDto request)
+    {
+        return await GetSafeAsync<GetBlogTagListResDto>(
+            $"/api/{request.Language}/BlogTag/GetList/?count={request.Count}");
     }
 }

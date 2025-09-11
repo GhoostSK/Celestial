@@ -2,8 +2,8 @@
 using Celestial.Agency.Core.DAL.Repositories.Blog;
 using Celestial.Agency.Core.DAL.Repositories.Global;
 using Celestial.Agency.Core.DAL.Repositories.Global.Model;
+using Celestial.Agency.Service.Command.localization;
 using Celestial.Agency.Service.Command.ShirdalBlog;
-using Celestial.Agency.Service.Command.ValidateLanguage;
 using MediatR;
 using MofidApp.SharedKernel.Common.Model;
 
@@ -46,9 +46,10 @@ public sealed class GetLatestBlogListCommandHandler(
                 Id = blog.Id,
                 PicturePath = blog.PicturePath,
                 Likes = blog.Likes,
-                HeaderText = localize.FirstOrDefault(p => p.LocalKey == nameof(BlogItem.HeaderText))?.LocalValue ?? "",
-                Title = localize.FirstOrDefault(p => p.LocalKey == nameof(BlogItem.Title))?.LocalValue ?? "",
-                Slug = localize.FirstOrDefault(p => p.LocalKey == nameof(BlogItem.Slug))?.LocalValue ?? "",
+                HeaderText = localize.FirstOrDefault(p => p.LocalKey == nameof(BlogListItem.HeaderText))?.LocalValue ??
+                             "",
+                Title = localize.FirstOrDefault(p => p.LocalKey == nameof(BlogListItem.Title))?.LocalValue ?? "",
+                Slug = localize.FirstOrDefault(p => p.LocalKey == nameof(BlogListItem.Slug))?.LocalValue ?? "",
                 RegistrationDate = blog.RegistrationDate,
                 CreatedBy = "meysam Peyghamy",
                 CreatedByProfilePicture = "images/Profile/sample-User.jpg"

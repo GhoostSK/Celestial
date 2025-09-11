@@ -6,18 +6,28 @@ namespace Celestial.WebClient.Services.Implementation;
 
 public class BlogService(BlogApiClient client) : IBlogService
 {
-    public async Task<GetBlogListRes> GetBlogListAsync(GetBlogListReqDto request)
+    public async Task<GetBlogListResDto> GetBlogListAsync(GetBlogListReqDto request)
     {
         return await client.GetBlogListAsync(request);
     }
 
-    public async Task<List<LatestBlogItemDto>> GetLatestBlogListAsync(GetLatestBlogListReqDto request)
+    public async Task<GetBlogBySlugResDto> GetBlogBySlugAsync(GetBlogBySlugReqDto request)
+    {
+        return await client.GetBlogBySlugAsync(request);
+    }
+
+    public async Task<GetLatestBlogListResDto> GetLatestBlogListAsync(GetLatestBlogListReqDto request)
     {
         return await client.GetLatestBlogListAsync(request);
     }
 
-    public async Task<GetBlogByIdCommandResDto> GetBlogBySlugAsync(GetBlogBySlugReqDto request)
+    public async Task<GetBlogCategoryListResDto> GetBlogCategoriesListAsync(GetBlogCategoryListReqDto request)
     {
-        return await client.GetBlogBySlugAsync(request);
+        return await client.GetBlogCategoriesListAsync(request);
+    }
+
+    public async Task<GetBlogTagListResDto> GetBlogTagsListAsync(GetBlogTagListReqDto request)
+    {
+        return await client.GetBlogTagListAsync(request);
     }
 }

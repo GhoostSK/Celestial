@@ -14,10 +14,17 @@ public static class DateTimeExtensions
 
     public static string ToShamsiFullString(this DateTime dateTime)
     {
-        var year = pc.GetYear(dateTime);
-        var month = pc.GetMonth(dateTime);
-        var day = pc.GetDayOfMonth(dateTime);
+        try
+        {
+            var year = pc.GetYear(dateTime);
+            var month = pc.GetMonth(dateTime);
+            var day = pc.GetDayOfMonth(dateTime);
 
-        return $"{day} {monthNames[month - 1]} {year}";
+            return $"{day} {monthNames[month - 1]} {year}";
+        }
+        catch
+        {
+            return "Undefined";
+        }
     }
 }

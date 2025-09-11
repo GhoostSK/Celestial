@@ -13,17 +13,20 @@ public sealed class GetBlogTagsListCommandHandler(
     ILocalizedPropertyService localizedPropertyService)
     : IRequestHandler<GetBlogCategoryListCommandReq, GetBlogCategoryListCommandRes>
 {
-    public async Task<GetBlogCategoryListCommandRes> Handle(GetBlogCategoryListCommandReq request,
+    public async Task<GetBlogCategoryListCommandRes> Handle(
+        GetBlogCategoryListCommandReq request,
         CancellationToken cancellationToken)
     {
-        var categories = await categoryService.GetBlogCategoriesList(cancellationToken);
+        var categories = await categoryService.GetBlogCategoriesList(request.Count, cancellationToken);
+
         if (categories.Count == 0)
             return new GetBlogCategoryListCommandRes
             {
                 Error = ValidationError.UnhandledValidationError("B404", "Blog Not Found")
             };
 
-        var Data = new List<BlogCategoryItemDto>();
+
+        var data = new List<BlogCategoryItemDto>();
 
         foreach (var item in categories)
         {
@@ -33,18 +36,21 @@ public sealed class GetBlogTagsListCommandHandler(
                     EntityId = item.Id,
                     Language = request.Language,
                     LocalKeyGroup = LocalKeyGroupType.BlogCategory
-                }, cancellationToken);
-            Data.Add(new BlogCategoryItemDto
+                },
+                cancellationToken);
+
+            data.Add(new BlogCategoryItemDto
             {
                 Id = item.Id,
-                Name = localize.FirstOrDefault(p => p.LocalKey == "Name")?.LocalValue ?? "",
-                Slug = localize.FirstOrDefault(p => p.LocalKey == "Slug")?.LocalValue ?? ""
+                Name = localize.FirstOrDefault(p => p.LocalKey == "Name")?.LocalValue ?? string.Empty,
+                Slug = localize.FirstOrDefault(p => p.LocalKey == "Slug")?.LocalValue ?? string.Empty
             });
         }
 
         return new GetBlogCategoryListCommandRes
         {
-            Items = Data
+            Items = data,
+            ReturnedCount = data.Count
         };
     }
 }

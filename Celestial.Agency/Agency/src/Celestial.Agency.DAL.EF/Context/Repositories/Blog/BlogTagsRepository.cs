@@ -17,13 +17,16 @@ public sealed class BlogTagsRepository(MainDbContext dbContext) : RepositoryBase
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<List<BlogTags>> GetTagsList(CancellationToken cancellationToken)
+    public async Task<List<BlogTags>> GetTagsList(int count, CancellationToken cancellationToken)
     {
         var query = TableNoTracking
             .IgnoreQueryFilters()
             .Where(p => !p.IsDeleted);
 
-        return await query
-            .ToListAsync(cancellationToken);
+        var result = count > 0
+            ? await query.Take(count).ToListAsync(cancellationToken)
+            : await query.ToListAsync(cancellationToken);
+
+        return result;
     }
 }

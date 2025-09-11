@@ -3,8 +3,8 @@ using Celestial.Agency.Core.DAL.Repositories.Blog;
 using Celestial.Agency.Core.DAL.Repositories.Global;
 using Celestial.Agency.Core.DAL.Repositories.Global.Model;
 using Celestial.Agency.Core.DAL.Repositories.ShirdalBlog;
+using Celestial.Agency.Service.Command.localization;
 using Celestial.Agency.Service.Command.ShirdalBlog;
-using Celestial.Agency.Service.Command.ValidateLanguage;
 using MediatR;
 using MofidApp.SharedKernel.Common.Model;
 
@@ -69,10 +69,12 @@ public sealed class GetBlogsListCommandHandler(
             foreach (var tagId in blog.TagsId)
             {
                 var title = await localizedPropertyService.FirstOrDefaultAsync(
-                    p => p.LocalKeyGroup == LocalKeyGroupType.BlogTag && p.LocalKey == "Name" && p.EntityId == tagId,
+                    p => p.LocalKeyGroup == LocalKeyGroupType.BlogTag && p.LocalKey == "Name" && p.EntityId == tagId &&
+                         p.Language == request.Language,
                     cancellationToken: cancellationToken);
                 var slug = await localizedPropertyService.FirstOrDefaultAsync(
-                    p => p.LocalKeyGroup == LocalKeyGroupType.BlogTag && p.LocalKey == "Slug" && p.EntityId == tagId,
+                    p => p.LocalKeyGroup == LocalKeyGroupType.BlogTag && p.LocalKey == "Slug" && p.EntityId == tagId &&
+                         p.Language == request.Language,
                     cancellationToken: cancellationToken);
                 tag.Add(new Tag
                 {
@@ -84,10 +86,12 @@ public sealed class GetBlogsListCommandHandler(
 
             var categoryTitle = await localizedPropertyService.FirstOrDefaultAsync(
                 p => p.LocalKeyGroup == LocalKeyGroupType.BlogCategory && p.LocalKey == "Name" &&
-                     p.EntityId == blog.CategoryId, cancellationToken: cancellationToken);
+                     p.EntityId == blog.CategoryId && p.Language == request.Language,
+                cancellationToken: cancellationToken);
             var categorySlug = await localizedPropertyService.FirstOrDefaultAsync(
                 p => p.LocalKeyGroup == LocalKeyGroupType.BlogCategory && p.LocalKey == "Slug" &&
-                     p.EntityId == blog.CategoryId, cancellationToken: cancellationToken);
+                     p.EntityId == blog.CategoryId && p.Language == request.Language,
+                cancellationToken: cancellationToken);
             var blogCategory = new Category
             {
                 Title = categoryTitle!.LocalValue ?? string.Empty,
@@ -95,14 +99,15 @@ public sealed class GetBlogsListCommandHandler(
             };
 
 
-            response.Items.Add(new BlogItem
+            response.Items.Add(new BlogListItem
             {
                 Id = blog.Id,
                 PicturePath = blog.PicturePath,
                 Likes = blog.Likes,
-                HeaderText = localize.FirstOrDefault(p => p.LocalKey == nameof(BlogItem.HeaderText))?.LocalValue ?? "",
-                Title = localize.FirstOrDefault(p => p.LocalKey == nameof(BlogItem.Title))?.LocalValue ?? "",
-                Slug = localize.FirstOrDefault(p => p.LocalKey == nameof(BlogItem.Slug))?.LocalValue ?? "",
+                HeaderText = localize.FirstOrDefault(p => p.LocalKey == nameof(BlogListItem.HeaderText))?.LocalValue ??
+                             "",
+                Title = localize.FirstOrDefault(p => p.LocalKey == nameof(BlogListItem.Title))?.LocalValue ?? "",
+                Slug = localize.FirstOrDefault(p => p.LocalKey == nameof(BlogListItem.Slug))?.LocalValue ?? "",
                 Category = blogCategory,
                 Tags = tag,
                 RegistrationDate = blog.RegistrationDate,
@@ -117,7 +122,7 @@ public sealed class GetBlogsListCommandHandler(
             response.Items = filtredData;
         }
 
-        response.BlogTagsList = blogTags;
+        response.Tags = blogTags;
         response.Pagination = new PaginationMeta
         {
             TotalRecords = blogs.TotalRecord,

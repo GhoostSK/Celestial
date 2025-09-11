@@ -19,5 +19,7 @@ public static class ServiceCollectionExtensions
 public class ServiceResContextBase
 {
     public bool HasError { get; set; } = false;
+    public int StatusCode { get; set; }
+
     public string ErrorMessage { get; set; } = string.Empty;
 }

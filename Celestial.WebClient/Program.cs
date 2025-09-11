@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Text.RegularExpressions;
 using Celestial.WebClient.Services.Extensions;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Localization.Routing;
@@ -8,10 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 var supportedCultures = new[] { "fa", "en", "ar", "ru" };
 
-// اضافه کردن سرویس لوکالایزیشن
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 
-// اضافه کردن لوکالایزیشن به Razor
 builder.Services
     .AddControllersWithViews()
     .AddViewLocalization()
@@ -20,7 +19,6 @@ builder.Services
 builder.Services.AddRazorPages()
     .AddViewLocalization()
     .AddDataAnnotationsLocalization();
-
 
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
@@ -69,9 +67,9 @@ app.MapControllerRoute(
 app.Use(async (context, next) =>
 {
     var path = context.Request.Path.Value ?? "/";
-    var segments = path.Split('/', StringSplitOptions.RemoveEmptyEntries);
+    var segments = path.Split('/', StringSplitOptions.RemoveEmptyEntries).ToList();
 
-    var routeCulture = segments.Length > 0 && supportedCultures.Contains(segments[0])
+    var routeCulture = segments.Count > 0 && supportedCultures.Contains(segments[0])
         ? segments[0]
         : null;
 
@@ -82,26 +80,41 @@ app.Use(async (context, next) =>
 
     var finalCulture = routeCulture ?? cookieCulture ?? "fa";
 
-    // اگر culture در URL نیست، ریدایرکت کن به مسیر با culture
     if (routeCulture == null)
     {
-        var newPath = "/" + finalCulture + path;
-        context.Response.Redirect(newPath);
+        var newSegments = new List<string> { finalCulture };
+        newSegments.AddRange(segments);
+
+        if (newSegments.Count > 2)
+        {
+            var slug = newSegments.Last();
+
+            var isAlreadyEncoded = Regex.IsMatch(slug, "%[0-9A-Fa-f]{2}");
+            if (!isAlreadyEncoded)
+                slug = Uri.EscapeDataString(slug);
+
+            newSegments[newSegments.Count - 1] = slug;
+        }
+
+        var safePath = "/" + string.Join("/", newSegments);
+
+        context.Response.Redirect(safePath, false);
         return;
     }
 
-    // تنظیم کوکی
     context.Response.Cookies.Append(
         CookieRequestCultureProvider.DefaultCookieName,
         CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(finalCulture)),
         new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
     );
 
-    // فقط اگر مسیر مربوط به Razor Page باشه، مسیر رو rewrite کن
-    var isRazorPage = !path.Contains("/api") && !path.Contains("/Language") && !path.Contains("/Home") &&
+    var isRazorPage = !path.Contains("/api") &&
+                      !path.Contains("/Language") &&
+                      !path.Contains("/Home") &&
                       !path.Contains("/Controller");
 
-    if (isRazorPage) context.Request.Path = "/" + string.Join("/", segments.Skip(1));
+    if (isRazorPage)
+        context.Request.Path = "/" + string.Join("/", segments.Skip(1));
 
     await next();
 });

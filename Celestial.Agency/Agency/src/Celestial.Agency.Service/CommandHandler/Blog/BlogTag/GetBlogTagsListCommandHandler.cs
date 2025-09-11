@@ -2,10 +2,9 @@
 using Celestial.Agency.Core.DAL.Repositories.Global;
 using Celestial.Agency.Core.DAL.Repositories.Global.Model;
 using Celestial.Agency.Core.DAL.Repositories.ShirdalBlog;
+using Celestial.Agency.Service.Command.localization;
 using Celestial.Agency.Service.Command.ShirdalBlog.BlogTag;
-using Celestial.Agency.Service.Command.ValidateLanguage;
 using MediatR;
-using MofidApp.SharedKernel.Domain.Services;
 
 namespace Celestial.Agency.Service.CommandHandler.Blog.BlogTag;
 
@@ -21,18 +20,14 @@ public sealed class GetBlogTagsListCommandHandler(
         var langs = new List<string> { request.Language };
         var validateLanguage =
             await mediator.Send(new ValidateLanguageCommandReq { Language = langs }, cancellationToken);
+
         if (validateLanguage.HasError)
             return new GetBlogTagListCommandRes
             {
                 Error = validateLanguage.Error
             };
 
-        var tags = await blogTagService.GetTagsList(cancellationToken);
-        if (tags.Count == 0)
-            return new GetBlogTagListCommandRes
-            {
-                Error = ValidationError.UnhandledValidationError("BT404", "Tag Not Found")
-            };
+        var tags = await blogTagService.GetTagsList(request.Count, cancellationToken);
 
         var data = new List<BlogTagListItemDto>();
         foreach (var item in tags)
@@ -55,7 +50,8 @@ public sealed class GetBlogTagsListCommandHandler(
 
         return new GetBlogTagListCommandRes
         {
-            Items = data
+            Items = data,
+            ReturnedCount = tags.Count
         };
     }
 }

@@ -9,9 +9,10 @@ namespace Celestial.WebClient.Pages.Blog;
 [IgnoreAntiforgeryToken]
 public class BlogSidebarModel(IBlogService blogService, IConfiguration config) : PageModel
 {
-    public GetBlogListRes Blogs { get; set; } = new();
-    public List<LatestBlogItemDto> LatestBlogList { get; set; } = new();
+    public GetBlogListResDto Blogs { get; set; } = new();
+    public GetLatestBlogListResDto LatestBlogList { get; set; } = new();
     public string? BaseUrl { get; set; } = string.Empty;
+    public string CurrentLanguage { get; set; } = GetCurrentLang.Execute();
 
     public async Task<IActionResult> OnGetAsync(int pageNumber = 1)
     {
@@ -20,15 +21,21 @@ public class BlogSidebarModel(IBlogService blogService, IConfiguration config) :
         {
             PageNumber = pageNumber,
             PageSize = 6,
-            Language = GetCurrentLang.Execute(),
+            Language = CurrentLanguage,
             PopularTagCount = 9
         });
+        if (Blogs.HasError)
+        {
+        }
 
         LatestBlogList = await blogService.GetLatestBlogListAsync(new GetLatestBlogListReqDto
         {
             Count = 3,
             Language = GetCurrentLang.Execute()
         });
+        if (LatestBlogList.HasError)
+        {
+        }
 
         return Page();
     }

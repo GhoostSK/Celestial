@@ -2,8 +2,8 @@
 using Celestial.Agency.Core.DAL.Model.ShirdalBlog;
 using Celestial.Agency.Core.DAL.Repositories.Global;
 using Celestial.Agency.Core.DAL.Repositories.ShirdalBlog;
+using Celestial.Agency.Service.Command.localization;
 using Celestial.Agency.Service.Command.ShirdalBlog.BlogCategory;
-using Celestial.Agency.Service.Command.ValidateLanguage;
 using MediatR;
 using MofidApp.SharedKernel.Domain.Services;
 

@@ -16,12 +16,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Remove="Data\Migrations\20250723120424_V2025_07_23_1534.cs" />
-	  <Compile Remove="Data\Migrations\20250723120424_V2025_07_23_1534.Designer.cs" />
-	  <Compile Remove="Data\Migrations\MainDbContextModelSnapshot.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <None Remove="Configuration\HotelConfig\LanguageEntityTypeConfiguration.cs~RF12e4bb.TMP" />
 	</ItemGroup>
 
@@ -32,10 +26,6 @@
 	<ItemGroup>
 	  <PackageReference Include="Celestia.SharedKernel.Dal.Ef" Version="2.1.7" />
 	  <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="7.0.3" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Data\Migrations\" />
 	</ItemGroup>
 
 </Project>

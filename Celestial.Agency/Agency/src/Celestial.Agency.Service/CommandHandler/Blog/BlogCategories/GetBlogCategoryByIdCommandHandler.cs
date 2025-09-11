@@ -7,7 +7,7 @@ using Celestial.Agency.Service.Command.ShirdalBlog.BlogCategory;
 using MediatR;
 using MofidApp.SharedKernel.Domain.Services;
 
-namespace Celestial.Agency.Service.CommandHandler.ShirdalBlog.BlogCategories;
+namespace Celestial.Agency.Service.CommandHandler.Blog.BlogCategories;
 
 public sealed class GetBlogCategoryByIdCommandHandler(
     IBlogCategoryService categoryService,

@@ -154,6 +154,51 @@ namespace Celestial.Agency.DAL.EF.Data.Migrations
                     b.ToTable("State");
                 });
 
+            modelBuilder.Entity("Celestial.Agency.Core.DAL.Model.Global.AdminActivityLog", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Action")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<string>("Details")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long?>("EntityId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("EntityType")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AdminActivityLogs", (string)null);
+                });
+
             modelBuilder.Entity("Celestial.Agency.Core.DAL.Model.Global.Comments", b =>
                 {
                     b.Property<long>("Id")
@@ -164,23 +209,39 @@ namespace Celestial.Agency.DAL.EF.Data.Migrations
 
                     b.Property<string>("CommentText")
                         .IsRequired()
-                        .HasMaxLength(2147483647)
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
 
-                    b.Property<int>("EntityId")
-                        .HasColumnType("int");
+                    b.Property<long>("EntityId")
+                        .HasColumnType("bigint");
 
                     b.Property<bool>("IsConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<int>("KeyGroup")
+                        .HasColumnType("int");
+
+                    b.Property<long?>("ParentCommentId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTimeOffset>("RegisteredAt")
+                        .HasColumnType("datetimeoffset");
+
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Comments", (string)null);
+                    b.HasIndex("ParentCommentId");
+
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("Celestial.Agency.Core.DAL.Model.Global.Images", b =>
@@ -723,6 +784,16 @@ namespace Celestial.Agency.DAL.EF.Data.Migrations
                     b.ToTable("Visas", (string)null);
                 });
 
+            modelBuilder.Entity("Celestial.Agency.Core.DAL.Model.Global.Comments", b =>
+                {
+                    b.HasOne("Celestial.Agency.Core.DAL.Model.Global.Comments", "ParentComment")
+                        .WithMany("Replies")
+                        .HasForeignKey("ParentCommentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("ParentComment");
+                });
+
             modelBuilder.Entity("Celestial.Agency.Core.DAL.Model.Tour.TourPlans", b =>
                 {
                     b.HasOne("Celestial.Agency.Core.DAL.Model.Tour.Tours", null)
@@ -750,6 +821,11 @@ namespace Celestial.Agency.DAL.EF.Data.Migrations
                         .HasForeignKey("TourId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Celestial.Agency.Core.DAL.Model.Global.Comments", b =>
+                {
+                    b.Navigation("Replies");
                 });
 
             modelBuilder.Entity("Celestial.Agency.Core.DAL.Model.Tour.Tours", b =>

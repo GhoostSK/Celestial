@@ -14,7 +14,7 @@
                     <h1>سایدبار مقالات</h1>
                     <ul class="breadcrumb-list">
                         <li class="breadcrumb-item">
-                            <a href="https://demo.qzency.com/">
+                            <a href="/">
                                 <div class="icon">
                                     <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M17.5131 7.82508L15.4987 5.81069V0.527344C15.4987 0.236109 15.2626 0 14.9714 0H12.712C12.4207 0 12.1846 0.236109 12.1846 0.527344V2.49669L10.1746 0.486668C9.8608 0.172828 9.44356 0 8.99975 0C8.5559 0 8.13863 0.172828 7.82483 0.486668L0.486383 7.82515C-0.161477 8.47297 -0.161477 9.5271 0.486383 10.1749C0.800223 10.4888 1.21746 10.6616 1.66127 10.6616C1.75426 10.6616 1.84595 10.6535 1.93591 10.6387V16.0606C1.93591 17.13 2.80596 18 3.87538 18H7.30525C7.59649 18 7.8326 17.7639 7.8326 17.4727V13.4813H10.167V17.4727C10.167 17.7639 10.4031 18 10.6943 18H14.1242C15.1936 18 16.0636 17.13 16.0636 16.0606V10.6387C16.1535 10.6535 16.2452 10.6616 16.3382 10.6616H16.3383C16.782 10.6616 17.1992 10.4887 17.5132 10.1749C17.827 9.86105 17.9998 9.44381 17.9998 9C17.9998 8.55619 17.8269 8.13892 17.5131 7.82508ZM13.2393 1.05469H14.444V4.75604L13.2393 3.55131V1.05469ZM14.1241 16.9453H11.2216V12.9539C11.2216 12.6627 10.9855 12.4266 10.6943 12.4266H7.30522C7.01398 12.4266 6.77788 12.6627 6.77788 12.9539V16.9453H3.87534C3.38748 16.9453 2.99056 16.5484 2.99056 16.0606V10.0204L8.99975 4.01136L15.0089 10.0205V16.0606C15.0089 16.5484 14.612 16.9453 14.1241 16.9453ZM16.7674 9.42908C16.7112 9.48562 16.6443 9.53045 16.5706 9.56097C16.4969 9.5915 16.4179 9.60711 16.3382 9.6069C16.2585 9.6071 16.1795 9.5915 16.1059 9.56099C16.0322 9.53049 15.9654 9.48569 15.9092 9.42919L15.909 9.42905L9.37265 2.89269C9.16678 2.68671 8.83286 2.68678 8.62688 2.89269L2.09046 9.42901L2.09028 9.42919C1.97567 9.5438 1.82334 9.6069 1.66127 9.6069C1.4992 9.6069 1.3468 9.5438 1.23215 9.42915C0.995551 9.19255 0.995551 8.80752 1.23215 8.57092L8.5706 1.23244C8.62683 1.17591 8.69371 1.13109 8.76737 1.10058C8.84104 1.07007 8.92002 1.05447 8.99975 1.05469C9.16182 1.05469 9.31422 1.11783 9.42883 1.23244L12.3391 4.14267L16.7673 8.57085C17.004 8.80745 17.004 9.19251 16.7674 9.42908Z" fill="white"></path>
@@ -43,7 +43,7 @@
                             <div class="col-md-6  wow animate fadeInUp" data-wow-delay="200ms" data-wow-duration="1500ms">
                                 <div class="blog-sidebar">
                                     <div class="blog-sidebar-img-wrap">
-                                        <a href="package-details.html" class="card-img"><image path="@blog.PicturePath" alt="Blog image" /></a>
+                                        <a href="/@Model.CurrentLanguage/Blog/BLogDetails/@blog.Slug" class="card-img"><image path="@blog.PicturePath" alt="Blog image" /></a>
                                         <div class="batch">
                                             <span class="featured">@blog.Category.Title</span>
                                         </div>
@@ -140,26 +140,6 @@
                         </nav>
                     </div>
                 </div>
-
-
-
-
-
-                @*                 <div class="row">
-                    <div class="col-md-12 wow animate fadeInUp" data-wow-delay="200ms" data-wow-duration="1500ms">
-                        <nav class="inner-pagination-area">
-                            <ul class="pagination-list">
-                                <li><a href="#" class="active">1</a></li>
-                                <li><a href="#">2</a></li>
-                                <li><a href="#">3</a></li>
-                                <li><a href="#">4</a></li>
-                                <li>
-                                    <a href="#"><b class="shop-pagi-btn"><i class="bi bi-chevron-left"></i></b></a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
-                </div> *@
             </div>
             <div class="col-lg-4 order-lg-1 order-1">
                 <div class="single-widget two mb-30  wow animate fadeInUp" data-wow-delay="200ms" data-wow-duration="1500ms">
@@ -189,13 +169,13 @@
                 </div>
                 <div class="single-widget mb-30  wow animate fadeInUp" data-wow-delay="600ms" data-wow-duration="1500ms">
                     <h5 class="widget-title">مقالات اخیر</h5>
-                    @if (Model.LatestBlogList.Any())
+                    @if (Model.LatestBlogList.Items.Any())
                     {
-                        foreach (var latestBlog in Model.LatestBlogList)
+                        foreach (var latestBlog in Model.LatestBlogList.Items)
                         {
                             <div class="recent-post-widget">
                                 <div class="recent-post-img">
-                                    <a href="blog-details.html"><img src="http://127.0.0.1:5000/api/en/Global/ReadFile?filePath=@latestBlog.PicturePath" alt=""></a>
+                                    <a href="blog-details.html"><image path="@latestBlog.PicturePath" alt="" /></a>
                                 </div>
                                 <div class="recent-post-content">
                                     <a href="blog-grid.html">@latestBlog.RegistrationDate.ToShamsiFullString()</a>
@@ -210,13 +190,13 @@
                 <div class="single-widget  wow animate fadeInUp" data-wow-delay="800ms" data-wow-duration="1500ms">
                     <h5 class="widget-title">برچسب ها</h5>
                     <ul class="tag-list">
-                    @if (Model.Blogs.BlogTagsList.Any())
+                        @if (Model.Blogs.Items.Any())
                         {
-                            foreach (var tag in Model.Blogs.BlogTagsList)
+                            foreach (var tag in Model.Blogs.Tags)
                             {
                                 <li>
                                     <a href="#">@tag.Name</a>
-                                </li>   
+                                </li>
                             }
                         }
                     </ul>

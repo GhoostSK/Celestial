@@ -1,19 +1,18 @@
 ﻿@page "{slug?}"
+@using System.Text.Json
 @using Celestial.WebClient.Services.Extensions
 @model Celestial.WebClient.Pages.Blog.BlogDetailsModel
-@{
 
-}
 <!-- breadcrumb-section start -->
 <div class="breadcrumb-section two mb-120">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="banner-content">
-                    <h1>۱۰ مقصد امن برای مسافران بانو تنها</h1>
+                    <h1>@Model.Blog.Item.Title</h1>
                     <ul class="breadcrumb-list">
                         <li class="breadcrumb-item">
-                            <a href="https://demo.qzency.com/">
+                            <a href="/">
                                 <div class="icon">
                                     <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M17.5131 7.82508L15.4987 5.81069V0.527344C15.4987 0.236109 15.2626 0 14.9714 0H12.712C12.4207 0 12.1846 0.236109 12.1846 0.527344V2.49669L10.1746 0.486668C9.8608 0.172828 9.44356 0 8.99975 0C8.5559 0 8.13863 0.172828 7.82483 0.486668L0.486383 7.82515C-0.161477 8.47297 -0.161477 9.5271 0.486383 10.1749C0.800223 10.4888 1.21746 10.6616 1.66127 10.6616C1.75426 10.6616 1.84595 10.6535 1.93591 10.6387V16.0606C1.93591 17.13 2.80596 18 3.87538 18H7.30525C7.59649 18 7.8326 17.7639 7.8326 17.4727V13.4813H10.167V17.4727C10.167 17.7639 10.4031 18 10.6943 18H14.1242C15.1936 18 16.0636 17.13 16.0636 16.0606V10.6387C16.1535 10.6535 16.2452 10.6616 16.3382 10.6616H16.3383C16.782 10.6616 17.1992 10.4887 17.5132 10.1749C17.827 9.86105 17.9998 9.44381 17.9998 9C17.9998 8.55619 17.8269 8.13892 17.5131 7.82508ZM13.2393 1.05469H14.444V4.75604L13.2393 3.55131V1.05469ZM14.1241 16.9453H11.2216V12.9539C11.2216 12.6627 10.9855 12.4266 10.6943 12.4266H7.30522C7.01398 12.4266 6.77788 12.6627 6.77788 12.9539V16.9453H3.87534C3.38748 16.9453 2.99056 16.5484 2.99056 16.0606V10.0204L8.99975 4.01136L15.0089 10.0205V16.0606C15.0089 16.5484 14.612 16.9453 14.1241 16.9453ZM16.7674 9.42908C16.7112 9.48562 16.6443 9.53045 16.5706 9.56097C16.4969 9.5915 16.4179 9.60711 16.3382 9.6069C16.2585 9.6071 16.1795 9.5915 16.1059 9.56099C16.0322 9.53049 15.9654 9.48569 15.9092 9.42919L15.909 9.42905L9.37265 2.89269C9.16678 2.68671 8.83286 2.68678 8.62688 2.89269L2.09046 9.42901L2.09028 9.42919C1.97567 9.5438 1.82334 9.6069 1.66127 9.6069C1.4992 9.6069 1.3468 9.5438 1.23215 9.42915C0.995551 9.19255 0.995551 8.80752 1.23215 8.57092L8.5706 1.23244C8.62683 1.17591 8.69371 1.13109 8.76737 1.10058C8.84104 1.07007 8.92002 1.05447 8.99975 1.05469C9.16182 1.05469 9.31422 1.11783 9.42883 1.23244L12.3391 4.14267L16.7673 8.57085C17.004 8.80745 17.004 9.19251 16.7674 9.42908Z" fill="white"></path>
@@ -22,7 +21,7 @@
                             </a>
                         </li>
                         <li class="active">
-                            ۱۰ مقصد امن برای مسافران بانو تنها
+                            @Model.Blog.Item.Title
                         </li>
                     </ul>
                 </div>
@@ -37,7 +36,7 @@
         <div class="row g-4">
             <div class="col-lg-8 order-lg-1 order-2">
                 <div class="post-thumbnail-image">
-                    <img src="images/post-thumbnail-image.png" alt="">
+                    <image path="@Model.Blog.Item.PicturePath" alt="" />
                 </div>
                 <div class="blog-meta-area">
                     <ul class="blog-meta">
@@ -91,65 +90,20 @@
                         </li>
                     </ul>
                 </div>
-                <div class="first-paragraph">
-                    <p>
-                        یه سفر دخترونه یه چیز خاصیه واقعاً – ماجراجویی‌های مشترک، خنده‌های بی‌پایان و خوشی‌هایی که تبدیل می‌شن به خاطراتی فراموش‌نشدنی. انتخاب مقصد مناسب، کلید یه سفر پر از خوشگذرونی، آرامش و تجربه‌هاییه که تا سال‌ها تو ذهن می‌مونن.
-                    </p>
-                </div>
-                <div class="second-paragraph">
-                    <p>
-                        هیچ‌چیزی مثل یه سفر با صمیمی‌ترین دوستات نیست — هیجان، ماجراجویی و لحظه‌هایی که تبدیل می‌شن به خاطراتی دوست‌داشتنی. یه مقصد خوب و حساب‌شده می‌تونه زمینه‌ساز یه سفر فراموش‌نشدنی باشه؛ سفری که تعادل بین استراحت، کشف مکان‌های جدید و لذت بردن رو به خوبی حفظ می‌کنه. چه یه سفر ساحلی آفتابی باشه، چه یه ماجراجویی پرجنب‌وجوش شهری یا یه فرار آروم به دل طبیعت، انتخاب جای درست باعث می‌شه که همه لحظه‌ها پر از خنده و شادی باشن.
-                    </p>
-                </div>
-                <div class="admin-qoute">
-                    <div class="icon">
-                        <svg width="76" height="54" viewBox="0 0 76 54" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M15.6702 34.9759C14.1099 39.0536 11.6446 43.092 8.34337 46.9779C7.83248 47.5719 7.52338 48.323 7.46334 49.1162C7.40329 49.9095 7.5956 50.7013 8.01087 51.3706C8.41324 52.036 9.01525 52.5461 9.72447 52.8226C10.4337 53.0991 11.2109 53.1268 11.9367 52.9013C18.9335 50.7825 35.2569 43.2569 35.6939 19.2062C35.8625 9.91861 29.3075 1.94025 20.7717 1.03955C18.4467 0.795533 16.098 1.05761 13.8764 1.80899C11.6548 2.56036 9.60919 3.78445 7.87075 5.40279C6.14227 7.02291 4.7603 9.00007 3.81377 11.207C2.86725 13.414 2.37715 15.8018 2.375 18.2169C2.375 26.3454 7.94437 33.455 15.6702 34.9759ZM11.0556 9.05482C13.235 6.99681 16.0799 5.86051 19.0285 5.87037C19.4465 5.87037 19.8692 5.89498 20.292 5.93927C26.3886 6.57912 31.0674 12.3672 30.9439 19.1127C30.6422 35.7535 21.945 43.2471 14.744 46.5989C17.024 43.4046 18.8124 40.1192 20.0877 36.7896C20.3328 36.1499 20.4396 35.4623 20.4007 34.7752C20.3617 34.0881 20.1779 33.4183 19.8621 32.8127C19.5265 32.1722 19.0596 31.6155 18.4942 31.1819C17.9288 30.7482 17.2786 30.4481 16.5894 30.3026C13.9163 29.7115 11.5192 28.1896 9.7972 25.9902C8.07518 23.7908 7.13212 21.0466 7.125 18.2144C7.125 14.7322 8.55712 11.3927 11.0556 9.05236V9.05482ZM45.942 51.3706C46.3442 52.0355 46.9459 52.5453 47.6546 52.8218C48.3633 53.0982 49.14 53.1262 49.8655 52.9013C56.8622 50.7825 73.1832 43.2569 73.6226 19.2062C73.7889 9.91615 67.2339 1.94025 58.6981 1.03955C56.3733 0.79281 54.0243 1.0536 51.8027 1.80512C49.581 2.55664 47.536 3.78219 45.7995 5.40279C44.071 7.02291 42.689 9.00007 41.7425 11.207C40.796 13.414 40.3059 15.8018 40.3037 18.2169C40.3037 26.3454 45.8707 33.455 53.5966 34.9759C52.0362 39.0586 49.571 43.097 46.2697 46.9779C45.7589 47.5721 45.4501 48.3235 45.3909 49.117C45.3317 49.9104 45.5253 50.7021 45.942 51.3706ZM58.0141 36.792C58.2594 36.1525 58.3665 35.465 58.328 34.778C58.2894 34.0909 58.1061 33.421 57.7909 32.8152C57.4556 32.1738 56.9889 31.6163 56.4235 31.1818C55.8581 30.7473 55.2078 30.4463 54.5181 30.3001C51.8458 29.7092 49.4494 28.188 47.7274 25.9896C46.0055 23.7913 45.0619 21.0482 45.0537 18.2169C45.0537 14.7322 46.4859 11.3952 48.9844 9.05482C51.163 6.99718 54.0071 5.86088 56.9549 5.87037C57.3729 5.87037 57.7956 5.89498 58.2184 5.93927C64.315 6.57912 68.9961 12.3672 68.8726 19.1127C68.571 35.756 59.8714 43.2471 52.6727 46.5989C54.9504 43.407 56.7364 40.1217 58.0141 36.792Z" fill="#4DA627"></path>
-                        </svg>
-                    </div>
-                    <div class="content">
-                        <p>
-                            «مسافری که، چه آواره‌ای بی‌برنامه باشد و چه برنامه‌ریزی دقیق، از کشف مکان‌های جدید لذتی نمی‌برد، بی‌تردید بی‌نهایت بی‌انگیزه است.»
-                        </p>
-                        <div class="author-area">
-                            <span>آبراهام لینکن</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="third-paragraph">
-                    <p>
-                        هیچ‌چیزی به پای یه فرار کوچیک با صمیمی‌ترین دوستات نمی‌رسه — هیجان، ماجراجویی و لحظه‌هایی که تبدیل می‌شن به خاطراتی که همیشه تو دل می‌مونن. یه مقصد خوب و حساب‌شده می‌تونه زمینه‌ساز یه سفر فراموش‌نشدنی باشه، سفری که ترکیب بی‌نقصی از استراحت، کشف جاهای جدید و لذت‌بردن رو برات فراهم می‌کنه.
-
-                        چه یه ساحل آفتابی باشه، چه یه ماجراجویی پر انرژی تو دل شهر یا یه پناه بردن به آرامش روستا، انتخاب جای مناسب باعث می‌شه که هر لحظه‌اش با خنده و شادی پر بشه. از اقامتگاه‌های شیک گرفته تا فعالیت‌های هیجان‌انگیز، هر جزئیاتی تو ساختن یه سفر دخترونه بی‌نقص نقش داره. وقتی ترکیب خوبی از سرگرمی، فرهنگ و آرامش رو داشته باشی، دیگه فقط یه تعطیلات ساده نیست — یه جشن واقعی برای دوستی‌هاتونه.
-                    </p>
-                </div>
-                <div class="destination-show-image">
-                    <div class="show-image">
-                        <img src="images/destination-details-image-1.png" alt="">
-                    </div>
-                    <div class="show-image">
-                        <img src="images/destination-details-image-2.png" alt="">
-                    </div>
-                </div>
-                <div class="conclusion-content">
-                    <h3>نتیجه گیری</h3>
-                    <p>
-                        یه سفر دخترونه یه چیز خاصیه واقعاً – ماجراجویی‌های مشترک، خنده‌های بی‌پایان و خوشی‌هایی که تبدیل می‌شن به خاطراتی فراموش‌نشدنی. انتخاب مقصد مناسب، کلید یه سفر پر از خوشگذرونی، آرامش و تجربه‌هاییه که تا سال‌ها تو ذهن می‌مونن.
-                    </p>
-                </div>
+                @Html.Raw(Model.Blog.Item.MainText)
                 <div class="tag-and-social-area">
                     <div class="left-side-content">
                         <h4>تگ ها :</h4>
                         <ul class="blog-tag">
-                            <li class="single-tag">
-                                <a href="#">راهنما ویزا</a>
-                            </li>
-                            <li class="single-tag">
-                                <a href="#">نکات سفر</a>
-                            </li>
-                            <li class="single-tag">
-                                <a href="#">فهرست سطل</a>
-                            </li>
+                            @if (@Model.Blog.Item.Tags.Any())
+                            {
+                                @foreach (var tag in Model.Blog.Item.Tags)
+                                {
+                                    <li class="single-tag">
+                                        <a href="#">@tag.Name</a>
+                                    </li>
+                                }
+                            }
                         </ul>
                     </div>
                     <div class="right-side-content">
@@ -359,134 +313,47 @@
                 <div class="single-widget mb-30  wow animate fadeInUp" data-wow-delay="400ms" data-wow-duration="1500ms">
                     <h5 class="widget-title">دسته بندی ها</h5>
                     <ul class="category-list">
-                        <li>
-                            <a href="blog-sidebar.html">
-                                راهنما سفر
-                                <span>(10)</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="blog-sidebar.html">
-                                ویزا و مهاجرت
-                                <span>(10)</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="blog-sidebar.html">
-                                ویزا و مهاجرت
-                                <span>(15)</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="blog-sidebar.html">
-                                برنامه و نکات سفر
-                                <span>(05)</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="blog-sidebar.html">
-                                ماجراجویی و تجربیات
-                                <span>(09)</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="blog-sidebar.html">
-                                لوکس و اوقات فراغت
-                                <span>(05)</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="blog-sidebar.html">
-                                خانواده و دوستان
-                                <span>(07)</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="blog-sidebar.html">
-                                سفرهای فصلی و جشنواره ای
-                                <span>(02)</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="blog-sidebar.html">
-                                اخبار و اپدیت های سفر
-                                <span>(03)</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="blog-sidebar.html">
-                                سلامتی و سفر پایدار
-                                <span>(08)</span>
-                            </a>
-                        </li>
+                        @foreach (var category in Model.Category.Items)
+                        {
+                            <li>
+
+                                <a href="#">
+                                    @category.Name
+                                    <span></span>
+                                </a>
+                            </li>
+
+                        }
                     </ul>
                 </div>
                 <div class="single-widget mb-30  wow animate fadeInUp" data-wow-delay="600ms" data-wow-duration="1500ms">
                     <h5 class="widget-title">مقالات اخیر</h5>
-                    <div class="recent-post-widget">
-                        <div class="recent-post-img">
-                            <a href="blog-details.html"><img src="images/recent-image-1.png" alt=""></a>
+
+                    @foreach (var recentBlog in Model.RecentBlog.Items)
+                    {
+                        <div class="recent-post-widget">
+                            <div class="recent-post-img">
+                                <a href="/@Model.Language/blog/blogDetails/@recentBlog.Slug"><image path="@recentBlog.PicturePath" alt="@recentBlog.Slug" /></a>
+                            </div>
+                            <div class="recent-post-content">
+                                <a href="#">@recentBlog.RegistrationDate.ToShamsiFullString()</a>
+                                <h6>
+                                    <a href="/@Model.Language/blog/blogDetails/@recentBlog.Slug">@recentBlog.HeaderText</a>
+                                </h6>
+                            </div>
                         </div>
-                        <div class="recent-post-content">
-                            <a href="blog-grid.html">۱۲ اسفند ۱۴۰۳</a>
-                            <h6>
-                                <a href="blog-details.html">نکات درخواست ویزا: از این اشتباهات رایج اجتناب کنید</a>
-                            </h6>
-                        </div>
-                    </div>
-                    <div class="recent-post-widget">
-                        <div class="recent-post-img">
-                            <a href="blog-details.html"><img src="images/recent-image-2.png" alt=""></a>
-                        </div>
-                        <div class="recent-post-content">
-                            <a href="blog-grid.html">۱۵ اسفند ۱۴۰۳</a>
-                            <h6>
-                                <a href="blog-details.html">مهمترین اشتباهاتی که هنگام برنامه ریزی برای تعطیلات رویایی خود باید از آنها اجتناب کنید</a>
-                            </h6>
-                        </div>
-                    </div>
-                    <div class="recent-post-widget">
-                        <div class="recent-post-img">
-                            <a href="blog-details.html"><img src="images/recent-image-3.png" alt=""></a>
-                        </div>
-                        <div class="recent-post-content">
-                            <a href="blog-grid.html">۲۲ اسفند ۱۴۰۳</a>
-                            <h6>
-                                <a href="blog-details.html">راهنمای نهایی سفرهای بین المللی بدون استرس</a>
-                            </h6>
-                        </div>
-                    </div>
+                    }
                 </div>
                 <div class="single-widget mb-30  wow animate fadeInUp" data-wow-delay="800ms" data-wow-duration="1500ms">
                     <h5 class="widget-title">برچسب ها</h5>
                     <ul class="tag-list">
-                        <li>
-                            <a href="blog-grid.html">سفر بدون دردسر</a>
-                        </li>
-                        <li>
-                            <a href="blog-grid.html">فرارهای تابستانی</a>
-                        </li>
-                        <li>
-                            <a href="blog-grid.html">تعطیلات کروز</a>
-                        </li>
-                        <li>
-                            <a href="blog-grid.html">سفر اروپایی</a>
-                        </li>
-                        <li>
-                            <a href="blog-grid.html">راهنما ویزا </a>
-                        </li>
-                        <li>
-                            <a href="blog-grid.html">نکات سفر</a>
-                        </li>
-                        <li>
-                            <a href="blog-grid.html">لیست سطل</a>
-                        </li>
-                        <li>
-                            <a href="blog-grid.html">جواهرات پنهان</a>
-                        </li>
-                        <li>
-                            <a href="blog-grid.html">سفر تنها</a>
-                        </li>
+                        @foreach (var tag in Model.Tags.Items)
+                        {
+                            <li>
+                                <a href="/@Model.Language/Blog/BlogSidebar">@tag.Name</a>
+                            </li>
+                        }
+
                     </ul>
                 </div>
                 <div class="booking-info-card">
@@ -509,4 +376,27 @@
         </div>
     </div>
 </div>
+
 <!-- blog sidebar section end -->
+@section Scripts {
+}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const slug = "@Html.Raw(Model.Blog.Item.Slug)"; // از مدل میاد
+        const currentPath = window.location.pathname; // مثل /fa/Blog/BlogDetails/1meta-title-for-blog
+
+        // آیدی فعلی رو جدا کن
+        const segments = currentPath.split("/");
+        const lastSegment = segments[segments.length - 1];
+
+        // اگر slug فعلی با slug مدل فرق داره، تغییر بده
+        if (lastSegment !== slug) {
+            segments[segments.length - 1] = slug; // جایگزین کن
+            const newPath = segments.join("/");
+
+            // بدون reload کردن، URL مرورگر رو آپدیت کن
+            window.history.replaceState({}, "", newPath);
+        }
+    });
+</script>
+}

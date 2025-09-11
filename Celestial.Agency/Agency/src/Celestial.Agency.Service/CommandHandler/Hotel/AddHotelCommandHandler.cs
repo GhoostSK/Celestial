@@ -2,7 +2,7 @@
 using Celestial.Agency.Core.DAL.Repositories.Global;
 using Celestial.Agency.Core.DAL.Repositories.Hotel;
 using Celestial.Agency.Service.Command.Hotel;
-using Celestial.Agency.Service.Command.ValidateLanguage;
+using Celestial.Agency.Service.Command.localization;
 using MediatR;
 using MofidApp.SharedKernel.Common.Model;
 using MofidApp.SharedKernel.Domain.Services;

@@ -72,3 +72,16 @@ public sealed class GetLatestBlogsReqDto
     [FromRoute] public string Language { get; set; }
     public int Count { get; set; }
 }
+
+public sealed class GetTagListReqDto
+{
+    [FromRoute] public string Language { get; set; } = string.Empty;
+    public int Count { get; set; }
+}
+
+public sealed class GetBlogTagBySlugReqDto
+{
+    public string Language { get; set; } = string.Empty;
+
+    [Slug] public string Slug { get; set; } = string.Empty;
+}
