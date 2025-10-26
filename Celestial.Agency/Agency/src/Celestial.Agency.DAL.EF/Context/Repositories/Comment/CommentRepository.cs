@@ -13,14 +13,16 @@ public sealed class CommentRepository(MainDbContext dbContext)
         CancellationToken cancellationToken)
     {
         return await TableNoTracking
+            .IgnoreQueryFilters()
             .Include(x => x.Replies)
-            .Where(x => x.KeyGroup == keyGroup && x.EntityId == entityId && !x.IsDeleted)
+            .Where(x => x.KeyGroup == keyGroup && x.EntityId == entityId)
             .ToListAsync(cancellationToken);
     }
 
     public async Task<Comments?> GetCommentByIdAsync(long id, CancellationToken cancellationToken)
     {
         return await TableNoTracking
+            .IgnoreQueryFilters()
             .Include(x => x.Replies)
             .FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted, cancellationToken);
     }

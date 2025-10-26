@@ -14,6 +14,7 @@ public sealed class LocalizedPropertyRepository(MainDbContext dbContext)
         CancellationToken cancellationToken)
     {
         return await Table
+            .IgnoreQueryFilters()
             .Where(p => p.Language == model.Language && p.EntityId == model.EntityId &&
                         p.LocalKeyGroup == model.LocalKeyGroup)
             .Select(p => new GetLocalizedPropertyRes

@@ -223,8 +223,9 @@ namespace Celestial.Agency.DAL.EF.Data.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
 
-                    b.Property<int>("KeyGroup")
-                        .HasColumnType("int");
+                    b.Property<string>("KeyGroup")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<long?>("ParentCommentId")
                         .HasColumnType("bigint");

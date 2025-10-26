@@ -10,6 +10,8 @@ public sealed class CurrencyRepository(MainDbContext dbContext) : RepositoryBase
 {
     public async Task<List<Currency>> GetCurrencyList(CancellationToken cancellationToken)
     {
-        return await TableNoTracking.ToListAsync(cancellationToken);
+        return await TableNoTracking
+            .IgnoreQueryFilters()
+            .ToListAsync(cancellationToken);
     }
 }

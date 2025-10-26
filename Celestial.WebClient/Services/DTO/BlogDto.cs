@@ -7,7 +7,7 @@ namespace Celestial.WebClient.Services.DTO;
 public sealed class GetBlogListReqDto
 {
     public string Language { get; set; } = string.Empty;
-    public string Title { get; set; } = string.Empty;
+    public string? Title { get; set; } = string.Empty;
     public List<long> CategoryIds { get; set; } = new();
     public List<long> TagIds { get; set; } = new();
     public int PopularTagCount { get; set; }

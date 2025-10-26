@@ -11,7 +11,9 @@ public sealed class ImagesRepository(MainDbContext dbContext) : RepositoryBase<I
     public async Task<List<Images>> GetImagesByEntityId(long entityId, string keyGroup,
         CancellationToken cancellationToken)
     {
-        return await TableNoTracking.Where(p => p.EntityId == entityId && p.KeyGroup == keyGroup)
+        return await TableNoTracking
+            .IgnoreQueryFilters()
+            .Where(p => p.EntityId == entityId && p.KeyGroup == keyGroup)
             .ToListAsync(cancellationToken);
     }
 }

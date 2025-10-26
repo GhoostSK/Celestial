@@ -25,8 +25,7 @@ public sealed class HotelRepository(MainDbContext dbContext) : RepositoryBase<Ho
         CancellationToken cancellationToken)
     {
         var query = Table
-            .IgnoreQueryFilters()
-            .Where(p => !p.IsDeleted);
+            .IgnoreQueryFilters();
 
         if (!string.IsNullOrEmpty(model.Title))
             query = query.Where(p => p.Name.Contains(model.Title));

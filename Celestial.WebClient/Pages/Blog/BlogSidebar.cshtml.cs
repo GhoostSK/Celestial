@@ -13,8 +13,9 @@ public class BlogSidebarModel(IBlogService blogService, IConfiguration config) :
     public GetLatestBlogListResDto LatestBlogList { get; set; } = new();
     public string? BaseUrl { get; set; } = string.Empty;
     public string CurrentLanguage { get; set; } = GetCurrentLang.Execute();
+    public string SearchString { get; set; } = string.Empty;
 
-    public async Task<IActionResult> OnGetAsync(int pageNumber = 1)
+    public async Task<IActionResult> OnGetAsync(int pageNumber = 1, string? searchString = null)
     {
         BaseUrl = config["ApiBaseUrl"] + "/api/en/Global/ReadFile?filePath=";
         Blogs = await blogService.GetBlogListAsync(new GetBlogListReqDto
@@ -22,7 +23,8 @@ public class BlogSidebarModel(IBlogService blogService, IConfiguration config) :
             PageNumber = pageNumber,
             PageSize = 6,
             Language = CurrentLanguage,
-            PopularTagCount = 9
+            PopularTagCount = 9,
+            Title = searchString
         });
         if (Blogs.HasError)
         {

@@ -16,6 +16,7 @@ public sealed class CommentsRepository(MainDbContext dbContext) : RepositoryBase
     public async Task<List<Comments>> GetComments(long entityId, CancellationToken cancellationToken)
     {
         return await TableNoTracking
+            .IgnoreQueryFilters()
             .Where(p => p.EntityId == entityId && p.IsConfirmed == true)
             .Select(p => new Comments
             {
@@ -29,6 +30,7 @@ public sealed class CommentsRepository(MainDbContext dbContext) : RepositoryBase
     public async Task ConfirmComment(int commentId, CancellationToken cancellationToken)
     {
         var comment = await TableNoTracking
+            .IgnoreQueryFilters()
             .Where(p => p.Id == commentId)
             .FirstOrDefaultAsync(cancellationToken);
         comment!.IsConfirmed = true;
@@ -38,6 +40,7 @@ public sealed class CommentsRepository(MainDbContext dbContext) : RepositoryBase
     public async Task<List<Comments>> GetCommentsToAdmin(int entityId, CancellationToken cancellationToken)
     {
         return await TableNoTracking
+            .IgnoreQueryFilters()
             .Where(p => p.EntityId == entityId)
             .ToListAsync(cancellationToken);
     }

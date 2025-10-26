@@ -1,4 +1,4 @@
-﻿using Celestial.WebClient.Services.ApiClients;
+﻿using Celestial.WebClient.Services.ApiClients.Blog;
 using Celestial.WebClient.Services.DTO;
 using Celestial.WebClient.Services.Interface;
 

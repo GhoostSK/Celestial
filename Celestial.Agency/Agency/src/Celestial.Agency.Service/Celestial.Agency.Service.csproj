@@ -22,4 +22,8 @@
     <ProjectReference Include="..\Celestial.Agency.Core\Celestial.Agency.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="CommandHandler\LocalizedProperty\" />
+  </ItemGroup>
+
 </Project>

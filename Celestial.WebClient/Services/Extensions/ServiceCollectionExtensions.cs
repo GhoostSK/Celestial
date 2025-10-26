@@ -1,4 +1,6 @@
-﻿using Celestial.WebClient.Services.ApiClients;
+﻿using Celestial.WebClient.Services.ApiClients.Base;
+using Celestial.WebClient.Services.ApiClients.Blog;
+using Celestial.WebClient.Services.ApiClients.Comment;
 using Celestial.WebClient.Services.Implementation;
 using Celestial.WebClient.Services.Interface;
 
@@ -8,10 +10,11 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddWebClientServices(this IServiceCollection services, IConfiguration config)
     {
-        services.AddHttpClient<BlogApiClient>(client => { client.BaseAddress = new Uri(config["ApiBaseUrl"]); });
-
+        services.AddHttpClient<HttpJsonClient>(client => { client.BaseAddress = new Uri(config["ApiBaseUrl"]!); });
+        services.AddScoped<BlogApiClient>();
+        services.AddScoped<CommentApiClient>();
         services.AddScoped<IBlogService, BlogService>();
-
+        services.AddScoped<ICommentService, CommentService>();
         return services;
     }
 }
@@ -20,6 +23,5 @@ public class ServiceResContextBase
 {
     public bool HasError { get; set; } = false;
     public int StatusCode { get; set; }
-
     public string ErrorMessage { get; set; } = string.Empty;
 }

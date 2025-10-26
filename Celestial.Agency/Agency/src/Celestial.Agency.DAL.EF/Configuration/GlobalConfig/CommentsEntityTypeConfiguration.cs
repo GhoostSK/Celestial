@@ -1,6 +1,7 @@
 ﻿using Celestial.Agency.Core.DAL.Model.Global;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Celestial.Agency.DAL.EF.Configuration.GlobalConfig;
 
@@ -29,7 +30,7 @@ public sealed class CommentsEntityTypeConfiguration : IEntityTypeConfiguration<C
             .HasDefaultValue(false);
 
         builder.Property(c => c.KeyGroup)
-            .HasConversion<int>()
+            .HasConversion(new EnumToStringConverter<CommentKeyGroupType>())
             .IsRequired();
 
         builder.HasOne(c => c.ParentComment)

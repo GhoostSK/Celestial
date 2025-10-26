@@ -26,10 +26,10 @@ public class CommentController : BaseController
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetCommentByEntityIdCommandReq(AddCommentReqDto request,
+    public async Task<IActionResult> GetCommentBySlug(GetCommentBySlugReqDto request,
         CancellationToken cancellationToken)
     {
-        var response = await Mediator.Send(request.Adapt<GetCommentsByEntityIdCommandReq>(), cancellationToken);
+        var response = await Mediator.Send(request.Adapt<GetCommentsBySlugCommandReq>(), cancellationToken);
 
         if (response.HasError)
             return BadRequest(response.Error);

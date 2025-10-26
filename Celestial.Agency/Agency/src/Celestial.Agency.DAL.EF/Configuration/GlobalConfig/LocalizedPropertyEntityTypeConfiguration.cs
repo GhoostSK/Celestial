@@ -16,7 +16,6 @@ public sealed class LocalizedPropertyEntityTypeConfiguration : IEntityTypeConfig
         builder.Property(p => p.LocalKey).HasMaxLength(40).IsRequired();
         builder.Property(p => p.Language).IsRequired();
         builder.Property(p => p.LocalKeyGroup).HasConversion(new EnumToStringConverter<LocalKeyGroupType>());
-        ;
         builder.Property(p => p.LocalValue).HasMaxLength(int.MaxValue).IsRequired();
     }
 }

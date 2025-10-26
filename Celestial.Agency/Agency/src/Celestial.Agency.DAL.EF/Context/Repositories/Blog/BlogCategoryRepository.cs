@@ -12,8 +12,7 @@ public sealed class BlogCategoryRepository(MainDbContext dbContext)
     public async Task<List<BlogCategory>> GetBlogCategoriesList(int count, CancellationToken cancellationToken)
     {
         var query = TableNoTracking
-            .IgnoreQueryFilters()
-            .Where(p => !p.IsDeleted);
+            .IgnoreQueryFilters();
 
         var result = count > 0
             ? await query.Take(count).ToListAsync(cancellationToken)
@@ -25,7 +24,8 @@ public sealed class BlogCategoryRepository(MainDbContext dbContext)
     public async Task<List<BlogCategory>> GetBlogCategoriesByIdsAsync(List<long> ids,
         CancellationToken cancellationToken)
     {
-        return await TableNoTracking.IgnoreQueryFilters()
+        return await TableNoTracking
+            .IgnoreQueryFilters()
             .Where(x => ids.Contains(x.Id))
             .ToListAsync(cancellationToken);
     }

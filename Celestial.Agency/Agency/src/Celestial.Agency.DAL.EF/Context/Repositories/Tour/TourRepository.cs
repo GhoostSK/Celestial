@@ -13,7 +13,7 @@ public class TourRepository(MainDbContext dbContext) : RepositoryBase<Tours>(dbC
         CancellationToken cancellationToken)
     {
         var query = TableNoTracking
-            .Where(p => !p.IsDeleted);
+            .IgnoreQueryFilters();
 
         if (model.Countries.Any())
             query = query.Where(p => p.CountriesId.Any(c => model.Countries.Contains(c)));

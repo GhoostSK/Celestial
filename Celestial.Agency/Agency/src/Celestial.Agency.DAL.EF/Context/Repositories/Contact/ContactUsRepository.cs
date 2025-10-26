@@ -11,6 +11,8 @@ public sealed class ContactUsRepository(MainDbContext dbContext)
 {
     public async Task<List<ContactUs>> GetContactList(CancellationToken cancellationToken)
     {
-        return await TableNoTracking.Where(p => !p.IsDeleted).ToListAsync(cancellationToken);
+        return await TableNoTracking
+            .IgnoreQueryFilters()
+            .ToListAsync(cancellationToken);
     }
 }

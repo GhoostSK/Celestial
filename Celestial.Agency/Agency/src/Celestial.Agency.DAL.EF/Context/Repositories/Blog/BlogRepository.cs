@@ -12,7 +12,7 @@ public sealed class BlogRepository(MainDbContext dbContext)
     {
         return await Table
             .IgnoreQueryFilters()
-            .FirstOrDefaultAsync(p => p.Id == id && p.IsDeleted == false, cancellationToken);
+            .FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
     }
 
     public async Task<long> AddBlog(Core.DAL.Model.ShirdalBlog.Blog blog, CancellationToken cancellationToken)
@@ -41,8 +41,7 @@ public sealed class BlogRepository(MainDbContext dbContext)
         CancellationToken cancellationToken)
     {
         var query = TableNoTracking
-            .IgnoreQueryFilters()
-            .Where(p => !p.IsDeleted);
+            .IgnoreQueryFilters();
 
         // فیلتر دسته
         if (categoryId > 0)
@@ -72,7 +71,6 @@ public sealed class BlogRepository(MainDbContext dbContext)
     {
         return await TableNoTracking
             .IgnoreQueryFilters()
-            .Where(p => p.IsDeleted == false)
             .OrderByDescending(p => p.RegistrationDate)
             .Take(count)
             .ToListAsync(cancellationToken);

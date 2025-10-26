@@ -4,12 +4,12 @@ namespace Celestial.WebClient.Controller;
 
 public class LanguageController : Microsoft.AspNetCore.Mvc.Controller
 {
-    private static readonly string[] supportedCultures = { "fa", "en", "ar", "ru" };
+    private static readonly string[] SupportedCultures = { "fa", "en", "ar", "ru" };
 
     [HttpGet]
     public IActionResult SetLanguage(string culture, string returnUrl = "/")
     {
-        if (string.IsNullOrWhiteSpace(culture) || !supportedCultures.Contains(culture))
+        if (string.IsNullOrWhiteSpace(culture) || !SupportedCultures.Contains(culture))
             culture = "fa"; // پیش‌فرض
 
         // فقط جایگزینی culture در URL
@@ -17,7 +17,7 @@ public class LanguageController : Microsoft.AspNetCore.Mvc.Controller
         var segments = path.Split('/', StringSplitOptions.RemoveEmptyEntries).ToList();
 
         // اگر culture قبلاً در مسیر بود، جایگزینش کن
-        if (segments.Count > 0 && supportedCultures.Contains(segments[0]))
+        if (segments.Count > 0 && SupportedCultures.Contains(segments[0]))
             segments[0] = culture;
         else
             segments.Insert(0, culture);

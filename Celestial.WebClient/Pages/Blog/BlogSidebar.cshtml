@@ -84,7 +84,7 @@
                                                 <a href="package-details.html">@blog.Title</a>
                                             </h5>
                                         </div>
-                                        <a href="blog-details.html" class="view-btn three">
+                                        <a href="/@Model.CurrentLanguage/Blog/BLogDetails/@blog.Slug" class="view-btn three">
                                             <span>بیشتر بخوانید</span>
                                             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="transform: rotate(180deg);">
                                                 <path d="M12.4531 8.78125H3.14062C2.70906 8.78125 2.35938 8.43156 2.35938 8C2.35938 7.56844 2.70906 7.21875 3.14062 7.21875H12.4531C12.8847 7.21875 13.2344 7.56844 13.2344 8C13.2344 8.43156 12.8847 8.78125 12.4531 8.78125Z" fill="#111111" fill-opacity="0.7"></path>
@@ -145,7 +145,7 @@
                 <div class="single-widget two mb-30  wow animate fadeInUp" data-wow-delay="200ms" data-wow-duration="1500ms">
                     <form>
                         <div class="search-box">
-                            <input type="text" placeholder="جست و جو کنید...">
+                            <input type="text" asp-for="SearchString" placeholder="جست و جو کنید...">
                             <button type="submit">جست و جو</button>
                         </div>
                     </form>

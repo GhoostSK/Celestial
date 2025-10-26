@@ -11,6 +11,6 @@ public class TourRequiredItemsRepository(MainDbContext dbContext)
 {
     public async Task<List<TourEquipments>> GetListAsync(CancellationToken cancellationToken)
     {
-        return await TableNoTracking.IgnoreQueryFilters().Where(p => !p.IsDeleted).ToListAsync(cancellationToken);
+        return await TableNoTracking.IgnoreQueryFilters().ToListAsync(cancellationToken);
     }
 }

@@ -18,7 +18,7 @@ public class VisaRepository(MainDbContext dbContext) : RepositoryBase<Visas>(dbC
     public async Task<List<Visas>> GetVisaList(int pageNumber = 1, int pageSize = 10,
         CancellationToken cancellationToken = default)
     {
-        var query = TableNoTracking.Where(p => !p.IsDeleted);
+        var query = TableNoTracking.IgnoreQueryFilters();
 
         return await query
             .Skip((pageNumber - 1) * pageSize)
@@ -28,6 +28,8 @@ public class VisaRepository(MainDbContext dbContext) : RepositoryBase<Visas>(dbC
 
     public async Task<Visas?> GetVisaById(long visaId, CancellationToken cancellationToken)
     {
-        return await Table.FirstOrDefaultAsync(p => p.Id == visaId && p.IsDeleted == false, cancellationToken);
+        return await Table
+            .IgnoreQueryFilters()
+            .FirstOrDefaultAsync(p => p.Id == visaId, cancellationToken);
     }
 }
