@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -19,11 +19,6 @@
     <None Remove="DAL\Repositories\Main\**" />
     <None Remove="DAL\Repositories\ShirdalAtelier\**" />
     <None Remove="Services\EmailSender\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Celestia.SharedKernel" Version="1.2.6" />
-    <PackageReference Include="Celestial.SharedKernel.DataMigration" Version="1.0.3" />
   </ItemGroup>
 
 </Project>
