@@ -1,8 +1,8 @@
 ﻿using Celestial.Agency.Core.DAL.Model.ShirdalBlog;
 using Celestial.Agency.Core.DAL.Repositories.ShirdalBlog;
 using Celestial.Agency.DAL.EF.Context.DatabaseContext;
+using Celestial.Dal.Ef.SqlServer.Base;
 using Microsoft.EntityFrameworkCore;
-using MofidApp.SharedKernel.DAL.EntityFramework;
 
 namespace Celestial.Agency.DAL.EF.Context.Repositories.Blog;
 

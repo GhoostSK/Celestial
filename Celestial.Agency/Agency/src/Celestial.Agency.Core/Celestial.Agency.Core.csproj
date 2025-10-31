@@ -21,4 +21,8 @@
     <None Remove="Services\EmailSender\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Celestial.Dal.Ef.SqlServer" Version="1.0.2" />
+  </ItemGroup>
+
 </Project>

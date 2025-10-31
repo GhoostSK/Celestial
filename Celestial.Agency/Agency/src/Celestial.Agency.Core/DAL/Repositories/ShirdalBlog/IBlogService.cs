@@ -1,5 +1,5 @@
-﻿using MofidApp.SharedKernel.DAL.Abstractions.EntityFramework;
-using MofidApp.SharedKernel.DependencyInjection;
+﻿using Celestial.Dal.Ef.SqlServer.Abstractions;
+using Celestial.Dal.Ef.SqlServer.Extensions;
 
 namespace Celestial.Agency.Core.DAL.Repositories.Blog;
 

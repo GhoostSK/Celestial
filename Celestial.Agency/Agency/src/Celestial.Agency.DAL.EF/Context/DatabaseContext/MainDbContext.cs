@@ -1,8 +1,8 @@
 ﻿using Celestial.Agency.Core.DAL.Model.Geo;
 using Celestial.Agency.Core.DAL.Model.Global;
 using Celestial.Agency.Core.DAL.Model.Tour;
+using Celestial.Dal.Ef.SqlServer.Base;
 using Microsoft.EntityFrameworkCore;
-using MofidApp.SharedKernel.DAL.EntityFramework;
 
 namespace Celestial.Agency.DAL.EF.Context.DatabaseContext;
 

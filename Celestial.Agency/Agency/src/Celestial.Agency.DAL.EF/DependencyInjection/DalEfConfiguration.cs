@@ -1,8 +1,8 @@
 ﻿using Celestial.Agency.DAL.EF.Context.DatabaseContext;
+using Celestial.Dal.Ef.SqlServer.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using MofidApp.SharedKernel.DAL.EntityFramework;
 
 namespace Celestial.Agency.DAL.EF.DependencyInjection;
 

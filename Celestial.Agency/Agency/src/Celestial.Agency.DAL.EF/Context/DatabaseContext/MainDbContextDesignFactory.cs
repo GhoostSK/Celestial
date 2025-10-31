@@ -1,4 +1,4 @@
-using MofidApp.SharedKernel.DAL.EntityFramework;
+using Celestial.Dal.Ef.SqlServer.Base;
 
 namespace Celestial.Agency.DAL.EF.Context.DatabaseContext;
 

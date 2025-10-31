@@ -1,5 +1,5 @@
 ﻿using Celestial.Agency.Core.Enum.Tour;
-using MofidApp.SharedKernel.DAL.Abstractions.EntityFramework;
+using Celestial.Dal.Ef.SqlServer.Abstractions;
 
 namespace Celestial.Agency.Core.DAL.Model.Tour;
 

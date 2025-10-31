@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using MofidApp.SharedKernel.DependencyInjection;
+﻿using Celestial.Dal.Ef.SqlServer.Extensions;
+using Microsoft.AspNetCore.Http;
 
 namespace Celestial.Agency.Core.Services.FileManager;
 
