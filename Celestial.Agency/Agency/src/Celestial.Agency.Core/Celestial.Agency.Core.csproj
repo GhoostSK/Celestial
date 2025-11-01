@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Celestial.Dal.Ef.SqlServer" Version="1.0.2" />
+    <PackageReference Include="Celestial.Dal.Ef.SqlServer" Version="0.0.2" />
     <PackageReference Include="Celestial.SharedKernel" Version="1.0.1" />
   </ItemGroup>
 

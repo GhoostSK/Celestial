@@ -1,12 +1,13 @@
 ﻿using Celestial.Agency.Core.DAL.Model.Geo;
 using Celestial.Agency.Core.DAL.Model.Global;
 using Celestial.Agency.Core.DAL.Model.Tour;
+using Celestial.Dal.Ef.SqlServer.Abstractions;
 using Celestial.Dal.Ef.SqlServer.Base;
 using Microsoft.EntityFrameworkCore;
 
 namespace Celestial.Agency.DAL.EF.Context.DatabaseContext;
 
-public sealed class MainDbContext : AppDbContextBase
+public sealed class MainDbContext : AppDbContextBase, IUnitOfWorkEf
 {
     public MainDbContext(DbContextOptions<MainDbContext> options)
         : base(options)

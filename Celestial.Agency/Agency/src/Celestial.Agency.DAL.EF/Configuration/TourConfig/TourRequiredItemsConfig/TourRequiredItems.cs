@@ -1,5 +1,4 @@
-﻿using Celestial.Agency.Core.DAL.Model.Tour;
-using Celestial.Agency.Core.DAL.Model.Tour.TourEquipment;
+﻿using Celestial.Agency.Core.DAL.Model.Tour.TourEquipment;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -11,7 +10,7 @@ public class TourRequiredItemsConfig
     {
         public void Configure(EntityTypeBuilder<TourEquipments> builder)
         {
-            builder.ToTable(nameof(Tours));
+            builder.ToTable(nameof(TourEquipments));
             builder.Property(p => p.Icon).HasColumnType("NVARCHAR(MAX)").IsRequired();
         }
     }

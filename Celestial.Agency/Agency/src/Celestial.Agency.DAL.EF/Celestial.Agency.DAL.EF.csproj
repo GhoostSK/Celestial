@@ -24,7 +24,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Celestial.Dal.Ef.SqlServer" Version="1.0.2" />
+	  <PackageReference Include="Celestial.Dal.Ef.SqlServer" Version="0.0.2" />
 	  <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="7.0.3" />
 	</ItemGroup>
 
