@@ -3,9 +3,9 @@ using Celestial.Agency.Core.Attributes;
 using Celestial.Agency.Core.DAL.Model.Tour;
 using Celestial.Agency.Core.Enum.Global;
 using Celestial.Agency.Core.Enum.Tour;
+using Celestial.SharedKernel.Common;
+using Celestial.SharedKernel.Domain;
 using MediatR;
-using MofidApp.SharedKernel.Common.Model;
-using MofidApp.SharedKernel.Domain.Services;
 
 namespace Celestial.Agency.Service.Command.Tour;
 

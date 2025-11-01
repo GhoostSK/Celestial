@@ -5,10 +5,10 @@ using Celestial.Agency.Core.DAL.Repositories.Global;
 using Celestial.Agency.Core.DAL.Repositories.Tour;
 using Celestial.Agency.Service.Command.localization;
 using Celestial.Agency.Service.Command.Tour;
+using Celestial.SharedKernel.Common;
+using Celestial.SharedKernel.Mediator;
 using Mapster;
 using MediatR;
-using MofidApp.SharedKernel.Common.Model;
-using MofidApp.SharedKernel.Domain.Services;
 
 namespace Celestial.Agency.Service.CommandHandler.Tour;
 

@@ -1,5 +1,5 @@
-﻿using MediatR;
-using MofidApp.SharedKernel.Domain.Services;
+﻿using Celestial.SharedKernel.Domain;
+using MediatR;
 
 namespace Celestial.Agency.Service.Command.Exchange;
 

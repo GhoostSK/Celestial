@@ -1,7 +1,7 @@
 ﻿using Celestial.Agency.Core.Enum.Visa;
+using Celestial.SharedKernel.Common;
+using Celestial.SharedKernel.Domain;
 using MediatR;
-using MofidApp.SharedKernel.Common.Model;
-using MofidApp.SharedKernel.Domain.Services;
 
 namespace Celestial.Agency.Service.Command.Visa;
 

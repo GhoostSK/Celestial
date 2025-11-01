@@ -1,6 +1,6 @@
 ﻿using Celestial.Agency.Core.DAL.Model.Geo;
+using Celestial.SharedKernel.Domain;
 using MediatR;
-using MofidApp.SharedKernel.Domain.Services;
 
 namespace Celestial.Agency.Service.Command.Geo;
 

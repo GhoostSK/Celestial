@@ -1,7 +1,7 @@
 ﻿using Celestial.Agency.Core.Services.FileManager;
 using Celestial.Agency.Service.Command.FileManager;
-using MofidApp.SharedKernel.Common.Model;
-using MofidApp.SharedKernel.Domain.Services;
+using Celestial.SharedKernel.Common;
+using Celestial.SharedKernel.Mediator;
 
 namespace Celestial.Agency.Service.CommandHandler.FileManager;
 

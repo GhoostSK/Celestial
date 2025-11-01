@@ -1,6 +1,6 @@
 ﻿using Celestial.Agency.Core.DAL.Repositories.Blog;
 using Celestial.Agency.Service.Command.ShirdalBlog;
-using MofidApp.SharedKernel.Common.Model;
+using Celestial.SharedKernel.Mediator;
 
 namespace Celestial.Agency.Service.CommandHandler.Blog;
 

@@ -1,7 +1,6 @@
 using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
-using Castle.Core.Smtp;
 using Celestial.Agency.Api.Identity.Context;
 using Celestial.Agency.Api.Identity.Model;
 using Celestial.Agency.Api.Identity.Services.JwtToken;
@@ -9,13 +8,12 @@ using Celestial.Agency.Api.Identity.Services.UserIdModelBinder;
 using Celestial.Agency.Core;
 using Celestial.Agency.DAL.EF.DependencyInjection;
 using Celestial.Agency.DAL.EF.Seeder;
-using Celestial.Agency.Service.Service.EmailSender;
+using Celestial.Dal.Ef.SqlServer.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using MofidApp.SharedKernel.DependencyInjection;
 using Unleash;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -68,7 +66,7 @@ builder.Services.AddAuthentication(options =>
     };
 });
 //builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ActivityLogBehavior<,>));
-builder.Services.AddTransient<IEmailSender, EmailSender>();
+//builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.RegisterServices();
 
 builder.Services.AddControllers(options =>

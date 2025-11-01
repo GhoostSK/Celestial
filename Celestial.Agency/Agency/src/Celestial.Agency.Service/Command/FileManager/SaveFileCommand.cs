@@ -1,7 +1,7 @@
-﻿using MediatR;
+﻿using Celestial.SharedKernel.Common;
+using Celestial.SharedKernel.Domain;
+using MediatR;
 using Microsoft.AspNetCore.Http;
-using MofidApp.SharedKernel.Common.Model;
-using MofidApp.SharedKernel.Domain.Services;
 
 namespace Celestial.Agency.Service.Command.FileManager;
 

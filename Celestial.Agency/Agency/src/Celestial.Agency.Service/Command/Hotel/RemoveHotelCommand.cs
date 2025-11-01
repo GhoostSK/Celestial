@@ -1,6 +1,6 @@
-﻿using MediatR;
-using MofidApp.SharedKernel.Common.Model;
-using MofidApp.SharedKernel.Domain.Services;
+﻿using Celestial.SharedKernel.Common;
+using Celestial.SharedKernel.Domain;
+using MediatR;
 
 namespace Celestial.Agency.Service.Command.Hotel;
 

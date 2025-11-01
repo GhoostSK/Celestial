@@ -3,8 +3,8 @@ using Celestial.Agency.Core.DAL.Repositories.Global;
 using Celestial.Agency.Core.DAL.Repositories.Visa;
 using Celestial.Agency.Service.Command.localization;
 using Celestial.Agency.Service.Command.Visa;
+using Celestial.SharedKernel.Mediator;
 using MediatR;
-using MofidApp.SharedKernel.Common.Model;
 
 namespace Celestial.Agency.Service.CommandHandler.Visa;
 

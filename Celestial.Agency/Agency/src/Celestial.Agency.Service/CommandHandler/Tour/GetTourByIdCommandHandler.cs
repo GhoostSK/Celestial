@@ -7,9 +7,9 @@ using Celestial.Agency.Core.DAL.Repositories.Tour;
 using Celestial.Agency.Core.Enum.Tour;
 using Celestial.Agency.Service.Command.ShirdalBlog;
 using Celestial.Agency.Service.Command.Tour;
+using Celestial.SharedKernel.Common;
 using Mapster;
 using MediatR;
-using MofidApp.SharedKernel.Domain.Services;
 
 namespace Celestial.Agency.Service.CommandHandler.Tour;
 

@@ -26,4 +26,8 @@
     <Folder Include="CommandHandler\LocalizedProperty\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Celestial.SharedKernel" Version="1.0.1" />
+  </ItemGroup>
+
 </Project>

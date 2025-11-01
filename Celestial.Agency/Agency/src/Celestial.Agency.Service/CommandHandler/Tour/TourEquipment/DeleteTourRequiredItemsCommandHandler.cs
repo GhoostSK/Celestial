@@ -1,7 +1,7 @@
 ﻿using Celestial.Agency.Core.DAL.Repositories.Tour;
 using Celestial.Agency.Service.Command.Tour.TourEquipment;
+using Celestial.SharedKernel.Common;
 using MediatR;
-using MofidApp.SharedKernel.Domain.Services;
 
 namespace Celestial.Agency.Service.CommandHandler.Tour.TourEquipment;
 

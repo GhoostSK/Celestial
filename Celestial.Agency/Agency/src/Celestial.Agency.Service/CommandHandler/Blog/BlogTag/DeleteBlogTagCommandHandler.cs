@@ -1,9 +1,9 @@
 ﻿using Celestial.Agency.Core.DAL.Repositories.ShirdalBlog;
 using Celestial.Agency.Service.Command.ShirdalBlog.BlogCategory;
+using Celestial.SharedKernel.Common;
 using MediatR;
-using MofidApp.SharedKernel.Domain.Services;
 
-namespace Celestial.Agency.Service.CommandHandler.ShirdalBlog.BlogTag;
+namespace Celestial.Agency.Service.CommandHandler.Blog.BlogTag;
 
 public sealed class DeleteBlogTagCommandHandler(IBlogTagService blogTagService)
     : IRequestHandler<DeleteBlogCategoryCommandReq, DeleteBlogCategoryCommandRes>

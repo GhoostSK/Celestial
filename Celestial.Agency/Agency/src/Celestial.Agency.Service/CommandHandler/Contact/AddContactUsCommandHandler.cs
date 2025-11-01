@@ -1,8 +1,8 @@
 ﻿using Celestial.Agency.Core.DAL.Model.Contact;
 using Celestial.Agency.Core.DAL.Repositories.Contact;
 using Celestial.Agency.Service.Command.Contact;
+using Celestial.SharedKernel.Mediator;
 using Mapster;
-using MofidApp.SharedKernel.Common.Model;
 
 namespace Celestial.Agency.Service.CommandHandler.Contact;
 

@@ -2,8 +2,8 @@
 using Celestial.Agency.Core.DAL.Repositories.Comment;
 using Celestial.Agency.Core.DAL.Repositories.Global;
 using Celestial.Agency.Service.Command.Comment;
+using Celestial.SharedKernel.Common;
 using MediatR;
-using MofidApp.SharedKernel.Domain.Services;
 
 namespace Celestial.Agency.Service.CommandHandler.Comment;
 

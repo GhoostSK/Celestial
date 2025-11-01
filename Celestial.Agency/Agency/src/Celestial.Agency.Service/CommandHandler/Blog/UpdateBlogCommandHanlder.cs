@@ -4,8 +4,8 @@ using Celestial.Agency.Core.DAL.Repositories.Blog;
 using Celestial.Agency.Core.DAL.Repositories.Global;
 using Celestial.Agency.Core.DAL.Repositories.Global.Model;
 using Celestial.Agency.Service.Command.ShirdalBlog;
-using MofidApp.SharedKernel.Common.Model;
-using MofidApp.SharedKernel.Domain.Services;
+using Celestial.SharedKernel.Common;
+using Celestial.SharedKernel.Mediator;
 
 namespace Celestial.Agency.Service.CommandHandler.Blog;
 

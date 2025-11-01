@@ -1,9 +1,9 @@
 ﻿using Celestial.Agency.Core.DAL.Model.Global;
 using Celestial.Agency.Core.DAL.Model.Hotel;
 using Celestial.Agency.Core.DAL.Repositories.Hotel.Model;
+using Celestial.SharedKernel.Common;
+using Celestial.SharedKernel.Domain;
 using MediatR;
-using MofidApp.SharedKernel.Common.Model;
-using MofidApp.SharedKernel.Domain.Services;
 
 namespace Celestial.Agency.Service.Command.Hotel;
 
