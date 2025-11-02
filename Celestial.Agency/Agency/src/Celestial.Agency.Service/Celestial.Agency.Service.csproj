@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Celestial.SharedKernel" Version="1.0.1" />
+    <PackageReference Include="Celestial.SharedKernel" Version="1.1.0" />
   </ItemGroup>
 
 </Project>
