@@ -1,80 +1,188 @@
-🌌 Celestial.Agency – Modular .NET Platform (In Development)
+<h1 align="center">🌌 Celestial.Agency – Modular .NET Platform (In Development)</h1>
 
-Celestial.Agency is a modular, extensible .NET 9.0 solution built on clean architectural principles and enterprise-grade design patterns.
-It’s part of the Celestial Project, focusing on providing a solid foundation for domain-driven, multi-layered applications.
+<p align="center">
+  <strong>A clean, extensible .NET 9 solution , CQRS, and Clean Architecture principles.</strong><br>
+  <em>Part of the Celestial Project Series</em>
+</p>
 
-⚙️ Note: This project is still under development and will continue to evolve as new modules and domain layers are added.
+<hr>
 
-🧩 Project Structure
+<h2>🚀 Overview</h2>
+<p>
+Celestial.Agency is a modular and layered .NET platform designed for enterprise-grade applications.  
+It integrates <b>ASP.NET Core 9</b>, <b>Entity Framework Core</b>, and <b>MediatR</b> to deliver clean separation of concerns and high scalability.
+</p>
+
+<p><b>⚙️ Note:</b> This project is currently under active development — new features and modules are being added continuously.</p>
+
+<hr>
+
+<h2>🧩 Project Structure</h2>
+
+<pre>
 Celestial.Agency/
 │
 ├── src/
 │   ├── Celestial.Agency.Api/         # API Gateway (Presentation Layer)
-│   │   ├── Controllers/              # API endpoints (Blog, Comment, Hotel, etc.)
-│   │   ├── Areas/                    # Identity and Admin areas
+│   │   ├── Controllers/              # REST endpoints
+│   │   ├── Areas/                    # Identity & Admin
 │   │   ├── Models/                   # DTOs and ViewModels
 │   │   ├── Data/                     # Identity & EF configurations
-│   │   ├── appsettings.json          # Environment configuration
-│   │   └── Program.cs                # Application entry point
+│   │   ├── appsettings.json          # Configurations
+│   │   └── Program.cs                # Entry point
 │   │
-│   ├── Celestial.Agency.Core/        # Domain & Core business logic
-│   │   ├── DAL/                      # Core repositories and interfaces
-│   │   │   ├── Model/                # Entity definitions
+│   ├── Celestial.Agency.Core/        # Domain Layer
+│   │   ├── DAL/                      # Repositories and Interfaces
+│   │   │   ├── Model/                # Domain Entities
 │   │   │   └── Repositories/         # Repository interfaces
-│   │   ├── Enum/                     # Enumerations (e.g., LocalKeyGroupType)
-│   │   ├── Attributes/               # Custom annotations and validators
-│   │   ├── Services/                 # Domain service contracts
-│   │   └── AppSetting.cs             # Global configurations
+│   │   ├── Enum/                     # Enumerations
+│   │   ├── Attributes/               # Custom annotations
+│   │   ├── Services/                 # Domain services contracts
+│   │   └── AppSetting.cs             # Configuration models
 │   │
-│   ├── Celestial.Agency.DAL.EF/      # Data Access Layer (EF Core)
-│   │   ├── Context/                  # DbContext and model builder
-│   │   ├── Configuration/            # EntityType configurations
-│   │   ├── DependencyInjection/      # DI setup for EF
-│   │   ├── Seeder/                   # Seed data for initial setup
-│   │   ├── _01-add_migrations.cmd    # Helper script for adding migrations
-│   │   ├── _02-update_db.cmd         # Helper script for applying migrations
-│   │   └── _03-remove_db.cmd         # Helper script for resetting DB
+│   ├── Celestial.Agency.DAL.EF/      # Infrastructure Layer (EF Core)
+│   │   ├── Context/                  # DbContext
+│   │   ├── Configuration/            # Fluent API setup
+│   │   ├── DependencyInjection/      # EF registration
+│   │   ├── Seeder/                   # Initial data seeding
+│   │   ├── _01-add_migrations.cmd    # Migration helper
+│   │   ├── _02-update_db.cmd         # DB update helper
+│   │   └── _03-remove_db.cmd         # Cleanup helper
 │   │
 │   └── Celestial.Agency.Service/     # Application Layer
 │       ├── Command/                  # CQRS Commands
-│       ├── CommandHandler/           # Handlers (MediatR)
-│       ├── Behavior/                 # Pipeline behaviors (logging, validation)
-│       ├── Service/                  # Application services
-│       └── Dependencies/             # DI and service registration
+│       ├── CommandHandler/           # MediatR Handlers
+│       ├── Behavior/                 # Pipeline behaviors
+│       ├── Service/                  # App services
+│       └── Dependencies/             # DI registrations
+│
+└── test/                             # Future tests (Unit/Integration)
+</pre>
 
-🧱 Architecture
+<hr>
 
-The system follows Clean Architecture and CQRS with MediatR, designed for modularity, scalability, and separation of concerns:
+<h2>🧱 Architecture</h2>
+<ul>
+  <li><b>Clean Architecture:</b> Strict separation between layers</li>
+  <li><b>CQRS + MediatR:</b> Independent command/query handling</li>
+  <li><b>DDD:</b> Domain-driven modeling and encapsulation</li>
+  <li><b>EF Core:</b> Persistence layer following repository patterns</li>
+  <li><b>Localization:</b> Multi-language entity support via LocalizedProperty</li>
+</ul>
 
-API Layer (Presentation): ASP.NET Core controllers exposing endpoints
+<hr>
 
-Service Layer (Application): Commands, Handlers, and orchestration logic
+<h2>🧠 Design Principles</h2>
+<ul>
+  <li>Command Query Responsibility Segregation (CQRS)</li>
+  <li>Repository & Unit of Work Patterns</li>
+  <li>Dependency Injection everywhere</li>
+  <li>Scalable and modular system</li>
+</ul>
 
-Core Layer (Domain): Business entities, interfaces, and enums
+<hr>
 
-EF Layer (Infrastructure): Data persistence with Entity Framework Core
+<h2>🧰 Technologies</h2>
 
-🧠 Design Principles
+<table>
+  <tr><th>Layer</th><th>Technology</th></tr>
+  <tr><td>Framework</td><td>.NET 9.0</td></tr>
+  <tr><td>ORM</td><td>Entity Framework Core</td></tr>
+  <tr><td>Architecture</td><td>Clean Architecture, CQRS</td></tr>
+  <tr><td>Communication</td><td>MediatR</td></tr>
+  <tr><td>Mapping</td><td>Mapster</td></tr>
+  <tr><td>Database</td><td>Microsoft SQL Server</td></tr>
+</table>
 
-CQRS + MediatR pattern
+<hr>
 
-Repository + Unit of Work
+<h2>⚙️ Setup & Run</h2>
 
-Dependency Injection
+<h3>1️⃣ Clone the Repository</h3>
+<pre>
+git clone https://github.com/GhoostSK/Celestial.Agency.git
+cd Celestial.Agency/src/Celestial.Agency.Api
+</pre>
 
-Localization and multi-language support
+<h3>2️⃣ Configure the Database</h3>
+<p>Edit your <code>appsettings.json</code>:</p>
+<pre>
+"ConnectionStrings": {
+  "DefaultConnection": "Server=.;Database=CelestialAgency;Trusted_Connection=True;TrustServerCertificate=True;"
+}
+</pre>
 
-Separation of Concerns
+<h3>3️⃣ Apply Migrations</h3>
+<pre>
+cd ../Celestial.Agency.DAL.EF
+dotnet ef database update
+</pre>
 
-High scalability and extensibility
+<h3>4️⃣ Run the API</h3>
+<pre>
+cd ../Celestial.Agency.Api
+dotnet run
+</pre>
 
-🧰 Technologies
-Layer	Technology
-Framework	.NET 9.0
-ORM	Entity Framework Core
-API	ASP.NET Core Web API
-Architecture	Clean Architecture, CQRS, DDD
-Libraries	MediatR, Mapster
-Database	Microsoft SQL Server
-Testing	xUnit (planned)
-Logging	Serilog (planned)
+<p>➡️ API will be available at: <b>https://localhost:5001/api</b></p>
+
+<hr>
+
+<h2>🧩 Example Endpoints</h2>
+
+<h3>Blog</h3>
+<pre>
+GET  /api/en/Blog/GetBlogsList
+GET  /api/en/Blog/GetBlogBySlug?slug=example
+</pre>
+
+<h3>Comment</h3>
+<pre>
+GET  /api/en/Comment/GetCommentBySlug
+POST /api/en/Comment/AddComment
+</pre>
+
+<h3>Hotel</h3>
+<pre>
+GET  /api/en/Hotel/GetHotelById?id=1
+</pre>
+
+<hr>
+
+<h2>📦 Modules</h2>
+
+<ul>
+  <li>✅ Blog Module</li>
+  <li>✅ Comment Module</li>
+  <li>✅ Hotel Module</li>
+  <li>🛠️ Admin Dashboard (in progress)</li>
+  <li>🛠️ Identity Management (in progress)</li>
+  <li>🛠️ Advanced Localization (in progress)</li>
+  <li>🛠️ Testing Layer (planned)</li>
+</ul>
+
+<hr>
+
+<h2>💬 Contribution</h2>
+<ol>
+  <li>Fork this repository</li>
+  <li>Create a feature branch: <code>git checkout -b feature/my-feature</code></li>
+  <li>Commit and push your changes</li>
+  <li>Open a Pull Request 🚀</li>
+</ol>
+
+<hr>
+
+<h2>📜 License</h2>
+<p>This project is licensed under the <b>MIT License</b>.  
+You’re free to use, modify, and distribute this software with proper credit.</p>
+
+<hr>
+
+<h2>🌠 Author</h2>
+<p>
+  <strong>sadra khoshnavaz</strong><br>
+  Open-source Contributor & Developer of the Celestial Series<br><br>
+  📧 khoshnavazsadra@gmail.com<br>
+  🔗 <a href="https://github.com/GhoostSK" target="_blank">github.com/GhoostSK</a>
+</p>
