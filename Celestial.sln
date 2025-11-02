@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Celestial.Agency.Service", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{11E23C84-92C4-44D0-AE38-3CBF7BAA2653}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Celestial.WebClient", "Celestial.WebClient\Celestial.WebClient.csproj", "{952DD481-311E-2B0D-F6F3-2C70C0C784F5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{819454BB-FA05-E458-0CB8-1F3236A03C73}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{819454BB-FA05-E458-0CB8-1F3236A03C73}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{819454BB-FA05-E458-0CB8-1F3236A03C73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{952DD481-311E-2B0D-F6F3-2C70C0C784F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{952DD481-311E-2B0D-F6F3-2C70C0C784F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{952DD481-311E-2B0D-F6F3-2C70C0C784F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{952DD481-311E-2B0D-F6F3-2C70C0C784F5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
