@@ -4,23 +4,35 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Celestial.Agency.DAL.EF.Configuration.ShirdalBlogConfig;
 
-public sealed class BlogEntityTypeConfiguration : IEntityTypeConfiguration<Blog>
+public class BlogEntityTypeConfiguration : IEntityTypeConfiguration<Blog>
 {
     public void Configure(EntityTypeBuilder<Blog> builder)
     {
-        builder.ToTable(nameof(Blog));
+        builder.ToTable("Blogs");
+        builder.HasKey(x => x.Id);
 
-        builder.Property(p => p.PicturePath)
-            .IsRequired()
-            .HasComment("Path to the picture associated with the blog.");
+        builder.Property(x => x.Likes)
+            .HasDefaultValue(0);
 
-        builder.Property(p => p.Likes)
-            .IsRequired()
-            .HasDefaultValue(0)
-            .HasComment("Number of likes for the blog post.");
+        builder.Property(x => x.PicturePath)
+            .HasMaxLength(300)
+            .IsRequired();
 
-        builder.Property(p => p.IsDeleted)
-            .IsRequired()
+        builder.Property(x => x.IsDeleted)
             .HasDefaultValue(false);
+
+        builder.Property(x => x.CategoryId)
+            .IsRequired();
+
+        builder.Property(x => x.TagsId)
+            .HasConversion(
+                v => string.Join(",", v),
+                v => v.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(long.Parse).ToList())
+            .HasColumnType("varchar(max)");
+
+        builder.Property(x => x.RegistrationDate)
+            .HasDefaultValueSql("GETUTCDATE()");
+
+        builder.HasIndex(x => x.CategoryId);
     }
 }

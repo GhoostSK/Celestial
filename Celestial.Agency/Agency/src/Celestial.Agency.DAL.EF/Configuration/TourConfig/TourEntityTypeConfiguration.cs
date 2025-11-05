@@ -1,102 +1,49 @@
-﻿using System.Text.Json;
-using Celestial.Agency.Core.DAL.Model.Tour;
+﻿using Celestial.Agency.Core.DAL.Model.Tour;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Celestial.Agency.DAL.EF.Configuration.TourConfig;
 
-public class TourEntityTypeConfiguration : IEntityTypeConfiguration<Tours>
+public class ToursEntityTypeConfiguration : IEntityTypeConfiguration<Tours>
 {
     public void Configure(EntityTypeBuilder<Tours> builder)
     {
-        builder.ToTable(nameof(Tours));
+        builder.ToTable("Tours");
+        builder.HasKey(x => x.Id);
 
-        builder.Property(p => p.CountriesId)
+        builder.Property(x => x.TourCode)
             .IsRequired()
-            .HasMaxLength(1000);
-
-        builder.Property(p => p.CountriesId)
-            .IsRequired()
-            .HasMaxLength(1000);
-
-        builder.Property(t => t.TourContinent)
-            .HasMaxLength(500)
-            .IsRequired();
-
-        builder.Property(p => p.Score)
-            .IsRequired();
-
-        builder.Property(p => p.TourCode)
-            .HasMaxLength(20)
-            .IsRequired();
-
-        builder
-            .HasIndex(p => p.TourCode)
-            .IsUnique();
-
-        builder.Property(p => p.PassengerCapacity)
-            .IsRequired()
-            .HasDefaultValue(0);
-
-        builder.Property(p => p.TourStatus)
-            .IsRequired()
-            .HasConversion<string>();
-
-        builder.Property(p => p.Hotels)
-            .IsRequired();
-
-        builder.Property(p => p.StartDate);
-
-        builder.Property(p => p.RegistrationDeadline);
-
-        builder.Property(p => p.PictureId);
-
-        builder.Property(p => p.BasePrice)
-            .HasMaxLength(20)
-            .IsRequired();
-
-        builder.Property(p => p.ForeignCurrency)
             .HasMaxLength(100);
 
-        builder.Property(p => p.ForeignPrice)
-            .HasColumnType("decimal(18,2)");
+        builder.Property(x => x.TourStatus)
+            .HasConversion<string>()
+            .HasMaxLength(30);
 
-        builder.Property(p => p.TotalDay).IsRequired();
+        builder.HasMany(x => x.Countries).WithOne();
+        builder.HasMany(x => x.Cities);
+        builder.Property(x => x.ForeignCurrency)
+            .HasMaxLength(10);
 
-        builder.HasOne(t => t.PrimaryTransport)
-            .WithOne(p => p.Tour)
-            .HasForeignKey<TourPrimaryTransport>(p => p.TourId)
-            .OnDelete(DeleteBehavior.Cascade);
+        builder.Property(x => x.BasePrice).HasPrecision(18, 2);
+        builder.Property(x => x.ForeignPrice).HasPrecision(18, 2);
 
-        builder.Property(p => p.NecessaryEquipment).IsRequired(false).HasMaxLength(200);
-        builder.Property(p => p.UnNecessaryEquipment).IsRequired(false).HasMaxLength(200);
+        builder.Property(x => x.TourScope)
+            .HasConversion<string>()
+            .HasMaxLength(30);
 
-        builder.HasMany(p => p.TransPorts)
-            .WithOne()
-            .HasForeignKey(t => t.TourId)
-            .OnDelete(DeleteBehavior.Cascade);
+        builder.Property(x => x.TourType)
+            .HasConversion<string>()
+            .HasMaxLength(30);
 
-        builder.HasMany(p => p.TourPlans)
-            .WithOne()
-            .HasForeignKey(t => t.TourId)
-            .OnDelete(DeleteBehavior.Cascade);
+        builder.Property(x => x.TourContinent)
+            .HasConversion<string>()
+            .HasMaxLength(30);
 
-        builder.Property(t => t.TourType)
-            .HasConversion<string>();
+        builder.Property(x => x.IsDeleted)
+            .HasDefaultValue(false);
 
-        builder.Property(t => t.TourContinent)
-            .HasConversion<string>();
-
-        builder.Property(t => t.TourScope)
-            .HasConversion<string>();
-
-        builder.Property(t => t.ExecDate)
-            .HasConversion(
-                v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null!),
-                v => JsonSerializer.Deserialize<List<DateOnly>>(v, (JsonSerializerOptions)null!) ?? new List<DateOnly>()
-            ).IsRequired().HasColumnType("NVARCHAR(MAX)");
-
-        builder.Property(p => p.RequiresVisa);
-        builder.Property(p => p.Views).HasColumnType("bigint");
+        builder.HasIndex(x => x.TourCode).IsUnique();
+        builder.HasIndex(x => x.TourStatus);
+        builder.HasIndex(x => x.TourScope);
     }
 }

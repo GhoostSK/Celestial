@@ -17,7 +17,7 @@ namespace Celestial.Agency.DAL.EF.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.10")
+                .HasAnnotation("ProductVersion", "9.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -31,34 +31,37 @@ namespace Celestial.Agency.DAL.EF.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasColumnType("bit");
 
                     b.Property<string>("Message")
                         .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.ToTable("ContactUs");
+                    b.HasIndex("CreatedAt")
+                        .HasDatabaseName("IX_ContactUs_CreatedAt");
+
+                    b.ToTable("ContactUs", (string)null);
                 });
 
             modelBuilder.Entity("Celestial.Agency.Core.DAL.Model.Exchange.Currency", b =>
@@ -70,17 +73,20 @@ namespace Celestial.Agency.DAL.EF.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("ExchangeRate")
-                        .HasPrecision(22, 3)
-                        .HasColumnType("decimal(22,3)");
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Currency");
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Currencies", (string)null);
                 });
 
             modelBuilder.Entity("Celestial.Agency.Core.DAL.Model.Geo.City", b =>
@@ -93,8 +99,8 @@ namespace Celestial.Agency.DAL.EF.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<int>("State_id")
                         .HasColumnType("int");
@@ -104,7 +110,10 @@ namespace Celestial.Agency.DAL.EF.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("City");
+                    b.HasIndex("Name", "country_id")
+                        .HasDatabaseName("IX_City_Name_Country");
+
+                    b.ToTable("Cities", (string)null);
                 });
 
             modelBuilder.Entity("Celestial.Agency.Core.DAL.Model.Geo.Country", b =>
@@ -117,20 +126,23 @@ namespace Celestial.Agency.DAL.EF.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<int>("PhoneCode")
                         .HasColumnType("int");
 
                     b.Property<string>("Shortname")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasMaxLength(3)
+                        .HasColumnType("varchar(3)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Country");
+                    b.HasIndex("Shortname")
+                        .IsUnique();
+
+                    b.ToTable("Countries", (string)null);
                 });
 
             modelBuilder.Entity("Celestial.Agency.Core.DAL.Model.Geo.State", b =>
@@ -146,12 +158,15 @@ namespace Celestial.Agency.DAL.EF.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("State");
+                    b.HasIndex("Name", "Country_id")
+                        .HasDatabaseName("IX_State_Name_Country");
+
+                    b.ToTable("States", (string)null);
                 });
 
             modelBuilder.Entity("Celestial.Agency.Core.DAL.Model.Global.AdminActivityLog", b =>
@@ -164,8 +179,8 @@ namespace Celestial.Agency.DAL.EF.Data.Migrations
 
                     b.Property<string>("Action")
                         .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
@@ -181,22 +196,24 @@ namespace Celestial.Agency.DAL.EF.Data.Migrations
 
                     b.Property<string>("EntityType")
                         .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasMaxLength(450)
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("UserName")
                         .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("AdminActivityLogs", (string)null);
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AdminActivityLog", (string)null);
                 });
 
             modelBuilder.Entity("Celestial.Agency.Core.DAL.Model.Global.Comments", b =>
@@ -209,8 +226,8 @@ namespace Celestial.Agency.DAL.EF.Data.Migrations
 
                     b.Property<string>("CommentText")
                         .IsRequired()
-                        .HasMaxLength(2000)
-                        .HasColumnType("nvarchar(2000)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("EntityId")
                         .HasColumnType("bigint");
@@ -219,30 +236,33 @@ namespace Celestial.Agency.DAL.EF.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasColumnType("bit");
 
                     b.Property<string>("KeyGroup")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<long?>("ParentCommentId")
                         .HasColumnType("bigint");
 
                     b.Property<DateTimeOffset>("RegisteredAt")
-                        .HasColumnType("datetimeoffset");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetimeoffset")
+                        .HasDefaultValueSql("SYSUTCDATETIME()");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasMaxLength(450)
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ParentCommentId");
 
-                    b.ToTable("Comments");
+                    b.HasIndex("KeyGroup", "EntityId");
+
+                    b.ToTable("Comments", (string)null);
                 });
 
             modelBuilder.Entity("Celestial.Agency.Core.DAL.Model.Global.Images", b =>
@@ -256,30 +276,24 @@ namespace Celestial.Agency.DAL.EF.Data.Migrations
                     b.Property<int>("DisplayOrder")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasDefaultValue(0)
-                        .HasComment("Order of the image for display purposes.");
+                        .HasDefaultValue(0);
 
                     b.Property<long>("EntityId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("KeyGroup")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("PicturePath")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)")
-                        .HasComment("Path to the stored image.");
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PicturePath")
-                        .HasDatabaseName("IX_Images_PicturePath");
-
-                    b.HasIndex("KeyGroup", "EntityId")
-                        .HasDatabaseName("IX_Images_KeyGroup_EntityId");
+                    b.HasIndex("KeyGroup", "EntityId");
 
                     b.ToTable("Images", (string)null);
                 });
@@ -293,27 +307,37 @@ namespace Celestial.Agency.DAL.EF.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("DisplayOrder")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
 
                     b.Property<string>("LanguageCulture")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<bool>("Published")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
                     b.Property<bool>("Rtl")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.HasKey("Id");
 
-                    b.ToTable("Language", (string)null);
+                    b.HasIndex("LanguageCulture")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Language_Culture");
+
+                    b.ToTable("Languages", (string)null);
                 });
 
             modelBuilder.Entity("Celestial.Agency.Core.DAL.Model.Global.LocalizedProperty", b =>
@@ -329,26 +353,30 @@ namespace Celestial.Agency.DAL.EF.Data.Migrations
 
                     b.Property<string>("Language")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)");
 
                     b.Property<string>("LocalKey")
                         .IsRequired()
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("LocalKeyGroup")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("LocalValue")
                         .IsRequired()
-                        .HasMaxLength(2147483647)
+                        .HasMaxLength(500)
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("LocalizedProperty", (string)null);
+                    b.HasIndex("LocalKeyGroup", "Language", "LocalKey", "EntityId")
+                        .HasDatabaseName("IX_LocalizedProperty_Search");
+
+                    b.ToTable("LocalizedProperties", (string)null);
                 });
 
             modelBuilder.Entity("Celestial.Agency.Core.DAL.Model.Hotel.Hotels", b =>
@@ -360,8 +388,9 @@ namespace Celestial.Agency.DAL.EF.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<string>("BookingUrl")
+                        .IsRequired()
                         .HasMaxLength(500)
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<long>("CityId")
                         .HasColumnType("bigint");
@@ -370,54 +399,66 @@ namespace Celestial.Agency.DAL.EF.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<string>("HotelCode")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("HotelContinent")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("HotelCoordinate")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<string>("HotelLocation")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("HotelReception")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("HotelScore")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<double>("Price")
-                        .HasColumnType("float");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("float(18)");
 
                     b.Property<int>("StateId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("HotelCode")
+                        .IsUnique();
+
+                    b.HasIndex("CountryId", "CityId", "StateId");
 
                     b.ToTable("Hotels", (string)null);
                 });
@@ -441,25 +482,27 @@ namespace Celestial.Agency.DAL.EF.Data.Migrations
                     b.Property<int>("Likes")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasDefaultValue(0)
-                        .HasComment("Number of likes for the blog post.");
+                        .HasDefaultValue(0);
 
                     b.Property<string>("PicturePath")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)")
-                        .HasComment("Path to the picture associated with the blog.");
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
 
                     b.Property<DateTime>("RegistrationDate")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<string>("TagsId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Blog", (string)null);
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Blogs", (string)null);
                 });
 
             modelBuilder.Entity("Celestial.Agency.Core.DAL.Model.ShirdalBlog.BlogCategory", b =>
@@ -471,11 +514,13 @@ namespace Celestial.Agency.DAL.EF.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.HasKey("Id");
 
-                    b.ToTable("BlogCategory", (string)null);
+                    b.ToTable("BlogCategories", (string)null);
                 });
 
             modelBuilder.Entity("Celestial.Agency.Core.DAL.Model.ShirdalBlog.BlogTags", b =>
@@ -494,10 +539,11 @@ namespace Celestial.Agency.DAL.EF.Data.Migrations
                     b.Property<int>("ViewCount")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasDefaultValue(0)
-                        .HasComment("Number of Views for the blog Tag.");
+                        .HasDefaultValue(0);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ViewCount");
 
                     b.ToTable("BlogTags", (string)null);
                 });
@@ -512,15 +558,17 @@ namespace Celestial.Agency.DAL.EF.Data.Migrations
 
                     b.Property<string>("Icon")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.HasKey("Id");
 
-                    b.ToTable("TourEquipments");
+                    b.ToTable("TourEquipments", (string)null);
                 });
 
             modelBuilder.Entity("Celestial.Agency.Core.DAL.Model.Tour.TourPlans", b =>
@@ -533,16 +581,19 @@ namespace Celestial.Agency.DAL.EF.Data.Migrations
 
                     b.Property<string>("PlanPictureId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(max)");
 
                     b.Property<long>("TourId")
                         .HasColumnType("bigint");
 
+                    b.Property<long?>("ToursId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("TourId");
+                    b.HasIndex("ToursId");
 
-                    b.ToTable("TourPlans");
+                    b.ToTable("TourPlans", (string)null);
                 });
 
             modelBuilder.Entity("Celestial.Agency.Core.DAL.Model.Tour.TourPrimaryTransport", b =>
@@ -555,13 +606,13 @@ namespace Celestial.Agency.DAL.EF.Data.Migrations
 
                     b.Property<string>("AirLine")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("AirLineImagePath")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
@@ -573,8 +624,8 @@ namespace Celestial.Agency.DAL.EF.Data.Migrations
 
                     b.Property<string>("LeadFlightCode")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("LeadStartTime")
                         .IsRequired()
@@ -588,8 +639,8 @@ namespace Celestial.Agency.DAL.EF.Data.Migrations
 
                     b.Property<string>("ReturnFlightCode")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("ReturnStartTime")
                         .IsRequired()
@@ -600,8 +651,6 @@ namespace Celestial.Agency.DAL.EF.Data.Migrations
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("LeadFlightCode");
 
                     b.HasIndex("TourId")
                         .IsUnique();
@@ -626,13 +675,19 @@ namespace Celestial.Agency.DAL.EF.Data.Migrations
                     b.Property<long>("TourId")
                         .HasColumnType("bigint");
 
+                    b.Property<long?>("ToursId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("TransPortType")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("TourId");
+
+                    b.HasIndex("ToursId");
 
                     b.ToTable("TourTransPorts", (string)null);
                 });
@@ -646,46 +701,44 @@ namespace Celestial.Agency.DAL.EF.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<decimal>("BasePrice")
-                        .HasMaxLength(20)
-                        .HasPrecision(22, 3)
-                        .HasColumnType("decimal(22,3)");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("CitiesId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(max)");
 
                     b.Property<string>("CountriesId")
                         .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
+                        .HasColumnType("varchar(max)");
 
-                    b.Property<string>("ExecDate")
+                    b.PrimitiveCollection<string>("ExecDate")
                         .IsRequired()
-                        .HasColumnType("NVARCHAR(MAX)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ForeignCurrency")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<decimal?>("ForeignPrice")
-                        .HasPrecision(22, 3)
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("Hotels")
+                    b.PrimitiveCollection<string>("Hotels")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
-                    b.Property<string>("NecessaryEquipment")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                    b.PrimitiveCollection<string>("NecessaryEquipment")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PassengerCapacity")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
+                        .HasColumnType("int");
 
                     b.Property<long>("PictureId")
                         .HasColumnType("bigint");
@@ -707,32 +760,35 @@ namespace Celestial.Agency.DAL.EF.Data.Migrations
 
                     b.Property<string>("TourCode")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("TourContinent")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("TourScope")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("TourStatus")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("TourType")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<int>("TourUserRegistrations")
                         .HasColumnType("int");
 
-                    b.Property<string>("UnNecessaryEquipment")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                    b.PrimitiveCollection<string>("UnNecessaryEquipment")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("Views")
                         .HasColumnType("bigint");
@@ -741,6 +797,10 @@ namespace Celestial.Agency.DAL.EF.Data.Migrations
 
                     b.HasIndex("TourCode")
                         .IsUnique();
+
+                    b.HasIndex("TourScope");
+
+                    b.HasIndex("TourStatus");
 
                     b.ToTable("Tours", (string)null);
                 });
@@ -799,9 +859,7 @@ namespace Celestial.Agency.DAL.EF.Data.Migrations
                 {
                     b.HasOne("Celestial.Agency.Core.DAL.Model.Tour.Tours", null)
                         .WithMany("TourPlans")
-                        .HasForeignKey("TourId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ToursId");
                 });
 
             modelBuilder.Entity("Celestial.Agency.Core.DAL.Model.Tour.TourPrimaryTransport", b =>
@@ -819,9 +877,7 @@ namespace Celestial.Agency.DAL.EF.Data.Migrations
                 {
                     b.HasOne("Celestial.Agency.Core.DAL.Model.Tour.Tours", null)
                         .WithMany("TransPorts")
-                        .HasForeignKey("TourId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ToursId");
                 });
 
             modelBuilder.Entity("Celestial.Agency.Core.DAL.Model.Global.Comments", b =>

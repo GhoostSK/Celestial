@@ -66,7 +66,7 @@ public sealed class GetToursListCommandHandler(
                 cancellationToken: cancellationToken);
 
             var countries = new List<string>();
-            foreach (var country in item.CountriesId)
+            foreach (var country in item.Countries)
             {
                 var countryData = await countryService.FindByIdAsync(cancellationToken, country);
                 countries.Add(countryData.Shortname);

@@ -1,41 +1,40 @@
 ﻿using Celestial.Agency.Core.DAL.Model.Global;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Celestial.Agency.DAL.EF.Configuration.GlobalConfig;
 
-public sealed class CommentsEntityTypeConfiguration : IEntityTypeConfiguration<Comments>
+public class CommentsEntityTypeConfiguration : IEntityTypeConfiguration<Comments>
 {
     public void Configure(EntityTypeBuilder<Comments> builder)
     {
-        ArgumentNullException.ThrowIfNull(nameof(builder));
+        builder.ToTable("Comments");
 
-        builder.Property(c => c.EntityId)
+        builder.HasKey(x => x.Id);
+
+        builder.Property(x => x.KeyGroup)
+            .HasConversion<string>()
+            .HasMaxLength(30)
             .IsRequired();
 
-        builder.Property(c => c.CommentText)
-            .IsRequired()
-            .HasMaxLength(2000);
+        builder.Property(x => x.EntityId).IsRequired();
 
-        builder.Property(c => c.UserId)
+        builder.Property(x => x.CommentText)
             .IsRequired()
-            .HasMaxLength(450);
+            .HasColumnType("nvarchar(max)");
 
-        builder.Property(c => c.IsConfirmed)
+        builder.Property(x => x.UserId)
+            .HasMaxLength(100)
             .IsRequired();
 
-        builder.Property(c => c.IsDeleted)
-            .IsRequired()
-            .HasDefaultValue(false);
+        builder.Property(x => x.RegisteredAt)
+            .HasDefaultValueSql("SYSUTCDATETIME()");
 
-        builder.Property(c => c.KeyGroup)
-            .HasConversion(new EnumToStringConverter<CommentKeyGroupType>())
-            .IsRequired();
-
-        builder.HasOne(c => c.ParentComment)
-            .WithMany(c => c.Replies)
-            .HasForeignKey(c => c.ParentCommentId)
+        builder.HasOne(x => x.ParentComment)
+            .WithMany(p => p.Replies)
+            .HasForeignKey(x => x.ParentCommentId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasIndex(x => new { x.KeyGroup, x.EntityId });
     }
 }

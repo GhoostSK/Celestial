@@ -4,19 +4,19 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Celestial.Agency.DAL.EF.Configuration.ShirdalBlogConfig;
 
-public sealed class BlogTagEntityTypeConfiguration : IEntityTypeConfiguration<BlogTags>
+public class BlogTagsEntityTypeConfiguration : IEntityTypeConfiguration<BlogTags>
 {
     public void Configure(EntityTypeBuilder<BlogTags> builder)
     {
         builder.ToTable("BlogTags");
+        builder.HasKey(x => x.Id);
 
-        builder.Property(p => p.ViewCount)
-            .IsRequired()
-            .HasDefaultValue(0)
-            .HasComment("Number of Views for the blog Tag.");
+        builder.Property(x => x.ViewCount)
+            .HasDefaultValue(0);
 
-        builder.Property(p => p.IsDeleted)
-            .IsRequired()
+        builder.Property(x => x.IsDeleted)
             .HasDefaultValue(false);
+
+        builder.HasIndex(x => x.ViewCount);
     }
 }

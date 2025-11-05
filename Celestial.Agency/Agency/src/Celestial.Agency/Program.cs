@@ -7,16 +7,15 @@ using Celestial.Agency.Api.Identity.Services.JwtToken;
 using Celestial.Agency.Api.Identity.Services.UserIdModelBinder;
 using Celestial.Agency.Core;
 using Celestial.Agency.DAL.EF.DependencyInjection;
-using Celestial.Agency.DAL.EF.Seeder;
 using Celestial.Dal.Ef.SqlServer.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Unleash;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.WebHost.UseIISIntegration();
 var hostEnvironment = builder.Environment;
 builder.Services.AddHttpClient();
 builder.Services.AddDalEf(builder.Configuration, hostEnvironment);
@@ -28,19 +27,6 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.G
 builder.Services.AddControllers();
 
 builder.Services.AddSingleton<JwtTokenService>();
-builder.Services.AddSingleton<IUnleash>(sp =>
-{
-    var unleashOptions = new UnleashSettings
-    {
-        AppName = "YourAppName",
-        //Environment = "production",
-        UnleashApi = new Uri("https://prod-unleash-Celestial.Celestial.app/api"),
-        InstanceTag = "instance-1",
-        FetchTogglesInterval = TimeSpan.FromSeconds(10)
-    };
-
-    return new DefaultUnleash(unleashOptions);
-});
 
 builder.Services.AddDbContext<IdentityDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DBContext")));
@@ -74,7 +60,7 @@ builder.Services.AddControllers(options =>
     options.ModelBinderProviders.Insert(0, new TokenUserIdModelBinderProvider());
 });
 
-builder.WebHost.UseKestrel();
+//builder.WebHost.UseKestrel();
 
 builder.Services.AddSwaggerGen(options =>
 {
@@ -141,21 +127,21 @@ builder.Services.Configure<AppSettings>(builder.Configuration);
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+//if (app.Environment.IsDevelopment())
+//{
+app.UseSwagger();
+app.UseSwaggerUI();
+//}
 
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    await TourSeeder.SeedAsync(services);
-}
+//using (var scope = app.Services.CreateScope())
+//{
+//    var services = scope.ServiceProvider;
+//    await TourSeeder.SeedAsync(services);
+//}
 
 app.Run();

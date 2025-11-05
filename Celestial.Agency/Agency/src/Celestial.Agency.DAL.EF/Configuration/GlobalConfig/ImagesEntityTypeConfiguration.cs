@@ -4,35 +4,28 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Celestial.Agency.DAL.EF.Configuration.GlobalConfig;
 
-public sealed class ImagesEntityTypeConfiguration : IEntityTypeConfiguration<Images>
+public class ImagesEntityTypeConfiguration : IEntityTypeConfiguration<Images>
 {
     public void Configure(EntityTypeBuilder<Images> builder)
     {
-        builder.ToTable(nameof(Images));
+        builder.ToTable("Images");
 
-        builder.HasKey(p => p.Id);
+        builder.HasKey(x => x.Id);
 
-        builder.Property(p => p.KeyGroup)
+        builder.Property(x => x.KeyGroup)
             .IsRequired()
-            .HasMaxLength(100);
+            .HasMaxLength(50)
+            .HasColumnType("varchar(50)");
 
-        builder.Property(p => p.EntityId)
-            .IsRequired();
+        builder.Property(x => x.EntityId).IsRequired();
 
-        builder.Property(p => p.PicturePath)
+        builder.Property(x => x.PicturePath)
             .IsRequired()
-            .HasMaxLength(500)
-            .HasComment("Path to the stored image.");
+            .HasMaxLength(300)
+            .HasColumnType("nvarchar(300)");
 
-        builder.Property(p => p.DisplayOrder)
-            .IsRequired()
-            .HasDefaultValue(0)
-            .HasComment("Order of the image for display purposes.");
+        builder.Property(x => x.DisplayOrder).HasDefaultValue(0);
 
-        builder.HasIndex(p => new { p.KeyGroup, p.EntityId })
-            .HasDatabaseName("IX_Images_KeyGroup_EntityId");
-
-        builder.HasIndex(p => p.PicturePath)
-            .HasDatabaseName("IX_Images_PicturePath");
+        builder.HasIndex(x => new { x.KeyGroup, x.EntityId });
     }
 }

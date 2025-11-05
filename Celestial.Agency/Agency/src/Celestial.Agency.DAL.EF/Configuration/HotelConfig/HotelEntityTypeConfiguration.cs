@@ -4,66 +4,55 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Celestial.Agency.DAL.EF.Configuration.HotelConfig;
 
-public sealed class HotelEntityTypeConfiguration : IEntityTypeConfiguration<Hotels>
+public class HotelsEntityTypeConfiguration : IEntityTypeConfiguration<Hotels>
 {
     public void Configure(EntityTypeBuilder<Hotels> builder)
     {
-        {
-            ArgumentNullException.ThrowIfNull(builder);
+        builder.ToTable("Hotels");
+        builder.HasKey(x => x.Id);
 
-            builder.ToTable(nameof(Hotels));
+        builder.Property(x => x.Name)
+            .IsRequired()
+            .HasMaxLength(200)
+            .HasColumnType("nvarchar(200)");
 
-            builder.Property(p => p.Name)
-                .HasMaxLength(100)
-                .IsRequired();
+        builder.Property(x => x.HotelLocation)
+            .HasConversion<string>()
+            .HasMaxLength(50)
+            .IsRequired();
 
-            builder.Property(p => p.HotelLocation)
-                .HasMaxLength(100)
-                .HasConversion<string>();
+        builder.Property(x => x.HotelContinent)
+            .HasConversion<string>()
+            .HasMaxLength(30)
+            .IsRequired();
 
-            builder.Property(p => p.HotelContinent)
-                .HasMaxLength(100)
-                .HasConversion<string>();
+        builder.Property(x => x.Price)
+            .HasPrecision(18, 2)
+            .IsRequired();
 
-            builder.Property(p => p.Price)
-                .IsRequired();
+        builder.Property(x => x.BookingUrl)
+            .HasMaxLength(500)
+            .HasColumnType("nvarchar(500)");
 
-            builder.Property(p => p.HotelCode)
-                .HasMaxLength(10)
-                .IsRequired();
+        builder.Property(x => x.HotelCode)
+            .HasMaxLength(100)
+            .IsRequired();
 
-            builder.Property(p => p.CountryId)
-                .IsRequired();
+        builder.Property(x => x.HotelCoordinate)
+            .HasMaxLength(150);
 
-            builder.Property(p => p.CityId)
-                .IsRequired();
+        builder.Property(x => x.HotelReception)
+            .HasMaxLength(100);
 
-            builder.Property(p => p.StateId)
-                .IsRequired();
+        builder.Property(x => x.CreatedAt)
+            .HasDefaultValueSql("GETUTCDATE()");
 
-            builder.Property(p => p.BookingUrl)
-                .HasColumnType("nvarchar(max)")
-                .IsRequired(false);
+        builder.Property(x => x.UpdatedAt)
+            .HasDefaultValueSql("GETUTCDATE()");
 
-            builder.Property(p => p.HotelScore)
-                .IsRequired();
+        builder.HasIndex(x => x.HotelCode).IsUnique();
+        builder.HasIndex(x => new { x.CountryId, x.CityId, x.StateId });
 
-            builder.Property(p => p.HotelCoordinate)
-                .HasColumnType("nvarchar(max)")
-                .IsRequired();
-
-            builder.Property(p => p.HotelReception)
-                .HasMaxLength(50)
-                .IsRequired();
-
-            builder.Property(p => p.UpdatedAt)
-                .IsRequired();
-
-            builder.Property(p => p.CreatedAt)
-                .IsRequired();
-
-            builder.Property(p => p.IsDeleted)
-                .IsRequired();
-        }
+        builder.Property(x => x.IsDeleted).HasDefaultValue(false);
     }
 }

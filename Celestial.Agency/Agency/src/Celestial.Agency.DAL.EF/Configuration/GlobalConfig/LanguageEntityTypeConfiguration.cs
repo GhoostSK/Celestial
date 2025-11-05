@@ -4,17 +4,34 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Celestial.Agency.DAL.EF.Configuration.GlobalConfig;
 
-public sealed class LanguageEntityTypeConfiguration : IEntityTypeConfiguration<Language>
+public class LanguageEntityTypeConfiguration : IEntityTypeConfiguration<Language>
 {
     public void Configure(EntityTypeBuilder<Language> builder)
     {
-        ArgumentNullException.ThrowIfNull(nameof(builder));
+        builder.ToTable("Languages");
+        builder.HasKey(x => x.Id);
 
-        builder.ToTable(nameof(Language));
-        builder.Property(p => p.Name).HasMaxLength(10).IsRequired();
-        builder.Property(p => p.LanguageCulture).HasMaxLength(20).IsRequired();
-        builder.Property(p => p.Published).IsRequired();
-        builder.Property(p => p.Rtl).IsRequired();
-        builder.Property(p => p.DisplayOrder).IsRequired();
+        builder.Property(x => x.Name)
+            .IsRequired()
+            .HasMaxLength(100)
+            .HasColumnType("nvarchar(100)");
+
+        builder.Property(x => x.LanguageCulture)
+            .IsRequired()
+            .HasMaxLength(10)
+            .HasColumnType("varchar(10)");
+
+        builder.Property(x => x.Rtl)
+            .HasDefaultValue(false);
+
+        builder.Property(x => x.Published)
+            .HasDefaultValue(true);
+
+        builder.Property(x => x.DisplayOrder)
+            .HasDefaultValue(0);
+
+        builder.HasIndex(x => x.LanguageCulture)
+            .IsUnique()
+            .HasDatabaseName("IX_Language_Culture");
     }
 }

@@ -56,7 +56,7 @@ public class GetTourByIdCommandHandler(
         var itemResponse = tour.Adapt<GetTourItemRes>();
         itemResponse.DaysUntilRegistrationDeadline =
             tour.RegistrationDeadline.DayNumber - DateOnly.FromDateTime(DateTime.Today).DayNumber;
-        foreach (var country in tour.CountriesId)
+        foreach (var country in tour.Countries)
         {
             var countryData = await countryService.FindByIdAsync(cancellationToken, country);
             itemResponse.Countries.Add(countryData.Shortname);
@@ -171,7 +171,7 @@ public class GetTourByIdCommandHandler(
                 cancellationToken: cancellationToken);
 
             var countries = new List<string>();
-            foreach (var country in item.CountriesId)
+            foreach (var country in item.Countries)
             {
                 var countryData = await countryService.FindByIdAsync(cancellationToken, country);
                 countries.Add(countryData.Shortname);
