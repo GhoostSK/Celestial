@@ -448,6 +448,9 @@ namespace Celestial.Agency.DAL.EF.Data.Migrations
                     b.Property<int>("StateId")
                         .HasColumnType("int");
 
+                    b.Property<long?>("ToursId")
+                        .HasColumnType("bigint");
+
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
@@ -457,6 +460,8 @@ namespace Celestial.Agency.DAL.EF.Data.Migrations
 
                     b.HasIndex("HotelCode")
                         .IsUnique();
+
+                    b.HasIndex("ToursId");
 
                     b.HasIndex("CountryId", "CityId", "StateId");
 
@@ -494,7 +499,7 @@ namespace Celestial.Agency.DAL.EF.Data.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETUTCDATE()");
 
-                    b.Property<string>("TagsId")
+                    b.PrimitiveCollection<string>("TagsId")
                         .IsRequired()
                         .HasColumnType("varchar(max)");
 
@@ -704,13 +709,13 @@ namespace Celestial.Agency.DAL.EF.Data.Migrations
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("CitiesId")
+                    b.PrimitiveCollection<string>("Cities")
                         .IsRequired()
-                        .HasColumnType("varchar(max)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CountriesId")
+                    b.PrimitiveCollection<string>("Countries")
                         .IsRequired()
-                        .HasColumnType("varchar(max)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.PrimitiveCollection<string>("ExecDate")
                         .IsRequired()
@@ -724,18 +729,10 @@ namespace Celestial.Agency.DAL.EF.Data.Migrations
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
-                    b.PrimitiveCollection<string>("Hotels")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
-
-                    b.PrimitiveCollection<string>("NecessaryEquipment")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PassengerCapacity")
                         .HasColumnType("int");
@@ -785,10 +782,6 @@ namespace Celestial.Agency.DAL.EF.Data.Migrations
 
                     b.Property<int>("TourUserRegistrations")
                         .HasColumnType("int");
-
-                    b.PrimitiveCollection<string>("UnNecessaryEquipment")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("Views")
                         .HasColumnType("bigint");
@@ -845,6 +838,36 @@ namespace Celestial.Agency.DAL.EF.Data.Migrations
                     b.ToTable("Visas", (string)null);
                 });
 
+            modelBuilder.Entity("TourEquipmentsTours", b =>
+                {
+                    b.Property<long>("NecessaryEquipmentId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ToursId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("NecessaryEquipmentId", "ToursId");
+
+                    b.HasIndex("ToursId");
+
+                    b.ToTable("TourEquipmentsTours");
+                });
+
+            modelBuilder.Entity("TourEquipmentsTours1", b =>
+                {
+                    b.Property<long>("Tours1Id")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("UnNecessaryEquipmentId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Tours1Id", "UnNecessaryEquipmentId");
+
+                    b.HasIndex("UnNecessaryEquipmentId");
+
+                    b.ToTable("TourEquipmentsTours1");
+                });
+
             modelBuilder.Entity("Celestial.Agency.Core.DAL.Model.Global.Comments", b =>
                 {
                     b.HasOne("Celestial.Agency.Core.DAL.Model.Global.Comments", "ParentComment")
@@ -853,6 +876,13 @@ namespace Celestial.Agency.DAL.EF.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("ParentComment");
+                });
+
+            modelBuilder.Entity("Celestial.Agency.Core.DAL.Model.Hotel.Hotels", b =>
+                {
+                    b.HasOne("Celestial.Agency.Core.DAL.Model.Tour.Tours", null)
+                        .WithMany("Hotels")
+                        .HasForeignKey("ToursId");
                 });
 
             modelBuilder.Entity("Celestial.Agency.Core.DAL.Model.Tour.TourPlans", b =>
@@ -880,6 +910,36 @@ namespace Celestial.Agency.DAL.EF.Data.Migrations
                         .HasForeignKey("ToursId");
                 });
 
+            modelBuilder.Entity("TourEquipmentsTours", b =>
+                {
+                    b.HasOne("Celestial.Agency.Core.DAL.Model.Tour.TourEquipment.TourEquipments", null)
+                        .WithMany()
+                        .HasForeignKey("NecessaryEquipmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Celestial.Agency.Core.DAL.Model.Tour.Tours", null)
+                        .WithMany()
+                        .HasForeignKey("ToursId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TourEquipmentsTours1", b =>
+                {
+                    b.HasOne("Celestial.Agency.Core.DAL.Model.Tour.Tours", null)
+                        .WithMany()
+                        .HasForeignKey("Tours1Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Celestial.Agency.Core.DAL.Model.Tour.TourEquipment.TourEquipments", null)
+                        .WithMany()
+                        .HasForeignKey("UnNecessaryEquipmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Celestial.Agency.Core.DAL.Model.Global.Comments", b =>
                 {
                     b.Navigation("Replies");
@@ -887,6 +947,8 @@ namespace Celestial.Agency.DAL.EF.Data.Migrations
 
             modelBuilder.Entity("Celestial.Agency.Core.DAL.Model.Tour.Tours", b =>
                 {
+                    b.Navigation("Hotels");
+
                     b.Navigation("PrimaryTransport")
                         .IsRequired();
 

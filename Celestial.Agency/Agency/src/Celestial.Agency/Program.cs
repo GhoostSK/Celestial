@@ -27,7 +27,6 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.G
 builder.Services.AddControllers();
 
 builder.Services.AddSingleton<JwtTokenService>();
-
 builder.Services.AddDbContext<IdentityDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DBContext")));
 

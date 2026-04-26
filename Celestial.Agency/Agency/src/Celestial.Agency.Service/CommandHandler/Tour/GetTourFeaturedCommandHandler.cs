@@ -47,11 +47,11 @@ public class GetTourFeaturedCommandHandler(
                 p => p.EntityId == tour.Id && p.KeyGroup == "Tour" && p.DisplayOrder == 0,
                 cancellationToken: cancellationToken);
             var tourCountries = new List<string>();
-            foreach (var countryId in tour.Countries)
-            {
-                var country = await countryService.FindByIdAsync(cancellationToken, countryId);
-                tourCountries.Add(country.Shortname);
-            }
+            //foreach (var countryId in tour.Countries)
+            //{
+            //    var country = await countryService.FindByIdAsync(cancellationToken, countryId);
+            //    tourCountries.Add(country.Shortname);
+            //}
 
             result.Add(new GetTourFeaturedItemDto
             {

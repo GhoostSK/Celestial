@@ -1,5 +1,4 @@
-﻿using Celestial.Agency.Core.DAL.Model.Geo;
-using Celestial.Agency.Core.DAL.Model.Hotel;
+﻿using Celestial.Agency.Core.DAL.Model.Hotel;
 using Celestial.Agency.Core.DAL.Model.Tour.TourEquipment;
 using Celestial.Agency.Core.Enum.Global;
 using Celestial.Agency.Core.Enum.Tour;
@@ -9,8 +8,8 @@ namespace Celestial.Agency.Core.DAL.Model.Tour;
 
 public sealed class Tours : DbBaseEntity<long>
 {
-    public List<Country> Countries { get; set; } = new();
-    public List<City> Cities { get; set; } = new();
+    public List<int> Countries { get; set; } = new();
+    public List<long> Cities { get; set; } = new();
     public string TourCode { get; set; } = string.Empty;
     public TourStatus TourStatus { get; set; }
     public DateOnly StartDate { get; set; }

@@ -74,11 +74,11 @@ public sealed class GetEquipmentById
 
 public sealed class GetTourByIdReqDto
 {
-    [Required] public string Language { get; set; }
+    [FromRoute] public string Language { get; set; }
 
     [Required] public int TourId { get; set; }
 
-    [Slug] public string Slug { get; set; } = string.Empty;
+    [Slug] [FromRoute] public string Slug { get; set; } = string.Empty;
 }
 
 public sealed class RemoveTourByIdReqDto

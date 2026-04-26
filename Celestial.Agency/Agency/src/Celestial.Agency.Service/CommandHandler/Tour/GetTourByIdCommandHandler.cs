@@ -1,10 +1,8 @@
 ﻿using Celestial.Agency.Core.DAL.Model.Global;
-using Celestial.Agency.Core.DAL.Model.Tour;
 using Celestial.Agency.Core.DAL.Repositories.Geo;
 using Celestial.Agency.Core.DAL.Repositories.Global;
 using Celestial.Agency.Core.DAL.Repositories.Global.Model;
 using Celestial.Agency.Core.DAL.Repositories.Tour;
-using Celestial.Agency.Core.Enum.Tour;
 using Celestial.Agency.Service.Command.ShirdalBlog;
 using Celestial.Agency.Service.Command.Tour;
 using Celestial.SharedKernel.Common;
@@ -24,10 +22,12 @@ public class GetTourByIdCommandHandler(
 {
     public async Task<GetTourByIdCommandRes> Handle(GetTourCommandReq request, CancellationToken cancellationToken)
     {
-        var localizedProperty = await localizedPropertyService.FirstOrDefaultAsync(p =>
-            p.LocalKey == "Slug" &&
-            p.LocalValue == request.Slug &&
-            p.LocalKeyGroup == LocalKeyGroupType.Tour, cancellationToken: cancellationToken);
+        // 🔹 پیدا کردن Slug
+        var localizedProperty = await localizedPropertyService.FirstOrDefaultAsync(
+            p => p.LocalKey == "Slug" &&
+                 p.LocalValue == request.Slug &&
+                 p.LocalKeyGroup == LocalKeyGroupType.Tour,
+            cancellationToken: cancellationToken);
 
         if (localizedProperty == null)
             return new GetTourByIdCommandRes
@@ -35,8 +35,8 @@ public class GetTourByIdCommandHandler(
                 Error = new ValidationError("T404", "Tour not found with provided slug")
             };
 
+        // 🔹 دریافت اطلاعات تور
         var tour = await tourService.GetTourById(localizedProperty.EntityId, cancellationToken);
-
         if (tour == null)
             return new GetTourByIdCommandRes
             {
@@ -44,24 +44,35 @@ public class GetTourByIdCommandHandler(
             };
 
         tour.Views++;
-        var tourImage =
-            await imageService.FirstOrDefaultAsync(p => p.EntityId == tour.Id, cancellationToken: cancellationToken);
-        var localizedData = await localizedPropertyService.GetPropertyByLanguageAndEntityId(new GetLocalizedPropertyReq
-        {
-            EntityId = tour.Id,
-            Language = localizedProperty.Language,
-            LocalKeyGroup = LocalKeyGroupType.Tour
-        }, cancellationToken);
 
+        // 🔹 تصویر اصلی تور
+        var tourImage = await imageService.FirstOrDefaultAsync(
+            p => p.EntityId == tour.Id,
+            cancellationToken: cancellationToken);
+
+        // 🔹 داده‌های لوکالایز
+        var localizedData = await localizedPropertyService.GetPropertyByLanguageAndEntityId(
+            new GetLocalizedPropertyReq
+            {
+                EntityId = tour.Id,
+                Language = localizedProperty.Language,
+                LocalKeyGroup = LocalKeyGroupType.Tour
+            },
+            cancellationToken);
+
+        // 🔹 پر کردن DTO اصلی
         var itemResponse = tour.Adapt<GetTourItemRes>();
         itemResponse.DaysUntilRegistrationDeadline =
             tour.RegistrationDeadline.DayNumber - DateOnly.FromDateTime(DateTime.Today).DayNumber;
-        foreach (var country in tour.Countries)
-        {
-            var countryData = await countryService.FindByIdAsync(cancellationToken, country);
-            itemResponse.Countries.Add(countryData.Shortname);
-        }
 
+        // 🔹 کشورها
+        //foreach (var country in tour.Countries)
+        //{
+        //    var countryData = await countryService.FindByIdAsync(cancellationToken, country);
+        //    itemResponse.Countries.Add(countryData.Shortname);
+        //}
+
+        // 🔹 فیلدهای لوکالایز
         itemResponse.PicturePath = tourImage?.PicturePath ?? string.Empty;
         itemResponse.Name = localizedData.FirstOrDefault(p => p.LocalKey == nameof(GetTourItemRes.Name))?.LocalValue ??
                             string.Empty;
@@ -88,6 +99,7 @@ public class GetTourByIdCommandHandler(
             localizedData.FirstOrDefault(p => p.LocalKey == nameof(GetTourItemRes.MetaTitle))?.LocalValue ??
             string.Empty;
 
+        // 🔹 پلان‌ها
         for (var i = 0; i < tour.TourPlans.Count; i++)
         {
             var tourPlanLocalizeData = await localizedPropertyService.GetPropertyByLanguageAndEntityId(
@@ -99,7 +111,7 @@ public class GetTourByIdCommandHandler(
                 }, cancellationToken);
 
             if (!tourPlanLocalizeData.Any())
-                break;
+                continue;
 
             var planImages =
                 await imageService.GetImagesByEntityId(tour.TourPlans[i].Id, "TourPlan", cancellationToken);
@@ -112,95 +124,53 @@ public class GetTourByIdCommandHandler(
             itemResponse.TourPlans[i].PlanPicturePath = planPicturePaths;
         }
 
+        // 🔹 تجهیزات ضروری
         itemResponse.NecessaryEquipment = new List<TourEquipmentDto>();
-        itemResponse.UnNecessaryEquipment = new List<TourEquipmentDto>();
-        foreach (var item in tour.NecessaryEquipment)
-        {
-            var equipment = await equipmentsService.FindByIdAsync(cancellationToken, item);
-            var localizeName = await localizedPropertyService.FirstOrDefaultAsync(p =>
-                p.EntityId == item && p.LocalKeyGroup == LocalKeyGroupType.TourEquipment && p.LocalKey == "Name" &&
-                p.Language == localizedProperty.Language, cancellationToken: cancellationToken);
-            itemResponse.NecessaryEquipment.Add(new TourEquipmentDto
+        if (tour.NecessaryEquipment?.Any() == true)
+            foreach (var eqId in tour.NecessaryEquipment)
             {
-                Icon = equipment?.Icon ?? "",
-                Name = localizeName?.LocalValue ?? ""
-            });
-        }
+                var eq = await equipmentsService.FindByIdAsync(cancellationToken, eqId);
+                if (eq == null) continue;
 
-        foreach (var item in tour.UnNecessaryEquipment)
-        {
-            var equipment = await equipmentsService.FindByIdAsync(cancellationToken, item);
-            var localizeName = await localizedPropertyService.FirstOrDefaultAsync(p =>
-                p.EntityId == item && p.LocalKeyGroup == LocalKeyGroupType.TourEquipment && p.LocalKey == "Name" &&
-                p.Language == localizedProperty.Language, cancellationToken: cancellationToken);
-            itemResponse.UnNecessaryEquipment.Add(new TourEquipmentDto
+                var localName = await localizedPropertyService.FirstOrDefaultAsync(
+                    p => p.EntityId == eq.Id &&
+                         p.LocalKeyGroup == LocalKeyGroupType.TourEquipment &&
+                         p.LocalKey == "Name" &&
+                         p.Language == localizedProperty.Language,
+                    cancellationToken: cancellationToken);
+
+                itemResponse.NecessaryEquipment.Add(new TourEquipmentDto
+                {
+                    Icon = eq.Icon,
+                    Name = localName?.LocalValue ?? string.Empty
+                });
+            }
+
+        // 🔹 تجهیزات غیرضروری
+        itemResponse.UnNecessaryEquipment = new List<TourEquipmentDto>();
+        if (tour.UnNecessaryEquipment?.Any() == true)
+            foreach (var eqId in tour.UnNecessaryEquipment)
             {
-                Icon = equipment?.Icon ?? "",
-                Name = localizeName?.LocalValue ?? ""
-            });
-        }
+                var eq = await equipmentsService.FindByIdAsync(cancellationToken, eqId);
+                if (eq == null) continue;
+
+                var localName = await localizedPropertyService.FirstOrDefaultAsync(
+                    p => p.EntityId == eq.Id &&
+                         p.LocalKeyGroup == LocalKeyGroupType.TourEquipment &&
+                         p.LocalKey == "Name" &&
+                         p.Language == localizedProperty.Language,
+                    cancellationToken: cancellationToken);
+
+                itemResponse.UnNecessaryEquipment.Add(new TourEquipmentDto
+                {
+                    Icon = eq.Icon,
+                    Name = localName?.LocalValue ?? string.Empty
+                });
+            }
 
         await tourService.UnitOfWork.SaveChangesAsync(cancellationToken);
 
-        var tourData = await tourService.GetToursList(new GetTourListReq
-        {
-            PageSize = 6,
-            PageNumber = 1
-        }, cancellationToken);
-
-        var similarTours = new List<GetToursListItemRes>();
-
-        foreach (var item in tourData.Items)
-        {
-            var localizeData = await localizedPropertyService.GetPropertyByLanguageAndEntityId(
-                new GetLocalizedPropertyReq
-                {
-                    EntityId = item.Id,
-                    Language = localizedProperty.Language,
-                    LocalKeyGroup = LocalKeyGroupType.Tour
-                }, cancellationToken);
-
-            var name = localizeData.FirstOrDefault(p => p.LocalKey == nameof(TourLocalizedPropertyItem.Name))
-                ?.LocalValue;
-            var tourText = localizeData
-                .FirstOrDefault(p => p.LocalKey == nameof(TourLocalizedPropertyItem.TourMainText))?.LocalValue;
-            var slug = localizeData.FirstOrDefault(p => p.LocalKey == nameof(TourLocalizedPropertyItem.Slug))
-                ?.LocalValue;
-            var picture = await imageService.FirstOrDefaultAsync(
-                p => p.EntityId == item.Id && p.KeyGroup == "Tour" && p.DisplayOrder == 0,
-                cancellationToken: cancellationToken);
-
-            var countries = new List<string>();
-            foreach (var country in item.Countries)
-            {
-                var countryData = await countryService.FindByIdAsync(cancellationToken, country);
-                countries.Add(countryData.Shortname);
-            }
-
-            similarTours.Add(new GetToursListItemRes
-            {
-                Id = item.Id,
-                Score = item.Score,
-                Name = name!,
-                StartDate = item.StartDate,
-                TourText = tourText!,
-                PicturePath = picture.PicturePath,
-                Country = countries,
-                TourStatus = item.TourStatus,
-                Slug = slug!,
-                DaysUntilRegistrationDeadline = item.TourStatus == TourStatus.Planning
-                    ? null
-                    : item.RegistrationDeadline.DayNumber - DateOnly.FromDateTime(DateTime.Today).DayNumber,
-                RegistrationDeadline = item.TourStatus == TourStatus.Planning
-                    ? null
-                    : item.RegistrationDeadline,
-                ForeignCurrency = item.ForeignCurrency,
-                ForeignPrice = item.ForeignPrice,
-                BasePrice = item.BasePrice,
-                TotalDay = item.TotalDay
-            });
-        }
-
+        // 🔹 سایر تورها برای نمایش در similar
         var similarTour = await mediator.Send(new GetTourFeaturedCommandReq
         {
             Language = localizedProperty.Language,
@@ -215,6 +185,7 @@ public class GetTourByIdCommandHandler(
 
         itemResponse.SimilarBlog = similarBlog.Items;
         itemResponse.SimilarTour = similarTour.Items;
+
         return new GetTourByIdCommandRes
         {
             Item = itemResponse

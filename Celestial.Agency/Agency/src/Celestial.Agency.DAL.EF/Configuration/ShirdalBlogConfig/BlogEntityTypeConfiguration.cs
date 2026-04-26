@@ -25,9 +25,6 @@ public class BlogEntityTypeConfiguration : IEntityTypeConfiguration<Blog>
             .IsRequired();
 
         builder.Property(x => x.TagsId)
-            .HasConversion(
-                v => string.Join(",", v),
-                v => v.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(long.Parse).ToList())
             .HasColumnType("varchar(max)");
 
         builder.Property(x => x.RegistrationDate)

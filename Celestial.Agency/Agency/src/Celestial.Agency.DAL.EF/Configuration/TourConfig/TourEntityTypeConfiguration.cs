@@ -19,8 +19,8 @@ public class ToursEntityTypeConfiguration : IEntityTypeConfiguration<Tours>
             .HasConversion<string>()
             .HasMaxLength(30);
 
-        builder.HasMany(x => x.Countries).WithOne();
-        builder.HasMany(x => x.Cities);
+        builder.Property(x => x.Countries);
+        builder.Property(x => x.Cities);
         builder.Property(x => x.ForeignCurrency)
             .HasMaxLength(10);
 
@@ -41,7 +41,14 @@ public class ToursEntityTypeConfiguration : IEntityTypeConfiguration<Tours>
 
         builder.Property(x => x.IsDeleted)
             .HasDefaultValue(false);
+        builder
+            .HasMany(x => x.NecessaryEquipment);
 
+        builder
+            .HasMany(x => x.UnNecessaryEquipment);
+
+        builder.HasMany(x => x.NecessaryEquipment).WithMany();
+        builder.HasMany(x => x.UnNecessaryEquipment).WithMany();
         builder.HasIndex(x => x.TourCode).IsUnique();
         builder.HasIndex(x => x.TourStatus);
         builder.HasIndex(x => x.TourScope);

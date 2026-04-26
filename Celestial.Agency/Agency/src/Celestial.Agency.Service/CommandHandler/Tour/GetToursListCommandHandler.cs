@@ -65,12 +65,12 @@ public sealed class GetToursListCommandHandler(
                 p => p.EntityId == item.Id && p.KeyGroup == "Tour" && p.DisplayOrder == 0,
                 cancellationToken: cancellationToken);
 
-            var countries = new List<string>();
-            foreach (var country in item.Countries)
-            {
-                var countryData = await countryService.FindByIdAsync(cancellationToken, country);
-                countries.Add(countryData.Shortname);
-            }
+            //var countries = new List<string>();
+            //foreach (var country in item.Countries)
+            //{
+            //    var countryData = await countryService.FindByIdAsync(cancellationToken, country);
+            //    countries.Add(countryData.Shortname);
+            //}
 
             data.Add(new GetToursListItemRes
             {
@@ -80,7 +80,7 @@ public sealed class GetToursListCommandHandler(
                 StartDate = item.StartDate,
                 TourText = tourText!,
                 PicturePath = picture.PicturePath,
-                Country = countries,
+                //Country = countries,
                 TourStatus = item.TourStatus,
                 Slug = slug!,
                 DaysUntilRegistrationDeadline = item.TourStatus == TourStatus.Planning
