@@ -1,6 +1,3 @@
-using System.Reflection;
-using System.Text;
-using System.Text.Json.Serialization;
 using Celestial.Agency.Api.Identity.Context;
 using Celestial.Agency.Api.Identity.Model;
 using Celestial.Agency.Api.Identity.Services.JwtToken;
@@ -12,7 +9,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
+using System.Reflection;
+using System.Text;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.WebHost.UseIISIntegration();
@@ -50,8 +50,6 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
     };
 });
-//builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ActivityLogBehavior<,>));
-//builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.RegisterServices();
 
 builder.Services.AddControllers(options =>
@@ -59,43 +57,27 @@ builder.Services.AddControllers(options =>
     options.ModelBinderProviders.Insert(0, new TokenUserIdModelBinderProvider());
 });
 
-//builder.WebHost.UseKestrel();
+builder.WebHost.UseKestrel();
 
 builder.Services.AddSwaggerGen(options =>
 {
-    options.CustomSchemaIds(type => type.FullName);
     options.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title = "Your API Title",
+        Title = "ApplicationManagement API",
         Version = "v1"
     });
-
-    // JWT Auth config
-    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    options.AddSecurityDefinition("bearer", new OpenApiSecurityScheme
     {
-        Name = "Authorization",
-        Type = SecuritySchemeType.ApiKey,
-        Scheme = "Bearer",
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
         BearerFormat = "JWT",
-        In = ParameterLocation.Header,
-        Description =
-            "Enter 'Bearer' [space] and then your valid token in the text input below.\r\n\r\nExample: \"Bearer eyJhbGciOiJIUzI1NiIsInR...\""
+        Description = "JWT Authorization header using the Bearer scheme."
+    });
+    options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
+    {
+        [new OpenApiSecuritySchemeReference("bearer", document)] = []
     });
 
-    options.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            new string[] { }
-        }
-    });
 });
 
 builder.Services.Configure<IdentityOptions>(options =>
@@ -137,10 +119,5 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
-//using (var scope = app.Services.CreateScope())
-//{
-//    var services = scope.ServiceProvider;
-//    await TourSeeder.SeedAsync(services);
-//}
 
 app.Run();

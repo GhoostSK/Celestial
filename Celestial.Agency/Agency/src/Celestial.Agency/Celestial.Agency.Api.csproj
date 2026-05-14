@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
 	<PropertyGroup>
-		<TargetFramework>net9.0</TargetFramework>
+		<TargetFramework>net10.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<UserSecretsId>531b1064-5481-4b56-81c0-db6a7163806d</UserSecretsId>
 		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
@@ -19,21 +19,21 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Celestial.SharedKernel" Version="1.1.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.10" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.10">
+		<PackageReference Include="Celestial.SharedKernel" Version="1.2.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.3.10" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.8" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.8" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.8">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.10" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.10">
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.8" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.8">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
-		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.23.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.7" />
 	</ItemGroup>
 
 	<ItemGroup>
