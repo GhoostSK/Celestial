@@ -181,7 +181,7 @@ You’re free to use, modify, and distribute this software with proper credit.</
 
 <h2>🌠 Author</h2>
 <p>
-  <strong>sadra khoshnavaz</strong><br>
+  <strong>Sadra Khoshnavaz</strong><br>
   Open-source Contributor & Developer of the Celestial Series<br><br>
   📧 khoshnavazsadra@gmail.com<br>
   🔗 <a href="https://github.com/GhoostSK" target="_blank">github.com/GhoostSK</a>
