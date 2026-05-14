@@ -1,4 +1,5 @@
-﻿using Celestial.Agency.Service.Command.FileManager;
+﻿using Celestial.Agency.Api.Models.Dto;
+using Celestial.Agency.Service.Command.FileManager;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Celestial.Agency.Api.Areas.Admin.Controllers.Global;
@@ -6,16 +7,19 @@ namespace Celestial.Agency.Api.Areas.Admin.Controllers.Global;
 public class FileManagerController : BaseController
 {
     [HttpPost]
-    public async Task<IActionResult> SaveFile([FromForm] IFormFile file)
+    [Consumes("multipart/form-data")]
+    public async Task<IActionResult> SaveFile([FromForm] SaveFileFormDto form)
     {
-        if (file == null || file.Length == 0) return BadRequest(new { Message = "No file uploaded." });
+        if (form?.File == null || form.File.Length == 0)
+            return BadRequest(new { Message = "No file uploaded." });
 
-        var saveFileRequest = new SaveFileCommandReq
+        var result = await Mediator.Send(new SaveFileCommandReq
         {
-            File = file
-        };
-        var result = await Mediator.Send(saveFileRequest);
-        if (result.HasError) return StatusCode(500, new { result.Error.Message });
+            File = form.File
+        });
+
+        if (result.HasError)
+            return StatusCode(500, new { result.Error.Message });
 
         return Ok(new { result.FilePath });
     }

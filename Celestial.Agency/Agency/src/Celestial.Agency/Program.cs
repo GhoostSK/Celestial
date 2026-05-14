@@ -63,9 +63,10 @@ builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title = "ApplicationManagement API",
+        Title = "Celestial API",
         Version = "v1"
     });
+    options.CustomSchemaIds(type => type.FullName);
     options.AddSecurityDefinition("bearer", new OpenApiSecurityScheme
     {
         Type = SecuritySchemeType.Http,
