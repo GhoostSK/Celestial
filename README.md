@@ -1,7 +1,7 @@
 <h1 align="center">🌌 Celestial.Agency – Modular .NET Platform (In Development)</h1>
 
 <p align="center">
-  <strong>A clean, extensible .NET 9 solution , CQRS, and Clean Architecture principles.</strong><br>
+  <strong>A clean, extensible .NET 10 solution , CQRS, and Clean Architecture principles.</strong><br>
   <em>Part of the Celestial Project Series</em>
 </p>
 
@@ -10,7 +10,7 @@
 <h2>🚀 Overview</h2>
 <p>
 Celestial.Agency is a modular and layered .NET platform designed for enterprise-grade applications.  
-It integrates <b>ASP.NET Core 9</b>, <b>Entity Framework Core</b>, and <b>MediatR</b> to deliver clean separation of concerns and high scalability.
+It integrates <b>ASP.NET Core 10</b>, <b>Entity Framework Core</b>, and <b>MediatR</b> to deliver clean separation of concerns and high scalability.
 </p>
 
 <p><b>⚙️ Note:</b> This project is currently under active development — new features and modules are being added continuously.</p>
@@ -86,7 +86,7 @@ Celestial.Agency/
 
 <table>
   <tr><th>Layer</th><th>Technology</th></tr>
-  <tr><td>Framework</td><td>.NET 9.0</td></tr>
+  <tr><td>Framework</td><td>.NET 10.0</td></tr>
   <tr><td>ORM</td><td>Entity Framework Core</td></tr>
   <tr><td>Architecture</td><td>Clean Architecture, CQRS</td></tr>
   <tr><td>Communication</td><td>MediatR</td></tr>
