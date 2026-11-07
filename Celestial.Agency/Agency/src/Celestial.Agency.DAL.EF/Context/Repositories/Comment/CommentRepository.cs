@@ -7,9 +7,9 @@ using Microsoft.EntityFrameworkCore;
 namespace Celestial.Agency.DAL.EF.Context.Repositories.Comment;
 
 public sealed class CommentRepository(MainDbContext dbContext)
-    : RepositoryBase<Comments>(dbContext), ICommentService
+    : RepositoryBase<Core.DAL.Model.Global.Comment>(dbContext), ICommentService
 {
-    public async Task<List<Comments>> GetCommentsByEntityAsync(CommentKeyGroupType keyGroup, long entityId,
+    public async Task<List<Core.DAL.Model.Global.Comment>> GetCommentsByEntityAsync(CommentKeyGroupType keyGroup, long entityId,
         CancellationToken cancellationToken)
     {
         return await TableNoTracking
@@ -19,7 +19,7 @@ public sealed class CommentRepository(MainDbContext dbContext)
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<Comments?> GetCommentByIdAsync(long id, CancellationToken cancellationToken)
+    public async Task<Core.DAL.Model.Global.Comment?> GetCommentByIdAsync(long id, CancellationToken cancellationToken)
     {
         return await TableNoTracking
             .IgnoreQueryFilters()

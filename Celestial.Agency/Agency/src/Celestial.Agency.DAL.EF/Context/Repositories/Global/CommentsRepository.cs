@@ -6,19 +6,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Celestial.Agency.DAL.EF.Context.Repositories.Global;
 
-public sealed class CommentsRepository(MainDbContext dbContext) : RepositoryBase<Comments>(dbContext), ICommentsService
+public sealed class CommentsRepository(MainDbContext dbContext) : RepositoryBase<Core.DAL.Model.Global.Comment>(dbContext), ICommentsService
 {
-    public async Task AddComment(Comments model, CancellationToken cancellationToken)
+    public async Task AddComment(Core.DAL.Model.Global.Comment model, CancellationToken cancellationToken)
     {
         await AddAsync(model, cancellationToken);
     }
 
-    public async Task<List<Comments>> GetComments(long entityId, CancellationToken cancellationToken)
+    public async Task<List<Core.DAL.Model.Global.Comment>> GetComments(long entityId, CancellationToken cancellationToken)
     {
         return await TableNoTracking
             .IgnoreQueryFilters()
             .Where(p => p.EntityId == entityId && p.IsConfirmed == true)
-            .Select(p => new Comments
+            .Select(p => new Core.DAL.Model.Global.Comment
             {
                 CommentText = p.CommentText,
                 EntityId = p.EntityId,
@@ -37,7 +37,7 @@ public sealed class CommentsRepository(MainDbContext dbContext) : RepositoryBase
         await dbContext.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<List<Comments>> GetCommentsToAdmin(int entityId, CancellationToken cancellationToken)
+    public async Task<List<Core.DAL.Model.Global.Comment>> GetCommentsToAdmin(int entityId, CancellationToken cancellationToken)
     {
         return await TableNoTracking
             .IgnoreQueryFilters()

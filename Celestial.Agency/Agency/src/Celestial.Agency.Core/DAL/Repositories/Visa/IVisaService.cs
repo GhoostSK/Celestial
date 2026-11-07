@@ -4,12 +4,12 @@ using Celestial.Dal.Ef.SqlServer.Extensions;
 
 namespace Celestial.Agency.Core.DAL.Repositories.Visa;
 
-public interface IVisaService : IRepositoryEF<Visas>, IScopeLifetime
+public interface IVisaService : IRepositoryEF<Model.Visa.Visa>, IScopeLifetime
 {
-    public Task<int> AddVisa(Visas model, CancellationToken cancellationToken);
+    public Task<int> AddVisa(Model.Visa.Visa model, CancellationToken cancellationToken);
 
-    public Task<List<Visas>> GetVisaList(int pageNumber = 1, int pageSize = 10,
+    public Task<List<Model.Visa.Visa>> GetVisaList(int pageNumber = 1, int pageSize = 10,
         CancellationToken cancellationToken = default);
 
-    public Task<Visas?> GetVisaById(long tourId, CancellationToken cancellationToken);
+    public Task<Model.Visa.Visa?> GetVisaById(long tourId, CancellationToken cancellationToken);
 }

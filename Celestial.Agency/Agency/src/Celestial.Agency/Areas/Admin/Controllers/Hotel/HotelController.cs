@@ -19,7 +19,7 @@ public class HotelController : BaseController
 
         var model = new AddHotelCommandReq
         {
-            Hotel = request.Adapt<Hotels>(),
+            Hotel = request.Adapt<Core.DAL.Model.Hotel.Hotel>(),
             LocalizeProperty = request.LocalizedProperty,
             HotelPictures = request.Picture
         };

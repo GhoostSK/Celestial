@@ -56,7 +56,7 @@ public class AccountController : BaseController
             if (user!.PhoneNumberConfirmed == false)
                 return StatusCode(403, "Your phone number is not confirmed. Please verify it first.");
             var roles = await _userManager.GetRolesAsync(user);
-            var token = jwtTokenService.GenerateToken(user, roles, cancellationToken);
+            var token = await jwtTokenService.GenerateToken(user, roles, cancellationToken);
             return Ok(new { Token = token });
         }
 

@@ -7,7 +7,7 @@ namespace Celestial.Agency.Api.Areas.Admin.Models.Dto;
 public class UpdateTourDto
 {
     public int Id { get; set; }
-    public Tours Tours { get; set; } = new();
+    public Tour Tours { get; set; } = new();
     public List<TourLocalizedPropertyItem> LocalizedProperty { get; set; } = new();
     public List<TourPlansUpdateDto> TourPlans { get; set; } = new();
 

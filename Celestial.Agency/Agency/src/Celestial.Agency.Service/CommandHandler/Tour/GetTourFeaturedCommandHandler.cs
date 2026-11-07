@@ -1,4 +1,5 @@
-﻿using Celestial.Agency.Core.DAL.Model.Global;
+using Celestial.Agency.Core.DAL.Model.Global;
+using Celestial.Agency.Core.DAL.Model.Tour;
 using Celestial.Agency.Core.DAL.Repositories.Geo;
 using Celestial.Agency.Core.DAL.Repositories.Global;
 using Celestial.Agency.Core.DAL.Repositories.Global.Model;
@@ -28,6 +29,7 @@ public class GetTourFeaturedCommandHandler(
             };
         var topTours = await tourService.GetTopToursByViews(request.TopCount, cancellationToken);
 
+        var countries = await countryService.GetCountryList(cancellationToken);
         var result = new List<GetTourFeaturedItemDto>();
 
         foreach (var tour in topTours)
@@ -42,26 +44,32 @@ public class GetTourFeaturedCommandHandler(
                 cancellationToken
             );
 
-            var name = localizedName.FirstOrDefault(p => p.LocalKey == "Name")?.LocalValue ?? string.Empty;
+            var name = localizedName.FirstOrDefault(p => p.LocalKey == nameof(TourLocalizedPropertyItem.Name))
+                ?.LocalValue ?? string.Empty;
+            var slug = localizedName.FirstOrDefault(p => p.LocalKey == nameof(TourLocalizedPropertyItem.Slug))
+                ?.LocalValue ?? string.Empty;
             var picture = await imageService.FirstOrDefaultAsync(
                 p => p.EntityId == tour.Id && p.KeyGroup == "Tour" && p.DisplayOrder == 0,
                 cancellationToken: cancellationToken);
-            var tourCountries = new List<string>();
-            //foreach (var countryId in tour.Countries)
-            //{
-            //    var country = await countryService.FindByIdAsync(cancellationToken, countryId);
-            //    tourCountries.Add(country.Shortname);
-            //}
 
             result.Add(new GetTourFeaturedItemDto
             {
+                Id = tour.Id,
                 BasePrice = tour.BasePrice,
-                PicturePath = picture.PicturePath,
+                PicturePath = picture?.PicturePath ?? string.Empty,
                 StartDate = tour.StartDate,
-                Countries = tourCountries,
+                Countries = countries
+                    .Where(c => tour.Countries.Contains(c.Id))
+                    .Select(c => c.Name)
+                    .ToList(),
                 Title = name,
                 ForeignCurrency = tour.ForeignCurrency,
-                ForeignPrice = tour.ForeignPrice
+                ForeignPrice = tour.ForeignPrice,
+                DaysUntilRegistrationDeadline =
+                    tour.RegistrationDeadline.DayNumber - DateOnly.FromDateTime(DateTime.Today).DayNumber,
+                TotalDay = tour.TotalDay,
+                Score = tour.Score,
+                Slug = slug
             });
         }
 

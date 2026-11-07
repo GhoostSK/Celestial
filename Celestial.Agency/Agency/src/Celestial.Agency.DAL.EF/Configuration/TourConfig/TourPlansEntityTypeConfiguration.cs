@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Celestial.Agency.DAL.EF.Configuration.TourConfig;
 
-public class TourPlansEntityTypeConfiguration : IEntityTypeConfiguration<TourPlans>
+public class TourPlansEntityTypeConfiguration : IEntityTypeConfiguration<TourPlan>
 {
-    public void Configure(EntityTypeBuilder<TourPlans> builder)
+    public void Configure(EntityTypeBuilder<TourPlan> builder)
     {
-        builder.ToTable("TourPlans");
+        builder.ToTable(nameof(TourPlan));
         builder.HasKey(x => x.Id);
 
         builder.Property(x => x.TourId).IsRequired();

@@ -61,13 +61,15 @@ public sealed class GetCommentsBySlugCommandHandler(
             UserId = c.UserId,
             IsConfirmed = c.IsConfirmed,
             ParentCommentId = c.ParentCommentId,
+            RegisteredAt = c.RegisteredAt,
             Replies = c.Replies.Select(r => new CommentItemDto
             {
                 Id = r.Id,
                 CommentText = r.CommentText,
                 UserId = r.UserId,
                 IsConfirmed = r.IsConfirmed,
-                ParentCommentId = r.ParentCommentId
+                ParentCommentId = r.ParentCommentId,
+                RegisteredAt = r.RegisteredAt
             }).ToList()
         }).ToList();
 

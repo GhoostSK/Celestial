@@ -34,7 +34,8 @@ public sealed class GetHotelByIdCommandHandler(
         var hotel = await hotelService.GetHotelById(localizedProperty.EntityId, cancellationToken);
 
         var response = hotel.Adapt<GetHotelByIdCommandRes>();
-        response.HotelCountry = countryService.FindByIdAsync(cancellationToken, hotel!.CountryId).Result.Shortname;
+        response.HotelCountry =
+            (await countryService.FindByIdAsync(cancellationToken, hotel!.CountryId))?.Name ?? string.Empty;
 
         response.HotelPictures = await imageService.GetImagesByEntityId(hotel.Id, "Hotel", cancellationToken);
 

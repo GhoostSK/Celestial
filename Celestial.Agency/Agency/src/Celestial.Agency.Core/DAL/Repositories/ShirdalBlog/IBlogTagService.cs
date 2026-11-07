@@ -4,9 +4,9 @@ using Celestial.Dal.Ef.SqlServer.Extensions;
 
 namespace Celestial.Agency.Core.DAL.Repositories.ShirdalBlog;
 
-public interface IBlogTagService : IRepositoryEF<BlogTags>, IScopeLifetime
+public interface IBlogTagService : IRepositoryEF<BlogTag>, IScopeLifetime
 {
-    Task<List<BlogTags>> GetTopTagsByViewCountAsync(int count, CancellationToken cancellationToken);
+    Task<List<BlogTag>> GetTopTagsByViewCountAsync(int count, CancellationToken cancellationToken);
 
-    public Task<List<BlogTags>> GetTagsList(int count, CancellationToken cancellationToken);
+    public Task<List<BlogTag>> GetTagsList(int count, CancellationToken cancellationToken);
 }

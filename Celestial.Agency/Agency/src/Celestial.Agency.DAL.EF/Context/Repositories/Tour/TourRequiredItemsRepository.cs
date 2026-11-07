@@ -7,9 +7,9 @@ using Microsoft.EntityFrameworkCore;
 namespace Celestial.Agency.DAL.EF.Context.Repositories.Tour;
 
 public class TourRequiredItemsRepository(MainDbContext dbContext)
-    : RepositoryBase<TourEquipments>(dbContext), ITourEquipmentsService
+    : RepositoryBase<TourEquipment>(dbContext), ITourEquipmentsService
 {
-    public async Task<List<TourEquipments>> GetListAsync(CancellationToken cancellationToken)
+    public async Task<List<TourEquipment>> GetListAsync(CancellationToken cancellationToken)
     {
         return await TableNoTracking.IgnoreQueryFilters().ToListAsync(cancellationToken);
     }

@@ -33,7 +33,7 @@ public sealed class AddBlogTagCommandHandler(
                 };
         }
 
-        var entity = new BlogTags();
+        var entity = new Core.DAL.Model.ShirdalBlog.BlogTag();
         await blogTagService.AddAsync(entity, cancellationToken);
         await blogTagService.UnitOfWork.SaveChangesAsync(cancellationToken);
 

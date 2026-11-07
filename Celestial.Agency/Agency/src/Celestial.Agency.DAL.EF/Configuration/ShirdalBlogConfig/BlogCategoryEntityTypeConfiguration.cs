@@ -8,7 +8,7 @@ public class BlogCategoryEntityTypeConfiguration : IEntityTypeConfiguration<Blog
 {
     public void Configure(EntityTypeBuilder<BlogCategory> builder)
     {
-        builder.ToTable("BlogCategories");
+        builder.ToTable(nameof(BlogCategory));
         builder.HasKey(x => x.Id);
 
         builder.Property(x => x.IsDeleted).HasDefaultValue(false);

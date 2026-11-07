@@ -1,4 +1,4 @@
-INSERT INTO [db31292].[dbo].[Language] ([Name], [LanguageCulture], [Rtl], [Published], [DisplayOrder])
+INSERT INTO Language([Name], [LanguageCulture], [Rtl], [Published], [DisplayOrder])
 VALUES 
 ('Persian', 'fa-IR', 1, 1, 1),
 ('English', 'en-US', 0, 1, 2),

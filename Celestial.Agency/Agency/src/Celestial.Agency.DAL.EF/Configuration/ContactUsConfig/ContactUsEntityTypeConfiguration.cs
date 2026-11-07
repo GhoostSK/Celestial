@@ -8,7 +8,7 @@ public class ContactUsEntityTypeConfiguration : IEntityTypeConfiguration<Contact
 {
     public void Configure(EntityTypeBuilder<ContactUs> builder)
     {
-        builder.ToTable("ContactUs");
+        builder.ToTable(nameof(ContactUs));
 
         builder.HasKey(x => x.Id);
 

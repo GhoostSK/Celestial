@@ -53,7 +53,7 @@ public sealed class AddHotelCommandHandler(
         var localizedProperties = new List<LocalizedProperty>();
 
         foreach (var item in request.HotelPictures)
-            await imageService.AddAsync(new Images
+            await imageService.AddAsync(new Image
             {
                 PicturePath = item.FilePath,
                 EntityId = hotelId,

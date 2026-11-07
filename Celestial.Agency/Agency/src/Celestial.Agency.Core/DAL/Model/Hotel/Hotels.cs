@@ -4,7 +4,7 @@ using Celestial.Dal.Ef.SqlServer.Abstractions;
 
 namespace Celestial.Agency.Core.DAL.Model.Hotel;
 
-public sealed class Hotels : DbBaseEntity<long>
+public sealed class Hotel : DbBaseEntity<long>
 {
     public string Name { get; set; } = string.Empty;
     public HotelLocation HotelLocation { get; set; }

@@ -66,7 +66,7 @@ public sealed class UpdateHotelReqDto
 {
     [Required] public int Id { get; set; }
 
-    [Required] public Hotels Hotel { get; set; }
+    [Required] public Hotel Hotel { get; set; }
 
     [Required] public List<HotelServiceLocalizedProperty> LocalizedProperty { get; set; }
 

@@ -10,26 +10,20 @@ using Mapster;
 
 namespace Celestial.Agency.Service.CommandHandler.Visa;
 
-public sealed class GetVisaByIdCommandHandler : BaseRequestHandler<GetVisaByIdCommandReq, GetVisaCommandRes>
+public sealed class GetVisaByIdCommandHandler(
+    IVisaService visaService,
+    ILocalizedPropertyService localizedPropertyService,
+    ILanguageService languageService)
+    : BaseRequestHandler<GetVisaByIdCommandReq, GetVisaCommandRes>
 {
-    private readonly ILanguageService _languageService;
-    private readonly ILocalizedPropertyService _localizedPropertyService;
-    private readonly IVisaService _visaService;
-
-    public GetVisaByIdCommandHandler(IVisaService visaService, ILocalizedPropertyService localizedPropertyService,
-        ILanguageService languageService)
-    {
-        _visaService = visaService;
-        _localizedPropertyService = localizedPropertyService;
-        _languageService = languageService;
-    }
+    private readonly ILanguageService _languageService = languageService;
 
     protected override async Task<GetVisaCommandRes> HandleCore(GetVisaByIdCommandReq request,
         CancellationToken cancellationToken)
     {
-        var visa = new Visas();
+        var visa = new Core.DAL.Model.Visa.Visa();
 
-        var localizedProperty = await _localizedPropertyService.FirstOrDefaultAsync(p =>
+        var localizedProperty = await localizedPropertyService.FirstOrDefaultAsync(p =>
             p.LocalKey == "Slug" &&
             p.LocalValue == request.Slug &&
             p.LocalKeyGroup == LocalKeyGroupType.Visa, cancellationToken: cancellationToken);
@@ -40,7 +34,7 @@ public sealed class GetVisaByIdCommandHandler : BaseRequestHandler<GetVisaByIdCo
                 Error = new ValidationError("VISA404", "Visa not found by slug")
             };
 
-        visa = await _visaService.GetVisaById(localizedProperty.EntityId, cancellationToken);
+        visa = await visaService.GetVisaById(localizedProperty.EntityId, cancellationToken);
 
         if (visa == null)
             return new GetVisaCommandRes
@@ -50,8 +44,9 @@ public sealed class GetVisaByIdCommandHandler : BaseRequestHandler<GetVisaByIdCo
 
         var response = visa.Adapt<GetVisaCommandRes>();
         response.Language = localizedProperty.Language;
+        response.Slug = localizedProperty.LocalValue;
 
-        var localizedProperties = await _localizedPropertyService.GetPropertyByLanguageAndEntityId(
+        var localizedProperties = await localizedPropertyService.GetPropertyByLanguageAndEntityId(
             new GetLocalizedPropertyReq
             {
                 EntityId = visa.Id,

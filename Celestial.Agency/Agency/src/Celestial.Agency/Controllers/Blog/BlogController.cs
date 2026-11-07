@@ -64,7 +64,7 @@ public class BlogController : BaseController
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetLatestBlog(GetLatestBlogsReqDto request, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetLatestBlog([FromQuery] GetLatestBlogsReqDto request, CancellationToken cancellationToken)
     {
         var response = await Mediator.Send(request.Adapt<GetLatestBlogListCommandReq>(), cancellationToken);
         if (response.HasError)

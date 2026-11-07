@@ -8,7 +8,7 @@ public class TourPrimaryTransportEntityTypeConfiguration : IEntityTypeConfigurat
 {
     public void Configure(EntityTypeBuilder<TourPrimaryTransport> builder)
     {
-        builder.ToTable("TourPrimaryTransport");
+        builder.ToTable(nameof(TourPrimaryTransport));
         builder.HasKey(x => x.Id);
 
         builder.Property(x => x.LeadFlightCode)

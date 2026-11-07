@@ -20,5 +20,6 @@ public enum LocalKeyGroupType
     Tour,
     TourPlan,
     Visa,
-    TourEquipment
+    TourEquipment,
+    Faq
 }

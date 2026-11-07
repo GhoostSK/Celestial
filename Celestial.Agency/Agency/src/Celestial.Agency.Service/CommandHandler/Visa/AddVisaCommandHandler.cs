@@ -67,6 +67,16 @@ public sealed class AddVisaCommandHandler(
                 LocalKeyGroup = LocalKeyGroupType.Visa
             });
 
+            // اسلاگ برای آدرس‌دهی صفحه‌ی جزئیات ویزا لازم است
+            localizedProperties.Add(new LocalizedProperty
+            {
+                EntityId = visaId,
+                Language = item.Language,
+                LocalKey = nameof(item.Slug),
+                LocalValue = item.Slug,
+                LocalKeyGroup = LocalKeyGroupType.Visa
+            });
+
             foreach (var embassy in item.Embassy)
             foreach (var kvp in embassy)
                 localizedProperties.Add(new LocalizedProperty

@@ -68,7 +68,7 @@ public sealed class UpdateHotelCommandHandler(
             }
             else
             {
-                await imageService.AddAsync(new Images
+                await imageService.AddAsync(new Image
                 {
                     KeyGroup = image.KeyGroup,
                     EntityId = request.Id,

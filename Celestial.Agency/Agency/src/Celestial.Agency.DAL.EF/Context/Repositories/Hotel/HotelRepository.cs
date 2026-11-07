@@ -6,22 +6,22 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Celestial.Agency.DAL.EF.Context.Repositories.Hotel;
 
-public sealed class HotelRepository(MainDbContext dbContext) : RepositoryBase<Hotels>(dbContext), IHotelService
+public sealed class HotelRepository(MainDbContext dbContext) : RepositoryBase<Core.DAL.Model.Hotel.Hotel>(dbContext), IHotelService
 {
-    public async Task<long> AddHotel(Hotels model, CancellationToken cancellationToken)
+    public async Task<long> AddHotel(Core.DAL.Model.Hotel.Hotel model, CancellationToken cancellationToken)
     {
         await AddAsync(model, cancellationToken);
         await dbContext.SaveChangesAsync(cancellationToken);
         return model.Id;
     }
 
-    public async Task<Hotels?> GetHotelById(long id, CancellationToken cancellationToken)
+    public async Task<Core.DAL.Model.Hotel.Hotel?> GetHotelById(long id, CancellationToken cancellationToken)
     {
         return await Table.IgnoreQueryFilters()
             .FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
     }
 
-    public async Task<(List<Hotels> Items, int TotalPages, int totalRecord)> GetHotelsList(GetHotelsListReq model,
+    public async Task<(List<Core.DAL.Model.Hotel.Hotel> Items, int TotalPages, int totalRecord)> GetHotelsList(GetHotelsListReq model,
         CancellationToken cancellationToken)
     {
         var query = Table

@@ -1,6 +1,7 @@
 ﻿using Celestial.Agency.Core;
 using Celestial.Agency.Core.Services.FileManager;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 
 namespace Celestial.Agency.Service.Service.FileManager;
@@ -9,9 +10,15 @@ public sealed class ImageManager : IImageManager
 {
     private readonly string _directoryPath;
 
-    public ImageManager(IOptions<AppSettings> options)
+    public ImageManager(IOptions<AppSettings> options, IHostEnvironment environment)
     {
-        _directoryPath = options.Value.FileManager.ImageDirectory;
+        var configuredPath = options.Value.FileManager.ImageDirectory;
+
+        // مسیر نسبی نسبت به ریشه‌ی پروژه حل می‌شود؛ در غیر این صورت مسیری مثل
+        // «/wwwroot/Images» به ریشه‌ی درایو اشاره می‌کرد و هیچ فایلی پیدا نمی‌شد.
+        _directoryPath = Path.IsPathFullyQualified(configuredPath)
+            ? configuredPath
+            : Path.Combine(environment.ContentRootPath, configuredPath.TrimStart('/', '\\'));
     }
 
     public async Task<string> SaveFileWithRandomNameAsync(IFormFile file)
@@ -70,9 +77,27 @@ public sealed class ImageManager : IImageManager
 
     public async Task<byte[]> ReadFileAsBytesAsync(string filePath)
     {
-        if (File.Exists(_directoryPath + filePath))
-            return await File.ReadAllBytesAsync(_directoryPath + filePath);
+        var fullPath = ResolvePath(filePath);
+
+        if (File.Exists(fullPath))
+            return await File.ReadAllBytesAsync(fullPath);
 
         return null!;
+    }
+
+    /// <summary>
+    ///     مسیر ذخیره‌شده در دیتابیس را به مسیر فیزیکی تبدیل می‌کند و اجازه نمی‌دهد
+    ///     با «..» از پوشه‌ی تصاویر بیرون رفت.
+    /// </summary>
+    private string ResolvePath(string filePath)
+    {
+        if (string.IsNullOrWhiteSpace(filePath))
+            return string.Empty;
+
+        var relativePath = filePath.TrimStart('/', '\\');
+        var fullPath = Path.GetFullPath(Path.Combine(_directoryPath, relativePath));
+        var rootPath = Path.GetFullPath(_directoryPath);
+
+        return fullPath.StartsWith(rootPath, StringComparison.OrdinalIgnoreCase) ? fullPath : string.Empty;
     }
 }

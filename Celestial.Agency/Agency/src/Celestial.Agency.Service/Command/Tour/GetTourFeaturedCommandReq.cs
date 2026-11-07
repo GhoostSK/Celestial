@@ -1,4 +1,4 @@
-﻿using Celestial.SharedKernel.Common;
+using Celestial.SharedKernel.Common;
 using Celestial.SharedKernel.Domain;
 using MediatR;
 
@@ -17,6 +17,7 @@ public sealed class GetTourFeaturedCommandRes : ServiceResContextBase
 
 public sealed class GetTourFeaturedItemDto
 {
+    public long Id { get; set; }
     public string PicturePath { get; set; } = string.Empty;
     public DateOnly StartDate { get; set; }
     public List<string> Countries { get; set; } = new();
@@ -25,6 +26,10 @@ public sealed class GetTourFeaturedItemDto
     public decimal? ForeignPrice { get; set; }
     public string? ForeignCurrency { get; set; }
     public int DaysUntilRegistrationDeadline { get; set; }
+    public int TotalDay { get; set; }
     public int Score { get; set; } = 0;
     public int VoteCount { get; set; } = 0;
+
+    //seo
+    public string Slug { get; set; } = string.Empty;
 }

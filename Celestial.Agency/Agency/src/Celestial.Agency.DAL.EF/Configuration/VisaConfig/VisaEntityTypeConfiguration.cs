@@ -4,13 +4,12 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Celestial.Agency.DAL.EF.Configuration.VisaConfig;
 
-public sealed class VisaEntityTypeConfiguration : IEntityTypeConfiguration<Visas>
+public sealed class VisaEntityTypeConfiguration : IEntityTypeConfiguration<Visa>
 {
-    public void Configure(EntityTypeBuilder<Visas> builder)
+    public void Configure(EntityTypeBuilder<Visa> builder)
     {
-        ArgumentNullException.ThrowIfNull(nameof(builder));
 
-        builder.ToTable(nameof(Visas));
+        builder.ToTable(nameof(Visa));
 
         builder.Property(p => p.PicturePath)
             .IsRequired()

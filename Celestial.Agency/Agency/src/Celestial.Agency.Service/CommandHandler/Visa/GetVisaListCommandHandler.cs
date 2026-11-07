@@ -19,7 +19,7 @@ public sealed class GetVisaListCommandHandler(
         CancellationToken cancellationToken)
     {
         var languages = await languageService.GetLanguages(cancellationToken);
-        if (languages.Any(p => p.LanguageCulture.Split('-')[0] == request.Language))
+        if (languages.All(p => p.LanguageCulture.Split('-')[0] != request.Language))
             return new GetVisaListCommandRes
             {
                 Error = new ValidationError("LA400", "invalid Language")
@@ -46,6 +46,7 @@ public sealed class GetVisaListCommandHandler(
 
             visaItem.Text = localizedProperties.FirstOrDefault(p => p.LocalKey == "Text")?.LocalValue ?? string.Empty;
             visaItem.Name = localizedProperties.FirstOrDefault(p => p.LocalKey == "Name")?.LocalValue ?? string.Empty;
+            visaItem.Slug = localizedProperties.FirstOrDefault(p => p.LocalKey == "Slug")?.LocalValue ?? string.Empty;
             visaItem.Language = request.Language;
 
             response.Items.Add(visaItem);

@@ -32,7 +32,7 @@ public sealed class ToursItemDto
     public int PassengerCapacity { get; set; }
     public string ImportantTips { get; set; } = string.Empty;
     public List<TourPlansItem> TourPlans { get; set; } = new();
-    public List<TourTransPorts> TransPorts { get; set; } = new();
+    public List<TourTransPort> TransPorts { get; set; } = new();
     public List<long> UnNecessaryEquipment { get; set; } = new();
     public List<long> NecessaryEquipment { get; set; } = new();
     public List<long> Hotels { get; set; } = new();

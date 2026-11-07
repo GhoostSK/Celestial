@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Celestial.Agency.DAL.EF.Configuration.GlobalConfig;
 
-public class CommentsEntityTypeConfiguration : IEntityTypeConfiguration<Comments>
+public class CommentsEntityTypeConfiguration : IEntityTypeConfiguration<Comment>
 {
-    public void Configure(EntityTypeBuilder<Comments> builder)
+    public void Configure(EntityTypeBuilder<Comment> builder)
     {
-        builder.ToTable("Comments");
+        builder.ToTable(nameof(Comment));
 
         builder.HasKey(x => x.Id);
 

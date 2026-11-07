@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Celestial.Agency.DAL.EF.Configuration.HotelConfig;
 
-public class HotelsEntityTypeConfiguration : IEntityTypeConfiguration<Hotels>
+public class HotelsEntityTypeConfiguration : IEntityTypeConfiguration<Hotel>
 {
-    public void Configure(EntityTypeBuilder<Hotels> builder)
+    public void Configure(EntityTypeBuilder<Hotel> builder)
     {
-        builder.ToTable("Hotels");
+        builder.ToTable(nameof(Hotel));
         builder.HasKey(x => x.Id);
 
         builder.Property(x => x.Name)

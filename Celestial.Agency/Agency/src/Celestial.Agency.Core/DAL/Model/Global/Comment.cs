@@ -2,7 +2,7 @@
 
 namespace Celestial.Agency.Core.DAL.Model.Global;
 
-public sealed class Comments : DbBaseEntity<long>
+public sealed class Comment : DbBaseEntity<long>
 {
     public CommentKeyGroupType KeyGroup { get; set; }
     public long EntityId { get; set; }
@@ -10,8 +10,8 @@ public sealed class Comments : DbBaseEntity<long>
     public string UserId { get; set; } = string.Empty;
     public bool IsConfirmed { get; set; }
     public long? ParentCommentId { get; set; }
-    public Comments? ParentComment { get; set; }
-    public List<Comments> Replies { get; set; } = new();
+    public Comment? ParentComment { get; set; }
+    public List<Comment> Replies { get; set; } = new();
     public DateTimeOffset RegisteredAt { get; set; } = DateTimeOffset.Now;
     public bool IsDeleted { get; set; }
 }

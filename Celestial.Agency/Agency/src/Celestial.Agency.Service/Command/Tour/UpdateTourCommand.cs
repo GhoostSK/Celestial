@@ -8,7 +8,7 @@ namespace Celestial.Agency.Service.Command.Tour;
 public sealed class UpdateTourCommandReq : BaseEntity, IRequest<UpdateTourCommandRes>
 {
     public int Id { get; set; }
-    public Tours Tours { get; set; } = new();
+    public Core.DAL.Model.Tour.Tour Tours { get; set; } = new();
     public List<TourLocalizedPropertyItem> LocalizedProperty { get; set; } = new();
     public List<TourPlansUpdateReq> TourPlans { get; set; } = new();
 }

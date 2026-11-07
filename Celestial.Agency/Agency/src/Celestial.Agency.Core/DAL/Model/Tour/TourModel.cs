@@ -17,4 +17,5 @@ public class GetTourListReq
     public int PageSize { get; set; } = 10;
     public int PageNumber { get; set; } = 1;
     public bool IsActiveTour { get; set; }
+    public TourSortBy SortBy { get; set; } = TourSortBy.Newest;
 }

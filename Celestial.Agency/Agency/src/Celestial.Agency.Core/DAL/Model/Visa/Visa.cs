@@ -3,7 +3,7 @@ using Celestial.Dal.Ef.SqlServer.Abstractions;
 
 namespace Celestial.Agency.Core.DAL.Model.Visa;
 
-public class Visas : DbBaseEntity<int>
+public class Visa : DbBaseEntity<int>
 {
     public string Country { get; set; } = string.Empty;
     public bool Status { get; set; } = true;

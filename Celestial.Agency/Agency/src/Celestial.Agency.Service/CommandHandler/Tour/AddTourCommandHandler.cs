@@ -95,12 +95,12 @@ public sealed class AddTourCommandHandler(
                 };
         }
 
-        var tour = request.Tours.Adapt<Tours>();
+        var tour = request.Tours.Adapt<Core.DAL.Model.Tour.Tour>();
         tour.TourCode = await tourService.GenerateUniqueTourCodeAsync(cancellationToken);
         await tourService.AddAsync(tour, cancellationToken);
         await tourService.UnitOfWork.SaveChangesAsync(cancellationToken);
 
-        var tourImage = new Images
+        var tourImage = new Image
         {
             PicturePath = request.Tours.PicturePath,
             DisplayOrder = 0,
@@ -122,7 +122,7 @@ public sealed class AddTourCommandHandler(
 
             foreach (var picturePath in plan.PlanPicturePath)
             {
-                var planImage = new Images
+                var planImage = new Image
                 {
                     PicturePath = picturePath,
                     DisplayOrder = 0,

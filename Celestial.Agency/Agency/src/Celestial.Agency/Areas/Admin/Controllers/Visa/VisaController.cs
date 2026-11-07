@@ -14,7 +14,7 @@ public class VisaController : BaseController
         var response =
             await Mediator.Send(
                 new AddVisaCommandReq
-                    { Visa = request.Adapt<Visas>(), VisaLocalizedProperty = request.VisaLocalizedProperty },
+                    { Visa = request.Adapt<Core.DAL.Model.Visa.Visa>(), VisaLocalizedProperty = request.VisaLocalizedProperty },
                 cancellationToken);
 
         if (response.HasError)

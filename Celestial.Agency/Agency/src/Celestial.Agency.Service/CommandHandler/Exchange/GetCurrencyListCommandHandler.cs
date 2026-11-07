@@ -4,7 +4,8 @@ using MediatR;
 
 namespace Celestial.Agency.Service.CommandHandler.Exchange;
 
-internal class GetCurrencyListCommandHandler(ICurrencyService currencyService)
+// کلاس باید public بماند؛ ثبت خودکار هندلرها فقط کلاس‌های public را پیدا می‌کند
+public sealed class GetCurrencyListCommandHandler(ICurrencyService currencyService)
     : IRequestHandler<GetCurrenciesListCommandReq, GetCurrenciesListCommandRes>
 {
     public async Task<GetCurrenciesListCommandRes> Handle(GetCurrenciesListCommandReq request,

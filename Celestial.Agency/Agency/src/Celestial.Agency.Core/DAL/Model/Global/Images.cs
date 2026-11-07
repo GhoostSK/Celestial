@@ -2,7 +2,7 @@
 
 namespace Celestial.Agency.Core.DAL.Model.Global;
 
-public class Images : DbBaseEntity<long>
+public class Image : DbBaseEntity<long>
 {
     public string KeyGroup { get; set; } = string.Empty;
     public long EntityId { get; set; }

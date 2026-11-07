@@ -27,4 +27,31 @@ public static class DateTimeExtensions
             return "Undefined";
         }
     }
+
+    /// <summary>
+    ///     تاریخ را بر اساس زبان جاری قالب‌بندی می‌کند: برای فارسی تقویم شمسی و
+    ///     برای سایر زبان‌ها تقویم میلادی با قالب فرهنگ جاری.
+    /// </summary>
+    public static string ToLocalizedDateString(this DateTime dateTime)
+    {
+        return IsPersianCulture()
+            ? dateTime.ToShamsiFullString()
+            : dateTime.ToString("d MMMM yyyy", CultureInfo.CurrentUICulture);
+    }
+
+    public static string ToLocalizedDateString(this DateOnly date)
+    {
+        return date.ToDateTime(TimeOnly.MinValue).ToLocalizedDateString();
+    }
+
+    public static string ToLocalizedDateString(this DateTimeOffset dateTimeOffset)
+    {
+        return dateTimeOffset.LocalDateTime.ToLocalizedDateString();
+    }
+
+    private static bool IsPersianCulture()
+    {
+        return CultureInfo.CurrentUICulture.TwoLetterISOLanguageName
+            .Equals("fa", StringComparison.OrdinalIgnoreCase);
+    }
 }

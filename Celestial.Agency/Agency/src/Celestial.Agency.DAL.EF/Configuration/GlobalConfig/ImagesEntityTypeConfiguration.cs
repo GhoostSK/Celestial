@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Celestial.Agency.DAL.EF.Configuration.GlobalConfig;
 
-public class ImagesEntityTypeConfiguration : IEntityTypeConfiguration<Images>
+public class ImagesEntityTypeConfiguration : IEntityTypeConfiguration<Image>
 {
-    public void Configure(EntityTypeBuilder<Images> builder)
+    public void Configure(EntityTypeBuilder<Image> builder)
     {
-        builder.ToTable("Images");
+        builder.ToTable(nameof(Image));
 
         builder.HasKey(x => x.Id);
 

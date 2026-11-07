@@ -28,4 +28,7 @@ public sealed class GetVisaListItemRes
     public string Language { get; set; } = string.Empty;
     public string Text { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;
+
+    //seo
+    public string Slug { get; set; } = string.Empty;
 }

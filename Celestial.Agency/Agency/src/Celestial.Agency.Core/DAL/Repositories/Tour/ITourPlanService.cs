@@ -4,6 +4,6 @@ using Celestial.Dal.Ef.SqlServer.Extensions;
 
 namespace Celestial.Agency.Core.DAL.Repositories.Tour;
 
-public interface ITourPlanService : IRepositoryEF<TourPlans>, IScopeLifetime
+public interface ITourPlanService : IRepositoryEF<TourPlan>, IScopeLifetime
 {
 }

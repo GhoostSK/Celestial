@@ -5,6 +5,6 @@ using Celestial.Dal.Ef.SqlServer.Base;
 
 namespace Celestial.Agency.DAL.EF.Context.Repositories.Tour;
 
-public class TourPlanRepository(MainDbContext dbContext) : RepositoryBase<TourPlans>(dbContext), ITourPlanService
+public class TourPlanRepository(MainDbContext dbContext) : RepositoryBase<TourPlan>(dbContext), ITourPlanService
 {
 }

@@ -1,6 +1,9 @@
 ﻿using System.Globalization;
 using System.Text.RegularExpressions;
+using Celestial.WebClient;
 using Celestial.WebClient.Services.Extensions;
+using Celestial.WebClient.Services.Localization;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Localization.Routing;
 using Microsoft.Extensions.Options;
@@ -14,11 +17,13 @@ builder.Services.AddLocalization(options => options.ResourcesPath = "Resources")
 builder.Services
     .AddControllersWithViews()
     .AddViewLocalization()
-    .AddDataAnnotationsLocalization();
+    .AddDataAnnotationsLocalization(options => options.DataAnnotationLocalizerProvider =
+        (_, factory) => factory.Create(typeof(SharedResource)));
 
 builder.Services.AddRazorPages()
     .AddViewLocalization()
-    .AddDataAnnotationsLocalization();
+    .AddDataAnnotationsLocalization(options => options.DataAnnotationLocalizerProvider =
+        (_, factory) => factory.Create(typeof(SharedResource)));
 
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
@@ -30,6 +35,8 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
 
     options.RequestCultureProviders = new List<IRequestCultureProvider>
     {
+        // زبان موجود در مسیر بالاترین اولویت را دارد تا نخستین بازدید هم درست رندر شود
+        new RouteSegmentRequestCultureProvider(supportedCultures) { Options = options },
         new RouteDataRequestCultureProvider
         {
             Options = options,
@@ -42,6 +49,21 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
 });
 
 builder.Services.AddWebClientServices(builder.Configuration);
+
+// نشست کاربر در یک کوکی رمزنگاری‌شده نگه داشته می‌شود و توکن API داخل همان کوکی ذخیره می‌شود
+builder.Services
+    .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.Cookie.Name = "Celestial.Auth";
+        options.Cookie.HttpOnly = true;
+        options.Cookie.SameSite = SameSiteMode.Lax;
+        options.ExpireTimeSpan = TimeSpan.FromDays(7);
+        options.SlidingExpiration = true;
+        options.LoginPath = "/Account/Login";
+        options.LogoutPath = "/Account/Logout";
+        options.AccessDeniedPath = "/Account/Login";
+    });
 
 var app = builder.Build();
 
@@ -63,6 +85,10 @@ app.MapControllerRoute(
     "default",
     "{controller=Home}/{action=Index}/{id?}");
 
+
+// فایل‌های ایستا پیش از میان‌افزار زبان سرو می‌شوند تا برای هر تصویر و CSS
+// یک ریدایرکت اضافه‌ی /{culture}/... انجام نشود.
+app.UseStaticFiles();
 
 app.Use(async (context, next) =>
 {
@@ -96,7 +122,8 @@ app.Use(async (context, next) =>
             newSegments[newSegments.Count - 1] = slug;
         }
 
-        var safePath = "/" + string.Join("/", newSegments);
+        // کوئری‌استرینگ باید حفظ شود؛ در غیر این صورت فیلترها و شماره‌ی صفحه از بین می‌رفت
+        var safePath = "/" + string.Join("/", newSegments) + context.Request.QueryString;
 
         context.Response.Redirect(safePath, false);
         return;
@@ -119,9 +146,9 @@ app.Use(async (context, next) =>
     await next();
 });
 
-app.UseStaticFiles();
 app.UseHttpsRedirection();
 app.UseRouting();
+app.UseAuthentication();
 app.UseAuthorization();
 
 

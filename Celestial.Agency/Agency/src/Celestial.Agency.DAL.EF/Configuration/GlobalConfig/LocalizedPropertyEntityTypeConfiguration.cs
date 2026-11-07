@@ -8,7 +8,7 @@ public class LocalizedPropertyEntityTypeConfiguration : IEntityTypeConfiguration
 {
     public void Configure(EntityTypeBuilder<LocalizedProperty> builder)
     {
-        builder.ToTable("LocalizedProperties");
+        builder.ToTable(nameof(LocalizedProperty));
         builder.HasKey(x => x.Id);
 
         builder.Property(x => x.LocalKeyGroup)

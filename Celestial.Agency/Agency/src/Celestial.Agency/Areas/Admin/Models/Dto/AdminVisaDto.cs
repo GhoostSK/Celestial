@@ -32,6 +32,6 @@ public sealed class RemoveVisaReqDto
 public class UpdateVisaDtoReqDto
 {
     public int Id { get; set; }
-    public Visas Visa { get; set; } = new();
+    public Visa Visa { get; set; } = new();
     public List<AddVisaLocalizedProperty> VisaLocalizedProperty { get; set; } = new();
 }

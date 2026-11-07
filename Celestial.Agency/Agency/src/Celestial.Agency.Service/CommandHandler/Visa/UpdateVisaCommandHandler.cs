@@ -77,6 +77,10 @@ public class UpdateVisaCommandHandler : BaseRequestHandler<UpdateVisaCommandReq,
                     case nameof(item.Name):
                         existingProperty.LocalValue = item.Name;
                         break;
+
+                    case nameof(item.Slug):
+                        existingProperty.LocalValue = item.Slug;
+                        break;
                 }
             }
         }

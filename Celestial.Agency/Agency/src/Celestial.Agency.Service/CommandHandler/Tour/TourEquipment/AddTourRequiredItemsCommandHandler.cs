@@ -21,7 +21,7 @@ public sealed class AddTourEquipmentsCommandHandler(
         if (request.LocalizedNames.Any(item => languages.Any(p => p.LanguageCulture.Split('-')[0] == item.Language)))
             return new AddTourEquipmentCommandRes { Error = new ValidationError("LA400", "Invalid Language") };
 
-        var entity = new TourEquipments();
+        var entity = new Core.DAL.Model.Tour.TourEquipment.TourEquipment();
         await blogTagService.AddAsync(entity, cancellationToken);
         await blogTagService.UnitOfWork.SaveChangesAsync(cancellationToken);
 

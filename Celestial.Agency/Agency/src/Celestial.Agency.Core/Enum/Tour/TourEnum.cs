@@ -44,3 +44,12 @@ public enum TransportType
     Air,
     Sea
 }
+
+public enum TourSortBy
+{
+    Newest,
+    StartDate,
+    PriceAsc,
+    PriceDesc,
+    ScoreDesc
+}

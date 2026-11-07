@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Celestial.Agency.DAL.EF.Context.Repositories.Global;
 
-public sealed class ImagesRepository(MainDbContext dbContext) : RepositoryBase<Images>(dbContext), IImageService
+public sealed class ImagesRepository(MainDbContext dbContext) : RepositoryBase<Image>(dbContext), IImageService
 {
-    public async Task<List<Images>> GetImagesByEntityId(long entityId, string keyGroup,
+    public async Task<List<Image>> GetImagesByEntityId(long entityId, string keyGroup,
         CancellationToken cancellationToken)
     {
         return await TableNoTracking

@@ -7,9 +7,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Celestial.Agency.DAL.EF.Context.Repositories.Tour;
 
-public class TourRepository(MainDbContext dbContext) : RepositoryBase<Tours>(dbContext), ITourService
+public class TourRepository(MainDbContext dbContext) : RepositoryBase<Core.DAL.Model.Tour.Tour>(dbContext), ITourService
 {
-    public async Task<(List<Tours> Items, int TotalPages, int totalRecord)> GetToursList(GetTourListReq model,
+    public async Task<(List<Core.DAL.Model.Tour.Tour> Items, int TotalPages, int totalRecord)> GetToursList(GetTourListReq model,
         CancellationToken cancellationToken)
     {
         var query = TableNoTracking
@@ -42,6 +42,15 @@ public class TourRepository(MainDbContext dbContext) : RepositoryBase<Tours>(dbC
         var totalItems = await query.CountAsync(cancellationToken);
         var totalPages = (int)Math.Ceiling(totalItems / (double)model.PageSize);
 
+        query = model.SortBy switch
+        {
+            TourSortBy.StartDate => query.OrderBy(p => p.StartDate),
+            TourSortBy.PriceAsc => query.OrderBy(p => p.BasePrice),
+            TourSortBy.PriceDesc => query.OrderByDescending(p => p.BasePrice),
+            TourSortBy.ScoreDesc => query.OrderByDescending(p => p.Score),
+            _ => query.OrderByDescending(p => p.Id)
+        };
+
         var items = await query
             .Skip((model.PageNumber - 1) * model.PageSize)
             .Take(model.PageSize)
@@ -51,13 +60,16 @@ public class TourRepository(MainDbContext dbContext) : RepositoryBase<Tours>(dbC
         return (items, totalPages, totalRecord);
     }
 
-    public async Task<Tours?> GetTourById(long tourId, CancellationToken cancellationToken)
+    public async Task<Core.DAL.Model.Tour.Tour?> GetTourById(long tourId, CancellationToken cancellationToken)
     {
         var tour = await Table
             .IgnoreQueryFilters()
             .Include(p => p.PrimaryTransport)
             .Include(p => p.TransPorts)
             .Include(p => p.TourPlans)
+            .Include(p => p.NecessaryEquipment)
+            .Include(p => p.UnNecessaryEquipment)
+            .Include(p => p.Hotels)
             .FirstOrDefaultAsync(p => p.Id == tourId && !p.IsDeleted, cancellationToken);
 
         if (tour != null)
@@ -69,7 +81,7 @@ public class TourRepository(MainDbContext dbContext) : RepositoryBase<Tours>(dbC
         return tour;
     }
 
-    public async Task<List<Tours>> GetTopToursByViews(int topCount, CancellationToken cancellationToken)
+    public async Task<List<Core.DAL.Model.Tour.Tour>> GetTopToursByViews(int topCount, CancellationToken cancellationToken)
     {
         var query = TableNoTracking
             .Where(p => !p.IsDeleted)

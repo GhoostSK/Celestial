@@ -4,14 +4,14 @@ using Celestial.Dal.Ef.SqlServer.Extensions;
 
 namespace Celestial.Agency.Core.DAL.Repositories.Tour;
 
-public interface ITourService : IRepositoryEF<Tours>, IScopeLifetime
+public interface ITourService : IRepositoryEF<Model.Tour.Tour>, IScopeLifetime
 {
-    public Task<(List<Tours> Items, int TotalPages, int totalRecord)> GetToursList(GetTourListReq model,
+    public Task<(List<Model.Tour.Tour> Items, int TotalPages, int totalRecord)> GetToursList(GetTourListReq model,
         CancellationToken cancellationToken);
 
-    public Task<Tours?> GetTourById(long tourId, CancellationToken cancellationToken);
+    public Task<Model.Tour.Tour?> GetTourById(long tourId, CancellationToken cancellationToken);
 
-    public Task<List<Tours>> GetTopToursByViews(int topCount, CancellationToken cancellationToken);
+    public Task<List<Model.Tour.Tour>> GetTopToursByViews(int topCount, CancellationToken cancellationToken);
 
     public Task<string> GenerateUniqueTourCodeAsync(CancellationToken cancellationToken);
 }

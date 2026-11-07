@@ -1,5 +1,6 @@
 ﻿using Celestial.WebClient.Services.ApiClients.Base;
 using Celestial.WebClient.Services.DTO;
+using Celestial.WebClient.Services.Extensions;
 
 namespace Celestial.WebClient.Services.ApiClients.Comment;
 
@@ -15,8 +16,11 @@ public class CommentApiClient(HttpJsonClient httpClient)
 
     public async Task<GetCommentsBySlugResDto> GetCommentsBySlugAsync(GetCommentsBySlugReqDto request)
     {
+        var query = new ApiQueryBuilder()
+            .Add("Slug", request.Slug)
+            .Add("LocalGroup", request.LocalGroup.ToString());
+
         return await httpClient.GetAsync<GetCommentsBySlugResDto>(
-            $"/api/fa/Comment/GetCommentBySlug?Slug={Uri.EscapeDataString(request.Slug)}&LocalGroup={request.LocalGroup}"
-        );
+            $"/api/{request.Language}/Comment/GetCommentBySlug{query}");
     }
 }

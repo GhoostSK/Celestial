@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Celestial.Agency.DAL.EF.Context.Repositories.Blog;
 
-public sealed class BlogTagsRepository(MainDbContext dbContext) : RepositoryBase<BlogTags>(dbContext), IBlogTagService
+public sealed class BlogTagsRepository(MainDbContext dbContext) : RepositoryBase<BlogTag>(dbContext), IBlogTagService
 {
-    public async Task<List<BlogTags>> GetTopTagsByViewCountAsync(int count, CancellationToken cancellationToken)
+    public async Task<List<BlogTag>> GetTopTagsByViewCountAsync(int count, CancellationToken cancellationToken)
     {
         return await TableNoTracking
             .IgnoreQueryFilters()
@@ -18,7 +18,7 @@ public sealed class BlogTagsRepository(MainDbContext dbContext) : RepositoryBase
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<List<BlogTags>> GetTagsList(int count, CancellationToken cancellationToken)
+    public async Task<List<BlogTag>> GetTagsList(int count, CancellationToken cancellationToken)
     {
         var query = TableNoTracking
             .IgnoreQueryFilters();

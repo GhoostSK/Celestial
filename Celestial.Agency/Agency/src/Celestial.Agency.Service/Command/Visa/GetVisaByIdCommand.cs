@@ -21,4 +21,7 @@ public sealed class GetVisaCommandRes : ServiceResContextBase
     public string PicturePath { get; set; } = null!;
     public VisaIssuer VisaIssuer { get; set; }
     public int IssueDate { get; set; }
+
+    //seo
+    public string Slug { get; set; } = string.Empty;
 }

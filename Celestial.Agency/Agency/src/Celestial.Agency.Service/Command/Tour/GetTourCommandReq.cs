@@ -32,9 +32,14 @@ public sealed class GetTourItemRes
     public DateOnly StartDate { get; set; }
     public int PassengerCapacity { get; set; }
     public string ImportantTips { get; set; } = string.Empty;
-    public List<TourTransPorts> TransPorts { get; set; } = new();
-    public List<int> Hotels { get; set; } = new();
-    public TourPrimaryTransport PrimaryTransport { get; set; } = new();
+    public List<TourTransPort> TransPorts { get; set; } = new();
+    public List<TourHotelDto> Hotels { get; set; } = new();
+
+    /// <summary>
+    ///     موجودیت <see cref="TourPrimaryTransport" /> ارجاع بازگشتی به تور دارد و نگاشت مستقیم آن
+    ///     باعث بازگشت بی‌پایان می‌شد؛ بنابراین فقط فیلدهای لازم در یک DTO برگردانده می‌شود.
+    /// </summary>
+    public TourPrimaryTransportDto PrimaryTransport { get; set; } = new();
     public DateOnly RegistrationDeadline { get; set; }
     public int DaysUntilRegistrationDeadline { get; set; }
     public List<TourEquipmentDto> UnNecessaryEquipment { get; set; } = new();
@@ -59,6 +64,30 @@ public sealed class TourEquipmentDto
 {
     public string Name { get; set; } = string.Empty;
     public string Icon { get; set; } = string.Empty;
+}
+
+public sealed class TourPrimaryTransportDto
+{
+    public string LeadFlightCode { get; set; } = string.Empty;
+    public string ReturnFlightCode { get; set; } = string.Empty;
+    public DateTime Date { get; set; }
+    public string LeadStartTime { get; set; } = string.Empty;
+    public string LeadEndTime { get; set; } = string.Empty;
+    public string ReturnStartTime { get; set; } = string.Empty;
+    public string ReturnEndTimeTime { get; set; } = string.Empty;
+    public string AirLine { get; set; } = string.Empty;
+    public string AirLineImagePath { get; set; } = string.Empty;
+}
+
+public sealed class TourHotelDto
+{
+    public long Id { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public int HotelScore { get; set; }
+    public double Price { get; set; }
+
+    //seo
+    public string Slug { get; set; } = string.Empty;
 }
 
 public sealed class GetTourByIdTourPlan

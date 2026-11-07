@@ -7,7 +7,7 @@ namespace Celestial.Agency.Service.Command.Visa;
 
 public sealed class AddVisaCommandReq : BaseEntity, IRequest<AddVisaCommandRes>
 {
-    public Visas Visa { get; set; } = new();
+    public Core.DAL.Model.Visa.Visa Visa { get; set; } = new();
     public List<AddVisaLocalizedProperty> VisaLocalizedProperty { get; set; } = new();
 }
 
@@ -22,4 +22,7 @@ public sealed class AddVisaLocalizedProperty
 
     public string Name { get; set; } = string.Empty;
     public List<Dictionary<string, string>> Embassy { get; set; } = new();
+
+    //seo
+    public string Slug { get; set; } = string.Empty;
 }

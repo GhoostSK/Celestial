@@ -22,6 +22,7 @@ public sealed class GetToursListCommandReq : BaseEntity, IRequest<GetToursListCo
     public List<TourScope> TourScope { get; set; } = new();
 
     public bool IsActiveTour { get; set; }
+    public TourSortBy SortBy { get; set; } = TourSortBy.Newest;
     public int PageNumber { get; set; } = 1;
     public int PageSize { get; set; } = 10;
 }

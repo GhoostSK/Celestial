@@ -4,7 +4,7 @@ using Celestial.Dal.Ef.SqlServer.Extensions;
 
 namespace Celestial.Agency.Core.DAL.Repositories.Global;
 
-public interface IImageService : IRepositoryEF<Images>, IScopeLifetime
+public interface IImageService : IRepositoryEF<Image>, IScopeLifetime
 {
-    public Task<List<Images>> GetImagesByEntityId(long entityId, string keyGroup, CancellationToken cancellationToken);
+    public Task<List<Image>> GetImagesByEntityId(long entityId, string keyGroup, CancellationToken cancellationToken);
 }

@@ -3,127 +3,109 @@ using Celestial.WebClient.Services.Extensions;
 using Celestial.WebClient.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Localization;
 
 namespace Celestial.WebClient.Pages.Blog;
 
 public class BlogDetailsModel(
     IBlogService blogService,
-    ICommentService commentClient
-) : PageModel
+    ICommentService commentService,
+    IStringLocalizer<SharedResource> localizer) : PageModel
 {
-    public GetBlogBySlugResDto Blog { get; set; } = new();
-    public GetBlogCategoryListResDto Category { get; set; } = new();
-    public GetLatestBlogListResDto RecentBlog { get; set; } = new();
-    public GetBlogTagListResDto Tags { get; set; } = new();
-    public string? Slug { get; set; } = string.Empty;
-    public string Language { get; set; } = string.Empty;
+    public GetBlogBySlugResDto Blog { get; private set; } = new();
+    public GetBlogCategoryListResDto Category { get; private set; } = new();
+    public GetLatestBlogListResDto RecentBlog { get; private set; } = new();
+    public GetBlogTagListResDto Tags { get; private set; } = new();
+    public GetCommentsBySlugResDto Comments { get; private set; } = new();
 
-    [BindProperty] public AddCommentReqDto Input { get; set; } = new();
+    public string? Slug { get; private set; }
+    public string CurrentLanguage { get; private set; } = GetCurrentLang.Execute();
+
+    [BindProperty] public AddCommentReqDto CommentInput { get; set; } = new();
 
     [TempData] public string? CommentMessage { get; set; }
 
-    [BindProperty]
-    public AddCommentReqDto CommentInput { get; set; } = new()
-    {
-        Language = GetCurrentLang.Execute(),
-        KeyGroup = LocalKeyGroupType.Blog,
-        Slug = string.Empty,
-        ParentCommentId = null
-    };
-
     public async Task<IActionResult> OnGetAsync(string? slug)
     {
-        if (slug == null) return RedirectToPage("BlogSidebar");
-        Slug = slug;
+        if (string.IsNullOrWhiteSpace(slug))
+            return RedirectToPage("/Blog/BlogSidebar");
 
-        Language = GetCurrentLang.Execute();
+        await LoadAsync(slug);
+
+        return Page();
+    }
+
+    public async Task<IActionResult> OnPostAddCommentAsync(string? slug)
+    {
+        if (string.IsNullOrWhiteSpace(slug))
+            return RedirectToPage("/Blog/BlogSidebar");
+
+        await LoadAsync(slug);
+
+        if (string.IsNullOrWhiteSpace(CommentInput.CommentText))
+        {
+            ModelState.AddModelError(nameof(CommentInput.CommentText), localizer["Validation_Required"]);
+            CommentMessage = localizer["Validation_Required"];
+
+            return Page();
+        }
+
+        CommentInput.Language = CurrentLanguage;
+        CommentInput.KeyGroup = LocalKeyGroupType.Blog;
+        CommentInput.Slug = Blog.Item.Slug;
+
+        var result = await commentService.AddCommentAsync(CommentInput);
+
+        if (result.HasError)
+        {
+            ModelState.AddModelError(string.Empty, result.ErrorMessage);
+            CommentMessage = result.ErrorMessage;
+
+            return Page();
+        }
+
+        CommentMessage = localizer["Comment_Success"];
+
+        return RedirectToPage(new { slug });
+    }
+
+    private async Task LoadAsync(string slug)
+    {
+        Slug = slug;
+        CurrentLanguage = GetCurrentLang.Execute();
 
         Blog = await blogService.GetBlogBySlugAsync(new GetBlogBySlugReqDto
         {
-            Language = Language,
+            Language = CurrentLanguage,
             Slug = slug
         });
 
         Category = await blogService.GetBlogCategoriesListAsync(new GetBlogCategoryListReqDto
         {
             Count = 10,
-            Language = Language
+            Language = CurrentLanguage
         });
 
         RecentBlog = await blogService.GetLatestBlogListAsync(new GetLatestBlogListReqDto
         {
             Count = 3,
-            Language = Language
+            Language = CurrentLanguage
         });
 
         Tags = await blogService.GetBlogTagsListAsync(new GetBlogTagListReqDto
         {
             Count = 9,
-            Language = Language
+            Language = CurrentLanguage
         });
 
-        if (!Blog.HasError && Blog.Item is not null)
-        {
-            CommentInput.Language = Language;
-            CommentInput.KeyGroup = LocalKeyGroupType.Blog;
-            CommentInput.Slug = Blog.Item.Slug;
-        }
-
         if (Blog.HasError)
+            return;
+
+        Comments = await commentService.GetCommentsBySlugAsync(new GetCommentsBySlugReqDto
         {
-        }
-
-        return Page();
-    }
-
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> OnPostAddCommentAsync(string? slug, long? parentId = null)
-    {
-        CommentInput.Language = string.IsNullOrWhiteSpace(CommentInput.Language)
-            ? GetCurrentLang.Execute()
-            : CommentInput.Language;
-
-        CommentInput.KeyGroup = LocalKeyGroupType.Blog;
-
-
-        if (CommentInput.Slug == string.Empty && !string.IsNullOrWhiteSpace(slug))
-        {
-            var blog = await blogService.GetBlogBySlugAsync(new GetBlogBySlugReqDto
-            {
-                Language = GetCurrentLang.Execute(),
-                Slug = slug
-            });
-
-            if (!blog.HasError && blog.Item is not null)
-                CommentInput.Slug = blog.Item.Slug;
-        }
-
-        if (parentId.HasValue && parentId.Value > 0)
-            CommentInput.ParentCommentId = parentId;
-
-        if (string.IsNullOrWhiteSpace(CommentInput.CommentText))
-            ModelState.AddModelError(nameof(CommentInput.CommentText), "متن پیام را وارد کنید.");
-
-        if (!ModelState.IsValid)
-        {
-            CommentMessage = "لطفاً خطاهای فرم را برطرف کنید.";
-            await OnGetAsync(slug);
-            return Page();
-        }
-
-        var result = await commentClient.AddCommentAsync(CommentInput);
-
-        if (result.HasError)
-        {
-            CommentMessage = result.ErrorMessage ?? "ارسال نظر ناموفق بود.";
-            await OnGetAsync(slug);
-            return Page();
-        }
-
-        CommentMessage = "نظر شما با موفقیت ثبت شد.";
-
-        CommentInput.CommentText = string.Empty;
-
-        return RedirectToPage(new { slug });
+            Language = CurrentLanguage,
+            Slug = Blog.Item.Slug,
+            LocalGroup = LocalKeyGroupType.Blog
+        });
     }
 }

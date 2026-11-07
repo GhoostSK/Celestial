@@ -8,7 +8,7 @@ public class BlogEntityTypeConfiguration : IEntityTypeConfiguration<Blog>
 {
     public void Configure(EntityTypeBuilder<Blog> builder)
     {
-        builder.ToTable("Blogs");
+        builder.ToTable(nameof(Blog));
         builder.HasKey(x => x.Id);
 
         builder.Property(x => x.Likes)

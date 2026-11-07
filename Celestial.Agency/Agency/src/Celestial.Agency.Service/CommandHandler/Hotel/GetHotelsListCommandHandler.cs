@@ -34,7 +34,28 @@ public sealed class GetHotelsListCommandHandler(
             };
 
         var response = new GetHotelsListCommandRes();
-        var hotels = await hotel.GetHotelsList(request.Adapt<GetHotelsListReq>(), cancellationToken);
+        var allCountries = await countryService.GetCountryList(cancellationToken);
+
+        // فیلتر کشور با نام/کد کشور می‌آید و باید به شناسه تبدیل شود
+        // (نگاشت خودکار نام را به عدد تبدیل می‌کرد و خطا می‌داد).
+        var listReq = new GetHotelsListReq
+        {
+            Title = request.Title,
+            HotelLocation = request.HotelLocation,
+            HotelContinent = request.HotelContinent,
+            FromPrice = request.FromPrice,
+            ToPrice = request.ToPrice,
+            HotelCountry = allCountries
+                .Where(c => request.HotelCountry.Contains(c.Name, StringComparer.OrdinalIgnoreCase)
+                            || request.HotelCountry.Contains(c.Shortname, StringComparer.OrdinalIgnoreCase))
+                .Select(c => c.Id)
+                .ToList(),
+            HotelScore = request.HotelScore,
+            PageNumber = request.PageNumber,
+            PageSize = request.PageSize
+        };
+
+        var hotels = await hotel.GetHotelsList(listReq, cancellationToken);
 
         if (!hotels.Items.Any())
             return response;
@@ -61,7 +82,7 @@ public sealed class GetHotelsListCommandHandler(
             var slug = localize.SingleOrDefault(p => p.LocalKey == "Slug")?.LocalValue;
             var shortText = localize.SingleOrDefault(p => p.LocalKey == "ShortText")?.LocalValue;
             var country = await countryService.FindByIdAsync(cancellationToken, item.CountryId);
-            var countryName = country?.Shortname ?? "";
+            var countryName = country?.Name ?? string.Empty;
 
             response.Items.Add(new GetAllHotelsServiceRes
             {

@@ -10,8 +10,8 @@ namespace Celestial.Agency.Service.Command.Hotel;
 public sealed class UpdateHotelCommandReq : BaseEntity, IRequest<UpdateHotelCommandRes>
 {
     public long Id { get; set; }
-    public Hotels Hotel { get; set; } = new();
-    public List<Images> Images { get; set; } = new();
+    public Core.DAL.Model.Hotel.Hotel Hotel { get; set; } = new();
+    public List<Image> Images { get; set; } = new();
     public List<HotelServiceLocalizedProperty> LocalizedProperty { get; set; } = new();
     public Guid ModifiedBy { get; set; }
 }

@@ -4,7 +4,7 @@ using Celestial.Dal.Ef.SqlServer.Extensions;
 
 namespace Celestial.Agency.Core.DAL.Repositories.Tour;
 
-public interface ITourEquipmentsService : IRepositoryEF<TourEquipments>, IScopeLifetime
+public interface ITourEquipmentsService : IRepositoryEF<TourEquipment>, IScopeLifetime
 {
-    public Task<List<TourEquipments>> GetListAsync(CancellationToken cancellationToken);
+    public Task<List<TourEquipment>> GetListAsync(CancellationToken cancellationToken);
 }

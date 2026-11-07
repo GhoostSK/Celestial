@@ -8,7 +8,7 @@ public class AdminActivityLogEntityTypeConfiguration : IEntityTypeConfiguration<
 {
     public void Configure(EntityTypeBuilder<AdminActivityLog> builder)
     {
-        builder.ToTable("AdminActivityLog");
+        builder.ToTable(nameof(AdminActivityLog));
 
         builder.HasKey(x => x.Id);
 

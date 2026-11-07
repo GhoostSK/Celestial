@@ -4,12 +4,12 @@ using Celestial.Dal.Ef.SqlServer.Extensions;
 
 namespace Celestial.Agency.Core.DAL.Repositories.Hotel;
 
-public interface IHotelService : IRepositoryEF<Hotels>, IScopeLifetime
+public interface IHotelService : IRepositoryEF<DAL.Model.Hotel.Hotel>, IScopeLifetime
 {
-    Task<long> AddHotel(Hotels model, CancellationToken cancellationToken);
+    Task<long> AddHotel(DAL.Model.Hotel.Hotel model, CancellationToken cancellationToken);
 
-    public Task<(List<Hotels> Items, int TotalPages, int totalRecord)> GetHotelsList(GetHotelsListReq model,
+    public Task<(List<DAL.Model.Hotel.Hotel> Items, int TotalPages, int totalRecord)> GetHotelsList(GetHotelsListReq model,
         CancellationToken cancellationToken);
 
-    public Task<Hotels?> GetHotelById(long id, CancellationToken cancellationToken);
+    public Task<DAL.Model.Hotel.Hotel?> GetHotelById(long id, CancellationToken cancellationToken);
 }

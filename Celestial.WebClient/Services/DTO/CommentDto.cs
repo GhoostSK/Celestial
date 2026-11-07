@@ -22,16 +22,11 @@ public sealed class CommentItemDto
     public long Id { get; set; }
     public string CommentText { get; set; } = string.Empty;
     public string UserId { get; set; } = string.Empty;
+    public string UserName { get; set; } = string.Empty;
     public bool IsConfirmed { get; set; }
     public long? ParentCommentId { get; set; }
+    public DateTimeOffset RegisteredAt { get; set; }
     public List<CommentItemDto> Replies { get; set; } = new();
-}
-
-public enum LocalKeyGroupType
-{
-    Blog,
-    Hotel,
-    Tour
 }
 
 public sealed class AddCommentReqDto
