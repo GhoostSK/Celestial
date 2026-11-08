@@ -1,0 +1,684 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Nav_Home" xml:space="preserve">
+    <value>خانه</value>
+  </data>
+  <data name="Nav_About" xml:space="preserve">
+    <value>درباره ما</value>
+  </data>
+  <data name="Nav_Tours" xml:space="preserve">
+    <value>تورها</value>
+  </data>
+  <data name="Nav_Hotels" xml:space="preserve">
+    <value>هتل‌ها</value>
+  </data>
+  <data name="Nav_Visa" xml:space="preserve">
+    <value>ویزا</value>
+  </data>
+  <data name="Nav_Blog" xml:space="preserve">
+    <value>مقالات</value>
+  </data>
+  <data name="Nav_Contact" xml:space="preserve">
+    <value>تماس با ما</value>
+  </data>
+  <data name="Action_BookTrip" xml:space="preserve">
+    <value>رزرو سفر</value>
+  </data>
+  <data name="Action_Login" xml:space="preserve">
+    <value>ورود</value>
+  </data>
+  <data name="Action_Register" xml:space="preserve">
+    <value>ثبت نام</value>
+  </data>
+  <data name="Footer_FollowUs" xml:space="preserve">
+    <value>ما را دنبال کنید</value>
+  </data>
+  <data name="Common_Home" xml:space="preserve">
+    <value>خانه</value>
+  </data>
+  <data name="Common_ReadMore" xml:space="preserve">
+    <value>بیشتر بخوانید</value>
+  </data>
+  <data name="Common_ViewDetails" xml:space="preserve">
+    <value>مشاهده جزئیات</value>
+  </data>
+  <data name="Common_BookNow" xml:space="preserve">
+    <value>رزرو کنید</value>
+  </data>
+  <data name="Common_StartingFrom" xml:space="preserve">
+    <value>شروع از</value>
+  </data>
+  <data name="Common_PerPerson" xml:space="preserve">
+    <value>نفری</value>
+  </data>
+  <data name="Common_PerNight" xml:space="preserve">
+    <value>هر شب</value>
+  </data>
+  <data name="Common_NoResult" xml:space="preserve">
+    <value>نتیجه‌ای یافت نشد</value>
+  </data>
+  <data name="Common_Search" xml:space="preserve">
+    <value>جست‌وجو</value>
+  </data>
+  <data name="Common_SearchPlaceholder" xml:space="preserve">
+    <value>جست‌وجو کنید...</value>
+  </data>
+  <data name="Common_ApplyFilter" xml:space="preserve">
+    <value>اعمال فیلتر</value>
+  </data>
+  <data name="Common_ClearFilter" xml:space="preserve">
+    <value>حذف فیلترها</value>
+  </data>
+  <data name="Common_PriceFilter" xml:space="preserve">
+    <value>فیلتر قیمت</value>
+  </data>
+  <data name="Common_From" xml:space="preserve">
+    <value>از</value>
+  </data>
+  <data name="Common_To" xml:space="preserve">
+    <value>تا</value>
+  </data>
+  <data name="Common_Day" xml:space="preserve">
+    <value>روز</value>
+  </data>
+  <data name="Common_Days" xml:space="preserve">
+    <value>روز</value>
+  </data>
+  <data name="Common_Night" xml:space="preserve">
+    <value>شب</value>
+  </data>
+  <data name="Common_Nights" xml:space="preserve">
+    <value>شب</value>
+  </data>
+  <data name="Common_Reviews" xml:space="preserve">
+    <value>نظرات</value>
+  </data>
+  <data name="Common_Star" xml:space="preserve">
+    <value>ستاره</value>
+  </data>
+  <data name="Common_Stars" xml:space="preserve">
+    <value>ستاره</value>
+  </data>
+  <data name="Common_SortBy" xml:space="preserve">
+    <value>مرتب‌سازی</value>
+  </data>
+  <data name="Common_Sort_Rating" xml:space="preserve">
+    <value>رتبه‌بندی</value>
+  </data>
+  <data name="Common_Sort_Price" xml:space="preserve">
+    <value>قیمت</value>
+  </data>
+  <data name="Common_Sort_PriceAsc" xml:space="preserve">
+    <value>قیمت (کم به زیاد)</value>
+  </data>
+  <data name="Common_Sort_PriceDesc" xml:space="preserve">
+    <value>قیمت (زیاد به کم)</value>
+  </data>
+  <data name="Common_Sort_Date" xml:space="preserve">
+    <value>تاریخ</value>
+  </data>
+  <data name="Common_Showing" xml:space="preserve">
+    <value>نمایش {0} از {1} نتیجه</value>
+  </data>
+  <data name="Common_Submit" xml:space="preserve">
+    <value>ثبت</value>
+  </data>
+  <data name="Common_Send" xml:space="preserve">
+    <value>ارسال</value>
+  </data>
+  <data name="Common_Previous" xml:space="preserve">
+    <value>قبلی</value>
+  </data>
+  <data name="Common_Next" xml:space="preserve">
+    <value>بعدی</value>
+  </data>
+  <data name="Common_Error" xml:space="preserve">
+    <value>خطایی رخ داد. لطفاً دوباره تلاش کنید.</value>
+  </data>
+  <data name="Common_Optional" xml:space="preserve">
+    <value>اختیاری</value>
+  </data>
+  <data name="Tour_ListTitle" xml:space="preserve">
+    <value>تورها</value>
+  </data>
+  <data name="Tour_DetailsTitle" xml:space="preserve">
+    <value>جزئیات تور</value>
+  </data>
+  <data name="Tour_Destinations" xml:space="preserve">
+    <value>مقاصد</value>
+  </data>
+  <data name="Tour_TourType" xml:space="preserve">
+    <value>نوع تور</value>
+  </data>
+  <data name="Tour_TourScope" xml:space="preserve">
+    <value>گستره تور</value>
+  </data>
+  <data name="Tour_Continent" xml:space="preserve">
+    <value>قاره</value>
+  </data>
+  <data name="Tour_Duration" xml:space="preserve">
+    <value>مدت سفر</value>
+  </data>
+  <data name="Tour_StartDate" xml:space="preserve">
+    <value>تاریخ شروع</value>
+  </data>
+  <data name="Tour_RegistrationDeadline" xml:space="preserve">
+    <value>مهلت ثبت‌نام</value>
+  </data>
+  <data name="Tour_DaysLeft" xml:space="preserve">
+    <value>{0} روز باقی مانده</value>
+  </data>
+  <data name="Tour_Capacity" xml:space="preserve">
+    <value>ظرفیت</value>
+  </data>
+  <data name="Tour_RemainingCapacity" xml:space="preserve">
+    <value>ظرفیت باقی‌مانده</value>
+  </data>
+  <data name="Tour_Code" xml:space="preserve">
+    <value>کد تور</value>
+  </data>
+  <data name="Tour_Status" xml:space="preserve">
+    <value>وضعیت</value>
+  </data>
+  <data name="Tour_Overview" xml:space="preserve">
+    <value>معرفی تور</value>
+  </data>
+  <data name="Tour_Facilities" xml:space="preserve">
+    <value>امکانات</value>
+  </data>
+  <data name="Tour_Tips" xml:space="preserve">
+    <value>نکات</value>
+  </data>
+  <data name="Tour_ImportantTips" xml:space="preserve">
+    <value>نکات مهم</value>
+  </data>
+  <data name="Tour_Plan" xml:space="preserve">
+    <value>برنامه سفر</value>
+  </data>
+  <data name="Tour_Transport" xml:space="preserve">
+    <value>حمل‌و‌نقل</value>
+  </data>
+  <data name="Tour_PrimaryTransport" xml:space="preserve">
+    <value>پرواز اصلی</value>
+  </data>
+  <data name="Tour_AirLine" xml:space="preserve">
+    <value>ایرلاین</value>
+  </data>
+  <data name="Tour_FlightCodeLead" xml:space="preserve">
+    <value>کد پرواز رفت</value>
+  </data>
+  <data name="Tour_FlightCodeReturn" xml:space="preserve">
+    <value>کد پرواز برگشت</value>
+  </data>
+  <data name="Tour_EquipmentNecessary" xml:space="preserve">
+    <value>تجهیزات ضروری</value>
+  </data>
+  <data name="Tour_EquipmentUnNecessary" xml:space="preserve">
+    <value>تجهیزات اختیاری</value>
+  </data>
+  <data name="Tour_SimilarTours" xml:space="preserve">
+    <value>تورهای مشابه</value>
+  </data>
+  <data name="Tour_RelatedBlogs" xml:space="preserve">
+    <value>مقالات مرتبط</value>
+  </data>
+  <data name="Tour_ActiveOnly" xml:space="preserve">
+    <value>فقط تورهای فعال</value>
+  </data>
+  <data name="Tour_NotFound" xml:space="preserve">
+    <value>توری با این مشخصات یافت نشد</value>
+  </data>
+  <data name="TourStatus_Active" xml:space="preserve">
+    <value>فعال</value>
+  </data>
+  <data name="TourStatus_Planning" xml:space="preserve">
+    <value>در حال برنامه‌ریزی</value>
+  </data>
+  <data name="TourStatus_Completed" xml:space="preserve">
+    <value>برگزار شده</value>
+  </data>
+  <data name="TourStatus_RegistrationClosed" xml:space="preserve">
+    <value>ثبت‌نام بسته</value>
+  </data>
+  <data name="TourType_None" xml:space="preserve">
+    <value>نامشخص</value>
+  </data>
+  <data name="TourType_NatureTour" xml:space="preserve">
+    <value>طبیعت‌گردی</value>
+  </data>
+  <data name="TourType_CityTour" xml:space="preserve">
+    <value>شهرگردی</value>
+  </data>
+  <data name="TourType_Historical" xml:space="preserve">
+    <value>تاریخی</value>
+  </data>
+  <data name="TourType_Sports" xml:space="preserve">
+    <value>ورزشی</value>
+  </data>
+  <data name="TourType_Educational" xml:space="preserve">
+    <value>آموزشی</value>
+  </data>
+  <data name="TourType_Adventure" xml:space="preserve">
+    <value>ماجراجویی</value>
+  </data>
+  <data name="TourScope_None" xml:space="preserve">
+    <value>نامشخص</value>
+  </data>
+  <data name="TourScope_SingleCity" xml:space="preserve">
+    <value>تک‌شهری</value>
+  </data>
+  <data name="TourScope_MultipleCities" xml:space="preserve">
+    <value>چندشهری</value>
+  </data>
+  <data name="TourScope_SingleCountry" xml:space="preserve">
+    <value>تک‌کشوری</value>
+  </data>
+  <data name="TourScope_MultipleCountries" xml:space="preserve">
+    <value>چندکشوری</value>
+  </data>
+  <data name="Continent_None" xml:space="preserve">
+    <value>نامشخص</value>
+  </data>
+  <data name="Continent_Africa" xml:space="preserve">
+    <value>آفریقا</value>
+  </data>
+  <data name="Continent_Antarctica" xml:space="preserve">
+    <value>جنوبگان</value>
+  </data>
+  <data name="Continent_Asia" xml:space="preserve">
+    <value>آسیا</value>
+  </data>
+  <data name="Continent_Europe" xml:space="preserve">
+    <value>اروپا</value>
+  </data>
+  <data name="Continent_NorthAmerica" xml:space="preserve">
+    <value>آمریکای شمالی</value>
+  </data>
+  <data name="Continent_SouthAmerica" xml:space="preserve">
+    <value>آمریکای جنوبی</value>
+  </data>
+  <data name="Continent_Australia" xml:space="preserve">
+    <value>استرالیا</value>
+  </data>
+  <data name="TransportVehicleType_Car" xml:space="preserve">
+    <value>خودرو</value>
+  </data>
+  <data name="TransportVehicleType_Bus" xml:space="preserve">
+    <value>اتوبوس</value>
+  </data>
+  <data name="TransportVehicleType_Plane" xml:space="preserve">
+    <value>هواپیما</value>
+  </data>
+  <data name="TransportVehicleType_Ship" xml:space="preserve">
+    <value>کشتی</value>
+  </data>
+  <data name="Booking_Title" xml:space="preserve">
+    <value>رزرو این تور</value>
+  </data>
+  <data name="Booking_FullName" xml:space="preserve">
+    <value>نام و نام خانوادگی</value>
+  </data>
+  <data name="Booking_PhoneNumber" xml:space="preserve">
+    <value>شماره تماس</value>
+  </data>
+  <data name="Booking_Email" xml:space="preserve">
+    <value>ایمیل</value>
+  </data>
+  <data name="Booking_NationalCode" xml:space="preserve">
+    <value>کد ملی</value>
+  </data>
+  <data name="Booking_PassengerCount" xml:space="preserve">
+    <value>تعداد مسافر</value>
+  </data>
+  <data name="Booking_Note" xml:space="preserve">
+    <value>توضیحات</value>
+  </data>
+  <data name="Booking_Submit" xml:space="preserve">
+    <value>ثبت درخواست رزرو</value>
+  </data>
+  <data name="Booking_Success" xml:space="preserve">
+    <value>درخواست رزرو شما ثبت شد. کد پیگیری: {0}</value>
+  </data>
+  <data name="Booking_Code" xml:space="preserve">
+    <value>کد پیگیری</value>
+  </data>
+  <data name="Booking_TotalPrice" xml:space="preserve">
+    <value>مبلغ کل</value>
+  </data>
+  <data name="Booking_Status" xml:space="preserve">
+    <value>وضعیت رزرو</value>
+  </data>
+  <data name="Booking_Closed" xml:space="preserve">
+    <value>ثبت‌نام این تور بسته است</value>
+  </data>
+  <data name="BookingStatus_Pending" xml:space="preserve">
+    <value>در انتظار تأیید</value>
+  </data>
+  <data name="BookingStatus_Confirmed" xml:space="preserve">
+    <value>تأیید شده</value>
+  </data>
+  <data name="BookingStatus_Cancelled" xml:space="preserve">
+    <value>لغو شده</value>
+  </data>
+  <data name="BookingStatus_Rejected" xml:space="preserve">
+    <value>رد شده</value>
+  </data>
+  <data name="Hotel_ListTitle" xml:space="preserve">
+    <value>هتل‌ها</value>
+  </data>
+  <data name="Hotel_DetailsTitle" xml:space="preserve">
+    <value>جزئیات هتل</value>
+  </data>
+  <data name="Hotel_Score" xml:space="preserve">
+    <value>امتیاز هتل</value>
+  </data>
+  <data name="Hotel_Country" xml:space="preserve">
+    <value>کشور</value>
+  </data>
+  <data name="Hotel_Location" xml:space="preserve">
+    <value>موقعیت</value>
+  </data>
+  <data name="Hotel_Address" xml:space="preserve">
+    <value>آدرس</value>
+  </data>
+  <data name="Hotel_Reception" xml:space="preserve">
+    <value>پذیرش</value>
+  </data>
+  <data name="Hotel_Code" xml:space="preserve">
+    <value>کد هتل</value>
+  </data>
+  <data name="Hotel_About" xml:space="preserve">
+    <value>درباره هتل</value>
+  </data>
+  <data name="Hotel_Gallery" xml:space="preserve">
+    <value>گالری تصاویر</value>
+  </data>
+  <data name="Hotel_BookExternal" xml:space="preserve">
+    <value>رزرو در سایت هتل</value>
+  </data>
+  <data name="Hotel_NotFound" xml:space="preserve">
+    <value>هتلی با این مشخصات یافت نشد</value>
+  </data>
+  <data name="HotelLocation_None" xml:space="preserve">
+    <value>نامشخص</value>
+  </data>
+  <data name="HotelLocation_CityCenter" xml:space="preserve">
+    <value>مرکز شهر</value>
+  </data>
+  <data name="HotelLocation_Suburb" xml:space="preserve">
+    <value>حاشیه شهر</value>
+  </data>
+  <data name="HotelLocation_NearCity" xml:space="preserve">
+    <value>نزدیک شهر</value>
+  </data>
+  <data name="Comment_Title" xml:space="preserve">
+    <value>نظرات</value>
+  </data>
+  <data name="Comment_Leave" xml:space="preserve">
+    <value>نظر خود را بنویسید</value>
+  </data>
+  <data name="Comment_Text" xml:space="preserve">
+    <value>متن نظر</value>
+  </data>
+  <data name="Comment_Submit" xml:space="preserve">
+    <value>ارسال نظر</value>
+  </data>
+  <data name="Comment_Empty" xml:space="preserve">
+    <value>هنوز نظری ثبت نشده است</value>
+  </data>
+  <data name="Comment_Success" xml:space="preserve">
+    <value>نظر شما ثبت شد و پس از تأیید نمایش داده می‌شود.</value>
+  </data>
+  <data name="Comment_LoginRequired" xml:space="preserve">
+    <value>برای ثبت نظر وارد شوید</value>
+  </data>
+  <data name="Validation_Required" xml:space="preserve">
+    <value>این فیلد الزامی است</value>
+  </data>
+  <data name="Validation_Length" xml:space="preserve">
+    <value>طول مقدار وارد شده مجاز نیست</value>
+  </data>
+  <data name="Validation_Email" xml:space="preserve">
+    <value>ایمیل وارد شده معتبر نیست</value>
+  </data>
+  <data name="Validation_Phone" xml:space="preserve">
+    <value>شماره تماس وارد شده معتبر نیست</value>
+  </data>
+  <data name="Validation_NationalCode" xml:space="preserve">
+    <value>کد ملی باید ۱۰ رقم باشد</value>
+  </data>
+  <data name="Validation_Range" xml:space="preserve">
+    <value>مقدار وارد شده در محدوده مجاز نیست</value>
+  </data>
+  <data name="Common_Sort_Newest" xml:space="preserve">
+    <value>جدیدترین</value>
+  </data>
+  <data name="Common_Sort_Score" xml:space="preserve">
+    <value>بیشترین امتیاز</value>
+  </data>
+  <data name="Common_Or" xml:space="preserve">
+    <value>یا</value>
+  </data>
+  <data name="Action_Logout" xml:space="preserve">
+    <value>خروج</value>
+  </data>
+  <data name="Account_LoginTitle" xml:space="preserve">
+    <value>ورود به حساب</value>
+  </data>
+  <data name="Account_LoginSubtitle" xml:space="preserve">
+    <value>برای ادامه، نام کاربری و رمز عبور خود را وارد کنید.</value>
+  </data>
+  <data name="Account_RegisterTitle" xml:space="preserve">
+    <value>ثبت نام</value>
+  </data>
+  <data name="Account_RegisterSubtitle" xml:space="preserve">
+    <value>برای رزرو تور و ثبت نظر، حساب بسازید.</value>
+  </data>
+  <data name="Account_UserName" xml:space="preserve">
+    <value>نام کاربری</value>
+  </data>
+  <data name="Account_Password" xml:space="preserve">
+    <value>رمز عبور</value>
+  </data>
+  <data name="Account_Name" xml:space="preserve">
+    <value>نام</value>
+  </data>
+  <data name="Account_LastName" xml:space="preserve">
+    <value>نام خانوادگی</value>
+  </data>
+  <data name="Account_PhoneNumber" xml:space="preserve">
+    <value>شماره تماس</value>
+  </data>
+  <data name="Account_NationalCode" xml:space="preserve">
+    <value>کد ملی</value>
+  </data>
+  <data name="Account_RememberMe" xml:space="preserve">
+    <value>مرا به خاطر بسپار</value>
+  </data>
+  <data name="Account_LoginFailed" xml:space="preserve">
+    <value>نام کاربری یا رمز عبور درست نیست</value>
+  </data>
+  <data name="Account_ConfirmPhoneTitle" xml:space="preserve">
+    <value>تأیید شماره تلفن</value>
+  </data>
+  <data name="Account_ConfirmPhoneSubtitle" xml:space="preserve">
+    <value>کد پنج‌رقمی ارسال‌شده را وارد کنید.</value>
+  </data>
+  <data name="Account_ConfirmationCode" xml:space="preserve">
+    <value>کد تأیید</value>
+  </data>
+  <data name="Account_ConfirmAction" xml:space="preserve">
+    <value>تأیید</value>
+  </data>
+  <data name="Account_ResendCode" xml:space="preserve">
+    <value>ارسال دوباره کد</value>
+  </data>
+  <data name="Account_CodeSent" xml:space="preserve">
+    <value>کد تأیید ارسال شد.</value>
+  </data>
+  <data name="Account_PhoneConfirmed" xml:space="preserve">
+    <value>شماره تلفن شما تأیید شد. اکنون وارد شوید.</value>
+  </data>
+  <data name="Validation_UserName" xml:space="preserve">
+    <value>نام کاربری فقط می‌تواند حرف، رقم، نقطه و زیرخط داشته باشد</value>
+  </data>
+  <data name="Validation_Password" xml:space="preserve">
+    <value>رمز عبور باید حداقل ۸ نویسه باشد</value>
+  </data>
+  <data name="Validation_ConfirmationCode" xml:space="preserve">
+    <value>کد تأیید باید ۵ رقم باشد</value>
+  </data>
+  <data name="Visa_ListTitle" xml:space="preserve">
+    <value>ویزا</value>
+  </data>
+  <data name="Visa_DetailsTitle" xml:space="preserve">
+    <value>جزئیات ویزا</value>
+  </data>
+  <data name="Visa_Country" xml:space="preserve">
+    <value>کشور</value>
+  </data>
+  <data name="Visa_Issuer" xml:space="preserve">
+    <value>مرجع صدور</value>
+  </data>
+  <data name="Visa_IssueDate" xml:space="preserve">
+    <value>مدت صدور (روز)</value>
+  </data>
+  <data name="Visa_Status_Available" xml:space="preserve">
+    <value>در دسترس</value>
+  </data>
+  <data name="Visa_Status_Unavailable" xml:space="preserve">
+    <value>در دسترس نیست</value>
+  </data>
+  <data name="Visa_Embassy" xml:space="preserve">
+    <value>سفارت و نمایندگی‌ها</value>
+  </data>
+  <data name="Visa_NotFound" xml:space="preserve">
+    <value>ویزایی با این مشخصات یافت نشد</value>
+  </data>
+  <data name="VisaIssuer_Embassy" xml:space="preserve">
+    <value>سفارت</value>
+  </data>
+  <data name="VisaIssuer_Consulate" xml:space="preserve">
+    <value>کنسولگری</value>
+  </data>
+  <data name="VisaIssuer_VisaApplicationCenter" xml:space="preserve">
+    <value>مرکز درخواست ویزا</value>
+  </data>
+  <data name="VisaIssuer_AuthorizedAgency" xml:space="preserve">
+    <value>نمایندگی مجاز</value>
+  </data>
+  <data name="VisaIssuer_Ministry" xml:space="preserve">
+    <value>وزارت</value>
+  </data>
+  <data name="VisaIssuer_PrivateAgency" xml:space="preserve">
+    <value>آژانس خصوصی</value>
+  </data>
+  <data name="VisaIssuer_SpecialProgram" xml:space="preserve">
+    <value>برنامه ویژه</value>
+  </data>
+  <data name="Faq_Title" xml:space="preserve">
+    <value>پرسش‌های متداول</value>
+  </data>
+  <data name="Faq_Subtitle" xml:space="preserve">
+    <value>پاسخ پرسش‌هایی که بیشتر از ما می‌پرسید.</value>
+  </data>
+  <data name="Faq_Empty" xml:space="preserve">
+    <value>هنوز پرسشی ثبت نشده است</value>
+  </data>
+  <data name="Newsletter_Title" xml:space="preserve">
+    <value>خبرنامه</value>
+  </data>
+  <data name="Newsletter_Subtitle" xml:space="preserve">
+    <value>برای دریافت تورها و تخفیف‌های تازه ایمیل خود را وارد کنید.</value>
+  </data>
+  <data name="Newsletter_Email" xml:space="preserve">
+    <value>ایمیل شما</value>
+  </data>
+  <data name="Newsletter_Subscribe" xml:space="preserve">
+    <value>عضویت</value>
+  </data>
+  <data name="Newsletter_Success" xml:space="preserve">
+    <value>عضویت شما در خبرنامه ثبت شد.</value>
+  </data>
+  <data name="Newsletter_AlreadySubscribed" xml:space="preserve">
+    <value>این ایمیل از قبل عضو خبرنامه است.</value>
+  </data>
+  <data name="Contact_Title" xml:space="preserve">
+    <value>تماس با ما</value>
+  </data>
+  <data name="Contact_Subtitle" xml:space="preserve">
+    <value>هر پرسشی دارید بنویسید؛ زودتر از آنچه فکر می‌کنید پاسخ می‌دهیم.</value>
+  </data>
+  <data name="Contact_Name" xml:space="preserve">
+    <value>نام شما</value>
+  </data>
+  <data name="Contact_Email" xml:space="preserve">
+    <value>ایمیل شما</value>
+  </data>
+  <data name="Contact_Message" xml:space="preserve">
+    <value>پیام شما</value>
+  </data>
+  <data name="Contact_Send" xml:space="preserve">
+    <value>ارسال پیام</value>
+  </data>
+  <data name="Contact_Success" xml:space="preserve">
+    <value>پیام شما ارسال شد. به‌زودی پاسخ می‌دهیم.</value>
+  </data>
+  <data name="Home_FeaturedTours" xml:space="preserve">
+    <value>تورهای برجسته</value>
+  </data>
+  <data name="Home_LatestBlogs" xml:space="preserve">
+    <value>آخرین مقالات</value>
+  </data>
+  <data name="Contact_AddressValue" xml:space="preserve">
+    <value>تهران، خیابان ولیعصر، پلاک ۵۲</value>
+  </data>
+  <data name="Nav_Faq" xml:space="preserve">
+    <value>پرسش‌های متداول</value>
+  </data>
+  <data name="Footer_QuickLinks" xml:space="preserve">
+    <value>دسترسی سریع</value>
+  </data>
+  <data name="Blog_ListTitle" xml:space="preserve">
+    <value>مقالات</value>
+  </data>
+  <data name="Blog_DetailsTitle" xml:space="preserve">
+    <value>جزئیات مقاله</value>
+  </data>
+  <data name="Blog_Categories" xml:space="preserve">
+    <value>دسته بندی ها</value>
+  </data>
+  <data name="Blog_RecentPosts" xml:space="preserve">
+    <value>مقالات اخیر</value>
+  </data>
+  <data name="Blog_Tags" xml:space="preserve">
+    <value>برچسب ها</value>
+  </data>
+  <data name="Blog_Share" xml:space="preserve">
+    <value>اشتراک گذاری</value>
+  </data>
+  <data name="Blog_PreviousPost" xml:space="preserve">
+    <value>مقاله قبلی</value>
+  </data>
+  <data name="Blog_NextPost" xml:space="preserve">
+    <value>مقاله بعدی</value>
+  </data>
+  <data name="Blog_NotFound" xml:space="preserve">
+    <value>مقاله‌ای یافت نشد</value>
+  </data>
+  <data name="Comment_Guest" xml:space="preserve">
+    <value>کاربر مهمان</value>
+  </data>
+</root>

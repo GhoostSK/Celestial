@@ -248,59 +248,93 @@
 
                     @if (tour.TransPorts.Any() || !string.IsNullOrWhiteSpace(tour.PrimaryTransport.AirLine))
                     {
-                        <div class="overview-area">
+                        <div class="overview-area transport-area">
                             <h3>@L["Tour_Transport"]</h3>
+
                             @if (!string.IsNullOrWhiteSpace(tour.PrimaryTransport.AirLine))
                             {
-                                <ul class="hightlight-area">
-                                    <li class="single-hightlight">
-                                        <div class="icon">
-                                            <i class="bi bi-airplane"></i>
-                                        </div>
-                                        <span>@L["Tour_AirLine"]: @tour.PrimaryTransport.AirLine</span>
-                                    </li>
-                                    @if (!string.IsNullOrWhiteSpace(tour.PrimaryTransport.LeadFlightCode))
-                                    {
-                                        <li class="single-hightlight">
-                                            <div class="icon">
-                                                <i class="bi bi-airplane-engines"></i>
+                                <div class="flight-card">
+                                    <div class="flight-card-head">
+                                        @if (!string.IsNullOrWhiteSpace(tour.PrimaryTransport.AirLineImagePath))
+                                        {
+                                            <image class="airline-logo" path="@tour.PrimaryTransport.AirLineImagePath"
+                                                   alt="@tour.PrimaryTransport.AirLine"/>
+                                        }
+                                        else
+                                        {
+                                            <span class="airline-fallback"><i class="bi bi-airplane"></i></span>
+                                        }
+                                        <span class="airline-name">
+                                            @tour.PrimaryTransport.AirLine
+                                            <span class="airline-caption">@L["Tour_PrimaryTransport"]</span>
+                                        </span>
+                                    </div>
+
+                                    <div class="flight-legs">
+                                        @if (!string.IsNullOrWhiteSpace(tour.PrimaryTransport.LeadFlightCode))
+                                        {
+                                            <div class="flight-leg">
+                                                <div class="leg-title">
+                                                    <span>@L["Tour_FlightCodeLead"]</span>
+                                                    <span class="leg-code">@tour.PrimaryTransport.LeadFlightCode</span>
+                                                </div>
+                                                <div class="leg-route">
+                                                    <span class="leg-time">@tour.PrimaryTransport.LeadStartTime</span>
+                                                    <span class="leg-path"><i class="bi bi-airplane"></i></span>
+                                                    <span class="leg-time">@tour.PrimaryTransport.LeadEndTime</span>
+                                                </div>
                                             </div>
-                                            <span>
-                                                @L["Tour_FlightCodeLead"]: @tour.PrimaryTransport.LeadFlightCode
-                                                (@tour.PrimaryTransport.LeadStartTime - @tour.PrimaryTransport.LeadEndTime)
-                                            </span>
-                                        </li>
-                                    }
-                                    @if (!string.IsNullOrWhiteSpace(tour.PrimaryTransport.ReturnFlightCode))
-                                    {
-                                        <li class="single-hightlight">
-                                            <div class="icon">
-                                                <i class="bi bi-airplane-engines"></i>
+                                        }
+                                        @if (!string.IsNullOrWhiteSpace(tour.PrimaryTransport.ReturnFlightCode))
+                                        {
+                                            <div class="flight-leg">
+                                                <div class="leg-title">
+                                                    <span>@L["Tour_FlightCodeReturn"]</span>
+                                                    <span class="leg-code">@tour.PrimaryTransport.ReturnFlightCode</span>
+                                                </div>
+                                                <div class="leg-route">
+                                                    <span class="leg-time">@tour.PrimaryTransport.ReturnStartTime</span>
+                                                    <span class="leg-path"><i class="bi bi-airplane"></i></span>
+                                                    <span class="leg-time">@tour.PrimaryTransport.ReturnEndTimeTime</span>
+                                                </div>
                                             </div>
-                                            <span>
-                                                @L["Tour_FlightCodeReturn"]: @tour.PrimaryTransport.ReturnFlightCode
-                                                (@tour.PrimaryTransport.ReturnStartTime - @tour.PrimaryTransport.ReturnEndTimeTime)
-                                            </span>
-                                        </li>
-                                    }
-                                </ul>
+                                        }
+                                    </div>
+                                </div>
                             }
+
                             @if (tour.TransPorts.Any())
                             {
-                                <ul class="hightlight-area">
-                                    @foreach (var transport in tour.TransPorts)
+                                <ol class="journey-roadmap">
+                                    @for (var i = 0; i < tour.TransPorts.Count; i++)
                                     {
-                                        <li class="single-hightlight">
-                                            <div class="icon">
-                                                <i class="bi bi-signpost-split"></i>
-                                            </div>
-                                            <span>
-                                                @L.Enum(transport.TransPortType)
-                                                (@transport.StartTime.ToLocalizedDateString())
+                                        var transport = tour.TransPorts[i];
+                                        var stepClass = i == 0
+                                            ? "journey-step is-start"
+                                            : i == tour.TransPorts.Count - 1
+                                                ? "journey-step is-end"
+                                                : "journey-step";
+
+                                        <li class="@stepClass">
+                                            <span class="step-icon">
+                                                <i class="bi @transport.TransPortType.ToTransportIcon()"></i>
                                             </span>
+                                            <div class="step-card">
+                                                <h6>@L.Enum(transport.TransPortType)</h6>
+                                                <p class="step-meta">
+                                                    <span>
+                                                        <i class="bi bi-calendar-event"></i>
+                                                        @transport.StartTime.ToLocalizedDateString()
+                                                    </span>
+                                                    <span class="step-hours">
+                                                        <i class="bi bi-clock"></i>
+                                                        @transport.StartTime.ToString("HH:mm") – @transport.EndTime.ToString("HH:mm")
+                                                    </span>
+                                                </p>
+                                            </div>
                                         </li>
                                     }
-                                </ul>
+                                </ol>
                             }
                         </div>
                     }

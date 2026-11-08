@@ -1,0 +1,30 @@
+@using Celestial.WebClient.Services.Interface
+@inject ICurrencyService CurrencyService
+@{
+    var currencies = await CurrencyService.GetCurrencyListAsync(GetCurrentLang.Execute());
+    var selectedCurrency = Context.Request.Cookies["Celestial.Currency"];
+    var currentCurrency = currencies.Items.FirstOrDefault(c => c.Name == selectedCurrency)
+                          ?? currencies.Items.FirstOrDefault();
+}
+
+@if (currencies.Items.Any())
+{
+    <div class="language-area two">
+        <div class="language-btn">
+            <span>
+                <i class="bi bi-currency-exchange"></i>
+                @currentCurrency!.Name
+            </span>
+        </div>
+        <ul class="language-list">
+            @foreach (var currency in currencies.Items)
+            {
+                <li>
+                    <a asp-controller="Currency" asp-action="SetCurrency"
+                       asp-route-name="@currency.Name"
+                       asp-route-returnUrl="@Context.Request.Path">@currency.Name</a>
+                </li>
+            }
+        </ul>
+    </div>
+}

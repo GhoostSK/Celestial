@@ -1,0 +1,148 @@
+@page "{slug?}"
+@model Celestial.WebClient.Pages.Visa.VisaDetailsModel
+@{
+    var visa = Model.Visa;
+    ViewData["Title"] = visa.HasError ? L["Visa_DetailsTitle"].Value : visa.Name;
+}
+
+<!-- breadcrumb-section start -->
+<div class="breadcrumb-section three mb-120">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="banner-content">
+                    <h1>@(visa.HasError ? L["Visa_DetailsTitle"].Value : visa.Name)</h1>
+                    <ul class="breadcrumb-list">
+                        <li class="breadcrumb-item">
+                            <a href="/@Model.CurrentLanguage">
+                                <div class="icon">
+                                    <i class="bi bi-house-door"></i>
+                                </div>
+                                @L["Common_Home"]
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a asp-page="/Visa/VisaList">@L["Visa_ListTitle"]</a>
+                        </li>
+                        <li class="active">@L["Visa_DetailsTitle"]</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb-section end -->
+
+<!-- visa details section start -->
+<div class="package-details-section mb-120">
+    <div class="container">
+        @if (visa.HasError)
+        {
+            <div class="row">
+                <div class="col-12">
+                    <div class="alert alert-warning">@L["Visa_NotFound"]</div>
+                    <a asp-page="/Visa/VisaList" class="primary-btn">@L["Visa_ListTitle"]</a>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="row gy-md-5">
+                <div class="col-lg-8">
+                    @if (!string.IsNullOrWhiteSpace(visa.PicturePath))
+                    {
+                        <div class="package-img mb-30">
+                            <image path="@visa.PicturePath" alt="@visa.Name"/>
+                        </div>
+                    }
+
+                    <ul class="feature-area-wrap">
+                        <li class="single-feature">
+                            <div class="icon one">
+                                <i class="bi bi-geo-alt"></i>
+                            </div>
+                            <div class="content">
+                                <span>@L["Visa_Country"]</span>
+                                <h6>@visa.Country</h6>
+                            </div>
+                        </li>
+                        <li class="single-feature">
+                            <div class="icon two">
+                                <i class="bi bi-building"></i>
+                            </div>
+                            <div class="content">
+                                <span>@L["Visa_Issuer"]</span>
+                                <h6>@L.Enum(visa.VisaIssuer)</h6>
+                            </div>
+                        </li>
+                        <li class="single-feature">
+                            <div class="icon three">
+                                <i class="bi bi-clock"></i>
+                            </div>
+                            <div class="content">
+                                <span>@L["Visa_IssueDate"]</span>
+                                <h6>@visa.IssueDate</h6>
+                            </div>
+                        </li>
+                        <li class="single-feature">
+                            <div class="icon four">
+                                <i class="bi bi-patch-check"></i>
+                            </div>
+                            <div class="content">
+                                <span>@L["Tour_Status"]</span>
+                                <h6>@(visa.Status ? L["Visa_Status_Available"] : L["Visa_Status_Unavailable"])</h6>
+                            </div>
+                        </li>
+                    </ul>
+
+                    @if (!string.IsNullOrWhiteSpace(visa.Text))
+                    {
+                        <div class="overview-area">
+                            <h3>@L["Tour_Overview"]</h3>
+                            <div class="first-paragraph">
+                                @Html.Raw(visa.Text)
+                            </div>
+                        </div>
+                    }
+
+                    @if (visa.Embassy.Any())
+                    {
+                        <div class="overview-area">
+                            <h3>@L["Visa_Embassy"]</h3>
+                            <ul class="hightlight-area">
+                                @foreach (var office in visa.Embassy)
+                                {
+                                    foreach (var entry in office.Where(e => !string.IsNullOrWhiteSpace(e.Value)))
+                                    {
+                                        <li class="single-hightlight">
+                                            <div class="icon">
+                                                <i class="bi bi-geo"></i>
+                                            </div>
+                                            <span>@entry.Key @entry.Value</span>
+                                        </li>
+                                    }
+                                }
+                            </ul>
+                        </div>
+                    }
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="package-sidebar-booking-area">
+                        <h4>@L["Nav_Contact"]</h4>
+                        <p>@L["Contact_Subtitle"]</p>
+                        <a class="primary-submit eight d-block text-center" asp-page="/Contact">@L["Contact_Send"]</a>
+                    </div>
+
+                    <div class="package-sidebar-booking-area mt-4">
+                        <h4>@L["Nav_Tours"]</h4>
+                        <a class="view-btn three d-inline-block" asp-page="/Tour/TourSidebar">
+                            <span>@L["Tour_ListTitle"]</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<!-- visa details section end -->

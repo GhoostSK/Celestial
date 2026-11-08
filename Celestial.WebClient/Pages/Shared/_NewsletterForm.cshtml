@@ -1,0 +1,23 @@
+@{
+    var newsletterSuccess = TempData["NewsletterSuccess"] as string;
+    var newsletterError = TempData["NewsletterError"] as string;
+}
+
+@if (!string.IsNullOrWhiteSpace(newsletterSuccess))
+{
+    <div class="alert alert-success">@newsletterSuccess</div>
+}
+@if (!string.IsNullOrWhiteSpace(newsletterError))
+{
+    <div class="alert alert-warning">@newsletterError</div>
+}
+
+@* زبان باید در مسیر باشد؛ در غیر این صورت میان‌افزار زبان، درخواست POST را ریدایرکت می‌کند *@
+<form method="post" asp-controller="Newsletter" asp-action="Subscribe"
+      asp-route-culture="@GetCurrentLang.Execute()"
+      asp-route-returnUrl="@($"/{GetCurrentLang.Execute()}{Context.Request.Path}")">
+    <div class="search-box">
+        <input type="email" name="Email" required placeholder="@L["Newsletter_Email"]">
+        <button type="submit">@L["Newsletter_Subscribe"]</button>
+    </div>
+</form>

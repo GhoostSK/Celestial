@@ -1,0 +1,325 @@
+/*
+ * استایل‌های اختصاصی پروژه که روی قالب tripfy اضافه می‌شوند.
+ * فایل‌های CSS قالب دست‌نخورده می‌مانند تا به‌روزرسانی قالب ساده بماند.
+ */
+
+/*
+ * قلم قالب (PeydaWebFaNum) ارقام لاتین را با گلیف فارسی نمایش می‌دهد؛ این رفتار
+ * برای فارسی و عربی درست است اما در صفحات انگلیسی و روسی قیمت‌ها و تاریخ‌ها را
+ * ناخوانا می‌کرد. بنابراین در جهت چپ‌به‌راست از قلم لاتین استفاده می‌شود.
+ */
+html[dir="ltr"] body,
+html[dir="ltr"] h1, html[dir="ltr"] h2, html[dir="ltr"] h3,
+html[dir="ltr"] h4, html[dir="ltr"] h5, html[dir="ltr"] h6,
+html[dir="ltr"] p, html[dir="ltr"] a, html[dir="ltr"] span,
+html[dir="ltr"] li, html[dir="ltr"] label, html[dir="ltr"] del,
+html[dir="ltr"] strong, html[dir="ltr"] small, html[dir="ltr"] td, html[dir="ltr"] th,
+html[dir="ltr"] button, html[dir="ltr"] input, html[dir="ltr"] textarea, html[dir="ltr"] select {
+    /* قالب در جاهای زیادی قلم را با گزینشگر دقیق‌تر تعیین کرده، پس این بازنویسی
+       سطح زبان باید اولویت داشته باشد */
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+}
+
+/* عنصر <i> عمداً در فهرست بالا نیامده تا قلم آیکون‌ها دست‌نخورده بماند */
+
+/*
+ * در bootstrap.min.css قالب، جداکننده‌ی breadcrumb با آدرس سایت دموی قالب
+ * جایگزین شده بود و روی صفحه «https://demo.qzency.com/» دیده می‌شد.
+ * جداکننده‌ی خود قالب، فلشی است که روی آیتم فعال می‌آید، پس این مورد حذف می‌شود.
+ */
+.breadcrumb-list {
+    --bs-breadcrumb-divider: "";
+}
+
+.breadcrumb-list .breadcrumb-item + .breadcrumb-item::before {
+    content: "";
+    padding: 0;
+}
+
+/* دکمه‌ی خروج داخل منوی کشویی کاربر، هم‌شکل با آیتم‌های همان منو */
+.language-list .logout-btn {
+    background: none;
+    border: 0;
+    padding: 0;
+    width: 100%;
+    text-align: inherit;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+}
+
+.language-list .logout-btn:hover {
+    opacity: .75;
+}
+
+/* پیام‌های موفقیت و خطای فرم‌ها در هر دو جهت LTR و RTL */
+.alert {
+    border-radius: 8px;
+}
+
+/* فیلدهای فرم‌هایی که با قالب ساخته می‌شوند ولی برچسب دارند */
+.form-inner label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+/* ---------------------------------------------------------------
+ * بخش حمل‌ونقل تور: کارت پرواز اصلی + نقشه‌ی مسیر (road map)
+ * از ویژگی‌های منطقی CSS استفاده شده تا در فارسی/عربی (RTL) و
+ * انگلیسی/روسی (LTR) بدون کد اضافه درست بچرخد.
+ * ------------------------------------------------------------- */
+.transport-area {
+    --transport-accent: #4da627;
+    --transport-ink: #1d2026;
+    --transport-line: #e3e6e1;
+    --transport-soft: #f6f8f4;
+}
+
+/* ---------- کارت پرواز اصلی ---------- */
+.flight-card {
+    border: 1px solid var(--transport-line);
+    border-radius: 16px;
+    padding: 22px 24px;
+    margin-bottom: 28px;
+    background: linear-gradient(180deg, var(--transport-soft) 0%, #fff 60%);
+}
+
+.flight-card-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 16px;
+    margin-bottom: 18px;
+    border-bottom: 1px dashed var(--transport-line);
+}
+
+.flight-card-head .airline-logo {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--transport-line);
+    background: #fff;
+}
+
+.flight-card-head .airline-fallback {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--transport-accent);
+    color: #fff;
+    font-size: 20px;
+}
+
+.flight-card-head .airline-name {
+    font-weight: 600;
+    font-size: 17px;
+    color: var(--transport-ink);
+    line-height: 1.3;
+}
+
+.flight-card-head .airline-caption {
+    display: block;
+    font-size: 13px;
+    opacity: .7;
+    font-weight: 400;
+}
+
+.flight-legs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 18px;
+}
+
+.flight-leg {
+    background: #fff;
+    border: 1px solid var(--transport-line);
+    border-radius: 12px;
+    padding: 16px 18px;
+}
+
+.flight-leg .leg-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 14px;
+    font-size: 14px;
+    color: var(--transport-ink);
+}
+
+.flight-leg .leg-code {
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: var(--transport-soft);
+    color: var(--transport-accent);
+    border: 1px solid #dfebd6;
+    white-space: nowrap;
+}
+
+/* مسیر رفت/برگشت: ساعت — خط نقطه‌چین با آیکون — ساعت */
+.leg-route {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.leg-route .leg-time {
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--transport-ink);
+    direction: ltr;
+    unicode-bidi: isolate;
+}
+
+.leg-route .leg-path {
+    position: relative;
+    flex: 1 1 auto;
+    height: 2px;
+    background-image: linear-gradient(90deg, var(--transport-line) 60%, transparent 0);
+    background-size: 8px 2px;
+    background-repeat: repeat-x;
+}
+
+.leg-route .leg-path i {
+    position: absolute;
+    top: 50%;
+    inset-inline-start: 50%;
+    transform: translate(50%, -50%);
+    background: #fff;
+    padding: 0 6px;
+    color: var(--transport-accent);
+    font-size: 15px;
+}
+
+/* در حالت چپ‌به‌راست آیکون باید به سمت مقابل بچرخد */
+html[dir="ltr"] .leg-route .leg-path i {
+    transform: translate(-50%, -50%) scaleX(-1);
+}
+
+/* ---------- نقشه‌ی مسیر ---------- */
+.journey-roadmap {
+    position: relative;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    padding-inline-start: 52px;
+}
+
+.journey-roadmap::before {
+    content: "";
+    position: absolute;
+    inset-inline-start: 19px;
+    top: 10px;
+    bottom: 10px;
+    width: 2px;
+    background: repeating-linear-gradient(180deg, var(--transport-line) 0 6px, transparent 6px 12px);
+}
+
+.journey-step {
+    position: relative;
+    padding-bottom: 18px;
+}
+
+.journey-step:last-child {
+    padding-bottom: 0;
+}
+
+.journey-step .step-icon {
+    position: absolute;
+    inset-inline-start: -52px;
+    top: 10px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    border: 2px solid var(--transport-accent);
+    color: var(--transport-accent);
+    font-size: 17px;
+}
+
+.journey-step.is-start .step-icon,
+.journey-step.is-end .step-icon {
+    background: var(--transport-accent);
+    color: #fff;
+}
+
+.journey-step .step-card {
+    border: 1px solid var(--transport-line);
+    border-radius: 12px;
+    padding: 14px 18px;
+    background: #fff;
+    transition: box-shadow .2s ease, transform .2s ease;
+}
+
+.journey-step .step-card:hover {
+    box-shadow: 0 6px 18px rgba(29, 32, 38, .08);
+    transform: translateY(-2px);
+}
+
+.journey-step .step-card h6 {
+    margin: 0 0 6px;
+    font-size: 16px;
+    color: var(--transport-ink);
+}
+
+.journey-step .step-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    margin: 0;
+    font-size: 13.5px;
+    opacity: .75;
+}
+
+.journey-step .step-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.journey-step .step-meta .step-hours {
+    direction: ltr;
+    unicode-bidi: isolate;
+}
+
+@media (max-width: 575px) {
+    .journey-roadmap {
+        padding-inline-start: 42px;
+    }
+
+    .journey-step .step-icon {
+        inset-inline-start: -42px;
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+    }
+
+    .journey-roadmap::before {
+        inset-inline-start: 15px;
+    }
+}
+
+/* شبکه‌ی کارت‌های ویزا */
+.visa-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.visa-card .visa-card-content {
+    flex: 1 1 auto;
+}
+
+/* وضعیت غیرفعال برای کارت‌هایی که ارائه نمی‌شوند */
+.visa-card.is-inactive {
+    opacity: .6;
+}

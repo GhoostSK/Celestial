@@ -1,0 +1,684 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Nav_Home" xml:space="preserve">
+    <value>Главная</value>
+  </data>
+  <data name="Nav_About" xml:space="preserve">
+    <value>О нас</value>
+  </data>
+  <data name="Nav_Tours" xml:space="preserve">
+    <value>Туры</value>
+  </data>
+  <data name="Nav_Hotels" xml:space="preserve">
+    <value>Отели</value>
+  </data>
+  <data name="Nav_Visa" xml:space="preserve">
+    <value>Виза</value>
+  </data>
+  <data name="Nav_Blog" xml:space="preserve">
+    <value>Блог</value>
+  </data>
+  <data name="Nav_Contact" xml:space="preserve">
+    <value>Контакты</value>
+  </data>
+  <data name="Action_BookTrip" xml:space="preserve">
+    <value>Забронировать</value>
+  </data>
+  <data name="Action_Login" xml:space="preserve">
+    <value>Вход</value>
+  </data>
+  <data name="Action_Register" xml:space="preserve">
+    <value>Регистрация</value>
+  </data>
+  <data name="Footer_FollowUs" xml:space="preserve">
+    <value>Подписывайтесь</value>
+  </data>
+  <data name="Common_Home" xml:space="preserve">
+    <value>Главная</value>
+  </data>
+  <data name="Common_ReadMore" xml:space="preserve">
+    <value>Подробнее</value>
+  </data>
+  <data name="Common_ViewDetails" xml:space="preserve">
+    <value>Смотреть детали</value>
+  </data>
+  <data name="Common_BookNow" xml:space="preserve">
+    <value>Забронировать</value>
+  </data>
+  <data name="Common_StartingFrom" xml:space="preserve">
+    <value>Начиная от</value>
+  </data>
+  <data name="Common_PerPerson" xml:space="preserve">
+    <value>за человека</value>
+  </data>
+  <data name="Common_PerNight" xml:space="preserve">
+    <value>за ночь</value>
+  </data>
+  <data name="Common_NoResult" xml:space="preserve">
+    <value>Ничего не найдено</value>
+  </data>
+  <data name="Common_Search" xml:space="preserve">
+    <value>Поиск</value>
+  </data>
+  <data name="Common_SearchPlaceholder" xml:space="preserve">
+    <value>Поиск...</value>
+  </data>
+  <data name="Common_ApplyFilter" xml:space="preserve">
+    <value>Применить фильтр</value>
+  </data>
+  <data name="Common_ClearFilter" xml:space="preserve">
+    <value>Сбросить фильтры</value>
+  </data>
+  <data name="Common_PriceFilter" xml:space="preserve">
+    <value>Фильтр по цене</value>
+  </data>
+  <data name="Common_From" xml:space="preserve">
+    <value>От</value>
+  </data>
+  <data name="Common_To" xml:space="preserve">
+    <value>До</value>
+  </data>
+  <data name="Common_Day" xml:space="preserve">
+    <value>день</value>
+  </data>
+  <data name="Common_Days" xml:space="preserve">
+    <value>дней</value>
+  </data>
+  <data name="Common_Night" xml:space="preserve">
+    <value>ночь</value>
+  </data>
+  <data name="Common_Nights" xml:space="preserve">
+    <value>ночей</value>
+  </data>
+  <data name="Common_Reviews" xml:space="preserve">
+    <value>Отзывы</value>
+  </data>
+  <data name="Common_Star" xml:space="preserve">
+    <value>звезда</value>
+  </data>
+  <data name="Common_Stars" xml:space="preserve">
+    <value>звёзд</value>
+  </data>
+  <data name="Common_SortBy" xml:space="preserve">
+    <value>Сортировка</value>
+  </data>
+  <data name="Common_Sort_Rating" xml:space="preserve">
+    <value>По рейтингу</value>
+  </data>
+  <data name="Common_Sort_Price" xml:space="preserve">
+    <value>По цене</value>
+  </data>
+  <data name="Common_Sort_PriceAsc" xml:space="preserve">
+    <value>Цена (возрастание)</value>
+  </data>
+  <data name="Common_Sort_PriceDesc" xml:space="preserve">
+    <value>Цена (убывание)</value>
+  </data>
+  <data name="Common_Sort_Date" xml:space="preserve">
+    <value>По дате</value>
+  </data>
+  <data name="Common_Showing" xml:space="preserve">
+    <value>Показано {0} из {1}</value>
+  </data>
+  <data name="Common_Submit" xml:space="preserve">
+    <value>Отправить</value>
+  </data>
+  <data name="Common_Send" xml:space="preserve">
+    <value>Отправить</value>
+  </data>
+  <data name="Common_Previous" xml:space="preserve">
+    <value>Назад</value>
+  </data>
+  <data name="Common_Next" xml:space="preserve">
+    <value>Далее</value>
+  </data>
+  <data name="Common_Error" xml:space="preserve">
+    <value>Произошла ошибка. Попробуйте снова.</value>
+  </data>
+  <data name="Common_Optional" xml:space="preserve">
+    <value>необязательно</value>
+  </data>
+  <data name="Tour_ListTitle" xml:space="preserve">
+    <value>Туры</value>
+  </data>
+  <data name="Tour_DetailsTitle" xml:space="preserve">
+    <value>Детали тура</value>
+  </data>
+  <data name="Tour_Destinations" xml:space="preserve">
+    <value>Направления</value>
+  </data>
+  <data name="Tour_TourType" xml:space="preserve">
+    <value>Тип тура</value>
+  </data>
+  <data name="Tour_TourScope" xml:space="preserve">
+    <value>Охват тура</value>
+  </data>
+  <data name="Tour_Continent" xml:space="preserve">
+    <value>Континент</value>
+  </data>
+  <data name="Tour_Duration" xml:space="preserve">
+    <value>Длительность</value>
+  </data>
+  <data name="Tour_StartDate" xml:space="preserve">
+    <value>Дата начала</value>
+  </data>
+  <data name="Tour_RegistrationDeadline" xml:space="preserve">
+    <value>Срок регистрации</value>
+  </data>
+  <data name="Tour_DaysLeft" xml:space="preserve">
+    <value>Осталось {0} дн.</value>
+  </data>
+  <data name="Tour_Capacity" xml:space="preserve">
+    <value>Вместимость</value>
+  </data>
+  <data name="Tour_RemainingCapacity" xml:space="preserve">
+    <value>Осталось мест</value>
+  </data>
+  <data name="Tour_Code" xml:space="preserve">
+    <value>Код тура</value>
+  </data>
+  <data name="Tour_Status" xml:space="preserve">
+    <value>Статус</value>
+  </data>
+  <data name="Tour_Overview" xml:space="preserve">
+    <value>Обзор</value>
+  </data>
+  <data name="Tour_Facilities" xml:space="preserve">
+    <value>Услуги</value>
+  </data>
+  <data name="Tour_Tips" xml:space="preserve">
+    <value>Советы</value>
+  </data>
+  <data name="Tour_ImportantTips" xml:space="preserve">
+    <value>Важные советы</value>
+  </data>
+  <data name="Tour_Plan" xml:space="preserve">
+    <value>Программа</value>
+  </data>
+  <data name="Tour_Transport" xml:space="preserve">
+    <value>Транспорт</value>
+  </data>
+  <data name="Tour_PrimaryTransport" xml:space="preserve">
+    <value>Основной перелёт</value>
+  </data>
+  <data name="Tour_AirLine" xml:space="preserve">
+    <value>Авиакомпания</value>
+  </data>
+  <data name="Tour_FlightCodeLead" xml:space="preserve">
+    <value>Код вылета</value>
+  </data>
+  <data name="Tour_FlightCodeReturn" xml:space="preserve">
+    <value>Код возврата</value>
+  </data>
+  <data name="Tour_EquipmentNecessary" xml:space="preserve">
+    <value>Необходимое снаряжение</value>
+  </data>
+  <data name="Tour_EquipmentUnNecessary" xml:space="preserve">
+    <value>Дополнительное снаряжение</value>
+  </data>
+  <data name="Tour_SimilarTours" xml:space="preserve">
+    <value>Похожие туры</value>
+  </data>
+  <data name="Tour_RelatedBlogs" xml:space="preserve">
+    <value>Похожие статьи</value>
+  </data>
+  <data name="Tour_ActiveOnly" xml:space="preserve">
+    <value>Только активные туры</value>
+  </data>
+  <data name="Tour_NotFound" xml:space="preserve">
+    <value>Туры не найдены</value>
+  </data>
+  <data name="TourStatus_Active" xml:space="preserve">
+    <value>Активен</value>
+  </data>
+  <data name="TourStatus_Planning" xml:space="preserve">
+    <value>В планировании</value>
+  </data>
+  <data name="TourStatus_Completed" xml:space="preserve">
+    <value>Завершён</value>
+  </data>
+  <data name="TourStatus_RegistrationClosed" xml:space="preserve">
+    <value>Регистрация закрыта</value>
+  </data>
+  <data name="TourType_None" xml:space="preserve">
+    <value>Не указано</value>
+  </data>
+  <data name="TourType_NatureTour" xml:space="preserve">
+    <value>Природа</value>
+  </data>
+  <data name="TourType_CityTour" xml:space="preserve">
+    <value>Городской</value>
+  </data>
+  <data name="TourType_Historical" xml:space="preserve">
+    <value>Исторический</value>
+  </data>
+  <data name="TourType_Sports" xml:space="preserve">
+    <value>Спортивный</value>
+  </data>
+  <data name="TourType_Educational" xml:space="preserve">
+    <value>Образовательный</value>
+  </data>
+  <data name="TourType_Adventure" xml:space="preserve">
+    <value>Приключение</value>
+  </data>
+  <data name="TourScope_None" xml:space="preserve">
+    <value>Не указано</value>
+  </data>
+  <data name="TourScope_SingleCity" xml:space="preserve">
+    <value>Один город</value>
+  </data>
+  <data name="TourScope_MultipleCities" xml:space="preserve">
+    <value>Несколько городов</value>
+  </data>
+  <data name="TourScope_SingleCountry" xml:space="preserve">
+    <value>Одна страна</value>
+  </data>
+  <data name="TourScope_MultipleCountries" xml:space="preserve">
+    <value>Несколько стран</value>
+  </data>
+  <data name="Continent_None" xml:space="preserve">
+    <value>Не указано</value>
+  </data>
+  <data name="Continent_Africa" xml:space="preserve">
+    <value>Африка</value>
+  </data>
+  <data name="Continent_Antarctica" xml:space="preserve">
+    <value>Антарктида</value>
+  </data>
+  <data name="Continent_Asia" xml:space="preserve">
+    <value>Азия</value>
+  </data>
+  <data name="Continent_Europe" xml:space="preserve">
+    <value>Европа</value>
+  </data>
+  <data name="Continent_NorthAmerica" xml:space="preserve">
+    <value>Северная Америка</value>
+  </data>
+  <data name="Continent_SouthAmerica" xml:space="preserve">
+    <value>Южная Америка</value>
+  </data>
+  <data name="Continent_Australia" xml:space="preserve">
+    <value>Австралия</value>
+  </data>
+  <data name="TransportVehicleType_Car" xml:space="preserve">
+    <value>Автомобиль</value>
+  </data>
+  <data name="TransportVehicleType_Bus" xml:space="preserve">
+    <value>Автобус</value>
+  </data>
+  <data name="TransportVehicleType_Plane" xml:space="preserve">
+    <value>Самолёт</value>
+  </data>
+  <data name="TransportVehicleType_Ship" xml:space="preserve">
+    <value>Корабль</value>
+  </data>
+  <data name="Booking_Title" xml:space="preserve">
+    <value>Бронирование тура</value>
+  </data>
+  <data name="Booking_FullName" xml:space="preserve">
+    <value>Полное имя</value>
+  </data>
+  <data name="Booking_PhoneNumber" xml:space="preserve">
+    <value>Телефон</value>
+  </data>
+  <data name="Booking_Email" xml:space="preserve">
+    <value>Эл. почта</value>
+  </data>
+  <data name="Booking_NationalCode" xml:space="preserve">
+    <value>ИНН</value>
+  </data>
+  <data name="Booking_PassengerCount" xml:space="preserve">
+    <value>Пассажиров</value>
+  </data>
+  <data name="Booking_Note" xml:space="preserve">
+    <value>Примечания</value>
+  </data>
+  <data name="Booking_Submit" xml:space="preserve">
+    <value>Отправить заявку</value>
+  </data>
+  <data name="Booking_Success" xml:space="preserve">
+    <value>Заявка принята. Код: {0}</value>
+  </data>
+  <data name="Booking_Code" xml:space="preserve">
+    <value>Код брони</value>
+  </data>
+  <data name="Booking_TotalPrice" xml:space="preserve">
+    <value>Итого</value>
+  </data>
+  <data name="Booking_Status" xml:space="preserve">
+    <value>Статус брони</value>
+  </data>
+  <data name="Booking_Closed" xml:space="preserve">
+    <value>Регистрация на тур закрыта</value>
+  </data>
+  <data name="BookingStatus_Pending" xml:space="preserve">
+    <value>В обработке</value>
+  </data>
+  <data name="BookingStatus_Confirmed" xml:space="preserve">
+    <value>Подтверждена</value>
+  </data>
+  <data name="BookingStatus_Cancelled" xml:space="preserve">
+    <value>Отменена</value>
+  </data>
+  <data name="BookingStatus_Rejected" xml:space="preserve">
+    <value>Отклонена</value>
+  </data>
+  <data name="Hotel_ListTitle" xml:space="preserve">
+    <value>Отели</value>
+  </data>
+  <data name="Hotel_DetailsTitle" xml:space="preserve">
+    <value>Детали отеля</value>
+  </data>
+  <data name="Hotel_Score" xml:space="preserve">
+    <value>Рейтинг отеля</value>
+  </data>
+  <data name="Hotel_Country" xml:space="preserve">
+    <value>Страна</value>
+  </data>
+  <data name="Hotel_Location" xml:space="preserve">
+    <value>Расположение</value>
+  </data>
+  <data name="Hotel_Address" xml:space="preserve">
+    <value>Адрес</value>
+  </data>
+  <data name="Hotel_Reception" xml:space="preserve">
+    <value>Ресепшен</value>
+  </data>
+  <data name="Hotel_Code" xml:space="preserve">
+    <value>Код отеля</value>
+  </data>
+  <data name="Hotel_About" xml:space="preserve">
+    <value>Об отеле</value>
+  </data>
+  <data name="Hotel_Gallery" xml:space="preserve">
+    <value>Галерея</value>
+  </data>
+  <data name="Hotel_BookExternal" xml:space="preserve">
+    <value>Забронировать на сайте</value>
+  </data>
+  <data name="Hotel_NotFound" xml:space="preserve">
+    <value>Отели не найдены</value>
+  </data>
+  <data name="HotelLocation_None" xml:space="preserve">
+    <value>Не указано</value>
+  </data>
+  <data name="HotelLocation_CityCenter" xml:space="preserve">
+    <value>Центр города</value>
+  </data>
+  <data name="HotelLocation_Suburb" xml:space="preserve">
+    <value>Пригород</value>
+  </data>
+  <data name="HotelLocation_NearCity" xml:space="preserve">
+    <value>Рядом с городом</value>
+  </data>
+  <data name="Comment_Title" xml:space="preserve">
+    <value>Комментарии</value>
+  </data>
+  <data name="Comment_Leave" xml:space="preserve">
+    <value>Оставить комментарий</value>
+  </data>
+  <data name="Comment_Text" xml:space="preserve">
+    <value>Текст комментария</value>
+  </data>
+  <data name="Comment_Submit" xml:space="preserve">
+    <value>Отправить</value>
+  </data>
+  <data name="Comment_Empty" xml:space="preserve">
+    <value>Пока нет комментариев</value>
+  </data>
+  <data name="Comment_Success" xml:space="preserve">
+    <value>Комментарий отправлен и появится после модерации.</value>
+  </data>
+  <data name="Comment_LoginRequired" xml:space="preserve">
+    <value>Войдите, чтобы комментировать</value>
+  </data>
+  <data name="Validation_Required" xml:space="preserve">
+    <value>Обязательное поле</value>
+  </data>
+  <data name="Validation_Length" xml:space="preserve">
+    <value>Недопустимая длина</value>
+  </data>
+  <data name="Validation_Email" xml:space="preserve">
+    <value>Неверный e-mail</value>
+  </data>
+  <data name="Validation_Phone" xml:space="preserve">
+    <value>Неверный номер телефона</value>
+  </data>
+  <data name="Validation_NationalCode" xml:space="preserve">
+    <value>ИНН должен содержать 10 цифр</value>
+  </data>
+  <data name="Validation_Range" xml:space="preserve">
+    <value>Значение вне диапазона</value>
+  </data>
+  <data name="Common_Sort_Newest" xml:space="preserve">
+    <value>Сначала новые</value>
+  </data>
+  <data name="Common_Sort_Score" xml:space="preserve">
+    <value>По рейтингу</value>
+  </data>
+  <data name="Common_Or" xml:space="preserve">
+    <value>или</value>
+  </data>
+  <data name="Action_Logout" xml:space="preserve">
+    <value>Выход</value>
+  </data>
+  <data name="Account_LoginTitle" xml:space="preserve">
+    <value>Вход в аккаунт</value>
+  </data>
+  <data name="Account_LoginSubtitle" xml:space="preserve">
+    <value>Введите имя пользователя и пароль.</value>
+  </data>
+  <data name="Account_RegisterTitle" xml:space="preserve">
+    <value>Регистрация</value>
+  </data>
+  <data name="Account_RegisterSubtitle" xml:space="preserve">
+    <value>Создайте аккаунт для бронирования и отзывов.</value>
+  </data>
+  <data name="Account_UserName" xml:space="preserve">
+    <value>Имя пользователя</value>
+  </data>
+  <data name="Account_Password" xml:space="preserve">
+    <value>Пароль</value>
+  </data>
+  <data name="Account_Name" xml:space="preserve">
+    <value>Имя</value>
+  </data>
+  <data name="Account_LastName" xml:space="preserve">
+    <value>Фамилия</value>
+  </data>
+  <data name="Account_PhoneNumber" xml:space="preserve">
+    <value>Телефон</value>
+  </data>
+  <data name="Account_NationalCode" xml:space="preserve">
+    <value>ИНН</value>
+  </data>
+  <data name="Account_RememberMe" xml:space="preserve">
+    <value>Запомнить меня</value>
+  </data>
+  <data name="Account_LoginFailed" xml:space="preserve">
+    <value>Неверное имя пользователя или пароль</value>
+  </data>
+  <data name="Account_ConfirmPhoneTitle" xml:space="preserve">
+    <value>Подтверждение телефона</value>
+  </data>
+  <data name="Account_ConfirmPhoneSubtitle" xml:space="preserve">
+    <value>Введите пятизначный код.</value>
+  </data>
+  <data name="Account_ConfirmationCode" xml:space="preserve">
+    <value>Код подтверждения</value>
+  </data>
+  <data name="Account_ConfirmAction" xml:space="preserve">
+    <value>Подтвердить</value>
+  </data>
+  <data name="Account_ResendCode" xml:space="preserve">
+    <value>Отправить код снова</value>
+  </data>
+  <data name="Account_CodeSent" xml:space="preserve">
+    <value>Код подтверждения отправлен.</value>
+  </data>
+  <data name="Account_PhoneConfirmed" xml:space="preserve">
+    <value>Телефон подтверждён. Теперь войдите.</value>
+  </data>
+  <data name="Validation_UserName" xml:space="preserve">
+    <value>Допустимы только буквы, цифры, точки и подчёркивания</value>
+  </data>
+  <data name="Validation_Password" xml:space="preserve">
+    <value>Пароль должен быть не менее 8 символов</value>
+  </data>
+  <data name="Validation_ConfirmationCode" xml:space="preserve">
+    <value>Код должен содержать 5 цифр</value>
+  </data>
+  <data name="Visa_ListTitle" xml:space="preserve">
+    <value>Виза</value>
+  </data>
+  <data name="Visa_DetailsTitle" xml:space="preserve">
+    <value>Детали визы</value>
+  </data>
+  <data name="Visa_Country" xml:space="preserve">
+    <value>Страна</value>
+  </data>
+  <data name="Visa_Issuer" xml:space="preserve">
+    <value>Кем выдаётся</value>
+  </data>
+  <data name="Visa_IssueDate" xml:space="preserve">
+    <value>Срок оформления (дней)</value>
+  </data>
+  <data name="Visa_Status_Available" xml:space="preserve">
+    <value>Доступна</value>
+  </data>
+  <data name="Visa_Status_Unavailable" xml:space="preserve">
+    <value>Недоступна</value>
+  </data>
+  <data name="Visa_Embassy" xml:space="preserve">
+    <value>Посольства и офисы</value>
+  </data>
+  <data name="Visa_NotFound" xml:space="preserve">
+    <value>Информация о визе не найдена</value>
+  </data>
+  <data name="VisaIssuer_Embassy" xml:space="preserve">
+    <value>Посольство</value>
+  </data>
+  <data name="VisaIssuer_Consulate" xml:space="preserve">
+    <value>Консульство</value>
+  </data>
+  <data name="VisaIssuer_VisaApplicationCenter" xml:space="preserve">
+    <value>Визовый центр</value>
+  </data>
+  <data name="VisaIssuer_AuthorizedAgency" xml:space="preserve">
+    <value>Уполномоченное агентство</value>
+  </data>
+  <data name="VisaIssuer_Ministry" xml:space="preserve">
+    <value>Министерство</value>
+  </data>
+  <data name="VisaIssuer_PrivateAgency" xml:space="preserve">
+    <value>Частное агентство</value>
+  </data>
+  <data name="VisaIssuer_SpecialProgram" xml:space="preserve">
+    <value>Специальная программа</value>
+  </data>
+  <data name="Faq_Title" xml:space="preserve">
+    <value>Частые вопросы</value>
+  </data>
+  <data name="Faq_Subtitle" xml:space="preserve">
+    <value>Ответы на самые частые вопросы.</value>
+  </data>
+  <data name="Faq_Empty" xml:space="preserve">
+    <value>Пока нет вопросов</value>
+  </data>
+  <data name="Newsletter_Title" xml:space="preserve">
+    <value>Рассылка</value>
+  </data>
+  <data name="Newsletter_Subtitle" xml:space="preserve">
+    <value>Получайте новые туры и скидки на почту.</value>
+  </data>
+  <data name="Newsletter_Email" xml:space="preserve">
+    <value>Ваш e-mail</value>
+  </data>
+  <data name="Newsletter_Subscribe" xml:space="preserve">
+    <value>Подписаться</value>
+  </data>
+  <data name="Newsletter_Success" xml:space="preserve">
+    <value>Вы подписаны на рассылку.</value>
+  </data>
+  <data name="Newsletter_AlreadySubscribed" xml:space="preserve">
+    <value>Этот e-mail уже подписан.</value>
+  </data>
+  <data name="Contact_Title" xml:space="preserve">
+    <value>Свяжитесь с нами</value>
+  </data>
+  <data name="Contact_Subtitle" xml:space="preserve">
+    <value>Напишите нам, и мы быстро ответим.</value>
+  </data>
+  <data name="Contact_Name" xml:space="preserve">
+    <value>Ваше имя</value>
+  </data>
+  <data name="Contact_Email" xml:space="preserve">
+    <value>Ваш e-mail</value>
+  </data>
+  <data name="Contact_Message" xml:space="preserve">
+    <value>Ваше сообщение</value>
+  </data>
+  <data name="Contact_Send" xml:space="preserve">
+    <value>Отправить</value>
+  </data>
+  <data name="Contact_Success" xml:space="preserve">
+    <value>Сообщение отправлено. Мы скоро ответим.</value>
+  </data>
+  <data name="Home_FeaturedTours" xml:space="preserve">
+    <value>Популярные туры</value>
+  </data>
+  <data name="Home_LatestBlogs" xml:space="preserve">
+    <value>Последние статьи</value>
+  </data>
+  <data name="Contact_AddressValue" xml:space="preserve">
+    <value>Тегеран, ул. Валиаср, 52</value>
+  </data>
+  <data name="Nav_Faq" xml:space="preserve">
+    <value>Вопросы</value>
+  </data>
+  <data name="Footer_QuickLinks" xml:space="preserve">
+    <value>Быстрые ссылки</value>
+  </data>
+  <data name="Blog_ListTitle" xml:space="preserve">
+    <value>Статьи</value>
+  </data>
+  <data name="Blog_DetailsTitle" xml:space="preserve">
+    <value>Детали статьи</value>
+  </data>
+  <data name="Blog_Categories" xml:space="preserve">
+    <value>Категории</value>
+  </data>
+  <data name="Blog_RecentPosts" xml:space="preserve">
+    <value>Последние статьи</value>
+  </data>
+  <data name="Blog_Tags" xml:space="preserve">
+    <value>Теги</value>
+  </data>
+  <data name="Blog_Share" xml:space="preserve">
+    <value>Поделиться</value>
+  </data>
+  <data name="Blog_PreviousPost" xml:space="preserve">
+    <value>Предыдущая статья</value>
+  </data>
+  <data name="Blog_NextPost" xml:space="preserve">
+    <value>Следующая статья</value>
+  </data>
+  <data name="Blog_NotFound" xml:space="preserve">
+    <value>Статья не найдена</value>
+  </data>
+  <data name="Comment_Guest" xml:space="preserve">
+    <value>Гость</value>
+  </data>
+</root>
